@@ -1,0 +1,14 @@
+body {
+    width: 800px;
+    margin: 0 auto;
+    margin-top: 72px;
+    font-family: 'Overpass', sans-serif;
+    background-color: white;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+   /*  width: 100%; */
+  }
