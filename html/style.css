@@ -1,9 +1,20 @@
+@font-face {
+    font-family: Overpass-Regular;
+    src: url("https://fonts.googleapis.com/css?family=Overpass:400")
+}
+
+@font-face {
+    font-family: Overpass-Bold;
+    src: url("https://fonts.googleapis.com/css?family=Overpass:800")
+}
+
 body {
     width: 800px;
     margin: 0 auto;
     margin-top: 72px;
     font-family: 'Overpass', sans-serif;
     background-color: white;
+    font-size: 1em;
 }
 
 .center {
@@ -11,4 +22,29 @@ body {
     margin-left: auto;
     margin-right: auto;
    /*  width: 100%; */
-  }
+}
+
+.main {
+    margin-top: 72px;
+}
+
+.main h1 {
+    text-align: center;
+    line-height: 0.3em;
+}
+
+.main ul {
+    width: 600px;
+    /* line-height: 1.0em; */
+    font-size: 1.1em;
+}
+.main li {
+    margin: 0 0 10px 0;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #596680;
+    font-family: Overpass-Bold;
+    letter-spacing: 0.02em;
+}
