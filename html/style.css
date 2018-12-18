@@ -54,6 +54,14 @@ h1 {
     letter-spacing: 0.02em;
 }
 
+.btn-container {
+    margin-top: 50px;
+}
+
+.btn-container a {
+    text-decoration: none;
+}
+
 .btn {
     background-color: #2d6ae0;
     color: white;
@@ -71,4 +79,8 @@ h1 {
     -webkit-box-shadow: 0px 3px 14px 2px #00000036;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
     -moz-box-shadow: 0px 3px 14px 2px #00000036;  /* Firefox 3.5 - 3.6 */
     box-shadow: 0px 3px 14px 2px #00000036;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.btn:hover {
+    background-color: #140579;
 }
