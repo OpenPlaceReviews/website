@@ -24,6 +24,8 @@ body {
    /*  width: 100%; */
 }
 
+
+
 .main {
     margin-top: 72px;
 }
@@ -60,6 +62,7 @@ h1 {
 
 .btn-container a {
     text-decoration: none;
+    color: white;
 }
 
 .btn {
@@ -83,4 +86,24 @@ h1 {
 
 .btn:hover {
     background-color: #140579;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #ebf2f5;
+    color: #596680;
+    text-align: center;
+}
+
+.footer a {
+    text-decoration-color: #140579;
+    text-decoration-line: none;
+}
+
+.footer a:hover {
+    text-decoration-color: #140579;
+    text-decoration-line: underline;
 }
