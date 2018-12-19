@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Overpass:400,800');
 
-
 body {
     width: 800px;
     margin: 0 auto;
@@ -17,8 +16,6 @@ body {
     margin-right: auto;
    /*  width: 100%; */
 }
-
-
 
 .main {
     padding-bottom:80px; 
