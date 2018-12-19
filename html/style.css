@@ -1,14 +1,4 @@
-@font-face {
-    font-family: Overpass;
-    src: url("https://fonts.googleapis.com/css?family=Overpass:400");
-    font-weight: 400;
-}
-
-@font-face {
-    font-family: Overpass;
-    src: url("https://fonts.googleapis.com/css?family=Overpass:800");
-    font-weight: 800;
-}
+@import url('https://fonts.googleapis.com/css?family=Overpass:400,800');
 
 body {
     width: 800px;
