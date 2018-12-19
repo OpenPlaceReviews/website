@@ -1,9 +1,11 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css?family=Overpass:400,800');
+
 
 body {
     width: 800px;
     margin: 0 auto;
-    margin-top: 72px;
+    margin-top: 45px;
     font-family: 'Overpass', sans-serif;
     font-weight: 400;
     background-color: white;
@@ -20,11 +22,22 @@ body {
 
 
 .main {
-    margin-top: 72px;
+    padding-bottom:80px; 
 }
 
 .main h1 {
     text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    
+
+    font-size: 2.5em;
+    line-height: 2em;
+    color: #596680;
+    font-family: 'Overpass';
+    font-weight: 800;
+    letter-spacing: 0.02em;
+
 }
 
 .main p {
@@ -35,20 +48,13 @@ body {
 
 .main ul {
     width: 600px;
-    /* line-height: 1.0em; */
+    line-height: 1.5em; 
     font-size: 1.1em;
 }
 .main li {
-    margin: 0 0 10px 0;
+    margin: 0 0 20px 0;
 }
 
-h1 {
-    font-size: 2.5em;
-    color: #596680;
-    font-family: Overpass;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-}
 
 .btn-container {
     margin-top: 50px;
@@ -91,6 +97,7 @@ h1 {
     background-color: #ebf2f5;
     color: #596680;
     text-align: center;
+    height: 50px;
 }
 
 .footer a {
