@@ -1,11 +1,13 @@
 @font-face {
-    font-family: Overpass-Regular;
-    src: url("https://fonts.googleapis.com/css?family=Overpass:400")
+    font-family: Overpass;
+    src: url("https://fonts.googleapis.com/css?family=Overpass:400");
+    font-weight: 400;
 }
 
 @font-face {
-    font-family: Overpass-Bold;
-    src: url("https://fonts.googleapis.com/css?family=Overpass:800")
+    font-family: Overpass;
+    src: url("https://fonts.googleapis.com/css?family=Overpass:800");
+    font-weight: 800;
 }
 
 body {
@@ -13,6 +15,7 @@ body {
     margin: 0 auto;
     margin-top: 72px;
     font-family: 'Overpass', sans-serif;
+    font-weight: 400;
     background-color: white;
     font-size: 1em;
 }
@@ -52,7 +55,8 @@ body {
 h1 {
     font-size: 2.5em;
     color: #596680;
-    font-family: Overpass-Bold;
+    font-family: Overpass;
+    font-weight: 800;
     letter-spacing: 0.02em;
 }
 
@@ -77,7 +81,8 @@ h1 {
     text-align: center;
     text-decoration: none;
     font-size: 1em;
-    font-family: Overpass-Bold;
+    font-family: Overpass;
+    font-weight: 800;
     letter-spacing: 0.04em;
     -webkit-box-shadow: 0px 3px 14px 2px #00000036;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
     -moz-box-shadow: 0px 3px 14px 2px #00000036;  /* Firefox 3.5 - 3.6 */
