@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Overpass:400,800');
 
 body {
-    width: 800px;
+    /* width: 800px; */
     margin: 0 auto;
     margin-top: 45px;
     font-family: 'Overpass', sans-serif;
@@ -18,22 +18,21 @@ body {
 }
 
 .main {
-    padding-bottom:80px; 
+    width: 800px;
+    margin: 0 auto;
+    padding-bottom:80px;
 }
 
 .main h1 {
     text-align: center;
     margin-top: 40px;
     margin-bottom: 40px;
-    
-
     font-size: 2.5em;
     line-height: 2em;
     color: #596680;
     font-family: 'Overpass';
     font-weight: 800;
     letter-spacing: 0.02em;
-
 }
 
 .main p {
@@ -86,14 +85,20 @@ body {
 }
 
 .footer {
-    position: fixed;
+    /* position: fixed; */
     left: 0;
     bottom: 0;
     width: 100%;
+    padding-top: 5px;
     background-color: #ebf2f5;
     color: #596680;
     text-align: center;
     height: 50px;
+}
+
+.footer p {
+    margin: 0 auto;
+    padding-top: 10px;
 }
 
 .footer a {
