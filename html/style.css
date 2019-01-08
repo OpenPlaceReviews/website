@@ -30,7 +30,7 @@ body {
     font-size: 2.5em;
     line-height: 2em;
     color: #596680;
-    font-family: 'Overpass';
+    font-family: 'Overpass', sans-serif;
     font-weight: 800;
     letter-spacing: 0.02em;
 }
@@ -43,7 +43,7 @@ body {
 
 .main ul {
     width: 600px;
-    line-height: 1.5em; 
+    line-height: 1.5em;
     font-size: 1.1em;
 }
 .main li {
@@ -52,12 +52,8 @@ body {
 
 
 .btn-container {
+    text-align: center;
     margin-top: 50px;
-}
-
-.btn-container a {
-    text-decoration: none;
-    color: white;
 }
 
 .btn {
@@ -65,14 +61,14 @@ body {
     color: white;
     padding: 0px 25px 0px 25px;
     min-height: 60px;
+    line-height: 60px;
     border: none;
     margin:0 auto;
-    display: block;
+    display: inline-block;
     border-radius: 50px;
-    text-align: center;
     text-decoration: none;
     font-size: 1em;
-    font-family: Overpass;
+    font-family: 'Overpass', sans-serif;
     font-weight: 800;
     letter-spacing: 0.04em;
     cursor: pointer;
@@ -86,7 +82,7 @@ body {
 }
 
 .footer {
-    /* position: fixed; */
+    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
