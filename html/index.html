@@ -6,16 +6,17 @@
     <link rel="icon" type="image/png" sizes="180x180" href="images/icons/favicon-180x180.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-    <div class="top">
+    <header>
         <a href="https://opengeoreviews.org/">
             <img src="images/ogr_logo_color.png" alt="OpenGeoReview.org logo" class="center"/>
         </a>
-    </div>
-    <div class="main">
+    </header>
+    <main class="main">
         <h1>A new way for local reviews
             <p style="color:#2d69df;">Open. Collaborative. Trustworthy.</p>
         </h1>
@@ -27,20 +28,12 @@
             <li><b>Monetization</b> - make business subscriptions once the project is matured and spread the income between applications, authors, moderators and network operators.</li>
         </ul>
         <div class="btn-container">
-            <button class="btn join" type="button" id="join-button"><a   href="https://forum.opengeoreviews.org/">Read more and Join us</a></button>
+            <a href="https://forum.opengeoreviews.org/" class="btn join">Read more and Join us</a>
         </div>
 
-    </div>
-    <div class="footer">
-        <p>&copy; 2018 <a href="https://opengeoreviews.org/">OpenGeoReviews.org</a><p>
-    </div>
-    <script>
-        $('#join-button').on('click', function(e) {
-            window.open("https://forum.opengeoreviews.org/", '_self');
-            
-            e.preventDefault();
-            
-        });
-    </script>
+    </main>
+    <footer class="footer">
+        <p>&copy; 2018 <a href="https://opengeoreviews.org/">OpenGeoReviews.org</a></p>
+    </footer>
 </body>
 </html>
