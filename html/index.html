@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png">
     <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
     <div class="top">
@@ -26,12 +27,20 @@
             <li><b>Monetization</b> - make business subscriptions once the project is matured and spread the income between applications, authors, moderators and network operators.</li>
         </ul>
         <div class="btn-container">
-            <button class="btn join" type="button"><a href="https://forum.opengeoreviews.org/">Read more and Join us</a></button>
+            <button class="btn join" type="button" id="join-button"><a   href="https://forum.opengeoreviews.org/">Read more and Join us</a></button>
         </div>
 
     </div>
     <div class="footer">
         <p>&copy; 2018 <a href="https://opengeoreviews.org/">OpenGeoReviews.org</a><p>
     </div>
+    <script>
+        $('#join-button').on('click', function(e) {
+            window.open("https://forum.opengeoreviews.org/", '_self');
+            
+            e.preventDefault();
+            
+        });
+    </script>
 </body>
 </html>

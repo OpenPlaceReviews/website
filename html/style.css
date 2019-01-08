@@ -75,6 +75,7 @@ body {
     font-family: Overpass;
     font-weight: 800;
     letter-spacing: 0.04em;
+    cursor: pointer;
     -webkit-box-shadow: 0px 3px 14px 2px #00000036;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
     -moz-box-shadow: 0px 3px 14px 2px #00000036;  /* Firefox 3.5 - 3.6 */
     box-shadow: 0px 3px 14px 2px #00000036;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
