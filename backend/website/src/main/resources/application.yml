@@ -1,0 +1,86 @@
+google:
+  client:
+    clientId: ${GOOGLE_CLIENT_ID:521675454867-pmot5ink84bf4876advcmr16o0mgg8lk.apps.googleusercontent.com}
+    clientSecret: ${GOOGLE_CLIENT_SECRET:bH3wvAogUIln12u-TR-E7IEV}
+    accessTokenUri: https://www.googleapis.com/oauth2/v4/token
+    userAuthorizationUri: https://accounts.google.com/o/oauth2/v2/auth
+    clientAuthenticationScheme: form
+    scope:
+      - openid
+      - email
+  resource:
+    userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+    tokenInfoUri:
+    preferTokenInfo: true
+
+
+admin:
+  emails:
+      victor.shcherb@gmail.com
+
+logging:
+  file: logs/server.log
+  config: classpath:logback-spring.xml
+  pattern.console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){yellow} %-5level [%thread]: %message%n%ex{4}"
+
+server:
+  port: 8085
+  tomcat.max-threads: 5
+  connection-timeout: 120000
+files.location: ${user.dir}
+gen.location: ${files.location}/gen/
+web.location: ${files.location}/website/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+spring:
+  jpa:
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    properties.hibernate.jdbc.lob.non_contextual_creation: true
+    hibernate.ddl-auto: update
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/opengeoreviews}
+    username: ${DB_USER:test}
+    password: ${DB_PWD:test}
+  resources.static-locations: file:${web.location}
+  thymeleaf:
+    prefix: file:${web.location}/templates/
+    cache: false
+
+# classpath:/static/
+
+mapillary:
+  clientid: LXJVNHlDOGdMSVgxZG5mVzlHQ3ZqQTo0NjE5OWRiN2EzNTFkNDg4
+
+
+---
+spring.jpa.hibernate.ddl-auto: validate
+
+files.location: /var/www-download/
+gen.location: ${files.location}/gen/
+web.location: ${files.location}/website/
+
+logging:
+  file: /var/log/server-logs/error.log
+  config: classpath:logback-spring.xml
+
+server:
+  port: 8085
+  tomcat.max-threads: 50
+  address: 127.0.0.1 #keep it behind proxy
+  tomcat:
+    protocol_header: x-forwarded-proto
+    remote_ip_header: x-forwarded-for
+    accesslog:
+      directory: /var/log/server-logs/
+      enabled: true
+      rotate: false
+      pattern: '%h %l %u %t "%r" %s %b %D "%{Referer}i" "%{User-Agent}i"'
+
+spring:
+  profiles: production
+  resources.static-locations: file:${web.location}
+  thymeleaf.prefix: file:${web.location}/templates/
