@@ -59,9 +59,6 @@ mapillary:
 ---
 spring.jpa.hibernate.ddl-auto: validate
 
-files.location: /var/www-download/
-gen.location: ${files.location}/gen/
-web.location: ${files.location}/website/
 
 logging:
   file: /var/log/server-logs/error.log
