@@ -61,7 +61,7 @@ spring.jpa.hibernate.ddl-auto: validate
 
 
 logging:
-  file: /var/log/server-logs/error.log
+  file: /var/log/ogr-server-logs/error.log
   config: classpath:logback-spring.xml
 
 server:
@@ -72,7 +72,7 @@ server:
     protocol_header: x-forwarded-proto
     remote_ip_header: x-forwarded-for
     accesslog:
-      directory: /var/log/server-logs/
+      directory: /var/log/ogr-server-logs/
       enabled: true
       rotate: false
       pattern: '%h %l %u %t "%r" %s %b %D "%{Referer}i" "%{User-Agent}i"'
