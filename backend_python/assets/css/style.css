@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css?family=Overpass:400,800');
+
+body {
+    /* width: 800px; */
+    margin: 0 auto;
+    margin-top: 45px;
+    font-family: 'Overpass', sans-serif;
+    font-weight: 400;
+    background-color: white;
+    font-size: 1em;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+   /*  width: 100%; */
+}
+
+.main {
+    width: 800px;
+    margin: 0 auto;
+    padding-bottom:80px;
+}
+
+.main h1 {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    line-height: 2em;
+    color: #596680;
+    font-family: 'Overpass', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.main p {
+    padding: 0px;
+    margin: 0px;
+    line-height: 1em;
+}
+
+.main ul {
+    width: 600px;
+    line-height: 1.5em;
+    font-size: 1.1em;
+}
+.main li {
+    margin: 0 0 20px 0;
+}
+
+
+.btn-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn {
+    background-color: #2d6ae0;
+    color: white;
+    padding: 0px 25px 0px 25px;
+    min-height: 60px;
+    line-height: 60px;
+    border: none;
+    margin:0 auto;
+    display: inline-block;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1em;
+    font-family: 'Overpass', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 3px 14px 2px #00000036;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 0px 3px 14px 2px #00000036;  /* Firefox 3.5 - 3.6 */
+    box-shadow: 0px 3px 14px 2px #00000036;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.btn:hover {
+    background-color: #140579;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 5px;
+    background-color: #ebf2f5;
+    color: #596680;
+    text-align: center;
+    height: 50px;
+}
+
+.footer p {
+    margin: 0 auto;
+    padding-top: 10px;
+}
+
+.footer a {
+    text-decoration-color: #140579;
+    text-decoration-line: none;
+}
+
+.footer a:hover {
+    text-decoration-color: #140579;
+    text-decoration-line: underline;
+}

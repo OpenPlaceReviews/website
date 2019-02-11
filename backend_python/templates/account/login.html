@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block og_title %}{% trans "Sign In" %}{% endblock %}
+{% block twitter_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block header %}{% trans "Login" %}{% endblock %}
+
+{% block content %}
+    <p>Don't have an account?</p><a href="#">Create account</a>
+    <a href="{% provider_login_url "google" method="oauth2" %}">Google</a>
+    <a href="{% provider_login_url "facebook" method="oauth2" %}">Facebook</a>
+    <a href="{% provider_login_url "osm" method="oauth" %}">OSM</a>
+
+<h1>{% trans "Sign In" %}</h1>
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<p>{% blocktrans with site.name as site_name %}Please sign in with one
+of your existing third party accounts.{% endblocktrans %}</p>
+
+<div class="socialaccount_ballot">
+
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+
+</div>
+
+{#{% include "socialaccount/snippets/login_extra.html" %}#}
+
+{% else %}
+<p>{% blocktrans %}If you have not created an account yet, then please
+<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+{% endif %}
+{{ reqeust }}
+{% endblock %}
