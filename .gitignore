@@ -2,3 +2,4 @@
 *.pyc
 .env/
 settings_local.py
+.DS_Store
