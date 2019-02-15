@@ -13,8 +13,6 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    {% include '_include/menu.html' %}
-
 
     {% if messages %}
     <ul class="messages">
@@ -24,12 +22,7 @@
     </ul>
     {% endif %}
 
-
-    <header>
-        <a href="{% url 'frontpage' %}">
-            <img src="{% static 'images/ogr_logo_color.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
-        </a>
-    </header>
+    {% include '_include/header.html' %}
     <main class="main">
         {% block menu %}
         {% endblock %}
