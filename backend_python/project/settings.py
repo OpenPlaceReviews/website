@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ak!z1@&(x=cj9imev^#fvj+dx3p^crfcs-o+$!m^6-uqp8-r#k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'osm',
+    'opendb',
 ]
 
 MIDDLEWARE = [
@@ -195,6 +196,10 @@ MEDIA_URL = '/media/'
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 SERVER_API_ADDRESS = 'http://127.0.0.1:6463'
+
+OPENDB_SIGN_LOGIN = 'openplacereviews:web_backend'
+OPENDB_SIGN_PK = ''
+SLICE_KEY = 50
 
 try:
     from .settings_local import *
