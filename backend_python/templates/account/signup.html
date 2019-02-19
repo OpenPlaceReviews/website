@@ -1,0 +1,133 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block header %}
+<header class="auth-page">
+    <div class="block-header">
+        <div class="logo">
+           <a href="{% url 'frontpage' %}">
+                <img src="{% static 'images/opr_logo.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
+            </a>
+        </div>
+        <nav>
+            <ul>
+{#                <li><a href="{% url 'account_login' %}">Login</a></li>#}
+                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+{% endblock %}
+
+{% block container %}
+<div class="auth-container">
+    <h1>{% trans "Sign Up" %}</h1>
+
+    <p>{% blocktrans %}
+        OpenPlaceReviews has a public database, so we can not store any private data.
+        You can select a nickname and it will be visible to everyone.<br>
+        Already have an account? Then please <a href="{{ login_url }}">Login</a>.{% endblocktrans %}
+    </p>
+
+    <div class="socialaccount_ballot">
+        <p>Select login method:</p>
+        <ul class="socialaccount_providers">
+            {% include "socialaccount/snippets/provider_list.html" with process="signup" %}
+        </ul>
+    </div>
+
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+        <div class="form-item">
+            <div>Nickname:</div>
+            <div><input name="{{ form.username.html_name }}" required="true" class="login-form-input" placeholder="Hint text"/></div>
+        </div>
+        <div class="form-item">
+            <div>E-mail*:</div>
+            <div><input name="{{ form.email.html_name }}" class="login-form-input" placeholder="Hint text"/></div>
+            <div class="input-description">
+                Will not be published to Open Place Reviews DB, and will be only used for system notifications
+            </div>
+        </div>
+        <div class="form-item">
+            <div>Password:</div>
+            <div><input name="{{ form.password1.html_name }}" class="login-form-input" placeholder="Hint text" type="password"/></div>
+{#            <div class="input-description">#}
+{#                Will not be published to Open Place Reviews DB, and will be only used for system notifications#}
+{#            </div>#}
+        </div>
+        <div class="form-item">
+            <div>Password (again):</div>
+            <div><input name="{{ form.password2.html_name }}" class="login-form-input" placeholder="Hint text" type="password"/></div>
+{#            <div class="input-description">#}
+{#                Will not be published to Open Place Reviews DB, and will be only used for system notifications#}
+{#            </div>#}
+        </div>
+        <div class="form-item-boolean">
+            <div class="signup-checkbox-block">
+                <input type="checkbox" required="True" name="{{ form.terms_and_services.html_name }}" />
+                <div>
+                    <div class="signup-input-label">I agree with <a href="#">Terms and Services</a></div>
+                    <div class="signup-input-description">
+                        Please read these Terms & Services cerafully before using the https://openplacereviews.net website...
+                    </div>
+                </div>
+            </div>
+            <div class="expand-block">
+                <div class="expanded_block">Правила Правила Правила Правила Правила</div>
+                <div class="expand-btn">Expand</div>
+            </div>
+        </div>
+
+        <div class="form-item-boolean">
+            <div class="signup-checkbox-block">
+                <input type="checkbox" required="True" name="{{ form.contribution_terms.html_name }}" />
+                <div>
+                    <div class="signup-input-label">I agree with <a href="#">Terms and Services</a></div>
+                    <div class="signup-input-description">
+                        Please read these Terms & Services cerafully before using the https://openplacereviews.net website...
+                    </div>
+                </div>
+            </div>
+            <div class="expand-block">
+                <div class="expanded_block">Правила Правила Правила Правила Правила</div>
+                <div class="expand-btn">Expand</div>
+
+            </div>
+        </div>
+        <div class="optional-fields">
+            <div class="headline-optional-fields">Optional fields:</div>
+            <div class="signup-optional-fields">
+                <div class="optional-field">
+                    <div>Spoken languages:</div>
+                    <select name="{{ form.languages.html_name }}">
+                        <option value="">Select language</option>
+                        <option value="">Select country</option>
+                        <option value="">Select country</option>
+                        <option value="">Select country</option>
+                        <option value="">Select country</option>
+                    </select>
+                </div>
+
+                <div class="optional-field">
+                    <div>Country you live:</div>
+                    <select name="{{ form.country.html_name }}">
+                        <option value="">Select country</option>
+                        <option value="">Select country</option>
+                        <option value="">Select country</option>
+                        <option value="">Select country</option>
+                        <option value="">Select country</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <button type="submit">{% trans "Sign Up" %}</button>
+    </form>
+</div>
+{% endblock %}

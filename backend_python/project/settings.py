@@ -28,14 +28,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'this_site',
+    'main',
     'profiles',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'osm',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-    'osm',
     'opendb',
 ]
 

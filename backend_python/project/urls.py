@@ -3,6 +3,8 @@ from django.conf.urls import url, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
+from django.http import Http404
+from main.views import page_not_found
 
 
 urlpatterns = [
@@ -11,6 +13,8 @@ urlpatterns = [
 
 
 urlpatterns += i18n_patterns(
+    url(r'^accounts/password/reset/', page_not_found),
     url(r'^accounts/', include('allauth.urls')),
-    url(r'', include('this_site.urls')),
+
+    url(r'', include('main.urls')),
 )

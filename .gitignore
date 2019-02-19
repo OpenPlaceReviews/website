@@ -3,3 +3,4 @@
 .env/
 settings_local.py
 .DS_Store
+frontend/node_modules/

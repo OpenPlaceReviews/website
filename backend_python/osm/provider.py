@@ -18,7 +18,7 @@ class OSMAccount(ProviderAccount):
 
 class OSMProvider(OAuthProvider):
     id = 'osm'
-    name = 'OSM'
+    name = 'OpenStreetMap'
     account_class = OSMAccount
 
     def get_default_scope(self):

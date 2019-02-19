@@ -8,33 +8,36 @@
     <link rel="icon" type="image/png" sizes="180x180" href="{% static 'images/icons/favicon-180x180.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
     {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
     {% endif %}
 
-    {% include '_include/header.html' %}
-    <main class="main">
-        {% block menu %}
-        {% endblock %}
-        <h1>
-            {% block header %}
+    {% block header %}
+        {% include '_include/header.html' %}
+    {% endblock %}
+
+    {% block container %}
+        <main class="main">
+            {% block menu %}
             {% endblock %}
-        </h1>
-        {% block content %}
-        {% endblock %}
+            <h1>
+                {% block headline %}
+                {% endblock %}
+            </h1>
+            {% block content %}
+            {% endblock %}
+        </main>
+    {% endblock %}
 
-
-    </main>
     {% include '_include/footer.html' %}
 </body>
 </html>
