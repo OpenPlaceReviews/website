@@ -1,7 +1,6 @@
 {% load socialaccount %}
 {% load static %}
 
-
 {% get_providers as socialaccount_providers %}
 
 {% for provider in socialaccount_providers %}
@@ -13,8 +12,8 @@
 </li>
 {% endfor %}
 <li>
-    <div class="method-auth-nickname">
-        <img src="{% static 'dist/images/icon-' %}google.png"/>
-        <div class="nickname-method">Use nickname and password</div>
+    <div class="method-auth-nickname{% if form.errors %} method-auth-nickname-active-form{% endif %}">
+        <img src="{% static 'dist/images/icon-nickname.png' %}"/>
+        <div class="nickname-method" v-on:click.once="show_form($event, 'form-hidden')">Use nickname and password</div>
     </div>
 </li>

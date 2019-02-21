@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block container %}
-<div class="auth-container">
+<div class="auth-container" id="opr-app">
     <h1>{% trans "Sign Up" %}</h1>
 
     <p>{% blocktrans %}
@@ -39,7 +39,7 @@
         </ul>
     </div>
 
-    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    <form class="signup" method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}
         <div class="form-item">
             <div>Nickname:</div>

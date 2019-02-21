@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block container %}
-    <div class="auth-container">
+    <div class="auth-container" id="opr-app">
         <h1>{% trans "Login" %}</h1>
         <p>Don't have an account? <a href="{% url 'account_signup' %}">Create account</a></p>
 
@@ -33,12 +33,12 @@
                 {% include "socialaccount/snippets/provider_list.html" with process="login" %}
             </ul>
         </div>
-        <form class="login-form" method="POST" action="{% url 'account_login' %}">
+        <form class="login-form {% if not form.errors %}form-hidden{% endif %}" method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}
                 {% if form.errors %}
                     {% for error in form.non_field_errors %}
                         <div class="form-error">
-                            <div class="erorr-decsription">{{ error|escape }}</div>
+                            <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error|escape }}</div>
                         </div>
                     {% endfor %}
                 {% endif %}

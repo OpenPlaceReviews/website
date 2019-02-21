@@ -241,6 +241,19 @@ a:hover{
     flex-direction: row;
     height: 50px;
 }
+.method-auth-nickname{
+}
+
+.method-auth-nickname-active-form{
+    background: #2D69E0;
+    cursor: pointer;
+    color: #FFFFFF;
+    border: 1px solid #2D69E0;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+
 .method-auth-nickname img{
     height: 20px;
     margin-top: 15px;
@@ -249,9 +262,18 @@ a:hover{
 }
 .nickname-method{
     margin-block-start: 15px;
+    color: #2D69E0;
+    cursor: pointer;
 }
+.method-auth-nickname-active-form .nickname-method{
+    color: #FFFFFF;
+}
+
 .form-item{
     margin-bottom: 20px;
+}
+.form-hidden{
+    display: none;
 }
 .login-form-input{
     text-indent: 10px;
@@ -316,9 +338,15 @@ button:hover{
     color: #FFFFFF;
     margin-bottom: 10px;
 }
+
+.form-error img{
+    width: 20px;
+    height: 20px;
+    margin: 10px 5px 10px 10px;
+}
+
 .form-error .erorr-decsription{
     margin-top: 10px;
-    margin-left: 10px;
 }
 .form-item-boolean{
     border: 1px solid #CCD0D9;
