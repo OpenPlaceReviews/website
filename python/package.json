@@ -1,0 +1,31 @@
+{
+  "name": "open-place-reviews",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev": "webpack --progress --hide-modules --config=webpack.config.js",
+    "watch": "webpack --watch",
+    "build": "webpack --mode production"
+  },
+  "dependencies": {
+    "babel-loader": "^8.0.5",
+    "vue": "^2.6.6",
+    "vue-loader": "^15.6.3",
+    "vue-multiselect": "^2.1.3",
+    "vue-template-compiler": "^2.6.6"
+  },
+  "devDependencies": {
+    "webpack": "^4.29.4",
+    "webpack-cli": "^3.2.3",
+    "css-loader": "^2.1.0",
+    "style-loader": "^0.23.1",
+    "vue": "^2.6.6",
+    "vue-loader": "^15.6.3",
+    "vue-template-compiler": "^2.6.6",
+    "vue-multiselect": "^2.1.3",
+    "babel-loader": "^8.0.5"
+  }
+}

@@ -9,13 +9,13 @@
     <div class="block-header">
         <div class="logo">
            <a href="{% url 'frontpage' %}">
-                <img src="{% static 'images/opr_logo.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
+                <img src="{% static 'dist/images/opr_logo.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
             </a>
         </div>
         <nav>
             <ul>
-{#                <li><a href="{% url 'account_login' %}">Login</a></li>#}
-                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                <li><a href="{% url 'account_login' %}">Login</a></li>
+{#                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>#}
             </ul>
         </nav>
     </div>
@@ -54,17 +54,11 @@
         </div>
         <div class="form-item">
             <div>Password:</div>
-            <div><input name="{{ form.password1.html_name }}" class="login-form-input" placeholder="Hint text" type="password"/></div>
-{#            <div class="input-description">#}
-{#                Will not be published to Open Place Reviews DB, and will be only used for system notifications#}
-{#            </div>#}
+            <div><input name="{{ form.password1.html_name }}" class="login-form-input" placeholder="Hint text" type="password" required="true"/></div>
         </div>
         <div class="form-item">
             <div>Password (again):</div>
-            <div><input name="{{ form.password2.html_name }}" class="login-form-input" placeholder="Hint text" type="password"/></div>
-{#            <div class="input-description">#}
-{#                Will not be published to Open Place Reviews DB, and will be only used for system notifications#}
-{#            </div>#}
+            <div><input name="{{ form.password2.html_name }}" class="login-form-input" placeholder="Hint text" type="password" required="true"/></div>
         </div>
         <div class="form-item-boolean">
             <div class="signup-checkbox-block">
@@ -98,36 +92,53 @@
 
             </div>
         </div>
+
         <div class="optional-fields">
             <div class="headline-optional-fields">Optional fields:</div>
-            <div class="signup-optional-fields">
-                <div class="optional-field">
-                    <div>Spoken languages:</div>
-                    <select name="{{ form.languages.html_name }}">
-                        <option value="">Select language</option>
-                        <option value="">Select country</option>
-                        <option value="">Select country</option>
-                        <option value="">Select country</option>
-                        <option value="">Select country</option>
-                    </select>
-                </div>
+            <div class="optional-field">
+                <div>Spoken languages:</div>
+                <select-search
+                    :options="{{ all_languages_vue }}"
+                    :multiple="true"
+                    name_field="{{ form.languages.html_name }}"
+                ></select-search>
+            </div>
 
-                <div class="optional-field">
-                    <div>Country you live:</div>
-                    <select name="{{ form.country.html_name }}">
-                        <option value="">Select country</option>
-                        <option value="">Select country</option>
-                        <option value="">Select country</option>
-                        <option value="">Select country</option>
-                        <option value="">Select country</option>
-                    </select>
-                </div>
+            <div class="optional-field">
+                <div>Country you live:</div>
+                <select-search
+                    :options="{{ all_countries_vue }}"
+                    name_field="{{ form.country.html_name }}"
+                    @input="onChange();onFieldEdited('country')"
+                ></select-search>
             </div>
         </div>
+{#        <div class="optional-fields">#}
+{#            <div class="headline-optional-fields">Optional fields:</div>#}
+{#            <div class="signup-optional-fields">#}
+{#                <div class="optional-field">#}
+{#                    <div>Spoken languages:</div>#}
+{#                    <select-search#}
+{#                        :options="{{ all_languages_vue }}"#}
+{#                        :multiple="true"#}
+{#                        name_field="{{ form.languages.html_name }}"#}
+{#                    ></select-search>#}
+{#                </div>#}
+{##}
+{#                <div class="optional-field">#}
+{#                    <div>Country you live:</div>#}
+{#                    <select-search#}
+{#                        :options="{{ all_countries_vue }}"#}
+{#                        name_field="{{ form.country.html_name }}"#}
+{#                        @input="onChange();onFieldEdited('country')"#}
+{#                    ></select-search>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
       {% if redirect_field_value %}
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
       {% endif %}
-      <button type="submit">{% trans "Sign Up" %}</button>
+      <button type="submit" class="btn-blue1">{% trans "Sign Up" %}</button>
     </form>
 </div>
 {% endblock %}

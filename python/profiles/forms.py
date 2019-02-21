@@ -16,8 +16,6 @@ class CustomSignupForm(SignupForm):
 
     def clean(self):
         super().clean()
-        print('-----------')
-        print(self.request)
         return self.cleaned_data
 
 class CustomSocialSignupForm(SocialSignupForm):

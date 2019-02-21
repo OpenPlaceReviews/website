@@ -274,7 +274,23 @@ a:hover{
     letter-spacing: 0.01em;
     color: rgba(49, 50, 51, 0.7);
 }
+
 button{
+    background: #F1F4FC;
+    border: 2px solid #2D69E0;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    color: #2D69E0;
+    padding: 0 20px;
+    font-weight: bold;
+    line-height: normal;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    height: 40px;
+}
+
+button:hover{
     color: #FFFFFF;
     height: 40px;
     background: #2D69E0;
@@ -364,6 +380,10 @@ button{
 .expanded_block{
     display: none;
 }
+.optional-fields{
+    margin-bottom: 20px;
+}
+
 .headline-optional-fields{
     font-family: Overpass;
     font-style: normal;
@@ -375,32 +395,22 @@ button{
     margin-top: 30px;
     margin-bottom: 15px;
 }
-.signup-optional-fields{
-    display: flex;
-    flex-direction: row;
-}
-.optional-field{
-    width: 270px;
-}
-.optional-field select{
-    width: 260px;
-    background: #F9FAFC;
-    border: 1px solid #C3CAD9;
-    box-sizing: border-box;
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    padding: 10px;
-    /*-webkit-appearance:none;*/
-    /*-moz-appearance:none;*/
-    /*appearance:none;*/
-}
-.optional-field select option{
+/*.signup-optional-fields{*/
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    /*margin-bottom: 30px;*/
+/*}*/
 
-    padding: 10px;
-    margin: 10px;
-    background: #F9FAFC;
-    border: 1px solid #C3CAD9;
-    box-sizing: border-box;
-    height: 40px;
-    line-height: 20px
+/*.signup-optional-fields div.optional-field:first-child{*/
+    /*margin-right: 10px;*/
+/*}*/
+
+/*.signup-optional-fields div.optional-field:last-child{*/
+    /*margin-left: 10px;*/
+/*}*/
+
+.optional-field{
+    /*width: 270px;*/
+    line-height: 1.15;
+    margin-bottom: 15px;
 }

@@ -7,14 +7,14 @@
 {% for provider in socialaccount_providers %}
 <li>
     <div class="method-auth">
-        <img src="{% static 'images/icon-' %}{{ provider.id }}.png"/>
+        <img src="{% static 'dist/images/icon-' %}{{ provider.id }}.png"/>
         <a title="{{ provider.name }}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">{{ provider.name }}</a>
     </div>
 </li>
 {% endfor %}
 <li>
     <div class="method-auth-nickname">
-        <img src="{% static 'images/icon-' %}google.png"/>
+        <img src="{% static 'dist/images/icon-' %}google.png"/>
         <div class="nickname-method">Use nickname and password</div>
     </div>
 </li>
