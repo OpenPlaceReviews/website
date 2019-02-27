@@ -411,6 +411,7 @@ button:hover{
     font-size: 16px;
     letter-spacing: 0.01em;
     margin-bottom: 8px;
+    margin-right: 20px;
 }
 .expand-btn{
     padding: 9px 0px 8px 57px;
@@ -426,6 +427,10 @@ button:hover{
 }
 .expanded_block{
     display: none;
+}
+
+.expand-block-data{
+    margin: 15px 20px;
 }
 .optional-fields{
     margin-bottom: 20px;

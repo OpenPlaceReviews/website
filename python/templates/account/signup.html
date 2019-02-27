@@ -25,7 +25,6 @@
 {% block container %}
 <div class="auth-container" id="opr-app">
     <h1>{% trans "Sign Up" %}</h1>
-
     <p>
         OpenPlaceReviews has a public database, so we can not store any private data.
         You can select a nickname and it will be visible to everyone.<br>
@@ -122,10 +121,9 @@
                     </div>
                 </div>
             </div>
-            <div class="expand-block">
-                <div class="expanded_block">Правила Правила Правила Правила Правила</div>
-                <div class="expand-btn">Expand</div>
-            </div>
+            <expand-block expand_data='{% include "terms_and_services.html" %}'></expand-block>
+
+
         </div>
 
         <div class="form-item-boolean">
@@ -143,11 +141,7 @@
                     </div>
                 </div>
             </div>
-            <div class="expand-block">
-                <div class="expanded_block">Правила Правила Правила Правила Правила</div>
-                <div class="expand-btn">Expand</div>
-
-            </div>
+            <expand-block expand_data='{% include "contributor_terms.html" %}'></expand-block>
         </div>
 
         <div class="optional-fields">
@@ -180,3 +174,9 @@
     </form>
 </div>
 {% endblock %}
+<script>
+    import ExpandBlock from "../../assets/js/components/ExpandBlock";
+    export default {
+        components: {ExpandBlock}
+    }
+</script>
