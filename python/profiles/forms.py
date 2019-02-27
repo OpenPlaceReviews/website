@@ -21,7 +21,7 @@ class CustomSignupForm(SignupForm):
 class CustomSocialSignupForm(SocialSignupForm):
     terms_and_services = forms.BooleanField(required=True, initial=False)
     contribution_terms = forms.BooleanField(required=True, initial=False)
-    languages = forms.ChoiceField(required=False, choices=LANGUAGES)
+    languages = forms.MultipleChoiceField(required=False, choices=LANGUAGES)
     country = forms.ChoiceField(required=False, choices=COUNTRIES)
 
     def signup(self, request, user):

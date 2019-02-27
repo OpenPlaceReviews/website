@@ -32,14 +32,7 @@
         Already have an account? Then please <a href="{% url 'account_login' %}">Login</a>.
     </p>
 
-    <div class="socialaccount_ballot">
-        <p>Select login method:</p>
-        <ul class="socialaccount_providers">
-            {% include "socialaccount/snippets/provider_list.html" with process="signup" %}
-        </ul>
-    </div>
-
-    <form class="signup{% if not form.errors %} form-hidden{% endif %}" method="post" action="{% url 'account_signup' %}">
+    <form class="signup" method="post" action="{% url 'socialaccount_signup' %}">
       {% csrf_token %}
         {% if form.errors %}
             {% for error in form.non_field_errors %}
@@ -54,7 +47,7 @@
                     name="{{ form.username.html_name }}"
                     required="true"
                     class="login-form-input{% if form.username.errors %} error-field{% endif %}"
-                    value="{{ form.username.value|default:'' }}"
+                    value="{{ form.username.value }}"
                     placeholder="Hint text"/></div>
             {% for error in form.username.errors %}
             <div class="form-field-error">
@@ -67,7 +60,7 @@
             <div><input
                     name="{{ form.email.html_name }}"
                     class="login-form-input{% if form.email.errors %} error-field{% endif %}"
-                    value="{{ form.email.value|default:'' }}"
+                    value="{{ form.email.value }}"
                     placeholder="Hint text"/></div>
             {% for error in form.email.errors %}
             <div class="form-field-error">
@@ -77,34 +70,6 @@
             <div class="input-description">
                 Will not be published to Open Place Reviews DB, and will be only used for system notifications
             </div>
-        </div>
-        <div class="form-item">
-            <div>Password:</div>
-            <div><input
-                    name="{{ form.password1.html_name }}"
-                    class="login-form-input{% if form.password1.errors %} error-field{% endif %}"
-                    placeholder="Hint text"
-                    type="password"
-                    required="true"/></div>
-            {% for error in form.password1.errors %}
-            <div class="form-field-error">
-                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error }}</div>
-            </div>
-            {% endfor %}
-        </div>
-        <div class="form-item">
-            <div>Password (again):</div>
-            <div><input
-                    name="{{ form.password2.html_name }}"
-                    class="login-form-input{% if form.password2.errors %} error-field{% endif %}"
-                    placeholder="Hint text"
-                    type="password"
-                    required="true"/></div>
-            {% for error in form.password2.errors %}
-            <div class="form-field-error">
-                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error }}</div>
-            </div>
-            {% endfor %}
         </div>
         <div class="form-item-boolean">
             <div class="signup-checkbox-block">
@@ -151,6 +116,7 @@
         </div>
 
         <div class="optional-fields">
+
             <div class="headline-optional-fields">Optional fields:</div>
             <div class="optional-field">
                 <div>Spoken languages:</div>
@@ -172,7 +138,6 @@
                 ></select-search>
             </div>
         </div>
-
       {% if redirect_field_value %}
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
       {% endif %}

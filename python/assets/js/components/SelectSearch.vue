@@ -16,8 +16,7 @@ export default {
   },
   data () {
     return {
-      value: [],
-      name_field: 'test'
+      value: this.get_items()
     }
   },
   methods: {
@@ -34,6 +33,15 @@ export default {
         return name_list
       }
       return [this.value.name]
+    },
+    get_items (){
+      var items = []
+      for (var i=0; i < this.options.length; i++){
+        if (this.defaultValueSelect.indexOf(this.options[i].name) != -1){
+          items.push(this.options[i])
+        }
+      }
+      return items;
     }
   },
   props: {
@@ -53,8 +61,14 @@ export default {
     },
     name_field: {
       type: String,
-      defautl(){
+      default(){
         return 'search-select'
+      }
+    },
+    defaultValueSelect: {
+      type: Array,
+      default(){
+        return []
       }
     }
   }
