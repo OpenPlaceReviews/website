@@ -121,34 +121,36 @@ body {
 
 header{
     width: 100%;
+    min-width: 920px;
     height: 80px;
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
     align-items: center;
     align-content: center;
     justify-content: center;
+    padding: 0px 30px;
 }
-
 
 header .block-header{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    min-width: 901px;
+    min-width: 920px;
     max-width: 1100px;
     margin: auto;
 }
-
-.auth-page .block-header{
-    width: 540px;
-    min-width: 540px;
-    /*max-width: 540px;*/
+.auth-page{
+    width: 100%;
+    min-width: 600px;
 }
 
+.auth-page .block-header{
+    width: 600px;
+    min-width: 600px;
+}
 header .logo{
     padding-top: 15px;
 }
-
 nav {
     padding-top: 18px;
     font-family: Overpass;
@@ -219,7 +221,8 @@ a:hover{
     height: 30px;
 }
 .auth-container{
-    width: 544px;
+    width: 540px;
+    min-width: 540px;
     margin: 0 auto;
     color: #000000;
     font-family: Overpass;
