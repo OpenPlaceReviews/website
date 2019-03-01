@@ -179,7 +179,6 @@ a:hover{
     border-radius: 22px;
     padding: 6px 0px 7px 8px;
 }
-
 .login_signup a{
     padding: 4px 8px;
 }
@@ -187,7 +186,24 @@ a:hover{
 .login_signup a:first-child{
     border-right: 2px solid rgba(204, 208, 217, 0.4);
 }
-
+.my_account{
+    display: inline-flex;
+}
+.my_account a:first-child{
+    border-left: 2px solid rgba(204, 208, 217, 0.4);
+    padding: 8px 20px 0 20px;
+}
+.avatar_logout{
+    display: inline-flex;
+    height: 30px;
+    width: 30px;
+}
+.avatar_logout img{
+    position: absolute;
+    top: 25px;
+    width: 30px;
+    height: 30px;
+}
 .auth-container{
     width: 544px;
     margin: 0 auto;
@@ -282,7 +298,6 @@ a:hover{
     text-indent: 10px;
     width: 540px;
     height: 40px;
-    /*background: #FFFFFF;*/
     background: #F7F7F7;
     border: 1px solid #CCD0D9;
     box-sizing: border-box;
@@ -447,22 +462,8 @@ button:hover{
     margin-top: 30px;
     margin-bottom: 15px;
 }
-/*.signup-optional-fields{*/
-    /*display: flex;*/
-    /*flex-direction: row;*/
-    /*margin-bottom: 30px;*/
-/*}*/
-
-/*.signup-optional-fields div.optional-field:first-child{*/
-    /*margin-right: 10px;*/
-/*}*/
-
-/*.signup-optional-fields div.optional-field:last-child{*/
-    /*margin-left: 10px;*/
-/*}*/
 
 .optional-field{
-    /*width: 270px;*/
     line-height: 1.15;
     margin-bottom: 15px;
 }
