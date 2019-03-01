@@ -107,6 +107,17 @@ body {
     text-decoration-color: #140579;
     text-decoration-line: underline;
 }
+.messages-notify{
+    margin: 0;
+    padding: 0;
+}
+.messages-notify .success{
+    background-color: #ebf2f5;
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    list-style: none;
+}
 
 header{
     width: 100%;
@@ -192,6 +203,9 @@ a:hover{
 .my_account a:first-child{
     border-left: 2px solid rgba(204, 208, 217, 0.4);
     padding: 8px 20px 0 20px;
+}
+.not-border{
+    border: none!important;
 }
 .avatar_logout{
     display: inline-flex;
