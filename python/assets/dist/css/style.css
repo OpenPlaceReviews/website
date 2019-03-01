@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Overpass:400,800');
 
 body {
-    /* width: 800px; */
-    margin: 0 auto;
+    width: 100%;
+    margin: 0;
     font-family: 'Overpass', sans-serif;
     font-weight: 400;
     background-color: white;
@@ -120,7 +120,7 @@ body {
 }
 
 header{
-    width: 100%;
+    /*width: 100%;*/
     min-width: 920px;
     height: 80px;
     background: #FFFFFF;
@@ -140,13 +140,13 @@ header .block-header{
     margin: auto;
 }
 .auth-page{
-    width: 100%;
+    /*width: 100%;*/
     min-width: 600px;
 }
 
 .auth-page .block-header{
-    width: 600px;
-    min-width: 600px;
+    width: 540px;
+    min-width: 540px;
 }
 header .logo{
     padding-top: 15px;
