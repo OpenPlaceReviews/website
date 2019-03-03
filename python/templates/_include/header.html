@@ -13,11 +13,11 @@
             <ul>
                 <li><a href="#">Map</a></li>
                 <li><a href="#">Leaderboard</a></li>
-                <li><a href="#">Data</a></li>
+                {% url 'data_page' as url %}
+                <li{% if request.path == url %} class="active"{% endif %}><a href="{{ url }}">Data</a></li>
                 <li><a href="#">News</a></li>
                 <li><a href="#">Docs</a></li>
                 <li><a href="#">Tasks</a></li>
-
             </ul>
             {% if request.user.is_authenticated %}
                 <div class="my_account">
@@ -34,14 +34,3 @@
         </nav>
     </div>
 </header>
-
-{#{% if request.user.is_authenticated %}#}
-{#    <a href="#">{% trans 'My account' %}</a>[avatar]#}
-{#    <a href="{% url 'account_logout' %}">logout</a>#}
-{##}
-{#{% else %}#}
-{#    <a href="{% url 'account_login' %}">login</a>#}
-{##}
-{#    <a href="{% url 'account_signup' %}">signup</a>#}
-{#{% endif %}#}
-

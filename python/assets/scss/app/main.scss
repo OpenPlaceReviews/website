@@ -176,17 +176,24 @@ nav {
     letter-spacing: 0.02em;
     color: #2D69E0;
     margin-left: auto;
+    ul{
+        display: inline-flex;
+        li{
+            list-style-type: none;
+            margin-right: 38px;
+            &.active{
+                border-bottom: 2px solid #2D69E0;
+                a{
+                    color: #140579;
+                }
+            }
+            a:hover{
+                color: #140579;
+                text-decoration: none;
+            }
+        }
+    }
 }
-
-nav ul{
-    display: inline-flex;
-}
-
-nav ul li{
-    list-style-type: none;
-    margin-right: 38px;
-}
-
 
 a, a:active{
     color: #2D69E0;
@@ -206,14 +213,18 @@ a:hover{
     box-sizing: border-box;
     border-radius: 22px;
     padding: 6px 0px 7px 8px;
-}
-.login_signup a{
-    padding: 4px 8px;
+    a{
+        padding: 4px 8px;
+        &:hover{
+            color: #140579;
+            text-decoration: none;
+        }
+        &:first-child{
+            border-right: 2px solid rgba(204, 208, 217, 0.4);
+        }
+    }
 }
 
-.login_signup a:first-child{
-    border-right: 2px solid rgba(204, 208, 217, 0.4);
-}
 .my_account{
     display: inline-flex;
 }

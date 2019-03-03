@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block container %}
+    <main class="inner" id="opr-app">
+        {% block menu %}
+        {% endblock %}
+        <h1>
+            {% block headline %}
+            {% endblock %}
+        </h1>
+        <div class="inner_container">
+        {% block content %}
+        {% endblock %}
+        </div>
+    </main>
+{% endblock %}
+
+{% include '_include/footer.html' %}
+{% include '_scripts.html' %}
+</body>
+</html>

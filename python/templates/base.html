@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'dist/images/icons/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'dist/images/icons/favicon-16x16.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" href="{% static 'dist/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/css/app.min.css' %}">
 </head>
 <body>
 
@@ -26,7 +26,7 @@
     {% endblock %}
 
     {% block container %}
-        <main class="main">
+        <main class="main" id="opr-app">
             {% block menu %}
             {% endblock %}
             <h1>
