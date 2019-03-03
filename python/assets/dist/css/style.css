@@ -126,6 +126,13 @@ body {
     text-align: center;
     list-style: none;
 }
+.messages-notify .info{
+    background-color: #7cffb6;
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    list-style: none;
+}
 
 header{
     /*width: 100%;*/
