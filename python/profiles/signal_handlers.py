@@ -24,9 +24,9 @@ def send_login(request, user, **kwargs):
         request.session['opendb_pubkey'] = pubkey[settings.SLICE_KEY:]
         user.pubkey = pubkey[:settings.SLICE_KEY]
         user.save()
-        messages.success(request, 'Successfully signed in OpenDB')
+        messages.success(request, 'Successfully login in OpenDB')
     else:
-        error_msg = 'Error signed in OpenDB: {}'.format(json.loads(response.content).get('message'))
+        error_msg = 'Error login in OpenDB: {}'.format(json.loads(response.content).get('message'))
         messages.error(request, error_msg)
     return
 

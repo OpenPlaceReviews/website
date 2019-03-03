@@ -4,3 +4,4 @@
 settings_local.py
 .DS_Store
 python/node_modules/
+python/fixtures.json

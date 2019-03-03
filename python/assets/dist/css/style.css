@@ -119,6 +119,14 @@ body {
     list-style: none;
 }
 
+.messages-notify .error{
+    background-color: #FF595E;
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    list-style: none;
+}
+
 header{
     /*width: 100%;*/
     min-width: 920px;
@@ -215,8 +223,8 @@ a:hover{
     width: 30px;
 }
 .avatar_logout img{
-    position: absolute;
-    top: 25px;
+    position: relative;
+    top: 8px;
     width: 30px;
     height: 30px;
 }
