@@ -20,13 +20,13 @@ def send_login(request, user, **kwargs):
     }
     response = opendb_login(**login_data)
     if response.status_code == 200:
-        pubkey = json.loads(response.content).get('pubkey')
+        pubkey = json.loads(response.content.decode('utf-8')).get('pubkey')
         request.session['opendb_pubkey'] = pubkey[settings.SLICE_KEY:]
         user.pubkey = pubkey[:settings.SLICE_KEY]
         user.save()
         messages.success(request, 'Successfully login in OpenDB')
     else:
-        error_msg = 'Error login in OpenDB: {}'.format(json.loads(response.content).get('message'))
+        error_msg = 'Error login in OpenDB: {}'.format(json.loads(response.content.decode('utf-8')).get('message'))
         messages.error(request, error_msg)
     return
 
@@ -54,6 +54,6 @@ def send_signup(request, user, **kwargs):
     if response.status_code == 200:
         messages.success(request, 'Successfully signed in OpenDB')
     else:
-        error_msg = 'Error signed in OpenDB: {}'.format(json.loads(response.content).get('message'))
+        error_msg = 'Error signed in OpenDB: {}'.format(json.loads(response.content.decode('utf-8')).get('message'))
         messages.error(request, error_msg)
     return
