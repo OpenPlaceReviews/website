@@ -9,6 +9,7 @@ import json
 countries_json = open('profiles/countries.json').read()
 countries_data = json.loads(countries_json)
 COUNTRIES = [[item.get('alpha-3'), item.get('name')] for item in countries_data]
+COUNTRIES = sorted(COUNTRIES, key=itemgetter(1))
 
 languages_json = open('profiles/iso_639-1_languages.json').read()
 languages_data = json.loads(languages_json)
