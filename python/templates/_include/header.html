@@ -12,12 +12,12 @@
         <nav>
             <ul>
                 <li><a href="#">Map</a></li>
-                <li><a href="#">Leaderboard</a></li>
+{#                <li><a href="#">Leaderboard</a></li>#}
                 {% url 'data_page' as url %}
                 <li{% if request.path == url %} class="active"{% endif %}><a href="{{ url }}">Data</a></li>
-                <li><a href="#">News</a></li>
-                <li><a href="#">Docs</a></li>
-                <li><a href="#">Tasks</a></li>
+{#                <li><a href="#">News</a></li>#}
+{#                <li><a href="#">Docs</a></li>#}
+{#                <li><a href="#">Tasks</a></li>#}
             </ul>
             {% if request.user.is_authenticated %}
                 <div class="my_account">
