@@ -11,7 +11,8 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#">Map</a></li>
+                {% url 'map_page' as url %}
+                <li{% if request.path == url %} class="active"{% endif %}><a href="{{ url }}">Map</a></li>
 {#                <li><a href="#">Leaderboard</a></li>#}
                 {% url 'data_page' as url %}
                 <li{% if request.path == url %} class="active"{% endif %}><a href="{{ url }}">Data</a></li>

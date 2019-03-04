@@ -2,6 +2,9 @@ import Vue from 'vue'
 import SelectSearch from './components/SelectSearch.vue'
 import ExpandBlock from './components/ExpandBlock.vue'
 import VShowSlide from 'v-show-slide'
+import * as Vue2Leaflet from 'vue2-leaflet'
+var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
+
 
 Vue.use(VShowSlide)
 
@@ -9,7 +12,10 @@ new Vue({
   el: '#opr-app',
   components: {
     SelectSearch,
-    ExpandBlock
+    ExpandBlock,
+    LMap,
+    LTileLayer,
+    LMarker
   },
   methods:{
     show_form: function (e, form_class) {

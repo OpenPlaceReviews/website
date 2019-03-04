@@ -17,3 +17,7 @@ def page_not_found(request, exception=None, template_name='404.html'):
 
 class DataPageView(TemplateView):
     template_name = 'main/data_page.html'
+
+
+class MapPageView(TemplateView):
+    template_name = 'main/map_page.html'
