@@ -65,6 +65,7 @@
             <div>E-mail*:</div>
             <div><input
                     name="{{ form.email.html_name }}"
+                    required="true"
                     class="login-form-input{% if form.email.errors %} error-field{% endif %}"
                     value="{{ form.email.value|default:'' }}"
                     placeholder="Hint text"/></div>
