@@ -3,6 +3,16 @@
 
 {% block extra_styles %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css">
+    <style>
+    html, body{
+      height: calc(100% - 67px);
+    }
+
+    .map_page_layout{
+      height: 100%;
+      margin: 0;
+    }
+    </style>
 {% endblock %}
 
 {% block messages %}{% endblock %}
