@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% block head_title %}{% endblock %}{% endblock %}
+
+{% block header %}
+<header class="auth-page">
+    <div class="block-header">
+        <div class="logo">
+           <a href="{% url 'frontpage' %}">
+                <img src="{% static 'dist/images/opr_logo.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
+            </a>
+        </div>
+        <nav>
+            <ul>
+                {% url 'account_login' as login_url %}
+                {% if request.path == login_url %}
+                    <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                {% else %}
+                    <li><a href="{{ login_url }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</header>
+{% endblock %}
+
+{% block container %}
+    <div class="auth-container" id="opr-app">
+        {% block menu %}
+        {% endblock %}
+        <h1>
+            {% block headline %}
+            {% endblock %}
+        </h1>
+        <div class="inner_container">
+        {% block content %}
+        {% endblock %}
+        </div>
+    </div>
+{% endblock %}

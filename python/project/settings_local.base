@@ -11,7 +11,11 @@ DATABASES = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'Open Place Reviews <noreply@openplacereviews.org>'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
 
 DEBUG = True

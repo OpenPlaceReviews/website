@@ -1,28 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'account/base.html' %}
 {% load i18n %}
 {% load static %}
 
 {% block head_title %}{% trans "Login" %}{% endblock %}
 
-{% block header %}
-<header class="auth-page">
-    <div class="block-header">
-        <div class="logo">
-           <a href="{% url 'frontpage' %}">
-                <img src="{% static 'dist/images/opr_logo.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
-            </a>
-        </div>
-        <nav>
-            <ul>
-{#                <li><a href="{% url 'account_login' %}">Login</a></li>#}
-                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
-{% endblock %}
-
-{% block container %}
+{% block content %}
     <div class="auth-container" id="opr-app">
         <h1>{% trans "Login" %}</h1>
         <p>Don't have an account? <a href="{% url 'account_signup' %}">Create account</a></p>
