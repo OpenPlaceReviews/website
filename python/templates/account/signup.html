@@ -94,17 +94,17 @@
                 <input
                     type="checkbox"
                     required="True"
-                    name="{{ form.terms_and_services.html_name }}"
+                    name="{{ form.terms_of_service.html_name }}"
                     {% if form.terms_and_services.value %}checked{% endif %}
                 />
                 <div>
-                    <div class="signup-input-label">I agree with <a href="#">Terms and Services</a></div>
+                    <div class="signup-input-label">I agree with <a href="#">Terms of Service</a></div>
                     <div class="signup-input-description">
-                        Please read these Terms & Services cerafully before using the https://openplacereviews.net website...
+                        Please read these Terms of Service cerafully before using the https://openplacereviews.net website...
                     </div>
                 </div>
             </div>
-            <expand-block expand_data='{% include "terms_and_services.html" %}'></expand-block>
+            <expand-block expand_data='{% include "terms_of_service.html" %}'></expand-block>
 
 
         </div>
