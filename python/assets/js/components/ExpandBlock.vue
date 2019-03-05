@@ -3,7 +3,7 @@
     <div v-show-slide="featuresOpen" class="expand-block-data">
       <div v-html="expand_data"></div>
     </div>
-    <div class="expand-btn" @click="toggleFeatures">{{ featuresOpen ? 'Collapse' : 'Expand' }}</div>
+    <div class="expand-btn" @click="toggleFeatures">{{ featuresOpen ? 'Collapse' : 'Read' }}</div>
   </div>
 </template>
 

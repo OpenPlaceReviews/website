@@ -8,13 +8,13 @@
 <div class="auth-container" id="opr-app">
     <h1>{% trans "Sign Up" %}</h1>
     <p>
-        OpenPlaceReviews has a public database, so we can not store any private data.
+        OpenPlaceReviews has a public database, so we do not store any private data.
         You can select a nickname and it will be visible to everyone.<br>
         Already have an account? Then please <a href="{% url 'account_login' %}">Login</a>.
     </p>
 
     <div class="socialaccount_ballot">
-        <p>Select sing up method:</p>
+        <p>Select sign up method:</p>
         <ul class="socialaccount_providers">
             {% include "socialaccount/snippets/provider_list.html" with process="signup" %}
         </ul>
@@ -29,6 +29,23 @@
                 </div>
             {% endfor %}
         {% endif %}
+         <div class="form-item">
+            <div>E-mail*:</div>
+            <div><input
+                    name="{{ form.email.html_name }}"
+                    required="true"
+                    class="login-form-input{% if form.email.errors %} error-field{% endif %}"
+                    value="{{ form.email.value|default:'' }}"
+                    placeholder="Enter email"/></div>
+            {% for error in form.email.errors %}
+            <div class="form-field-error">
+                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error }}</div>
+            </div>
+            {% endfor %}
+            <div class="input-description">
+                Will not be published to Open Place Reviews and will be only used for system notifications
+            </div>
+        </div>
         <div class="form-item">
             <div>Nickname:</div>
             <div><input
@@ -36,36 +53,20 @@
                     required="true"
                     class="login-form-input{% if form.username.errors %} error-field{% endif %}"
                     value="{{ form.username.value|default:'' }}"
-                    placeholder="Hint text"/></div>
+                    placeholder="Enter a nickname"/></div>
             {% for error in form.username.errors %}
             <div class="form-field-error">
                 <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error }}</div>
             </div>
             {% endfor %}
         </div>
-        <div class="form-item">
-            <div>E-mail*:</div>
-            <div><input
-                    name="{{ form.email.html_name }}"
-                    required="true"
-                    class="login-form-input{% if form.email.errors %} error-field{% endif %}"
-                    value="{{ form.email.value|default:'' }}"
-                    placeholder="Hint text"/></div>
-            {% for error in form.email.errors %}
-            <div class="form-field-error">
-                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error }}</div>
-            </div>
-            {% endfor %}
-            <div class="input-description">
-                Will not be published to Open Place Reviews DB, and will be only used for system notifications
-            </div>
-        </div>
+       
         <div class="form-item">
             <div>Password:</div>
             <div><input
                     name="{{ form.password1.html_name }}"
                     class="login-form-input{% if form.password1.errors %} error-field{% endif %}"
-                    placeholder="Hint text"
+                    placeholder="Enter strong password"
                     type="password"
                     required="true"/></div>
             {% for error in form.password1.errors %}
@@ -79,7 +80,7 @@
             <div><input
                     name="{{ form.password2.html_name }}"
                     class="login-form-input{% if form.password2.errors %} error-field{% endif %}"
-                    placeholder="Hint text"
+                    placeholder="Repeat password"
                     type="password"
                     required="true"/></div>
             {% for error in form.password2.errors %}
@@ -88,26 +89,7 @@
             </div>
             {% endfor %}
         </div>
-        <div class="form-item-boolean">
-            <div class="signup-checkbox-block">
 
-                <input
-                    type="checkbox"
-                    required="True"
-                    name="{{ form.terms_of_service.html_name }}"
-                    {% if form.terms_and_services.value %}checked{% endif %}
-                />
-                <div>
-                    <div class="signup-input-label">I agree with <a href="#">Terms of Service</a></div>
-                    <div class="signup-input-description">
-                        Please read these Terms of Service cerafully before using the https://openplacereviews.net website...
-                    </div>
-                </div>
-            </div>
-            <expand-block expand_data='{% include "terms_of_service.html" %}'></expand-block>
-
-
-        </div>
 
         <div class="form-item-boolean">
             <div class="signup-checkbox-block">
@@ -120,11 +102,32 @@
                 <div>
                     <div class="signup-input-label">I agree with <a href="#">Contribution Terms</a></div>
                     <div class="signup-input-description">
-                        Please read these Contribution Terms cerafully before using the https://openplacereviews.net website...
+                        Please read Contribution Terms carefully and accept it before website. Your contributions will be provided under CC-0 License.
                     </div>
                 </div>
             </div>
             <expand-block expand_data='{% include "contributor_terms.html" %}'></expand-block>
+        </div>
+
+
+        <div class="form-item-boolean">
+            <div class="signup-checkbox-block">
+
+                <input
+                    type="checkbox"
+                    required="True"
+                    name="{{ form.terms_of_service.html_name }}"
+                    {% if form.terms_and_services.value %}checked{% endif %}
+                />
+                <div>
+                    <div class="signup-input-label">I agree with <a href="#">Terms of Service</a></div>
+                    <div class="signup-input-description">
+                    </div>
+                </div>
+            </div>
+            <expand-block expand_data='{% include "terms_of_service.html" %}'></expand-block>
+
+
         </div>
 
         <div class="optional-fields">
