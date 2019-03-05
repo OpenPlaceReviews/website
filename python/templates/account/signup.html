@@ -6,26 +6,27 @@
 
 {% block content %}
 <div class="auth-container" id="opr-app">
+    {% url 'account_signup' as account_signup_url %}
     <h1>{% trans "Sign Up" %}</h1>
     <p>
         OpenPlaceReviews has a public database, so we do not store any private data.
         You can select a nickname and it will be visible to everyone.<br>
         Already have an account? Then please <a href="{% url 'account_login' %}">Login</a>.
     </p>
-
+    {% if request.path == account_signup_url %}
     <div class="socialaccount_ballot">
         <p>Select sign up method:</p>
         <ul class="socialaccount_providers">
             {% include "socialaccount/snippets/provider_list.html" with process="signup" %}
         </ul>
     </div>
-
-    <form class="signup{% if not form.errors %} form-hidden{% endif %}" method="post" action="{% url 'account_signup' %}">
+    {% endif %}
+    <form class="signup{% if not form.errors and request.path == account_signup_url %} form-hidden{% endif %}" method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}
         {% if form.errors %}
             {% for error in form.non_field_errors %}
                 <div class="form-error">
-                    <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error|escape }}</div>
+                    <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-description">{{ error|escape }}</div>
                 </div>
             {% endfor %}
         {% endif %}
@@ -39,7 +40,7 @@
                     placeholder="Enter email"/></div>
             {% for error in form.email.errors %}
             <div class="form-field-error">
-                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error }}</div>
+                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-description">{{ error }}</div>
             </div>
             {% endfor %}
             <div class="input-description">
@@ -56,11 +57,11 @@
                     placeholder="Enter a nickname"/></div>
             {% for error in form.username.errors %}
             <div class="form-field-error">
-                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error }}</div>
+                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-description">{{ error }}</div>
             </div>
             {% endfor %}
         </div>
-       
+        {% if request.path == account_signup_url %}
         <div class="form-item">
             <div>Password:</div>
             <div><input
@@ -71,7 +72,7 @@
                     required="true"/></div>
             {% for error in form.password1.errors %}
             <div class="form-field-error">
-                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error }}</div>
+                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-description">{{ error }}</div>
             </div>
             {% endfor %}
         </div>
@@ -85,12 +86,11 @@
                     required="true"/></div>
             {% for error in form.password2.errors %}
             <div class="form-field-error">
-                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error }}</div>
+                <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-description">{{ error }}</div>
             </div>
             {% endfor %}
         </div>
-
-
+        {% endif %}
         <div class="form-item-boolean">
             <div class="signup-checkbox-block">
                 <input
@@ -109,7 +109,6 @@
             <expand-block expand_data='{% include "contributor_terms.html" %}'></expand-block>
         </div>
 
-
         <div class="form-item-boolean">
             <div class="signup-checkbox-block">
 
@@ -126,14 +125,12 @@
                 </div>
             </div>
             <expand-block expand_data='{% include "terms_of_service.html" %}'></expand-block>
-
-
         </div>
 
         <div class="optional-fields">
-            <div class="headline-optional-fields">Optional fields:</div>
+            <div class="headline-optional-fields">Optional fields</div>
             <div class="optional-field">
-                <div>Spoken languages:</div>
+                <div class="optional_field_lable">Spoken languages:</div>
                 <select-search
                     :options="{{ all_languages_vue }}"
                     :multiple="true"
@@ -141,9 +138,8 @@
                     :default-value-select="{{ form.languages.value|default:'[]' }}"
                 ></select-search>
             </div>
-
             <div class="optional-field">
-                <div>Country you live:</div>
+                <div class="optional_field_lable">Country you live:</div>
                 <select-search
                     :options="{{ all_countries_vue }}"
                     name_field="{{ form.country.html_name }}"

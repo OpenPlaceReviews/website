@@ -78,6 +78,9 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
+.multiselect__input, .multiselect__single{
+  display: block;
+}
 .multiselect__option--selected.multiselect__option--highlight {
     background: #2D69E0;
     color: #fff;

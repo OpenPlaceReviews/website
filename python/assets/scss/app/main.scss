@@ -387,10 +387,9 @@ button:hover{
     cursor: pointer;
 }
 .form-error, .form-field-error{
-    display: flex;
-    flex-direction: row;
+    display: block;
     width: 540px;
-    height: 40px;
+    min-height: 40px;
     background: #FF595E;
     border-radius: 4px;
     font-weight: 600;
@@ -405,24 +404,18 @@ button:hover{
     border-width: 2px;
 }
 
-.form-error img{
+.form-error img, .form-field-error img{
     width: 20px;
     height: 20px;
-    margin: 10px 5px 10px 10px;
+    margin: 10px;
+    display: inline-block;
+    vertical-align: top;
 }
 
-.form-error .erorr-decsription{
+.form-error .erorr-description, .form-field-error .erorr-description{
     margin-top: 10px;
-}
-
-.form-field-error img{
-    width: 20px;
-    height: 20px;
-    margin: 10px 5px 10px 10px;
-}
-
-.form-field-error .erorr-decsription{
-    margin-top: 10px;
+    display: inline-block;
+    max-width: 500px;
 }
 
 .form-item-boolean{
@@ -491,7 +484,7 @@ button:hover{
     margin: 15px 20px;
 }
 .optional-fields{
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .headline-optional-fields{
@@ -507,6 +500,9 @@ button:hover{
 }
 
 .optional-field{
-    line-height: 1.15;
+    line-height: 1.15em;
     margin-bottom: 15px;
+    .optional_field_lable{
+        line-height: 26px;
+    }
 }

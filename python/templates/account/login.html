@@ -20,7 +20,8 @@
                 {% if form.errors %}
                     {% for error in form.non_field_errors %}
                         <div class="form-error">
-                            <img src="{% static 'dist/images/icon-warning.png' %}"/><div class="erorr-decsription">{{ error|escape }}</div>
+                            <img src="{% static 'dist/images/icon-warning.png' %}"/>
+                            <div class="erorr-description">{{ error|escape }}</div>
                         </div>
                     {% endfor %}
                 {% endif %}
