@@ -78,6 +78,30 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
+.multiselect__input, .multiselect__single {
+    position: relative;
+    display: inline-block;
+    min-height: 20px;
+    line-height: 20px;
+    border: none;
+    border-radius: 5px;
+    background: #fff;
+    padding: 0 0 0 5px;
+    width: 100%;
+    transition: border .1s ease;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    vertical-align: top;
+    letter-spacing: 0.02em;
+}
+.multiselect__placeholder {
+    color: #adadad;
+    display: inline-block;
+    margin-bottom: 0;
+    padding-top: 1px;
+    padding-left: 3px;
+    font-size: 16px;
+}
 .multiselect__input, .multiselect__single{
   display: block;
 }
