@@ -6,7 +6,7 @@
     <div class="block-header">
         <div class="logo">
            <a href="{% url 'frontpage' %}">
-                <img src="{% static 'dist/images/opr_logo.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
+                <img src="{% static 'dist/images/OpenPlaceReview.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
             </a>
         </div>
         <nav>
@@ -19,19 +19,19 @@
 {#                <li><a href="#">News</a></li>#}
 {#                <li><a href="#">Docs</a></li>#}
 {#                <li><a href="#">Tasks</a></li>#}
+                {% if request.user.is_authenticated %}
+                    <li class="my_account">
+                        <a href="#">My account</a>
+                    </li>
+                    <li class="avatar_my_account"><a href="{% url 'account_logout' %}"><img src="{% static 'dist/images/avatar-default.png' %}"></a></li>
+                {% else %}
+                    <li class="nav_login">
+                        <a href="{% url 'account_login' %}">Login</a>
+                    </li><li class="nav_signup">
+                        <a href="{% url 'account_signup' %}">Sign Up</a>
+                </li><div></div>
+                {% endif %}
             </ul>
-            {% if request.user.is_authenticated %}
-                <div class="my_account">
-                    <a href="#">My account</a>
-                </div>
-                <div class="avatar_logout"><a href="{% url 'account_logout' %}"><img src="{% static 'dist/images/avatar-default.png' %}"></a></div>
-            {% else %}
-                <div class="login_signup">
-                    <a href="{% url 'account_login' %}">Login</a>
-                    <div class="divider_block"><div class="divider"></div></div>
-                    <a href="{% url 'account_signup' %}">Sign Up</a>
-                </div>
-            {% endif %}
         </nav>
     </div>
 </header>

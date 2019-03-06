@@ -144,52 +144,120 @@ header{
     align-content: center;
     justify-content: center;
     padding: 0px 30px;
-}
-
-header .block-header{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    min-width: 920px;
-    max-width: 1100px;
-    margin: auto;
-}
-.auth-page{
-    /*width: 100%;*/
-    min-width: 600px;
-}
-
-.auth-page .block-header{
-    width: 540px;
-    min-width: 540px;
-}
-header .logo{
-    padding-top: 15px;
-}
-nav {
-    padding-top: 18px;
-    font-family: Overpass;
-    font-style: normal;
-    font-weight: bold;
-    line-height: normal;
-    font-size: 16px;
-    letter-spacing: 0.02em;
-    color: #2D69E0;
-    margin-left: auto;
-    ul{
-        display: inline-flex;
-        li{
-            list-style-type: none;
-            margin-right: 38px;
-            &.active{
-                border-bottom: 2px solid #2D69E0;
-                a{
-                    color: #140579;
+    .block-header{
+        display: block;
+        flex-direction: row;
+        flex-wrap: wrap;
+        min-width: 920px;
+        max-width: 1100px;
+        margin: auto;
+        height: 80px;
+        position: relative;
+        .logo{
+            height: 50px;
+            margin: auto 0px;
+            position: absolute;
+            display: inline-block;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            img{
+                height: 50px;
+                width: 218px;
+                margin: auto 0;
+            }
+        }
+        nav {
+                font-family: Overpass;
+                font-style: normal;
+                font-weight: bold;
+                line-height: normal;
+                font-size: 16px;
+                letter-spacing: 0.02em;
+                color: #2D69E0;
+                margin: auto 0;
+                height: 16px;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                position: absolute;
+            ul{
+                margin: 0;
+                padding: 0;
+                display: block;
+                li{
+                    display: inline-block;
+                    list-style-type: none;
+                    margin-left: 38px;
+                    &.active{
+                        border-bottom: 2px solid #2D69E0;
+                        a{
+                            color: #140579;
+                        }
+                    }
+                    a:hover{
+                        color: #140579;
+                        text-decoration: none;
+                    }
+                    &.nav_login{
+                        border-radius: 22px 0px 0px 22px;
+                        border: 1px solid #E4E7ED;
+                        border-right: none;
+                        padding: 10px 0px 10px 20px;
+                        margin-top: 0px;
+                        display: initial;
+                        a{
+                            padding: 3px 20px 3px 0;
+                        }
+                    }
+                    &.nav_signup{
+                        border-radius: 0px 22px 22px 0px;
+                        border: 1px solid #E4E7ED;
+                        border-left: none;
+                        padding: 10px 20px 10px 0px;
+                        margin-left: 0;
+                        margin-top: 0px;
+                        display: initial;
+                        a{
+                            border-left: 2px solid #E4E7ED;
+                            padding: 3px 0 3px 20px;
+                        }
+                    }
+                    &.my_account{
+                        display: inline-block;
+                        a:first-child{
+                            border-left: 2px solid #E4E7ED;
+                            padding: 3px 0 3px 20px;
+                        }
+                    }
+                    &.avatar_my_account {
+                        margin-left: 20px;
+                        margin-right: 30px;
+                        img{
+                            position: absolute;
+                            top: 0;
+                            width: 30px;
+                            height: 30px;
+                            margin: auto;
+                            bottom: 0;
+                        }
+                    }
                 }
             }
-            a:hover{
-                color: #140579;
-                text-decoration: none;
+        }
+    }
+}
+
+.auth-page{
+    min-width: 600px;
+    .block-header{
+        width: 540px;
+        min-width: 540px;
+        nav ul li{
+            &.my_account, &.avatar_my_account{
+                margin-top: 0;
             }
         }
     }
@@ -204,50 +272,11 @@ a:hover{
     text-decoration: underline;
     color: #2D69E0;
 }
-
-.login_signup{
-    display: inline-flex;
-    width: 153px;
-    height: 40px;
-    border: 1px solid #E4E7ED;
-    box-sizing: border-box;
-    border-radius: 22px;
-    padding: 6px 0px 7px 8px;
-    a{
-        padding: 2px 8px;
-        &:hover{
-            color: #140579;
-            text-decoration: none;
-        }
-        &:first-child{
-            border-right: 2px solid rgba(204, 208, 217, 0.4);
-        }
-    }
-}
-
-.my_account{
-    display: inline-flex;
-}
-.my_account a:first-child{
-    border-left: 2px solid rgba(204, 208, 217, 0.4);
-    padding: 8px 20px 0 20px;
-}
 .not-border{
     border: none!important;
 }
-.avatar_logout{
-    display: inline-flex;
-    height: 30px;
-    width: 30px;
-}
-.avatar_logout img{
-    position: relative;
-    top: 8px;
-    width: 30px;
-    height: 30px;
-}
 .auth-container{
-    width: 540px;
+    width: 600px;
     min-width: 540px;
     margin: 0 auto;
     color: #000000;
@@ -257,6 +286,7 @@ a:hover{
     line-height: 26px;
     font-size: 16px;
     letter-spacing: 0.02em;
+    padding: 0 30px;
 }
 
 .auth-container h1{

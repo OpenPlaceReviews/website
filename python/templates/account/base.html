@@ -9,16 +9,23 @@
     <div class="block-header">
         <div class="logo">
            <a href="{% url 'frontpage' %}">
-                <img src="{% static 'dist/images/opr_logo.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
+                <img src="{% static 'dist/images/OpenPlaceReview.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
             </a>
         </div>
         <nav>
             <ul>
-                {% url 'account_login' as login_url %}
-                {% if request.path == login_url %}
-                    <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                {% if request.user.is_authenticated %}
+                    <li class="my_account">
+                        <a href="#">My account</a>
+                    </li>
+                    <li class="avatar_my_account"><a href="{% url 'account_logout' %}"><img src="{% static 'dist/images/avatar-default.png' %}"></a></li>
                 {% else %}
-                    <li><a href="{{ login_url }}">Login</a></li>
+                    {% url 'account_login' as login_url %}
+                    {% if request.path == login_url %}
+                        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                    {% else %}
+                        <li><a href="{{ login_url }}">Login</a></li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </nav>
