@@ -28,36 +28,33 @@ a:hover{
 .main {
     width: 800px;
     margin: 0 auto;
-    padding-bottom:80px;
+    padding-bottom: 80px;
+    min-height: calc(100vh - 256px);
+    h1 {
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        font-size: 2.5em;
+        line-height: 2em;
+        color: #596680;
+        font-family: 'Overpass', sans-serif;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+    }
+    p {
+        padding: 0px;
+        margin: 0px;
+        line-height: 1em;
+    }
+    ul {
+        width: 600px;
+        line-height: 1.5em;
+        font-size: 1.1em;
+        li {
+            margin: 0 0 20px 0;
+        }
+    }
 }
-
-.main h1 {
-    text-align: center;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    font-size: 2.5em;
-    line-height: 2em;
-    color: #596680;
-    font-family: 'Overpass', sans-serif;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-}
-
-.main p {
-    padding: 0px;
-    margin: 0px;
-    line-height: 1em;
-}
-
-.main ul {
-    width: 600px;
-    line-height: 1.5em;
-    font-size: 1.1em;
-}
-.main li {
-    margin: 0 0 20px 0;
-}
-
 
 .btn-container {
     text-align: center;
