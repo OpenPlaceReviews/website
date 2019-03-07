@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
-
 {% block title %}{% block head_title %}{% endblock %}{% endblock %}
-
-{% block header %}
-<header class="auth-page">
+{% block header %}<header class="auth-page">
     <div class="block-header">
         <div class="logo">
            <a href="{% url 'frontpage' %}">
@@ -30,9 +27,7 @@
             </ul>
         </nav>
     </div>
-</header>
-{% endblock %}
-
+</header>{% endblock %}
 {% block container %}
     <div class="auth-container" id="opr-app">
         <h1>

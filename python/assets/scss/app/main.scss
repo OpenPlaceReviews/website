@@ -7,9 +7,17 @@ body {
     font-weight: 400;
     background-color: white;
     font-size: 1em;
-    margin-bottom: 70px;
+    min-height: 100vh;
+}
+a, a:active{
+    color: #2D69E0;
+    text-decoration: none;
 }
 
+a:hover{
+    text-decoration: underline;
+    color: #2D69E0;
+}
 .center {
     display: block;
     margin-left: auto;
@@ -82,8 +90,7 @@ body {
 }
 
 .footer {
-    position: fixed;
-    left: 0;
+    //position: absolute;
     bottom: 0;
     width: 100%;
     padding-top: 5px;
@@ -91,21 +98,18 @@ body {
     color: #596680;
     text-align: center;
     height: 50px;
-}
-
-.footer p {
-    margin: 0 auto;
-    padding-top: 10px;
-}
-
-.footer a {
-    text-decoration-color: #140579;
-    text-decoration-line: none;
-}
-
-.footer a:hover {
-    text-decoration-color: #140579;
-    text-decoration-line: underline;
+    p {
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+    a {
+        text-decoration-color: #140579;
+        text-decoration-line: none;
+    }
+    a:hover {
+        text-decoration-color: #140579;
+        text-decoration-line: underline;
+    }
 }
 .messages-notify{
     margin: 0;
@@ -262,16 +266,6 @@ header{
         }
     }
 }
-
-a, a:active{
-    color: #2D69E0;
-    text-decoration: none;
-}
-
-a:hover{
-    text-decoration: underline;
-    color: #2D69E0;
-}
 .not-border{
     border: none!important;
 }
@@ -286,17 +280,17 @@ a:hover{
     line-height: 26px;
     font-size: 16px;
     letter-spacing: 0.02em;
-    padding: 0 30px;
+    padding: 1px 30px 80px 30px;
+    min-height: calc(100vh - 217px);
+    h1{
+        margin-top: 40px;
+        margin-bottom: 0;
+    }
+    p{
+        margin-top: 13px;
+    }
 }
 
-.auth-container h1{
-    margin-top: 31px;
-    margin-bottom: 0;
-}
-
-.auth-container p{
-    margin-top: 13px;
-}
 .socialaccount_ballot p{
     font-weight: 600;
 }
