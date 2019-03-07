@@ -7,7 +7,7 @@ from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 class CustomSignupForm(SignupForm):
     terms_of_service = forms.BooleanField(required=True, initial=False)
     contribution_terms = forms.BooleanField(required=True, initial=False)
-    languages = forms.ChoiceField(required=False, choices=LANGUAGES)
+    languages = forms.MultipleChoiceField(required=False, choices=LANGUAGES)
     country = forms.ChoiceField(required=False, choices=COUNTRIES)
 
     def __init__(self, *args, **kwargs):
