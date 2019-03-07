@@ -21,7 +21,10 @@
         </ul>
     </div>
     {% endif %}
-    <form class="signup{% if not form.errors and request.path == account_signup_url %} form-hidden{% endif %}" method="post" action="{% url 'account_signup' %}">
+    <form
+        class="signup{% if not form.errors and request.path == account_signup_url %} form-hidden{% endif %}"
+        method="post"
+        action="{% if request.path == account_signup_url %}{% url 'account_signup' %}{% else %}{% url 'socialaccount_signup' %}{% endif %}">
       {% csrf_token %}
         {% if form.errors %}
             {% for error in form.non_field_errors %}
