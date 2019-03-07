@@ -2,12 +2,12 @@
 {% load i18n %}
 {% load static %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block head_title %}{% trans "Sign Up" %}{% endblock %}
+{% block headline %}{% trans "Sign Up" %}{% endblock %}
 
 {% block content %}
-<div class="auth-container" id="opr-app">
     {% url 'account_signup' as account_signup_url %}
-    <h1>{% trans "Sign Up" %}</h1>
+
     <p>
         OpenPlaceReviews has a public database, so we do not store any private data.
         You can select a nickname and it will be visible to everyone.<br>
@@ -157,7 +157,6 @@
       {% endif %}
       <button type="submit" class="btn-blue1">{% trans "Sign Up" %}</button>
     </form>
-</div>
 {% endblock %}
 <script>
     import ExpandBlock from "../../assets/js/components/ExpandBlock";
