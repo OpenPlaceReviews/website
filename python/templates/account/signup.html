@@ -96,12 +96,15 @@
         {% endif %}
         <div class="form-item-boolean">
             <div class="signup-checkbox-block">
+                <label class="box-label">
                 <input
                     type="checkbox"
                     required="True"
                     name="{{ form.contribution_terms.html_name }}"
                     {% if form.contribution_terms.value %}checked{% endif %}
                 />
+                <span class="box"></span>
+                </label>
                 <div>
                     <div class="signup-input-label">I agree with <a href="#">Contribution Terms</a></div>
                     <div class="signup-input-description">
@@ -121,6 +124,7 @@
                     name="{{ form.terms_of_service.html_name }}"
                     {% if form.terms_of_service.value %}checked{% endif %}
                 />
+                <span class="box"></span>
                 <div>
                     <div class="signup-input-label">I agree with <a href="#">Terms of Service</a></div>
                     <div class="signup-input-description">Please accept Terms of Service before using website.
