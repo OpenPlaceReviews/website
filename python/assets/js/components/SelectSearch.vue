@@ -78,6 +78,9 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
+.multiselect__option{
+  color: #2D69E0;
+}
 .multiselect__input, .multiselect__single {
     position: relative;
     display: inline-block;
@@ -98,12 +101,14 @@ export default {
     color: #adadad;
     display: inline-block;
     margin-bottom: 0;
-    padding-top: 1px;
-    padding-left: 3px;
+    padding-top: 2px;
+    padding-left: 5px;
     font-size: 16px;
+    line-height: 20px;
 }
 .multiselect__input, .multiselect__single{
   display: block;
+  padding-top: 2px;
 }
 .multiselect__option--selected.multiselect__option--highlight {
     background: #2D69E0;
@@ -112,12 +117,14 @@ export default {
 .multiselect__option--highlight {
     background: #F1F4FC;
     outline: none;
-    color: #2D69E0;
+    color: #140579;
+    font-weight: bold;
 }
 .multiselect__option--highlight:after{
     background: #F1F4FC;
     outline: none;
     color: #2D69E0;
+    font-weight: bold;
 }
 .multiselect__tag {
     position: relative;
