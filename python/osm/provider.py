@@ -10,7 +10,7 @@ class OSMAccount(ProviderAccount):
         return self.account.extra_data.get('avatar')
 
     def get_username(self):
-        return self.account.extra_data['username']
+        return self.account.extra_data.get('username')
 
     def to_str(self):
         return self.get_username()
@@ -28,7 +28,12 @@ class OSMProvider(OAuthProvider):
     def extract_uid(self, data):
         return str(data['id'])
 
+    def extract_extra_data(self, data):
+        data['name'] = data['username']
+        return data
+
     def extract_common_fields(self, data):
+        print(data)
         return dict(username=data.get('username'),
                     avatar=data.get('avatar'))
 

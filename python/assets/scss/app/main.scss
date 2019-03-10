@@ -18,6 +18,13 @@ a:hover{
     text-decoration: underline;
     color: #2D69E0;
 }
+h1{
+    margin-top: 40px;
+    margin-bottom: 20px;
+    line-height: 50px;
+    font-size: 40px;
+    letter-spacing: 0.01em;
+}
 .center {
     display: block;
     margin-left: auto;
@@ -281,7 +288,10 @@ header{
     min-height: calc(100vh - 217px);
     h1{
         margin-top: 40px;
-        margin-bottom: 0;
+        margin-bottom: 20px;
+        line-height: 48px;
+        font-size: 40px;
+        letter-spacing: 0.01em;
     }
     p{
         margin-top: 13px;
@@ -545,5 +555,15 @@ button:hover{
     margin-bottom: 15px;
     .optional_field_lable{
         line-height: 26px;
+    }
+}
+.oauth_avatar {
+    position: absolute;
+    margin-left: -70px;
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50px; /* Радиус скругления */
+        //border: 3px solid green; /* Параметры рамки */
     }
 }

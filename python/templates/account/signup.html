@@ -3,16 +3,44 @@
 {% load static %}
 
 {% block head_title %}{% trans "Sign Up" %}{% endblock %}
-{% block headline %}{% trans "Sign Up" %}{% endblock %}
+{% block headline %}
+    {% url 'account_signup' as account_signup_url %}
+    {% if request.path == account_signup_url %}
+        {% trans "Sign Up" %}
+    {% else %}
+        <div class="oauth_avatar">
+            {% if account.get_avatar_url %}
+                <img src="{{ account.get_avatar_url }}">
+            {% else %}
+                <img src="{% static 'dist/images/avatar-default.png' %}">
+            {% endif %}
+        </div>
+        Welcome,<br>
+        {% if account.get_profile_url %}
+            <a href="{{ account.get_profile_url }}" target="_blank">
+                {{ account.extra_data.name }}
+            </a>
+        {% else %}
+            {{ account.extra_data.name }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     {% url 'account_signup' as account_signup_url %}
+    {% if request.path == account_signup_url %}
+        <p>
+            OpenPlaceReviews has a public database, so we do not store any private data.
+            You can select a nickname and it will be visible to everyone.<br>
+            Already have an account? Then please <a href="{% url 'account_login' %}">Login</a>.
+        </p>
+    {% else %}
+        <p>You are almost ready to sign up.<br>
+            Open Place Reviews <b>stores all changes in a public database</b>
+            except private data marked with *.
+        </p>
+    {% endif %}
 
-    <p>
-        OpenPlaceReviews has a public database, so we do not store any private data.
-        You can select a nickname and it will be visible to everyone.<br>
-        Already have an account? Then please <a href="{% url 'account_login' %}">Login</a>.
-    </p>
     {% if request.path == account_signup_url %}
     <div class="socialaccount_ballot">
         <p>Select sign up method:</p>

@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 def opendb_signup(nickname, pwd=None, oauth_provider=None,
                   oauth_uid=None, details={}):
-    api_path = '/op/signup'
+    api_path = '/api/signup'
     api_url = '{}{}'.format(settings.SERVER_API_ADDRESS, api_path)
     data = {
         'name': nickname,
@@ -31,7 +31,7 @@ def opendb_signup(nickname, pwd=None, oauth_provider=None,
 
 def opendb_login(nickname, pwd=None, oauth_provider=None,
                   oauth_uid=None):
-    api_path = '/op/login'
+    api_path = '/api/login'
     api_url = '{}{}'.format(settings.SERVER_API_ADDRESS, api_path)
     data = {
         "name": '{}:{}'.format(nickname, 'web_backend'),
