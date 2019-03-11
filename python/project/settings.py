@@ -183,6 +183,12 @@ USE_TZ = True
 
 APPEND_SLASH = True
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+    }
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATICFILES_DIRS = (
@@ -199,6 +205,7 @@ ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 SERVER_API_ADDRESS = 'http://127.0.0.1:6463'
 
 OPENDB_SIGN_LOGIN = 'openplacereviews:web_backend'
+OPENDB_USERNAME = 'web_backend'
 OPENDB_SIGN_PK = ''
 SLICE_KEY = 50
 

@@ -33,7 +33,6 @@ class OSMProvider(OAuthProvider):
         return data
 
     def extract_common_fields(self, data):
-        print(data)
         return dict(username=data.get('username'),
                     avatar=data.get('avatar'))
 
