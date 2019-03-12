@@ -60,7 +60,7 @@ def opendb_login(nickname, pwd=None, oauth_provider=None,
     api_path = '/api/auth/login'
     api_url = '{}{}'.format(settings.SERVER_API_ADDRESS, api_path)
     data = {
-        "name": 'openplacereviews:{}'.format(nickname),
+        "name": '{}:openplacereviews'.format(nickname),
         "pwd": pwd,
         "signupPrivateKey": settings.OPENDB_SIGN_PK,
         "oauthProvider": oauth_provider,
