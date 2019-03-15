@@ -9,85 +9,17 @@
         <div class="menu">
         <div class="menu_header">Menu</div>
         <ul class="menu_items">
-            <li><div class="icon_task"></div><div class="select"></div><div>Blocks</div></li>
-            <li class="selected"><div class="icon_database"></div><div class="select"></div><div>Operations</div></li>
-            <li class="submenu_item">User actions</li>
-            <li class="submenu_item selected">System & Bots</li>
+            <li class="selected"><div class="icon_task"></div><div class="select"></div><div>Blocks</div></li>
+            <li ><div class="icon_database"></div><div class="select"></div><div>Operations</div></li>
+{#            <li class="submenu_item">User actions</li>#}
+{#            <li class="submenu_item selected">System & Bots</li>#}
             <li><div class="icon_user"></div><div class="select"></div><div>Users</div></li>
         </ul>
     </div>
     </div>
     <div class="data_content">
-        <div class="filters">
-            <ul>
-                <li class="active">Today</li>
-                <li>Week</li>
-                <li>Month</li>
-                <li class="custom_filter"><div class="custom_icon"></div><div>Custom</div></li>
-            </ul>
-            <select>
-                <option>All types</option>
-                <option>System</option>
-            </select>
-        </div>
         <div class="data_container">
-            <div class="item_data">
-                <div class="type_operation operation_database"></div>
-                <div class="content">
-                    <div class="content_header"><a href="#">Add all Amsterdam</a></div>
-                    <div>Audio apps can deliver music, news, podcasts, and more using a...</div>
-                </div>
-                <div class="info">
-                    <div class="first_info_block">
-                        <div class="date">2019-01-24, 14:44</div>
-                        <div class="delimeter">•</div>
-                        <div class="hash">77889977</div>
-                    </div>
-                    <div class="second_info_block">
-                        <div class="who_confirmed">Community</div>
-                        <div class="delimeter">•</div>
-                        <div class="user"><a href="#">Victor Shcherb</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="item_data">
-                <div class="type_operation operation_user"></div>
-                <div class="content">
-                    <div class="content_header">Welcome new user <a href="#">Eugene</a></div>
-                    <div>New user registration</div>
-                </div>
-                <div class="info">
-                    <div class="first_info_block">
-                        <div class="date">2019-01-24, 14:44</div>
-                        <div class="delimeter">•</div>
-                        <div class="hash">77889976</div>
-                    </div>
-                    <div class="second_info_block">
-                        <div class="who_confirmed">Auto</div>
-                        <div class="delimeter">•</div>
-                        <div class="user"><a href="#">System</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="item_data">
-                <div class="type_operation operation_database"></div>
-                <div class="content">
-                    <div class="content_header"><a href="#">Database schema change</a></div>
-                    <div>Audio apps can deliver music, news, podcasts, and more using a...</div>
-                </div>
-                <div class="info">
-                    <div class="first_info_block">
-                        <div class="date">2019-01-24, 14:44</div>
-                        <div class="delimeter">•</div>
-                        <div class="hash">77889975</div>
-                    </div>
-                    <div class="second_info_block">
-                        <div class="who_confirmed">Auto</div>
-                        <div class="delimeter">•</div>
-                        <div class="user"><a href="#">STatus</a></div>
-                    </div>
-                </div>
-            </div>
+            <opr-blocks url="{% url 'proxy_url' %}?url=http://127.0.0.1:6463/api/blocks"></opr-blocks>
         </div>
     </div>
 </div>

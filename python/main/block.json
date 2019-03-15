@@ -1,0 +1,578 @@
+{
+    "block_id": 0,
+    "date": "2019-03-12T20:09:08.748+0000",
+    "details": "",
+    "extra": 0,
+    "hash": "sha256:cf4362d086f72db849b03575a4b5eb715eca21d4a582c51fb890b84bf6f3256c",
+    "merkle_tree_hash": "sha256:f7cc2916d93aa5de2e091999df9c008d13c2ad0cde70966435c69624d6388b22",
+    "ops": [
+        {
+            "hash": "json:sha256:10c5978d2466b67505d2d94a9a0f29695e03bf11893a4a5cac3cd700aa757dd9",
+            "new": [
+                {
+                    "algo": "EC",
+                    "auth_method": "provided",
+                    "id": [
+                        "openplacereviews"
+                    ],
+                    "name": "openplacereviews",
+                    "pubkey": "base64:X.509:MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEOR7zRAwYHy2vmJhOxrwNCUGI23NldhKV+kuBK5Jsah2gyHX4jNqkryksrmNHUjFogNttjilhFwG78HT64KLgcw=="
+                }
+            ],
+            "signature": "ECDSA:base64:MEUCIQDjwKWF4BTeDdILZKq51eBt7VW0fkCBggCT0DDRd7hpFgIgdnKccY5yMoHaL2FWbMWqGZlvzvF76oacrlbqBmQDYBo=",
+            "signed_by": "openplacereviews",
+            "type": "sys.signup",
+            "validation": {
+                "op_all_valid": 4,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:fefffd95ccaa8b2545f2c5b8e1e7ae8c7d8f530b8d61be60df2345d74102c802",
+            "new": [
+                {
+                    "algo": "EC",
+                    "auth_method": "provided",
+                    "id": [
+                        "openplacereviews",
+                        "test_1"
+                    ],
+                    "pubkey": "base64:X.509:XXXwEAYHKoZIzj0CAQYFK4EEAAoDQgAETxKWXg3jhSxBtYhTxO/zMj6S0jO95ETUehlZ7yR150gFSmxqJcLE4YQDZ6t/Hn13kmaZbhSFMNsAX+kbeUMqb=="
+                }
+            ],
+            "ref": {
+                "s": [
+                    "sys.signup",
+                    "openplacereviews"
+                ]
+            },
+            "signature": "ECDSA:base64:MEUCIQDbaIttXUkJCqiR61b39u6xr9xxOPw/XOM2no+04XrPlgIgOrAwPOVIh9oL8wb4FvWA0Fcx0SpqOK6P3GfPHLmTQ60=",
+            "signed_by": "openplacereviews",
+            "type": "sys.login",
+            "validation": {
+                "op_all_valid": 5,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:41b132e7832099d14bf501606a969ba2a84ad2c46125b1c6470df709481d94b6",
+            "new": [
+                {
+                    "algo": "EC",
+                    "auth_method": "provided",
+                    "id": [
+                        "openplacereviews",
+                        "test_1"
+                    ],
+                    "pubkey": "base64:X.509:MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAETxKWXg3jhSxBtYhTxO/zMj6S0jO95ETUehlZ7yR150gFSmxqJcLE4YQDZ6t/Hn13kmaZbhSFMNsAX+kbeUMqbQ=="
+                }
+            ],
+            "old": [
+                "fefffd95ccaa8b2545f2c5b8e1e7ae8c7d8f530b8d61be60df2345d74102c802:0"
+            ],
+            "ref": {
+                "s": [
+                    "sys.signup",
+                    "openplacereviews"
+                ]
+            },
+            "signature": "ECDSA:base64:MEYCIQDCuwakI7jd0bExEDnnKc4X41oS2hbj0XwRfuSgXqu6/gIhAKQSlPt9amGgHz20yiES87vOt4i3/BFDu3IrGgIlz8AM",
+            "signed_by": "openplacereviews",
+            "type": "sys.login",
+            "validation": {
+                "op_all_valid": 5,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:c7449acb609ada0d992d6dff6e5697919c14df9be359b174c019dc79c27bffc6",
+            "new": [
+                {
+                    "id": [
+                        "openplacereviews",
+                        "test_1"
+                    ],
+                    "roles": [
+                        "master",
+                        "administrator"
+                    ]
+                }
+            ],
+            "ref": {
+                "s": [
+                    "sys.signup",
+                    "openplacereviews"
+                ]
+            },
+            "signature": "ECDSA:base64:MEQCIHOJcOc+7nOyu8oPcd5noBPozIjmtJOuiQDcwVypD6qrAiAP6OS3CeDwQOgJ4Q6KHHjyeVPODC9od01lPLBn9D9YFA==",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.grant",
+            "validation": {
+                "op_all_valid": 4,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:a857982deb6993910051e7ea78cf9a72f7e8c139c40a83091f8b0a6c8097abae",
+            "new": [
+                {
+                    "id": [
+                        "openplacereviews"
+                    ],
+                    "roles": [
+                        "owner"
+                    ]
+                }
+            ],
+            "ref": {
+                "s": [
+                    "sys.signup",
+                    "openplacereviews"
+                ]
+            },
+            "signature": "ECDSA:base64:MEYCIQC+ZX76iZjtkN9oKNUDODgiVZjyGRCh3WASakK194wGrQIhAOut9zeX/uqP8kPkeatljBiddYO9Uk87DFRTtwimFrGF",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.grant",
+            "validation": {
+                "op_all_valid": 4,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:156cff1353e991b18f8e550706d80a69630eb31f22657096e3c3d41df258715f",
+            "new": [
+                {
+                    "comment": "Operation to define other operations with description and fields",
+                    "fields": {
+                        "arity": "integer number describing arity of operation, 0 - means that operation could create/delete 0 or 1 object maximum.",
+                        "comment": "description of the operation, purpose and how it could be used",
+                        "fields": "map of fields accepted by operation with their description",
+                        "id": "operation name usually written as .",
+                        "version": "int version of the defined operation",
+                        "versioning": "defines whether object should have subsequent version field"
+                    },
+                    "id": [
+                        "sys.operation"
+                    ],
+                    "version": 0,
+                    "versioning": true
+                }
+            ],
+            "signature": "ECDSA:base64:MEUCIB2ZSRDsuJCMnYl3aS/ORDOvt9b/9fOProgDyplDQnm3AiEAtooa2ZEnWbJtpeA9ThfWRjF6gE1RPE2Xa0Ewm4LkyCo=",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.operation",
+            "validation": {
+                "op_all_valid": 4,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:0ddae73c5332595d4fadfde74870e0cff7609aa4361057245eb562695f84f47c",
+            "new": [
+                {
+                    "arity": 0,
+                    "comment": "Operation to signup new users with different methods such as password, provided secure key or oauth.",
+                    "fields": {
+                        "algo": "crypto algorithm of generated public key",
+                        "auth_method": "one of 'pwd', 'provided' (provided private key),'oauth' ",
+                        "id": "unique id of user",
+                        "keygen_method": "keygen algorithm of private key from password applicable to .auth_method pwd",
+                        "oauth_provider": "one of 'fb', 'osm', 'google'",
+                        "oauthid_hash": "hash of 'oauth id + salt' ",
+                        "pubkey": "public key to be used to validate signature",
+                        "salt": "salt used for private key generation from password and for hash of oauthid_hash",
+                        "userdetails": "custom json map of user details"
+                    },
+                    "id": [
+                        "sys.signup"
+                    ],
+                    "version": 0
+                }
+            ],
+            "signature": "ECDSA:base64:MEQCIFPydCgWHTODIJwm99qgd32b5z2UgqwK3iInrPW4DI63AiBm9pRAIx6GFaokyuF/7qGjgCv7h8r4yT7jwrJwWAK76Q==",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.operation",
+            "validation": {
+                "op_all_valid": 5,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:e8e5523c4be8cd78e0c255080c483aa514813378ab1b4fa6093b49012b33933f",
+            "new": [
+                {
+                    "arity": 0,
+                    "comment": "Operation to create login pair of private key",
+                    "fields": {
+                        "algo": "crypto algorithm of generated public key",
+                        "auth_method": "one of 'provided' (provided or generated private key), 'oauth' ",
+                        "id": "combined id 'signup_name':'purpose', purpose could describe website, bot name or application",
+                        "pubkey": "public key to be used to validate signature"
+                    },
+                    "id": [
+                        "sys.login"
+                    ],
+                    "version": 0
+                }
+            ],
+            "signature": "ECDSA:base64:MEQCICSnJIxr7KnukweoPXOF6lsbYnyNv0zg+JGskUYM+/8RAiBjZqb9i8IDkjny5UvEx43c7GzfHWRmncQNDOLsygt8rQ==",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.operation",
+            "validation": {
+                "op_all_valid": 4,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:a8c48312af738f01690bf82c49895be60da90604c343fe8674ae51a5aa363e5f",
+            "new": [
+                {
+                    "arity": 0,
+                    "comment": "Operation that defines validation on blockchain operations",
+                    "fields": {
+                        "id": "TODO"
+                    },
+                    "id": [
+                        "sys.validate"
+                    ],
+                    "version": 0
+                }
+            ],
+            "signature": "ECDSA:base64:MEYCIQDDzJIBJ2qC5DX5x2Q00ar3feuzeCXtelL6wKVkcSjzCAIhAP/qpsclvWN6IpiSmBTGBTOZJJU4UpZzHSvkQuErWrLS",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.operation",
+            "validation": {
+                "op_all_valid": 4,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:863ce06c047d99133e1af4633aee1fd835ba0b66939ec5f4e4e5a93594ab1d2f",
+            "new": [
+                {
+                    "arity": 0,
+                    "comment": "Operation that defines role for user, role restriction are defined by validation operations",
+                    "fields": {
+                        "id": "TODO"
+                    },
+                    "id": [
+                        "sys.role"
+                    ],
+                    "version": 0
+                }
+            ],
+            "signature": "ECDSA:base64:MEYCIQD4maLGRayeG2XF1uAEmTy7d4qsC14meKcoca4GCK7vqgIhAKIVRj4w5Sjyh+3yR4d9t4tpm0Te1sIjBm+xgHqiQ7Jd",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.operation",
+            "validation": {
+                "op_all_valid": 5,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:55690ad4d990412d68cb006ced9443d8c5b36b2642569f1882195b2c09be3ab7",
+            "new": [
+                {
+                    "arity": 0,
+                    "comment": "Operation that assigns user to a specific role",
+                    "fields": {
+                        "id": "TODO"
+                    },
+                    "id": [
+                        "sys.grant"
+                    ],
+                    "version": 0
+                }
+            ],
+            "signature": "ECDSA:base64:MEYCIQDd8MnnVcC9+nh0lZXmJt1F9pT9uRSnh6rIv8pKkrvBCQIhANLFChrzZth+ucHQbzhQr+rO5VjylW4a/gqVx0agiHTq",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.operation",
+            "validation": {
+                "op_all_valid": 4,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:80e8eb203228ec59c27b3d8426352aa8e112f2a2e3fbe3e3be37c2b9a7ea6f6a",
+            "new": [
+                {
+                    "comment": "Owner role is a super role that nobody could change it",
+                    "id": [
+                        "owner"
+                    ],
+                    "owner_role": "none",
+                    "super_roles": []
+                }
+            ],
+            "signature": "ECDSA:base64:MEUCIEzK2YmfIR80F+kaC7FOf2CF6G+rZ+8JqCdlRFIq+4/pAiEAu5Co8knOwYUlqM00itUpzckbHE6DugA5q3ZziA1covE=",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.role",
+            "validation": {
+                "op_all_valid": 3,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:2925f528db7c3ee0748c5645abefe63352f3a31ad3a5139dfcd456307ff1471d",
+            "new": [
+                {
+                    "comment": "Role master and only owner could change it",
+                    "id": [
+                        "master"
+                    ],
+                    "owner_role": "owner",
+                    "super_roles": [
+                        "owner"
+                    ]
+                }
+            ],
+            "signature": "ECDSA:base64:MEYCIQC2hc8XXUkiGwM3krEcvwyLLHYoPXjJnethjgPp9bHlvAIhAKeE/qnHJwwC/8HaCf6MjeHKtr9TmqrVzUTf2dFlPfdH",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.role",
+            "validation": {
+                "op_all_valid": 5,
+                "op_prepare": 1,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:31eac6894da91a89f34f72e14fa694ab626596f389b48f8affe511b1bee73eda",
+            "new": [
+                {
+                    "comment": "Role registrator for user signup and only owner could change it",
+                    "id": [
+                        "registrator"
+                    ],
+                    "owner_role": "owner",
+                    "super_roles": [
+                        "master"
+                    ]
+                }
+            ],
+            "signature": "ECDSA:base64:MEUCIQDslci/iTwbZ63WQ0yYq1lG8n28Bj/N/qioxBn+8uCm8gIgNRvejoDECI4Q+oosyHYt4fICO6ADJRaHqj3ebRu6xsg=",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.role",
+            "validation": {
+                "op_all_valid": 4,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:1800c7181000c54eda80f109f6da8da19ee11a43feac0382e06c93d41a77040a",
+            "new": [
+                {
+                    "comment": "Validate that operation is registered",
+                    "id": [
+                        "validate_op_type_registered"
+                    ],
+                    "role": "owner",
+                    "type": [
+                        "*"
+                    ],
+                    "validate": [
+                        "std:eq(.ref.op.id,.type)"
+                    ]
+                }
+            ],
+            "signature": "ECDSA:base64:MEQCIEocGuBNKDnfvN9QA/z1GDKgshz4tIF/m5blsbR+a3r2AiABry5XN1mYbWUdp6bTTyeHm4kTi7XW2iFJdPUx+b6M6w==",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.validate",
+            "validation": {
+                "op_all_valid": 4,
+                "op_prepare": 0,
+                "op_sigs": 0
+            }
+        },
+        {
+            "hash": "json:sha256:8a43377e950e9064e9f73d65a0f6d308a75eb5a4275315b84ca416cf682403c1",
+            "new": [
+                {
+                    "comment": "Validate operation arity",
+                    "id": [
+                        "validate_op_arity"
+                    ],
+                    "if": [
+                        "std:eq(.ref.op.arity, 0)"
+                    ],
+                    "role": "none",
+                    "type": [
+                        "*"
+                    ],
+                    "validate": [
+                        "std:leq(std:size(.new),1)",
+                        "std:leq(std:size(.old),1)"
+                    ]
+                }
+            ],
+            "signature": "ECDSA:base64:MEUCIQDsoCfLzgFlTPXeVEtmiVbRB4GJJvu4fkLJkltPMgK5oAIgDTv7+Af//RLPH+Zrmkw552lD0hTM0RikzRb09trOY4U=",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.validate",
+            "validation": {
+                "op_all_valid": 6,
+                "op_prepare": 0,
+                "op_sigs": 2
+            }
+        },
+        {
+            "hash": "json:sha256:ce616069d26553d046414dd5ecac85e5cf0a3acaf6df8922960786c9438ca72f",
+            "new": [
+                {
+                    "comment": "Validate new validation. It is strict and nobody could change it",
+                    "id": [
+                        "validate_new_validation"
+                    ],
+                    "role": "none",
+                    "type": [
+                        "sys.validate"
+                    ],
+                    "validate": [
+                        "std:eq(std:size(.new),1)",
+                        "std:leq(std:size(.old),1)"
+                    ]
+                }
+            ],
+            "signature": "ECDSA:base64:MEQCIFCcYI+F7DmvQXVO/GUSFOrZCx3wJ9/kEmDzig63xhU2AiBx36TkBqosx30te+orm6VFXqk4r5D1/l5EfDaBQsdwgw==",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.validate",
+            "validation": {
+                "op_all_valid": 6,
+                "op_prepare": 0,
+                "op_sigs": 2
+            }
+        },
+        {
+            "hash": "json:sha256:41a2c9203edef5458ab20ef3a7cafa6c24a603e5fd8c09da47b3fa8d788ac4a3",
+            "new": [
+                {
+                    "comment": "Validate validation changes. Check previous role. It is strict and nobody could change it",
+                    "id": [
+                        "validate_validation_changes"
+                    ],
+                    "if": [
+                        "std:eq(std:size(.old), 1)"
+                    ],
+                    "role": "none",
+                    "type": [
+                        "sys.validate"
+                    ],
+                    "validate": [
+                        "auth:one_has_role(.old.role, .signed_by)",
+                        "std:eq(.new.id,.old.id)"
+                    ]
+                }
+            ],
+            "signature": "ECDSA:base64:MEUCIQC9sLqgGcIqhdcNUCIQSm7CDUrz7v4s8YfA4IovgLMF9QIgcFad+gjvSK1SXjFQJU5DNcU26SnPx12FJ+IJdGQ0ZtY=",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.validate",
+            "validation": {
+                "op_all_valid": 8,
+                "op_prepare": 0,
+                "op_sigs": 3
+            }
+        },
+        {
+            "hash": "json:sha256:698d48798f4c0fc9945f90c6f9f8b13b238639eb114c69fb44327d52223ee112",
+            "new": [
+                {
+                    "comment": "Check that role none could not be created. Couldn't be changed!",
+                    "id": [
+                        "role_none_couldnot_be_created"
+                    ],
+                    "role": "none",
+                    "type": [
+                        "sys.role"
+                    ],
+                    "validate": [
+                        "std:neq(.new.id, 'none')"
+                    ]
+                }
+            ],
+            "signature": "ECDSA:base64:MEUCIHZqdo/h8AW5NqJ4K4pPBaJkHDFu+BtLJflfvagU6fpnAiEAwY/MSjT7bbuemjgjG+KhGib0gBZBl2RK0zTJlZPyS14=",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.validate",
+            "validation": {
+                "op_all_valid": 8,
+                "op_prepare": 0,
+                "op_sigs": 4
+            }
+        },
+        {
+            "hash": "json:sha256:be2aba92aeb8bbb2b14a8933934e905ed6f5147d56855a1f9ac0db6561ba6afc",
+            "new": [
+                {
+                    "algo": "EC",
+                    "auth_method": "oauth",
+                    "details": {
+                        "languages": []
+                    },
+                    "id": "sergey",
+                    "oauth_provider": "google",
+                    "oauthid_hash": "sha256:f21c7952122783d4a46b03538078ef9cd9bdfd2292dbf9b661b083020717463f",
+                    "pubkey": "base64:X.509:MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAETxKWXg3jhSxBtYhTxO/zMj6S0jO95ETUehlZ7yR150gFSmxqJcLE4YQDZ6t/Hn13kmaZbhSFMNsAX+kbeUMqbQ==",
+                    "salt": "sergey"
+                }
+            ],
+            "signature": "ECDSA:base64:MEUCIEIOTrzSIlaqdKz66UI7Y4Z8K91wPDnYRPKbZ8REraQAAiEA5/jIn0au64M0k2XJvEnpHEiOoVbnCWJBYc4jyv4NGn8=",
+            "signed_by": "openplacereviews:test_1",
+            "type": "sys.signup",
+            "validation": {
+                "op_all_valid": 6,
+                "op_prepare": 0,
+                "op_sigs": 2
+            }
+        },
+        {
+            "hash": "json:sha256:9e3824fdbd064b08b1896ddb5c448dd9925b0493e64bb77529c5c5d367844a30",
+            "new": [
+                {
+                    "algo": "EC",
+                    "id": [
+                        "sergey",
+                        "openplacereviews"
+                    ],
+                    "pubkey": "base64:X.509:MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEOq1iuJJTQCdrmYVnLMFoSGC58mwx/c+5b+L4p4r24sfwOu5t39hstgwXmbG4lWjFrxsnF2OzM55yBlNieRegBA=="
+                }
+            ],
+            "signature": [
+                "ECDSA:base64:MEUCIHmXzw4wa9BW2qOaFMBS4sTZlDDHv9TkwfLWXXAQsLN0AiEA/ujpFMqnZeVSui6kvB9+bvkY9CNUhWMDrZq2mm9bQ90=",
+                "ECDSA:base64:MEUCIGv3vi/tKUrdXIKSV+1dX8y9a8WcdbBxerb4lpI1nIVaAiEAmKXwb7VFRna7mRDbtwrMKzhkVBJthHVv9ln51s9p3Bc="
+            ],
+            "signed_by": [
+                "sergey",
+                "openplacereviews:test_1"
+            ],
+            "type": "sys.login",
+            "validation": {
+                "op_all_valid": 9,
+                "op_prepare": 0,
+                "op_sigs": 1
+            }
+        }
+    ],
+    "previous_block_hash": "",
+    "sig_merkle_tree_hash": "sha256:f5fc0295255f267cf83c71c5f3f08dd88e519ced6f05b0ebaf76e9343d47ece4",
+    "signature": "ECDSA:base64:MEUCIQDSE/PuaQQyKcxlKDJUY05dK6Z1G0bEi+uXwxeHu56MNQIgHAAHt9RfmH+e+wzbCr5qKpZvwPK1xnYCMUWa2mwMceU=",
+    "signed_by": "openplacereviews:test_1",
+    "validation": {
+        "bl_header_valid": 6,
+        "blc_add_operations": 109,
+        "blc_compact": 0,
+        "blc_new_block": 12,
+        "blc_rebase": 1,
+        "blc_total_block": 123
+    },
+    "version": 1
+}

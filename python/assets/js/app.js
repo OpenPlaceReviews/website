@@ -3,8 +3,16 @@ import SelectSearch from './components/SelectSearch.vue'
 import ExpandBlock from './components/ExpandBlock.vue'
 import VShowSlide from 'v-show-slide'
 import * as Vue2Leaflet from 'vue2-leaflet'
+import OprBlocks from './components/OPRBlocks.vue'
+import OprBlock from './components/OPRBlock.vue'
+import OprOperations from './components/OPROperations.vue'
+
 var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
 
+import filters from './filters';
+for(let name in filters) {
+    Vue.filter(name, filters[name]);
+}
 
 Vue.use(VShowSlide)
 
@@ -15,7 +23,10 @@ new Vue({
     ExpandBlock,
     LMap,
     LTileLayer,
-    LMarker
+    LMarker,
+    OprBlocks,
+    OprBlock,
+    OprOperations
   },
   methods:{
     show_form: function (e, form_class) {

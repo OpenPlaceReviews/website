@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Overpass:400,800');
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans:400,600');
 
 body {
     width: 100%;
     margin: 0;
-    font-family: 'Overpass', sans-serif;
+    font-family: 'Fira Sans', sans-serif;
     font-weight: 400;
     background-color: white;
     font-size: 1em;
@@ -44,8 +44,7 @@ h1{
         font-size: 2.5em;
         line-height: 2em;
         color: #596680;
-        font-family: 'Overpass', sans-serif;
-        font-weight: 800;
+        font-weight: 600;
         letter-spacing: 0.02em;
     }
     p {
@@ -80,8 +79,7 @@ h1{
     border-radius: 50px;
     text-decoration: none;
     font-size: 1em;
-    font-family: 'Overpass', sans-serif;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.04em;
     cursor: pointer;
     -webkit-box-shadow: 0px 3px 14px 2px #00000036;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
@@ -178,7 +176,6 @@ header{
             }
         }
         nav {
-                font-family: Overpass;
                 font-style: normal;
                 font-weight: bold;
                 line-height: normal;
@@ -278,7 +275,6 @@ header{
     min-width: 540px;
     margin: 0 auto;
     color: #000000;
-    font-family: Overpass;
     font-style: normal;
     font-weight: normal;
     line-height: 26px;
@@ -462,7 +458,6 @@ button:hover{
     flex-direction: row;
 }
 .signup-input-label{
-    font-family: Overpass;
     font-style: normal;
     font-weight: bold;
     line-height: normal;
@@ -506,7 +501,6 @@ button:hover{
 }
 .signup-input-description{
     margin-left: 20px;
-    font-family: Overpass;
     font-style: normal;
     font-weight: normal;
     line-height: normal;
@@ -519,7 +513,6 @@ button:hover{
     padding: 9px 0px 8px 57px;
     cursor: pointer;
     background: #F1F4FC;
-    font-family: Overpass;
     font-style: normal;
     font-weight: bold;
     line-height: normal;
@@ -539,7 +532,6 @@ button:hover{
 }
 
 .headline-optional-fields{
-    font-family: Overpass;
     font-style: normal;
     font-weight: 800;
     line-height: 25px;

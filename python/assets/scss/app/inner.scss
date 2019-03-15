@@ -24,7 +24,6 @@
       letter-spacing: 0.07em;
       color: #56627A;
       padding: 12px 20px;
-      font-family: Overpass;
       font-weight: bold;
     }
     .menu_items{
@@ -53,6 +52,7 @@
           color: #140579;
         }
         &.selected{
+          color: #140579;
           .select:before{
             -ms-transform: rotate(180deg);
             -webkit-transform: rotate(180deg);
@@ -184,6 +184,12 @@
           &.operation_database{
             background: url(../images/operation-database.png) no-repeat;
           }
+          &.sys_login, &.sys_signup{
+            background: url(../images/operation-user.png) no-repeat;
+          }
+          &.sys_operation, &.sys_validate, &.sys_grant, &.sys_role{
+            background: url(../images/operation-database.png) no-repeat;
+          }
         }
         .content{
           width: 500px;
@@ -198,7 +204,6 @@
           }
         }
         .info {
-          font-family: Overpass;
           font-style: normal;
           font-weight: 600;
           line-height: normal;

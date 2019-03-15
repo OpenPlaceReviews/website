@@ -1,0 +1,35 @@
+.blocks_items{
+  display: table;
+  border: 1px solid #CCD0D9;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 100%;
+  .blocks_items_header{
+    display: table-header-group;
+    div{
+      display: table-cell;
+      letter-spacing: 0.07em;
+      color: #56627A;
+      padding: 12px 20px;
+      font-family: Fira Sans;
+      font-weight: bold;
+      border-left: 1px solid #CCD0D9;
+      border-bottom: 1px solid #CCD0D9;
+    }
+    div:first-child{
+      border-left: none;
+    }
+  }
+  .block_item{
+    display: table-row;
+    div{
+      display: table-cell;
+      border-bottom: 1px solid #CCD0D9;
+      padding: 12px 20px;
+      border-left: 1px solid #CCD0D9;
+    }
+    div:first-child{
+      border-left: none;
+    }
+  }
+}
