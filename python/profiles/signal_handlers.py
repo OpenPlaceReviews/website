@@ -21,8 +21,11 @@ def send_login(request, user, **kwargs):
     response = opendb_login(**login_data)
     if response.status_code == 200:
         pubkey = json.loads(response.content.decode('utf-8')).get('new')[0].get('pubkey')
+        privatekey = json.loads(response.content.decode('utf-8')).get('privatekey')
         request.session['opendb_pubkey'] = pubkey[settings.SLICE_KEY:]
+        request.session['opendb_privatekey'] = privatekey[settings.SLICE_KEY:]
         user.pubkey = pubkey[:settings.SLICE_KEY]
+        user.privatekey = privatekey[:settings.SLICE_KEY]
         user.save()
         messages.success(request, 'Successfully login in OpenDB')
     else:

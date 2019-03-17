@@ -20,6 +20,7 @@ class User(AbstractUser):
     username = models.CharField(_('username'), max_length=255, unique=True)
     email = models.EmailField(_('email address'), blank=True, null=True)
     pubkey = models.CharField(max_length=255, blank=True, default='')
+    privatekey = models.CharField(max_length=255, blank=True, default='')
 
     objects = UserManager()
 
