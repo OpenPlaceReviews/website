@@ -5,18 +5,7 @@
 
 {% block content %}
 <div class="containter_flex">
-    <div>
-        <div class="menu">
-        <div class="menu_header">Menu</div>
-        <ul class="menu_items">
-            <li class="selected"><div class="icon_task"></div><div class="select"></div><div>Blocks</div></li>
-            <li ><div class="icon_database"></div><div class="select"></div><div>Operations</div></li>
-{#            <li class="submenu_item">User actions</li>#}
-{#            <li class="submenu_item selected">System & Bots</li>#}
-            <li><div class="icon_user"></div><div class="select"></div><div>Users</div></li>
-        </ul>
-    </div>
-    </div>
+    {% include 'main/_data_left_menu.html' %}
     <div class="data_content">
         <div class="data_container">
             <opr-blocks url="{% url 'proxy_url' %}?url=http://127.0.0.1:6463/api/blocks"></opr-blocks>

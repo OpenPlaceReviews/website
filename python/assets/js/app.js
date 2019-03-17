@@ -35,6 +35,9 @@ new Vue({
         while (forms_hidden.length > 0) {
             forms_hidden[0].classList.remove(form_class);
         }
+    },
+    click_menu: function (e) {
+        e.target.parentElement.parentElement.classList.toggle('selected');
     }
   }
 });

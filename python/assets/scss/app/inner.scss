@@ -34,23 +34,10 @@
       margin: 0;
       li{
         list-style: none;
-        display: flex;
-        padding: 10px 20px;
-        cursor: pointer;
+        padding: 0;
         font-weight: bold;
         line-height: normal;
         letter-spacing: 0.02em;
-        &.submenu_item{
-          padding-left: 50px;
-          &.selected {
-            background: rgba(204, 208, 217, 0.3);
-            color: #140579;
-          }
-        }
-        &:hover{
-          background: rgba(204, 208, 217, 0.3);
-          color: #140579;
-        }
         &.selected{
           color: #140579;
           .select:before{
@@ -59,46 +46,85 @@
             transform: rotate(180deg);
             top: -4px;
           }
+          a{
+            color: #140579;
+          }
+          .submenu_items{
+            display: block;
+          }
         }
-        .select:before{
-          position: relative;
-          display:inline-block;
-          left: 180px;
-          color: #2D69E0;
-          margin-top: 4px;
-          border-style: solid;
-          border-width: 5px 5px 0;
-          border-color: #2D69E0 transparent transparent;
-          content: "";
+        .first_level_menu{
+          display: flex;
+          padding: 10px 20px;
+          &:hover{
+            background: rgba(204, 208, 217, 0.3);
+            color: #140579;
+          }
+          .select{
+            cursor: pointer;
+            &:before{
+              position: relative;
+              display:inline-block;
+              left: 180px;
+              color: #2D69E0;
+              margin-top: 4px;
+              border-style: solid;
+              border-width: 5px 5px 0;
+              border-color: #2D69E0 transparent transparent;
+              content: "";
+            }
+          }
+          .unselect{
+            margin-left: 10px;
+          }
+          .icon_database::before{
+            background: url(../images/icon-database.png) no-repeat;
+            position: relative;
+            padding-left: 20px;
+            padding-top: 15px;
+            top: 12px;
+            content: "";
+            width: 20px;
+          }
+          .icon_task::before{
+            background: url(../images/icon-task.png) no-repeat;
+            position: relative;
+            padding-left: 20px;
+            padding-top: 15px;
+            top: 11px;
+            content: "";
+            width: 20px;
+          }
+          .icon_user::before{
+            background: url(../images/icon-user.png) no-repeat;
+            position: relative;
+            padding-left: 20px;
+            padding-top: 15px;
+            top: 12px;
+            content: "";
+            width: 20px;
+          }
+        }
+        .submenu_items{
+          display: none;
+          .submenu_item{
+            padding: 10px 0px 10px 50px;
+            font-size: 15px;
+            a{
+              color: #2D69E0;
+            }
+            &.selected {
+              background: rgba(204, 208, 217, 0.3);
+              color: #140579;
+            }
+            &:hover{
+              background: rgba(204, 208, 217, 0.3);
+              color: #140579;
+            }
+          }
         }
 
-        .icon_database::before{
-          background: url(../images/icon-database.png) no-repeat;
-          position: relative;
-          padding-left: 20px;
-          padding-top: 15px;
-          top: 12px;
-          content: "";
-          width: 20px;
-        }
-        .icon_task::before{
-          background: url(../images/icon-task.png) no-repeat;
-          position: relative;
-          padding-left: 20px;
-          padding-top: 15px;
-          top: 11px;
-          content: "";
-          width: 20px;
-        }
-        .icon_user::before{
-          background: url(../images/icon-user.png) no-repeat;
-          position: relative;
-          padding-left: 20px;
-          padding-top: 15px;
-          top: 12px;
-          content: "";
-          width: 20px;
-        }
+
       }
     }
   }
