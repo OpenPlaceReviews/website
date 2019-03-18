@@ -116,6 +116,9 @@
             &.selected {
               background: rgba(204, 208, 217, 0.3);
               color: #140579;
+              a{
+                color: #140579;
+              }
             }
             &:hover{
               background: rgba(204, 208, 217, 0.3);

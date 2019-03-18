@@ -6,17 +6,18 @@
             <li {% if url_data_page in request.path %}class="selected"{% endif %}>
                 <div class="first_level_menu">
                     <div class="icon_task"></div>
-                    <a class="unselect" href="{% url 'data_page' %}">Blocks</a>
+                    <a class="unselect" href="{{ url_data_page }}">Blocks</a>
                 </div>
             </li>
-            <li>
+            {% url 'data_queue' as url_data_queue %}
+            <li class="{% if request.path == url_data_queue %}selected{% endif %}">
                 <div class="first_level_menu">
                     <div class="icon_database"></div>
                     <div class="select" v-on:click="click_menu">Operations</div>
                 </div>
                 <ul class="submenu_items">
-                    <li class="submenu_item"><a href="#">Queue</a></li>
-                    <li class="submenu_item"><a href="#">Block last</a></li>
+                    <li class="submenu_item {% if request.path == url_data_queue %}selected{% endif %}"><a href="{{ url_data_queue }}">Queue</a></li>
+                    <li class="submenu_item"><a href="#">Last block</a></li>
                 </ul>
             </li>
 

@@ -6,6 +6,7 @@ import * as Vue2Leaflet from 'vue2-leaflet'
 import OprBlocks from './components/OPRBlocks.vue'
 import OprBlock from './components/OPRBlock.vue'
 import OprOperations from './components/OPROperations.vue'
+import OprQueue from './components/OPRQueue.vue'
 
 var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
 
@@ -26,7 +27,8 @@ new Vue({
     LMarker,
     OprBlocks,
     OprBlock,
-    OprOperations
+    OprOperations,
+    OprQueue
   },
   methods:{
     show_form: function (e, form_class) {

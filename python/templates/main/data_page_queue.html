@@ -1,14 +1,14 @@
 {% extends 'base_inner.html' %}
 {% load i18n %}
 
-{% block headline %}Blocks{% endblock %}
+{% block headline %}Queue{% endblock %}
 
 {% block content %}
 <div class="containter_flex">
     {% include 'main/_data_left_menu.html' %}
     <div class="data_content">
         <div class="data_container">
-            <opr-blocks url="{% url 'proxy_url' %}?url=http://127.0.0.1:6463/api/blocks"></opr-blocks>
+            <opr-queue url="{% url 'proxy_url' %}?url=http://127.0.0.1:6463/api/queue"></opr-queue>
         </div>
     </div>
 </div>
