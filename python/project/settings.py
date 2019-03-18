@@ -211,6 +211,7 @@ OPENDB_SIGN_PK = ''
 SLICE_KEY = 50
 
 SETTINGS_EXPORT = ('SERVER_API_ADDRESS', 'SITE_URL')
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 try:
     from .settings_local import *

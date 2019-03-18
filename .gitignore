@@ -6,3 +6,4 @@ settings_local.py
 python/node_modules/
 python/fixtures.json
 python/assets/dist/
+static/
