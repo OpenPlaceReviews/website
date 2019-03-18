@@ -7,6 +7,10 @@ import OprBlocks from './components/OPRBlocks.vue'
 import OprBlock from './components/OPRBlock.vue'
 import OprOperations from './components/OPROperations.vue'
 import OprQueue from './components/OPRQueue.vue'
+import OprEntitiesSignups from './components/OPREntitiesSignups.vue'
+import OprEntitiesLogins from './components/OPREntitiesLogins.vue'
+import OprEntitiesGrants from './components/OPREntitiesGrants.vue'
+import OprEntitiesValidations from './components/OPREntitiesValidations.vue'
 
 var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
 
@@ -28,7 +32,11 @@ new Vue({
     OprBlocks,
     OprBlock,
     OprOperations,
-    OprQueue
+    OprQueue,
+    OprEntitiesSignups,
+    OprEntitiesLogins,
+    OprEntitiesGrants,
+    OprEntitiesValidations
   },
   methods:{
     show_form: function (e, form_class) {

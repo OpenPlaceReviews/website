@@ -1,0 +1,15 @@
+{% extends 'base_inner.html' %}
+{% load i18n %}
+
+{% block headline %}User Signups{% endblock %}
+
+{% block content %}
+<div class="containter_flex">
+    {% include 'main/_data_left_menu.html' %}
+    <div class="data_content">
+        <div class="data_container">
+            <opr-entities-signups url="{% url 'proxy_url' %}?url=http://127.0.0.1:6463/api/objects?type=sys.signup"></opr-entities-signups>
+        </div>
+    </div>
+</div>
+{% endblock %}
