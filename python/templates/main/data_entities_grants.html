@@ -8,7 +8,7 @@
     {% include 'main/_data_left_menu.html' %}
     <div class="data_content">
         <div class="data_container">
-            <opr-entities-grants url="{% url 'proxy_url' %}?url=http://127.0.0.1:6463/api/objects?type=sys.grant"></opr-entities-grants>
+            <opr-entities-grants url="{% url 'proxy_url' %}?url={{ settings.SERVER_API_ADDRESS }}/api/objects?type=sys.grant"></opr-entities-grants>
         </div>
     </div>
 </div>

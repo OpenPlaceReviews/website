@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'profiles.context_processors.all_languages_vue',
                 'profiles.context_processors.all_countries_vue',
+                'django_settings_export.settings_export',
             ],
         },
     },
@@ -208,6 +209,8 @@ OPENDB_SIGN_LOGIN = 'openplacereviews:web_backend'
 OPENDB_USERNAME = 'web_backend'
 OPENDB_SIGN_PK = ''
 SLICE_KEY = 50
+
+SETTINGS_EXPORT = ('SERVER_API_ADDRESS', )
 
 try:
     from .settings_local import *

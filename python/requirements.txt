@@ -2,3 +2,4 @@ django==2.1.5
 django-allauth==0.38.0
 psycopg2==2.7.7
 gunicorn==19.9.0
+django-settings-export==1.2.1
