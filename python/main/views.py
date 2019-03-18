@@ -1,8 +1,10 @@
+import json
+
+import requests
+from django.conf import settings
+from django.http import HttpResponseNotFound, JsonResponse
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView
-from django.http import HttpResponseNotFound, HttpResponse, JsonResponse
-import requests
-import json
 
 
 class FrontpageView(TemplateView):
@@ -36,10 +38,10 @@ class BlockPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data()
-        url = 'http://127.0.0.1:8000/en/block_exm/'
+        # url = '{}/en/block_exm/'.format(settings.SITE_URL)
         ctx['block_id'] = self.kwargs.get('block_id')
-        response = requests.get(url).json()
-        ctx['operations'] = response.get('ops')
+        # response = requests.get(url).json()
+        # ctx['operations'] = response.get('ops')
         return ctx
 
 

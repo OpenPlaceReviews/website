@@ -204,13 +204,13 @@ MEDIA_URL = '/media/'
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 SERVER_API_ADDRESS = 'http://127.0.0.1:6463'
-
+SITE_URL = 'http://127.0.0.1:8000'
 OPENDB_SIGN_LOGIN = 'openplacereviews:web_backend'
 OPENDB_USERNAME = 'web_backend'
 OPENDB_SIGN_PK = ''
 SLICE_KEY = 50
 
-SETTINGS_EXPORT = ('SERVER_API_ADDRESS', )
+SETTINGS_EXPORT = ('SERVER_API_ADDRESS', 'SITE_URL')
 
 try:
     from .settings_local import *
