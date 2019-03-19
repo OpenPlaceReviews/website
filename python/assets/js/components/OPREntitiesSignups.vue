@@ -25,7 +25,6 @@
 
 <script>
 import axios from 'axios';
-import OprOperations from './OPROperations.vue'
 
 export default {
   name: 'OprEntitiesSignups',

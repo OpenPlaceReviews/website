@@ -11,5 +11,9 @@ export default {
     },
     join_list:  function (list_str, symbol) {
         return list_str.join(symbol);
+    },
+    default_value: function (str, value) {
+        if(!str) return value
+        return str
     }
 }

@@ -23,8 +23,10 @@
             {% url 'data_entities_signups' as url_entities_signups %}
             {% url 'data_entities_logins' as url_entities_logins %}
             {% url 'data_entities_grants' as url_entities_grants %}
-            {% url 'data_entities_validations' as url_entitites_validations %}
-            <li class="{% if request.path == url_entities_signups or request.path == url_entities_logins or request.path == url_entities_grants or request.path == url_entitites_validations %}selected{% endif %}">
+            {% url 'data_entities_validations' as url_entities_validations %}
+            {% url 'data_entities_operations' as url_entities_operations %}
+            {% url 'data_entities_roles' as url_entities_roles %}
+            <li class="{% if request.path == url_entities_signups or request.path == url_entities_logins or request.path == url_entities_grants or request.path == url_entities_validations or request.path == url_entities_roles or request.path == url_entities_operations %}selected{% endif %}">
                 <div class="first_level_menu">
                     <div class="icon_user"></div>
                     <div class="select" v-on:click="click_menu">Entities</div>
@@ -33,7 +35,9 @@
                     <li class="submenu_item {% if request.path == url_entities_signups %}selected{% endif %}"><a href="{{ url_entities_signups }}">User signups</a></li>
                     <li class="submenu_item {% if request.path == url_entities_logins %}selected{% endif %}"><a href="{{ url_entities_logins }}">User logins</a></li>
                     <li class="submenu_item {% if request.path == url_entities_grants %}selected{% endif %}"><a href="{{  url_entities_grants }}">Permissions grants</a></li>
-                    <li class="submenu_item {% if request.path == url_entitites_validations %}selected{% endif %}"><a href="{{ url_entitites_validations }}">Validation rules</a></li>
+                    <li class="submenu_item {% if request.path == url_entities_validations %}selected{% endif %}"><a href="{{ url_entities_validations }}">Validation rules</a></li>
+                    <li class="submenu_item {% if request.path == url_entities_roles %}selected{% endif %}"><a href="{{ url_entities_roles }}">Roles</a></li>
+                    <li class="submenu_item {% if request.path == url_entities_operations %}selected{% endif %}"><a href="{{ url_entities_operations }}">Operations</a></li>
                 </ul>
             </li>
 

@@ -11,6 +11,8 @@ import OprEntitiesSignups from './components/OPREntitiesSignups.vue'
 import OprEntitiesLogins from './components/OPREntitiesLogins.vue'
 import OprEntitiesGrants from './components/OPREntitiesGrants.vue'
 import OprEntitiesValidations from './components/OPREntitiesValidations.vue'
+import OprEntitiesRoles from './components/OPREntitiesRoles.vue'
+import OprEntitiesOperations from './components/OPREntitiesOperations.vue'
 
 var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
 
@@ -19,7 +21,7 @@ for(let name in filters) {
     Vue.filter(name, filters[name]);
 }
 
-Vue.use(VShowSlide)
+Vue.use(VShowSlide);
 
 new Vue({
   el: '#opr-app',
@@ -36,7 +38,9 @@ new Vue({
     OprEntitiesSignups,
     OprEntitiesLogins,
     OprEntitiesGrants,
-    OprEntitiesValidations
+    OprEntitiesValidations,
+    OprEntitiesRoles,
+    OprEntitiesOperations
   },
   methods:{
     show_form: function (e, form_class) {

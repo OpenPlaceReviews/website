@@ -3,19 +3,19 @@
         <div v-for="obj in objects_data.objects" class="item_data">
             <div class="type_operation sys_signup"></div>
             <div class="content">
-                <div class="content_header">Login user</div>
-                <div>User login as <b>{{ obj.id | join_list(':') }}</b></div>
+                <div class="content_header">Role {{ obj.id | join_list(', ')}}</div>
+                <div>{{ obj.comment }}</div>
             </div>
             <div class="info">
                 <div class="first_info_block">
-                    <!--<div class="date">2019-01-24, 14:44</div>-->
+                    <div class="date">Owner role</div>
                     <div class="delimeter">•</div>
-                    <div class="hash" v-bind:title="obj.pubkey">{{ obj.pubkey | slice_hash(121, 133)}}</div>
+                    <div class="hash">{{ obj.owner_role }}</div>
                 </div>
                 <div class="second_info_block">
-                    <div class="who_confirmed">{{ obj.type }}</div>
+                    <div class="who_confirmed">Super roles</div>
                     <div class="delimeter">•</div>
-                    <div class="user"><a href="#">{{ obj.signed_by }}</a></div>
+                    <div class="user">{{ obj.super_roles | join_list(', ') | default_value('none')}}</div>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'OprEntitiesLogins',
+  name: 'OprEntitiesRoles',
     data: () => ({
     objects_data:[]
   }),
