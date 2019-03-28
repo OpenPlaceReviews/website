@@ -157,7 +157,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'VERSION': 'v2.12',
     },
 }
-
+ACCOUNT_ADAPTER = 'profiles.adapter.OPRAccountAdapter'
 ACCOUNT_FORMS = {'signup': 'profiles.forms.CustomSignupForm'}
 SOCIALACCOUNT_FORMS = {'signup': 'profiles.forms.CustomSocialSignupForm'}
 ACCOUNT_USERNAME_MIN_LENGTH = 1
@@ -209,6 +209,7 @@ OPENDB_SIGN_LOGIN = 'openplacereviews:web_backend'
 OPENDB_USERNAME = 'web_backend'
 OPENDB_SIGN_PK = ''
 SLICE_KEY = 50
+
 
 SETTINGS_EXPORT = ('SERVER_API_ADDRESS', 'SITE_URL')
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
