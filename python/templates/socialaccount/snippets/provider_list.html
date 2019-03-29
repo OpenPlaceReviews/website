@@ -6,7 +6,13 @@
 {% for provider in socialaccount_providers %}
 <li>
     <div class="method-auth">
-        <img src="{% static 'dist/images/icon-' %}{{ provider.id }}.png"/>
+        {% if provider.id == 'google' %}
+            <img src="{% static 'dist/images/icon-google.png' %}"/>
+        {% elif provider.id == 'facebook'  %}
+            <img src="{% static 'dist/images/icon-facebook.png' %}"/>
+        {% elif provider.id == 'osm'  %}
+            <img src="{% static 'dist/images/icon-osm.png' %}"/>
+        {% endif %}
         <a title="{{ provider.name }}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">{{ provider.name }}</a>
     </div>
 </li>
