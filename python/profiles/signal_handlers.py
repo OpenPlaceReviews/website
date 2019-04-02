@@ -21,11 +21,11 @@ def send_login(request, user, **kwargs):
     response = opendb_login(**login_data)
     if response.status_code == 200:
         pubkey = json.loads(response.content.decode('utf-8')).get('new')[0].get('pubkey')
-        privatekey = json.loads(response.content.decode('utf-8')).get('privatekey')
+        privatekey = json.loads(response.content.decode('utf-8')).get('eval').get('privatekey')
         request.session['opendb_pubkey'] = pubkey[settings.SLICE_KEY:]
         request.session['opendb_privatekey'] = privatekey[settings.SLICE_KEY:]
-        user.pubkey = pubkey[:settings.SLICE_KEY]
-        user.privatekey = privatekey[:settings.SLICE_KEY]
+        user.pubkey = pubkey
+        user.privatekey = privatekey
         user.save()
         messages.success(request, 'Successfully login in OpenDB')
     else:
@@ -41,22 +41,22 @@ def send_logout(request, user, **kwargs):
     user.save()
 
 
-@receiver(user_signed_up, sender=User)
-def send_signup(request, user, **kwargs):
-    signup_data = {
-        'nickname': user.username,
-        'pwd': request.POST.get('password1'),
-        'oauth_provider': user.get_oauth_provider,
-        'oauth_uid': user.get_oauth_uid,
-        'details': {
-            'languages': request.POST.getlist('languages'),
-            'country': request.POST.get('country'),
-        }
-    }
-    response = opendb_signup(**signup_data)
-    if response.status_code == 200:
-        messages.success(request, 'Successfully signed in OpenDB')
-    else:
-        error_msg = 'Error signed in OpenDB: {}'.format(json.loads(response.content.decode('utf-8')).get('message'))
-        messages.error(request, error_msg)
-    return
+# @receiver(user_signed_up, sender=User)
+# def send_signup(request, user, **kwargs):
+#     signup_data = {
+#         'nickname': user.username,
+#         'pwd': request.POST.get('password1'),
+#         'oauth_provider': user.get_oauth_provider,
+#         'oauth_uid': user.get_oauth_uid,
+#         'details': {
+#             'languages': request.POST.getlist('languages'),
+#             'country': request.POST.get('country'),
+#         }
+#     }
+#     response = opendb_signup(**signup_data)
+#     if response.status_code == 200:
+#         messages.success(request, 'Successfully signed in OpenDB')
+#     else:
+#         error_msg = 'Error signed in OpenDB: {}'.format(json.loads(response.content.decode('utf-8')).get('message'))
+#         messages.error(request, error_msg)
+#     return

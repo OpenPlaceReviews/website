@@ -61,12 +61,14 @@ def opendb_login(nickname, pwd=None, oauth_provider=None,
     api_url = '{}{}'.format(settings.SERVER_API_ADDRESS, api_path)
     data = {
         "name": '{}:openplacereviews'.format(nickname),
-        "pwd": pwd,
-        "signupPrivateKey": settings.OPENDB_SIGN_PK,
-        "oauthProvider": oauth_provider,
-        "oauthId": oauth_uid,
-        "loginPubKey": None,
+        "pwd": pwd or '',
+        "edit": 'true',
+        "signupPrivateKey": '',
+        "oauthProvider": oauth_provider or '',
+        "oauthId": oauth_uid or '',
+        "loginPubKey": '',
         "loginAlgo": "EC",
+        "userDetails": ''
     }
     cookies = {'JSESSIONID': get_jsessionid()}
     response = requests.post(api_url, data=data, cookies=cookies)
