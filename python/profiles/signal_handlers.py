@@ -12,26 +12,29 @@ from .models import User
 
 @receiver(user_logged_in, sender=User)
 def send_login(request, user, **kwargs):
-    login_data = {
-        'nickname': user.username,
-        'pwd': request.POST.get('password'),
-        'oauth_provider': user.get_oauth_provider,
-        'oauth_uid': user.get_oauth_uid,
-    }
-    response = opendb_login(**login_data)
-    if response.status_code == 200:
-        pubkey = json.loads(response.content.decode('utf-8')).get('new')[0].get('pubkey')
-        privatekey = json.loads(response.content.decode('utf-8')).get('eval').get('privatekey')
-        request.session['opendb_pubkey'] = pubkey[settings.SLICE_KEY:]
-        request.session['opendb_privatekey'] = privatekey[settings.SLICE_KEY:]
-        user.pubkey = pubkey
-        user.privatekey = privatekey
-        user.save()
-        messages.success(request, 'Successfully login in OpenDB')
+
+    if not user.privatekey:
+        login_data = {
+            'nickname': user.username,
+            'pwd': request.POST.get('password'),
+            'oauth_provider': user.get_oauth_provider,
+            'oauth_uid': user.get_oauth_uid,
+        }
+        response = opendb_login(**login_data)
+        if response.status_code == 200:
+            pubkey = json.loads(response.content.decode('utf-8')).get('new')[0].get('pubkey')
+            privatekey = json.loads(response.content.decode('utf-8')).get('eval').get('privatekey')
+            request.session['opendb_pubkey'] = pubkey[settings.SLICE_KEY:]
+            request.session['opendb_privatekey'] = privatekey[settings.SLICE_KEY:]
+            user.pubkey = pubkey
+            user.privatekey = privatekey
+            user.save()
+            messages.success(request, 'Successfully login in OpenDB')
+        else:
+            error_msg = 'Error login in OpenDB: {}'.format(json.loads(response.content.decode('utf-8')).get('message'))
+            messages.error(request, error_msg)
     else:
-        error_msg = 'Error login in OpenDB: {}'.format(json.loads(response.content.decode('utf-8')).get('message'))
-        messages.error(request, error_msg)
-    return
+        request.session['opendb_privatekey'] = request.user.privatekey[settings.SLICE_KEY:]
 
 
 @receiver(user_logged_out, sender=User)
