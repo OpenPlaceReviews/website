@@ -1,6 +1,8 @@
+{% load opendb_tags %}
+
 <div>
     <div class="menu">
-
+        {% opendb_status as opr_status %}
         <ul class="menu_items">
             <li class="menu_header">Filter</li>
             {% url 'data_queue' as url_data_queue %}
@@ -8,6 +10,7 @@
                 <div class="first_level_menu">
                     <div class="icon_queue"></div>
                     <a href="{{ url_data_queue }}" class="unselect">Queue</a>
+                    <div class="menu_opr_count">{{ opr_status.queue }}</div>
                 </div>
             </li>
             {% url 'data_page' as url_data_page %}
@@ -15,6 +18,7 @@
                 <div class="first_level_menu">
                     <div class="icon_blocks"></div>
                     <a class="unselect" href="{{ url_data_page }}">All Blocks</a>
+                    <div class="menu_opr_count">{{ opr_status.blocks }}</div>
                 </div>
             </li>
             <li class="font_weight_normal {% if url_data_page in request.path %}selected_{% endif %}">
@@ -52,7 +56,10 @@
             {% url 'data_entities_validations' as url_entities_validations %}
             {% url 'data_entities_operations' as url_entities_operations %}
             {% url 'data_entities_roles' as url_entities_roles %}
-            <li class="menu_header">Objects</li>
+            <li class="menu_header">
+                <div>Objects</div>
+                <div class="menu_opr_count">{{ opr_status.queue }}</div>
+            </li>
             <li class="font_weight_normal {% if url_entities_operations in request.path %}selected{% endif %}">
                 <div class="first_level_menu">
                     <div class="icon_object"></div>

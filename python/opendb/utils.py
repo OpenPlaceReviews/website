@@ -81,3 +81,35 @@ def opendb_login(nickname, pwd=None, oauth_provider=None,
     else:
         logger.error('Error signed on OpenDB: {}'.format(response.content.decode('utf-8')))
     return response
+
+
+def get_opendb_status():
+    queue_path = '/api/queue'
+    blocks_path = '/api/blocks'
+    objects_path = '/api/objects?type=sys.operation'
+    url = '{}{}'.format(settings.SERVER_API_ADDRESS, queue_path)
+    queue_data = requests.get(url)
+    if queue_data.status_code == 200:
+        queue_count = len(queue_data.json().get('ops', []))
+    else:
+        queue_count = 0
+    url = '{}{}'.format(settings.SERVER_API_ADDRESS, blocks_path)
+    blocks_data = requests.get(url)
+    if blocks_data.status_code == 200:
+        blocks_data = blocks_data.json()
+    else:
+        blocks_data = {}
+    blocks_count = len(blocks_data)
+    url = '{}{}'.format(settings.SERVER_API_ADDRESS, objects_path)
+    objects_data = requests.get(url)
+    if objects_data.status_code == 200:
+        objects_data = objects_data.json()
+    else:
+        objects_data = {}
+    objects_count = len(objects_data.get('objects', []))
+    statuses = {
+        'queue': queue_count,
+        'blocks': blocks_count,
+        'objects': objects_count
+    }
+    return statuses

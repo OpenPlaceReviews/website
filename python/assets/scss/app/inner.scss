@@ -28,6 +28,16 @@
       letter-spacing: 0.04em;
       color: #56627A;
       padding: 14px 10px;
+      display: flex;
+      .menu_opr_count{
+        margin-left: auto;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: normal;
+        letter-spacing: 0.01em;
+        color: #6A7181;
+      }
     }
     .menu_items{
       color: #2D69E0;
@@ -156,6 +166,15 @@
             padding-top: 15px;
             content: "";
           }
+          .menu_opr_count{
+            margin-left: auto;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: normal;
+            letter-spacing: 0.01em;
+            color: #6A7181;
+          }
         }
         .submenu_items{
           display: none;
@@ -178,8 +197,6 @@
             }
           }
         }
-
-
       }
     }
   }
