@@ -54,6 +54,10 @@
         &.bottom_border{
           border-bottom: 1px solid #CCD0D9;
         }
+        &:hover{
+          background: rgba(204, 208, 217, 0.3);
+          color: #140579;
+        }
         &.selected{
           color: #140579;
           background: #FFC93A;
@@ -69,14 +73,80 @@
           .submenu_items{
             display: block;
           }
+          &:hover{
+            background: #FFC93A;
+          }
+          .first_level_menu {
+            .icon_queue:before {
+              background: url(../images/ic_queue_selected.png) no-repeat;
+              background-size: 20px 20px;
+              background-position-y: 15px;
+              padding-left: 21px;
+              padding-top: 15px;
+              content: "";
+            }
+            .icon_block:before{
+              background: url(../images/ic_block_selected.png) no-repeat;
+              background-size: 20px 20px;
+              background-position-y: 15px;
+              padding-left: 21px;
+              padding-top: 15px;
+              content: "";
+            }
+            .icon_object:before{
+              background: url(../images/ic_object_selected.png) no-repeat;
+              background-size: 20px 20px;
+              background-position-y: 15px;
+              padding-left: 21px;
+              padding-top: 15px;
+              content: "";
+            }
+            .icon_user_login:before{
+              background: url(../images/ic_user_login_selected.png) no-repeat;
+              background-size: 20px 20px;
+              background-position-y: 15px;
+              padding-left: 21px;
+              padding-top: 15px;
+              content: "";
+            }
+            .icon_permission:before{
+              background: url(../images/ic_permission_selected.png) no-repeat;
+              background-size: 20px 20px;
+              background-position-y: 15px;
+              padding-left: 21px;
+              padding-top: 15px;
+              content: "";
+            }
+            .icon_user_role:before{
+              background: url(../images/ic_user_info_selected.png) no-repeat;
+              background-size: 20px 20px;
+              background-position-y: 15px;
+              padding-left: 21px;
+              padding-top: 15px;
+              content: "";
+            }
+            .icon_user_signup:before{
+              background: url(../images/ic_user_login_selected.png) no-repeat;
+              background-size: 20px 20px;
+              background-position-y: 15px;
+              padding-left: 21px;
+              padding-top: 15px;
+              content: "";
+            }
+            .icon_validation:before{
+              background: url(../images/ic_validation_selected.png) no-repeat;
+              background-size: 20px 20px;
+              background-position-y: 15px;
+              padding-left: 21px;
+              padding-top: 15px;
+              content: "";
+            }
+          }
         }
+
         .first_level_menu{
           display: flex;
           padding: 10px 10px;
-          &:hover{
-            background: rgba(204, 208, 217, 0.3);
-            color: #140579;
-          }
           .select{
             cursor: pointer;
             &:before{
@@ -95,7 +165,7 @@
             margin-left: 10px;
           }
           .icon_queue:before{
-            background: url(../images/icon-queue.png) no-repeat;
+            background: url(../images/ic_queue_normal.png) no-repeat;
             background-size: 20px 20px;
             background-position-y: 15px;
             padding-left: 21px;
@@ -111,7 +181,7 @@
             content: "";
           }
           .icon_block:before{
-            background: url(../images/icon-block.png) no-repeat;
+            background: url(../images/ic_block_normal.png) no-repeat;
             background-size: 20px 20px;
             background-position-y: 15px;
             padding-left: 21px;
@@ -119,7 +189,7 @@
             content: "";
           }
           .icon_object:before{
-            background: url(../images/icon-object.png) no-repeat;
+            background: url(../images/ic_object_normal.png) no-repeat;
             background-size: 20px 20px;
             background-position-y: 15px;
             padding-left: 21px;
@@ -127,7 +197,7 @@
             content: "";
           }
           .icon_user_login:before{
-            background: url(../images/icon-user-login.png) no-repeat;
+            background: url(../images/ic_user_login_normal.png) no-repeat;
             background-size: 20px 20px;
             background-position-y: 15px;
             padding-left: 21px;
@@ -135,7 +205,7 @@
             content: "";
           }
           .icon_permission:before{
-            background: url(../images/icon-permission.png) no-repeat;
+            background: url(../images/ic_permission_normal.png) no-repeat;
             background-size: 20px 20px;
             background-position-y: 15px;
             padding-left: 21px;
@@ -143,7 +213,7 @@
             content: "";
           }
           .icon_user_role:before{
-            background: url(../images/icon-user-role.png) no-repeat;
+            background: url(../images/ic_user_info_normal.png) no-repeat;
             background-size: 20px 20px;
             background-position-y: 15px;
             padding-left: 21px;
@@ -151,7 +221,7 @@
             content: "";
           }
           .icon_user_signup:before{
-            background: url(../images/icon-user-signup.png) no-repeat;
+            background: url(../images/ic_user_login_normal.png) no-repeat;
             background-size: 20px 20px;
             background-position-y: 15px;
             padding-left: 21px;
@@ -159,7 +229,7 @@
             content: "";
           }
           .icon_validation:before{
-            background: url(../images/icon-validation.png) no-repeat;
+            background: url(../images/ic_validation_normal.png) no-repeat;
             background-size: 20px 20px;
             background-position-y: 15px;
             padding-left: 21px;
