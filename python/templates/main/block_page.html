@@ -5,7 +5,6 @@
 
 {% block content %}
 <div class="containter_flex">
-    {% include 'main/_data_left_menu.html' %}
     <div class="data_content">
 {#        <div class="filters">#}
 {#            <ul>#}
@@ -24,8 +23,9 @@
 {#                <option>sys.validate</option>#}
 {#            </select>#}
 {#        </div>#}
-        <opr-block url="{{ settings.SITE_URL}}/en/block_exm/"></opr-block>
+        <opr-block url="{% url 'proxy_url' %}?url={{ settings.SERVER_API_ADDRESS }}/api/block-by-hash?hash={{ hash }}"></opr-block>
     </div>
+    {% include 'main/_data_right_menu.html' %}
 </div>
 {% endblock %}
 <script>

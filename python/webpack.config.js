@@ -32,7 +32,15 @@ module.exports = {
         options:{
           name: "../images/[name].[ext]",
         }
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
+        loader: 'file-loader',
+        options:{
+          name: "../fonts/[name].[ext]",
+        }
       }
+
     ]
   },
   output: {
@@ -43,8 +51,9 @@ module.exports = {
     new ExtractTextPlugin('css/app.min.css'),
     new VueLoaderPlugin(),
     new CopyWebpackPlugin([
-            {from:'assets/images',to:'images'}
-        ]),
+          {from:'assets/images',to:'images'},
+          {from:'assets/fonts',to:'fonts'},
+      ]),
   ],
   resolve: {
     alias: {

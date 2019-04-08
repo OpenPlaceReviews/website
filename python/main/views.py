@@ -2,9 +2,11 @@ import json
 
 import requests
 from django.conf import settings
-from django.http import HttpResponseNotFound, JsonResponse
+from django.http import HttpResponseNotFound, JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.http import JsonResponse, HttpResponseRedirect
 
 
 class FrontpageView(TemplateView):
@@ -22,6 +24,15 @@ def page_not_found(request, exception=None, template_name='404.html'):
 class DataPageView(TemplateView):
     template_name = 'main/data_page.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        breadcrumbs = {
+            'Data': reverse_lazy('data_queue'),
+            'Block list': reverse_lazy('data_page')
+        }
+        ctx['breadcrumbs'] = breadcrumbs
+        return ctx
+
 
 class MapPageView(TemplateView):
     template_name = 'main/map_page.html'
@@ -30,7 +41,10 @@ class MapPageView(TemplateView):
 def proxy_url(request):
     url = request.GET.get('url')
     response = requests.get(url)
-    return JsonResponse(response.json())
+    if response.json().__class__ != dict().__class__:
+        return JsonResponse(response.json(), safe=False)
+    else:
+        return JsonResponse(response.json())
 
 
 class BlockPage(TemplateView):
@@ -38,11 +52,14 @@ class BlockPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data()
-        # url = '{}/en/block_exm/'.format(settings.SITE_URL)
-        ctx['block_id'] = self.kwargs.get('block_id')
-        # response = requests.get(url).json()
-        # ctx['operations'] = response.get('ops')
+        ctx['hash'] = self.kwargs.get('hash')
         return ctx
+
+    def render_to_response(self, context, **response_kwargs):
+        if 'json' in self.request.GET:
+            block_url = '{}?url={}/api/block-by-hash?hash={}'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS, self.kwargs.get('hash'))
+            return HttpResponseRedirect(block_url)
+        return super().render_to_response(context, **response_kwargs)
 
 
 def block_exm(reqeust):

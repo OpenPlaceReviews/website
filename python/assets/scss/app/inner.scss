@@ -21,10 +21,13 @@
     box-sizing: border-box;
     border-radius: 4px;
     .menu_header{
-      letter-spacing: 0.07em;
-      color: #56627A;
-      padding: 12px 20px;
+      font-style: normal;
       font-weight: bold;
+      font-size: 16px;
+      line-height: normal;
+      letter-spacing: 0.04em;
+      color: #56627A;
+      padding: 14px 10px;
     }
     .menu_items{
       color: #2D69E0;
@@ -38,8 +41,12 @@
         font-weight: bold;
         line-height: normal;
         letter-spacing: 0.02em;
+        &.bottom_border{
+          border-bottom: 1px solid #CCD0D9;
+        }
         &.selected{
           color: #140579;
+          background: #FFC93A;
           .select:before{
             -ms-transform: rotate(180deg);
             -webkit-transform: rotate(180deg);
@@ -55,7 +62,7 @@
         }
         .first_level_menu{
           display: flex;
-          padding: 10px 20px;
+          padding: 10px 10px;
           &:hover{
             background: rgba(204, 208, 217, 0.3);
             color: #140579;
@@ -77,32 +84,77 @@
           .unselect{
             margin-left: 10px;
           }
-          .icon_database::before{
-            background: url(../images/icon-database.png) no-repeat;
-            position: relative;
-            padding-left: 20px;
+          .icon_queue:before{
+            background: url(../images/icon-queue.png) no-repeat;
+            background-size: 20px 20px;
+            background-position-y: 15px;
+            padding-left: 21px;
             padding-top: 15px;
-            top: 12px;
             content: "";
-            width: 20px;
           }
-          .icon_task::before{
-            background: url(../images/icon-task.png) no-repeat;
-            position: relative;
-            padding-left: 20px;
+          .icon_blocks:before{
+            background: url(../images/icon-blocks.png) no-repeat;
+            background-size: 20px 20px;
+            background-position-y: 15px;
+            padding-left: 21px;
             padding-top: 15px;
-            top: 11px;
             content: "";
-            width: 20px;
           }
-          .icon_user::before{
-            background: url(../images/icon-user.png) no-repeat;
-            position: relative;
-            padding-left: 20px;
+          .icon_block:before{
+            background: url(../images/icon-block.png) no-repeat;
+            background-size: 20px 20px;
+            background-position-y: 15px;
+            padding-left: 21px;
             padding-top: 15px;
-            top: 12px;
             content: "";
-            width: 20px;
+          }
+          .icon_object:before{
+            background: url(../images/icon-object.png) no-repeat;
+            background-size: 20px 20px;
+            background-position-y: 15px;
+            padding-left: 21px;
+            padding-top: 15px;
+            content: "";
+          }
+          .icon_user_login:before{
+            background: url(../images/icon-user-login.png) no-repeat;
+            background-size: 20px 20px;
+            background-position-y: 15px;
+            padding-left: 21px;
+            padding-top: 15px;
+            content: "";
+          }
+          .icon_permission:before{
+            background: url(../images/icon-permission.png) no-repeat;
+            background-size: 20px 20px;
+            background-position-y: 15px;
+            padding-left: 21px;
+            padding-top: 15px;
+            content: "";
+          }
+          .icon_user_role:before{
+            background: url(../images/icon-user-role.png) no-repeat;
+            background-size: 20px 20px;
+            background-position-y: 15px;
+            padding-left: 21px;
+            padding-top: 15px;
+            content: "";
+          }
+          .icon_user_signup:before{
+            background: url(../images/icon-user-signup.png) no-repeat;
+            background-size: 20px 20px;
+            background-position-y: 15px;
+            padding-left: 21px;
+            padding-top: 15px;
+            content: "";
+          }
+          .icon_validation:before{
+            background: url(../images/icon-validation.png) no-repeat;
+            background-size: 20px 20px;
+            background-position-y: 15px;
+            padding-left: 21px;
+            padding-top: 15px;
+            content: "";
           }
         }
         .submenu_items{
@@ -131,8 +183,31 @@
       }
     }
   }
+  .breadcrumbs ul{
+    margin-left: 0;
+    padding-left: 0;
+    color: #6A7181;
+    li{
+      display: inline-block;
+      list-style: none;
+      &:first-child:before{
+        content: '';
+        margin: 0;
+      }
+      &:before{
+        content: '\f178';
+        font: normal normal normal 14px/1 FontAwesome;
+        margin: 0 16px;
+      }
+      a, a:active, a:hover{
+        color: #6A7181;
+        text-decoration: none;
+      }
+    }
+  }
+
   .data_content {
-    margin-left: 20px;
+    margin-right: 20px;
     .filters {
       display: flex;
       margin-bottom: 30px;
@@ -267,3 +342,6 @@
   }
 }
 
+.font_weight_normal{
+    font-weight: normal!important;
+}

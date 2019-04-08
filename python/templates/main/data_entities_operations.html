@@ -1,16 +1,16 @@
 {% extends 'base_inner.html' %}
 {% load i18n %}
 
-{% block headline %}Roles{% endblock %}
+{% block headline %}Object types{% endblock %}
 
 {% block content %}
 <div class="containter_flex">
-    {% include 'main/_data_left_menu.html' %}
     <div class="data_content">
         <div class="data_container">
             <opr-entities-operations url="{% url 'proxy_url' %}?url={{ settings.SERVER_API_ADDRESS }}/api/objects?type=sys.operation"></opr-entities-operations>
         </div>
     </div>
+    {% include 'main/_data_right_menu.html' %}
 </div>
 {% endblock %}
 <script>

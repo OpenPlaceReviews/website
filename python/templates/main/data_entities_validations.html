@@ -5,12 +5,12 @@
 
 {% block content %}
 <div class="containter_flex">
-    {% include 'main/_data_left_menu.html' %}
     <div class="data_content">
         <div class="data_container">
             <opr-entities-validations url="{% url 'proxy_url' %}?url={{ settings.SERVER_API_ADDRESS }}/api/objects?type=sys.validate"></opr-entities-validations>
         </div>
     </div>
+    {% include 'main/_data_right_menu.html' %}
 </div>
 {% endblock %}
 <script>

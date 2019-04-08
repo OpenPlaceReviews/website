@@ -1,6 +1,11 @@
 <template>
     <div>
-        <opr-operations :operations="queue_data.ops"></opr-operations>
+        <div v-if="queue_data.ops.length">
+            <opr-operations :operations="queue_data.ops"></opr-operations>
+        </div>
+        <div v-else>
+            Queue is empty
+        </div>
     </div>
 </template>
 

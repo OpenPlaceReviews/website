@@ -4,6 +4,9 @@
     <main class="inner" id="opr-app">
         {% block menu %}
         {% endblock %}
+        {% block breadcrumbs %}
+            {% include 'main/_breadcrumbs.html' %}
+        {% endblock %}
         <h1>
             {% block headline %}
             {% endblock %}

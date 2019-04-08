@@ -13,6 +13,9 @@ import OprEntitiesGrants from './components/OPREntitiesGrants.vue'
 import OprEntitiesValidations from './components/OPREntitiesValidations.vue'
 import OprEntitiesRoles from './components/OPREntitiesRoles.vue'
 import OprEntitiesOperations from './components/OPREntitiesOperations.vue'
+import VueHighlightJS from 'vue-highlight.js';
+import json from 'highlight.js/lib/languages/json';
+import 'highlight.js/styles/default.css';
 
 var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
 
@@ -22,6 +25,12 @@ for(let name in filters) {
 }
 
 Vue.use(VShowSlide);
+Vue.use(VueHighlightJS, {
+	// Register only languages that you want
+	languages: {
+		json
+	}
+});
 
 new Vue({
   el: '#opr-app',
