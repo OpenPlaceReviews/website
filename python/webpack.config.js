@@ -34,13 +34,21 @@ module.exports = {
         }
       },
       {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        loader: 'file-loader',
-        options:{
-          name: "../fonts/[name].[ext]",
-        }
+        test: /(ibmplexmono|!ibmplexsans)\/.*\.(eot|ttf|woff|woff2)$/,
+          use: [
+             {
+                 loader: 'file-loader?name=../fonts/ibmplexmono/[name].[ext]'
+             }
+         ]
+      },
+      {
+        test: /(ibmplexsans|!ibmplexmono)\/.*\.(eot|ttf|woff|woff2)$/,
+          use: [
+             {
+                 loader: 'file-loader?name=../fonts/ibmplexsans/[name].[ext]'
+             }
+         ]
       }
-
     ]
   },
   output: {
