@@ -5,7 +5,7 @@
                 <div class="block-icon">
                 </div>
                 <div class="main_info">
-                    <div title="block id" class="title_block"><a v-bind:id="'url_block_' + block_data.block_id" v-bind:href="'/data/blocks/' + block_data.hash">Block #{{ block_data.block_id }}</a></div>
+                    <div title="block id" class="title_block"><a v-bind:id="'url_block_' + block_data.block_id" v-bind:href="'/data/blocks/' + block_data.block_id + '/' + block_data.hash">Block #{{ block_data.block_id }}</a></div>
                     <div class="opr_count">Operations count: <span>{{ block_data.eval.operations_size }}</span></div>
                     <div class="date">Date: <span>{{ block_data.date }}</span></div>
                 </div>
@@ -16,7 +16,7 @@
                 </div>
             </div>
             <opr-raw-json-data
-                    v-bind:block_url="'/data/blocks/' + block_data.hash"
+                    v-bind:block_url="'/data/blocks/' + block_data.block_id + '/' + block_data.hash"
                     v-bind:id="'block_data_'+block_data.block_id"
                     v-bind:signed_by="block_data.signed_by"
             ></opr-raw-json-data>

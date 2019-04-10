@@ -1,13 +1,14 @@
 .blocks_items{
   width: 820px;
   padding-right: 20px;
+  &:first-child{
+    border-top: 1px solid #E4E8F2;
+  }
   .block_item{
     display: flex;
     height: 100%;
     padding-right: 20px;
-    &:first-child{
-      border-top: 1px solid #E4E8F2;
-    }
+
     .block-icon, .main_info, .second_info{
       vertical-align: top;
       display: inline-block;
@@ -33,10 +34,9 @@
         font-size: 15px;
         line-height: 21px;
         letter-spacing: 0.01em;
-
         color: #6A7181;
         & span{
-          color: #000000;
+          color: #212121;
           font-weight: 500;
         }
       }
@@ -103,7 +103,7 @@
       display: inline-block;
       padding-right: 20px;
       & span{
-        color: #000000;
+        color: #212121;
       }
     }
   }
@@ -124,4 +124,26 @@
       max-height: 400px;
     }
   }
+}
+
+.block_main_info{
+  background: #F0F1F4;
+  border: 1px solid #F0F1F4;
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  ul{
+    margin-left: 20px;
+    padding-left: 0;
+    li{
+      list-style: none;
+      color: #6A7181;
+      margin-left: 0;
+      padding-left: 0;
+      span {
+        color: #212121;
+      }
+    }
+  }
+
 }

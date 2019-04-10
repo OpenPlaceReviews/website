@@ -53,6 +53,7 @@ class BlockPage(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data()
         ctx['hash'] = self.kwargs.get('hash')
+        ctx['block_id'] = self.kwargs.get('block_id')
         return ctx
 
     def render_to_response(self, context, **response_kwargs):

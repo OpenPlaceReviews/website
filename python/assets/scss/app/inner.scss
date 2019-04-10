@@ -358,70 +358,166 @@
     }
     .data_container{
       width: 820px;
-      .item_data{
-        display: flex;
-        border-bottom: 1px solid #E4E8F2;
-        padding: 15px 0;
-        &.item_data:first-child {
+      .operation_item {
+        &:first-child {
           border-top: 1px solid #E4E8F2;
         }
-        .type_operation{
-          margin: 0 15px;
-          width: 20px;
-          height: 20px;
-          &.operation_user{
-            background: url(../images/operation-user.png) no-repeat;
+        .item_data {
+          display: block;
+          padding-top: 15px;
+
+          .operation_info {
+            display: flex;
+            .type_operation {
+              margin: 0 13px;
+              width: 50px;
+              //height: 20px;
+              &.operation_user {
+                background: url(../images/operation-user.png) no-repeat;
+              }
+              &.operation_database {
+                background: url(../images/operation-database.png) no-repeat;
+              }
+              &.sys_login {
+                background: url(../images/ic_user_login_normal.png) no-repeat;
+              }
+
+              &.sys_signup {
+                background: url(../images/ic_user_signup_normal.png) no-repeat;
+                background-size: 16px 16px;
+              }
+              &.sys_operation {
+                background: url(../images/ic_object_normal.png) no-repeat;
+              }
+              &.sys_validate {
+                background: url(../images/ic_validation_normal.png) no-repeat;
+              }
+              &.sys_grant {
+                background: url(../images/ic_permission_normal.png) no-repeat;
+              }
+              &.sys_role {
+                background: url(../images/ic_user_info_normal.png) no-repeat;
+              }
+            }
           }
-          &.operation_database{
-            background: url(../images/operation-database.png) no-repeat;
+          .content {
+            margin-right: 20px;
+            width: 100%;
+            margin-left: 5px;
+            .content_header {
+              font-weight: 600;
+              line-height: normal;
+              font-size: 16px;
+              letter-spacing: 0.02em;
+            }
           }
-          &.sys_login, &.sys_signup{
-            background: url(../images/operation-user.png) no-repeat;
+          .description {
+            font-size: 15px;
+            line-height: 21px;
+            letter-spacing: 0.01em;
+            color: #6A7181;
           }
-          &.sys_operation, &.sys_validate, &.sys_grant, &.sys_role{
-            background: url(../images/operation-database.png) no-repeat;
-          }
-        }
-        .content{
-          width: 500px;
-          padding-left: 20px;
-          margin-right: 20px;
-          .content_header{
-            font-weight: bold;
+          .info {
+            font-style: normal;
+            font-weight: 600;
             line-height: normal;
-            font-size: 16px;
-            letter-spacing: 0.02em;
-            margin-bottom: 4px;
-          }
-        }
-        .info {
-          font-style: normal;
-          font-weight: 600;
-          line-height: normal;
-          font-size: 14px;
-          margin: 0 15px;
-          width: 230px;
-          letter-spacing: 0.01em;
-          color: #ACB2BF;
-          .first_info_block {
-            display: inline-block;;
-            text-align: right;
+            font-size: 14px;
+            margin-right: 20px;
             width: 230px;
-            margin-bottom: 4px;
-            div{
-              display: inline-block;
+            letter-spacing: 0.01em;
+            color: #ACB2BF;
+            .first_info_block {
+              display: inline-block;;
+              text-align: right;
+              width: 230px;
+              margin-bottom: 4px;
+              div {
+                display: inline-block;
+              }
+              .hash {
+                color: #ACB2BF;
+                font-size: 15px;
+                font-weight: 500;
+                font-family: 'IBM Plex Mono';
+              }
+            }
+            .second_info_block {
+              width: 230px;
+              display: inline-block;;
+              text-align: right;
+              div {
+                display: inline-block;
+              }
+            }
+            .delimeter {
+              margin: 0 5px;
             }
           }
-          .second_info_block {
-            width: 230px;
-            display: inline-block;;
-            text-align: right;
-            div{
+          .raw_json_block_item {
+            border-bottom: 1px solid #E4E8F2;
+          }
+          .raw_json_block {
+            display: flex;
+            margin-left: 60px;
+            margin-bottom: 14px;
+            .raw_json {
               display: inline-block;
+              font-family: IBM Plex Mono;
+              font-style: normal;
+              font-weight: 500;
+              font-size: 15px;
+              line-height: normal;
+              letter-spacing: 0.01em;
+              color: #2D69E0;
+              cursor: pointer;
+              width: 100px;
+              &:after {
+                position: relative;
+                display: inline-block;
+                left: 12px;
+                color: #ACB2BF;
+                margin-top: 4px;
+                border-style: solid;
+                border-width: 5px 5px 0;
+                border-color: #ACB2BF transparent transparent;
+                content: "";
+                bottom: 2px;
+              }
+              &.selected:after {
+                -ms-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+              }
+            }
+            .signed_by {
+              margin-left: auto;
+              text-align: right;
+              white-space: nowrap;
+              font-size: 15px;
+              color: #6A7181;
+              display: inline-block;
+              padding-right: 20px;
+              & span {
+                color: #212121;
+              }
             }
           }
-          .delimeter{
-            margin: 0 5px;
+          pre {
+            overflow-y: hidden;
+            display: none;
+            margin-left: 60px;
+            font-family: IBM Plex Mono;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: normal;
+            letter-spacing: 0.01em;
+            border: 1px solid #CCD0D9;
+            box-sizing: border-box;
+            border-radius: 5px;
+            .hljs {
+              max-height: 400px;
+            }
           }
         }
       }
