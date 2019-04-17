@@ -13,9 +13,12 @@ import OprEntitiesGrants from './components/OPREntitiesGrants.vue'
 import OprEntitiesValidations from './components/OPREntitiesValidations.vue'
 import OprEntitiesRoles from './components/OPREntitiesRoles.vue'
 import OprEntitiesOperations from './components/OPREntitiesOperations.vue'
+import OprDataOperations from './components/OPRDataOperations.vue'
 import VueHighlightJS from 'vue-highlight.js';
 import json from 'highlight.js/lib/languages/json';
 import 'highlight.js/styles/default.css';
+import OprRightMenuObjects from './components/right_menu/OPRRightMenuObjects.vue';
+
 
 var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
 
@@ -32,7 +35,7 @@ Vue.use(VueHighlightJS, {
 	}
 });
 
-new Vue({
+var vm = new Vue({
   el: '#opr-app',
   components: {
     SelectSearch,
@@ -49,7 +52,9 @@ new Vue({
     OprEntitiesGrants,
     OprEntitiesValidations,
     OprEntitiesRoles,
-    OprEntitiesOperations
+    OprEntitiesOperations,
+    OprRightMenuObjects,
+    OprDataOperations
   },
   methods:{
     show_form: function (e, form_class) {

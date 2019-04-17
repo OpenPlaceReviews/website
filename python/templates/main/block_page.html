@@ -7,24 +7,6 @@
 {% block content %}
 <div class="containter_flex">
     <div class="data_content">
-
-{#        <div class="filters">#}
-{#            <ul>#}
-{#                <li class="active">Today</li>#}
-{#                <li>Week</li>#}
-{#                <li>Month</li>#}
-{#                <li class="custom_filter"><div class="custom_icon"></div><div>Custom</div></li>#}
-{#            </ul>#}
-{#            <select>#}
-{#                <option>All types</option>#}
-{#                <option>sys.role</option>#}
-{#                <option>sys.grant</option>#}
-{#                <option>sys.operation</option>#}
-{#                <option>sys.signup</option>#}
-{#                <option>sys.login</option>#}
-{#                <option>sys.validate</option>#}
-{#            </select>#}
-{#        </div>#}
         <opr-block url="{% url 'proxy_url' %}?url={{ settings.SERVER_API_ADDRESS }}/api/block-by-hash?hash={{ hash }}"></opr-block>
     </div>
     {% include 'main/_data_right_menu.html' %}

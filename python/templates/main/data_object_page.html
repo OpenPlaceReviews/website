@@ -1,13 +1,13 @@
 {% extends 'base_inner.html' %}
 {% load i18n %}
 
-{% block headline %}Blocks{% endblock %}
+{#{% block headline %}{{ type_op }}{% endblock %}#}
 
 {% block content %}
 <div class="containter_flex">
     <div class="data_content">
         <div class="data_container">
-            <opr-blocks url="{% url 'proxy_url' %}?url={{ settings.SERVER_API_ADDRESS }}/api/blocks"></opr-blocks>
+            <opr-data-operations url="{% url 'proxy_url' %}?url={{ settings.SERVER_API_ADDRESS }}/api/objects?type={{ type_op }}" type_op="{{ type_op }}"></opr-data-operations>
         </div>
     </div>
     {% include 'main/_data_right_menu.html' %}

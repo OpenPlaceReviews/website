@@ -11,7 +11,7 @@
                     </div>
                     <div class="info">
                         <div class="first_info_block">
-                            <div class="hash" v-bind:title="op.hash">{{ op.hash | slice_hash(65, 77)}}</div>
+                            <div class="hash" v-bind:title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
                         </div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="info">
                         <div class="first_info_block">
-                            <div class="hash" v-bind:title="op.hash">{{ op.hash | slice_hash(65, 77)}}</div>
+                            <div class="hash" v-bind:title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="info">
                         <div class="first_info_block">
-                            <div class="hash" v-bind:title="op.hash">{{ op.hash | slice_hash(65, 77)}}</div>
+                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     </div>
                     <div class="info">
                         <div class="first_info_block">
-                            <div class="hash" v-bind:title="op.hash">{{ op.hash | slice_hash(65, 77)}}</div>
+                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                     </div>
                     <div class="info">
                         <div class="first_info_block">
-                            <div class="hash" v-bind:title="op.hash">{{ op.hash | slice_hash(65, 77)}}</div>
+                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                     </div>
                     <div class="info">
                         <div class="first_info_block">
-                            <div class="hash" v-bind:title="op.hash">{{ op.hash | slice_hash(65, 77)}}</div>
+                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash}}</div>
                         </div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
                     </div>
                     <div class="info">
                         <div class="first_info_block">
-                            <div class="hash" v-bind:title="op.hash">{{ op.hash | slice_hash(65, 77)}}</div>
+                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash}}</div>
                         </div>
                     </div>
                 </div>

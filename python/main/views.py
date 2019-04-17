@@ -53,7 +53,6 @@ class BlockPage(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data()
         ctx['hash'] = self.kwargs.get('hash')
-        ctx['block_id'] = self.kwargs.get('block_id')
         return ctx
 
     def render_to_response(self, context, **response_kwargs):
@@ -66,3 +65,12 @@ class BlockPage(TemplateView):
 def block_exm(reqeust):
     block = json.loads(open('./main/block.json').read())
     return JsonResponse(block)
+
+
+class OperationView(TemplateView):
+    template_name = 'main/data_object_page.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['type_op'] = self.kwargs.get('operation_id')
+        return ctx
