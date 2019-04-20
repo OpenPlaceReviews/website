@@ -6,9 +6,13 @@
                     <img :src="'/static/dist/images/'+icon+'.png'" width="20" height="20">
                 </div>
                 <div class="content">
-                    <div class="content_header">{{ op_name }}</div>
-                    <div class="description">Information from User details section (spoken language, .... )
-                        New objects 1 *** Object type: User login</div>
+                    <div class="content_header">{{ op_title}}</div>
+                    <div class="description">
+                        {{ op_description }}<br>
+                        Object type: <b>{{ ob_name }}</b><br>
+                        New objects: <b>{{ op.new ? op.new.length : 0 }}</b><br>
+                        Deleted objects: <b>{{ op.old ? op.old.length : 0 }}</b>
+                    </div>
                 </div>
                 <div class="info">
                     <div class="first_info_block">
@@ -49,12 +53,18 @@ export default {
     data() {
         return {
             op_name: '',
-            icon: ''
+            icon: '',
+            op_description: '',
+            op_title: '',
+            ob_name: ''
         }
     },
     created() {
         this.op_name = format.getOperationName(this.op);
         this.icon = format.getIconIter(this.op);
+        this.op_title = format.getOperationTitle(this.op);
+        this.op_description = format.getOperationDescription(this.op);
+        this.ob_name = format.getObjectName(this.op);
         // this.op_name = this.op.new[0].description && this.op.new[0].description['operation-format'] ? eval(this.op.new[0].description['operation-format']) : this.op.type;
         // this.op_name = typeof this.op_name == 'string' ? this.op_name : this.op_name.join('\n');
         // var op = this.op;

@@ -37,8 +37,8 @@
             </li>
             <li v-for="opr_object in objects" class="font_weight_normal {% if url_entities_validations in request.path %}selected{% endif %}">
                 <a class="first_level_menu" v-bind:href="'/data/objects/' + opr_object.id">
-                    <img :src="opr_object.icon_url || '/static/dist/images/ic_object_normal.png'"/>
-                    <span class="unselect" href="#">{{ opr_object.format_title || opr_object.id[0] | slice_sys | capitalize_first_letter }}</span>
+                    <img :src="opr_object|get_icon" width="20" height="20">
+                    <span class="unselect" href="#">{{ opr_object | get_name_object }}</span>
                 </a>
             </li>
         </ul>
@@ -48,6 +48,7 @@
 <script>
 import axios from 'axios';
 import OprRightMenuItemBlock from './OPRMenuItemBlock.vue'
+import format from '../formats'
 
 export default {
   name: 'OprRightMenuObjects',
@@ -108,6 +109,14 @@ export default {
   filters: {
       slice_sys: function (value) {
           return value.split('.').reverse()[0]
+      },
+      get_icon: function (obj) {
+          obj.type = obj.id[0];
+          return '/static/images/' + format.getIconIter(obj) + '.png';
+      },
+      get_name_object(obj) {
+          obj.type = obj.id[0];
+          return format.getObjectName(obj);
       }
   }
 }
