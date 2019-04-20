@@ -47,7 +47,7 @@ var format = {
         else if (obj.type == 'sys.role' && (!obj.new || obj.new.length == 0) && obj.old && obj.old.length > 0) return 'Delete role ' + obj.new[0].id;
         else return obj.type;
     },
-    getOperationsDescription(obj){
+    getOperationDescription(obj){
         if (obj.type == 'sys.signup') return 'User ' + obj.new[0].id + ' details: ' + JSON.stringify(obj.new[0].details);
         else if (obj.type == 'sys.login' && obj.new && obj.new.length > 0 && (!obj.old || !obj.old.length == 0)) return 'User ' + obj.new[0].id + ' has came website';
         else if (obj.type == 'sys.login' && obj.new && obj.new.length > 0 && obj.old && obj.old.length > 0) return 'User ' + obj.new[0].id + ' update details';
