@@ -1,181 +1,41 @@
 <template>
     <div class="data_container" >
         <div v-for="op in operations" class="operation_item">
-            <div class="item_data" v-if="op.type === 'sys.signup'">
-                <div class="operation_info">
-                    <div class="type_operation sys_signup"></div>
-                    <div class="content">
-                        <div class="content_header">Welcome new user <a href="#">{{ op.new[0].id[0] }}</a>!</div>
-                        <div class="description">Information from User details section (spoken language, .... )
-                            New objects 1 *** Object type: User login</div>
-                    </div>
-                    <div class="info">
-                        <div class="first_info_block">
-                            <div class="hash" v-bind:title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="raw_json_block_item">
-                    <div class="raw_json_block">
-                        <div class="raw_json" v-on:click="toggle_show_data">RAW json</div>
-                        <div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>
-                    </div>
-                    <highlight-code lang="json">
-                        {{ op }}
-                    </highlight-code>
-                </div>
-            </div>
-            <div class="item_data" v-else-if="op.type === 'sys.login'">
-                <div class="operation_info">
-                    <div class="type_operation sys_login"></div>
-                    <div class="content">
-                        <div class="content_header"><a href="#">{{ op.new[0].id[0] }}</a> has come in site</div>
-                        <div class="description">Information from User details section (spoken language, .... )
-                            New objects 1 *** Object type: User login</div>
-                    </div>
-                    <div class="info">
-                        <div class="first_info_block">
-                            <div class="hash" v-bind:title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="raw_json_block_item">
-                    <div class="raw_json_block">
-                        <div class="raw_json" v-on:click="toggle_show_data">RAW json</div>
-                        <div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>
-                    </div>
-                    <highlight-code lang="json">
-                        {{ op }}
-                    </highlight-code>
-                </div>
-            </div>
-            <div class="item_data" v-else-if="op.type === 'sys.operation'">
-                <div class="operation_info">
-                    <div class="type_operation sys_operation"></div>
-                    <div class="content">
-                        <div class="content_header">Object type <a href="#">{{ op.new[0].id[0] }}</a></div>
-                        <div class="description">Information from User details section (spoken language, .... )
-                            New objects 1 *** Object type: User login</div>
-                    </div>
-                    <div class="info">
-                        <div class="first_info_block">
-                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="raw_json_block_item">
-                    <div class="raw_json_block">
-                        <div class="raw_json" v-on:click="toggle_show_data">RAW json</div>
-                        <div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>
-                    </div>
-                    <highlight-code lang="json">
-                        {{ op }}
-                    </highlight-code>
-                </div>
-            </div>
-            <div class="item_data" v-else-if="op.type === 'sys.validate'">
-                <div class="operation_info">
-                    <div class="type_operation sys_validate"></div>
-                    <div class="content">
-                        <div class="content_header">Validation <a href="#">{{ op.new[0].id[0] }}</a></div>
-                        <div class="description">Information from User details section (spoken language, .... )
-                            New objects 1 *** Object type: User login</div>
-                    </div>
-                    <div class="info">
-                        <div class="first_info_block">
-                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="raw_json_block_item">
-                    <div class="raw_json_block">
-                        <div class="raw_json" v-on:click="toggle_show_data">RAW json</div>
-                        <div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>
-                    </div>
-                    <highlight-code lang="json">
-                        {{ op }}
-                    </highlight-code>
-                </div>
-            </div>
-            <div class="item_data" v-else-if="op.type === 'sys.grant'">
-                <div class="operation_info">
-                    <div class="type_operation sys_grant"></div>
-                    <div class="content">
-                        <div class="content_header">Permission <a href="#">{{ op.new[0].id[0] }}</a></div>
-                        <div class="description">Information from User details section (spoken language, .... )
-                            New objects 1 *** Object type: User login</div>
-                    </div>
-                    <div class="info">
-                        <div class="first_info_block">
-                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="raw_json_block_item">
-                    <div class="raw_json_block">
-                        <div class="raw_json" v-on:click="toggle_show_data">RAW json</div>
-                        <div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>
-                    </div>
-                    <highlight-code lang="json">
-                        {{ op }}
-                    </highlight-code>
-                </div>
-            </div>
-            <div class="item_data" v-else-if="op.type === 'sys.role'">
-                <div class="operation_info">
-                    <div class="type_operation sys_role"></div>
-                    <div class="content">
-                        <div class="content_header">Role <a href="#">{{ op.new[0].id[0] }}</a></div>
-                        <div class="description">Information from User details section (spoken language, .... )
-                            New objects 1 *** Object type: User login</div>
-                    </div>
-                    <div class="info">
-                        <div class="first_info_block">
-                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="raw_json_block_item">
-                    <div class="raw_json_block">
-                        <div class="raw_json" v-on:click="toggle_show_data">RAW json</div>
-                        <div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>
-                    </div>
-                    <highlight-code lang="json">
-                        {{ op }}
-                    </highlight-code>
-                </div>
-            </div>
+            <opr-operation :op="op"></opr-operation>
+            <!--<div class="item_data">-->
+                <!--<div class="operation_info">-->
+                    <!--<div class="type_operation sys_signup"></div>-->
+                    <!--<div class="content">-->
+                        <!--<div class="content_header">Welcome new user <a href="#">{{ op.new[0].id[0] }}</a>!</div>-->
+                        <!--<div class="description">Information from User details section (spoken language, .... )-->
+                            <!--New objects 1 *** Object type: User login</div>-->
+                    <!--</div>-->
+                    <!--<div class="info">-->
+                        <!--<div class="first_info_block">-->
+                            <!--<div class="hash" v-bind:title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="raw_json_block_item">-->
+                    <!--<div class="raw_json_block">-->
+                        <!--<div class="raw_json" v-on:click="toggle_show_data">RAW json</div>-->
+                        <!--<div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>-->
+                    <!--</div>-->
+                    <!--<highlight-code lang="json">-->
+                        <!--{{ op }}-->
+                    <!--</highlight-code>-->
+                <!--</div>-->
+            <!--</div>-->
 
-            <div class="item_data" v-else>
-                <div class="operation_info">
-                    <div class="type_operation sys_operation"></div>
-                    <div class="content">
-                        <div class="content_header">{{op.type}} - {{ op.new[0].id[0] }}</div>
-                        <div class="description">Undefined transaction</div>
-                    </div>
-                    <div class="info">
-                        <div class="first_info_block">
-                            <div class="hash" :title="op.hash | only_hash_number">{{ op.hash | slice_hash}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="raw_json_block_item">
-                    <div class="raw_json_block">
-                        <div class="raw_json" v-on:click="toggle_show_data">RAW json</div>
-                        <div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>
-                    </div>
-                    <highlight-code lang="json">
-                        {{ op }}
-                    </highlight-code>
-                </div>
-            </div>
         </div>
     </div>
 </template>
 
 <script>
+import OprOperation from "./OPROperation.vue";
 export default {
     name: 'OprOperations',
+    components: {OprOperation},
     props: ['operations'],
     data () {
         return {

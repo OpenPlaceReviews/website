@@ -25,6 +25,7 @@
 import axios from 'axios';
 import OprOperations from './OPROperations.vue'
 
+
 export default {
   name: 'OprBlock',
     components: {OprOperations},
@@ -43,6 +44,7 @@ export default {
                   this.$parent.$refs.header.innerText = 'Transactions – Block #' + this.block_data.block_id;
               }
           })
-  }
+  },
+
 }
 </script>
