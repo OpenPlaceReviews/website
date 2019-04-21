@@ -70,9 +70,9 @@ var format = {
         if (obj.type == 'sys.signup') return 'User signup'
         else if (obj.type == 'sys.login') return 'User login';
         else if (obj.type == 'sys.grant') return 'Permission';
-        else if (obj.type == 'sys.operation') return 'Object';
-        else if (obj.type == 'sys.validate') return 'Validator';
-        else if (obj.type == 'sys.role') return 'Role';
+        else if (obj.type == 'sys.operation') return 'Object type';
+        else if (obj.type == 'sys.validate') return 'Validation rule';
+        else if (obj.type == 'sys.role') return 'User role';
         else return obj.type;
     }
 };
