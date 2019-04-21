@@ -2,31 +2,6 @@
     <div class="data_container" >
         <div v-for="op in operations" class="operation_item">
             <opr-operation :op="op"></opr-operation>
-            <!--<div class="item_data">-->
-                <!--<div class="operation_info">-->
-                    <!--<div class="type_operation sys_signup"></div>-->
-                    <!--<div class="content">-->
-                        <!--<div class="content_header">Welcome new user <a href="#">{{ op.new[0].id[0] }}</a>!</div>-->
-                        <!--<div class="description">Information from User details section (spoken language, .... )-->
-                            <!--New objects 1 *** Object type: User login</div>-->
-                    <!--</div>-->
-                    <!--<div class="info">-->
-                        <!--<div class="first_info_block">-->
-                            <!--<div class="hash" v-bind:title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="raw_json_block_item">-->
-                    <!--<div class="raw_json_block">-->
-                        <!--<div class="raw_json" v-on:click="toggle_show_data">RAW json</div>-->
-                        <!--<div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>-->
-                    <!--</div>-->
-                    <!--<highlight-code lang="json">-->
-                        <!--{{ op }}-->
-                    <!--</highlight-code>-->
-                <!--</div>-->
-            <!--</div>-->
-
         </div>
     </div>
 </template>

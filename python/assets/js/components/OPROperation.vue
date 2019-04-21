@@ -1,34 +1,32 @@
 <template>
-
-        <div class="item_data">
-            <div class="operation_info">
-                <div class="type_operation">
-                    <img :src="'/static/dist/images/'+icon+'.png'" width="20" height="20">
-                </div>
-                <div class="content">
-                    <div class="content_header">{{ op_title}}</div>
-                    <div class="description">
-                        {{ op_description }}<br>
-                        Object type: <b>{{ ob_name }}</b><br>
-                        New objects: <b>{{ op.new ? op.new.length : 0 }}</b><br>
-                        Deleted objects: <b>{{ op.old ? op.old.length : 0 }}</b>
-                    </div>
-                </div>
-                <div class="info">
-                    <div class="first_info_block">
-                        <div class="hash" v-bind:title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
-                    </div>
+    <div class="item_data">
+        <div class="operation_info">
+            <div class="type_operation">
+                <img :src="'/static/dist/images/'+icon+'.png'" width="20" height="20">
+            </div>
+            <div class="content">
+                <div class="content_header">{{ op_title}}</div>
+                <div class="description">
+                    {{ op_description }}<br>
+                    Object type: <b>{{ ob_name }}</b><br>
+                    New objects: <b>{{ op.new ? op.new.length : 0 }}</b><br>
+                    Deleted objects: <b>{{ op.old ? op.old.length : 0 }}</b>
                 </div>
             </div>
-            <div class="raw_json_block_item">
-                <div class="raw_json_block">
-                    <div class="raw_json" v-on:click="toggle_show_data">RAW json</div>
-                    <div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>
+            <div class="info">
+                <div class="first_info_block">
+                    <div class="hash" v-bind:title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
                 </div>
-                <highlight-code lang="json">
-                    {{ op }}
-                </highlight-code>
             </div>
+        </div>
+        <div class="raw_json_block_item">
+            <div class="raw_json_block">
+                <div class="raw_json" v-on:click="toggle_show_data">RAW json</div>
+                <div class="signed_by">Signed by: <span>{{ op.signed_by }}</span></div>
+            </div>
+            <highlight-code lang="json">
+                {{ op }}
+            </highlight-code>
         </div>
     </div>
 </template>

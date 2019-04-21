@@ -13,7 +13,7 @@ import OprEntitiesGrants from './components/OPREntitiesGrants.vue'
 import OprEntitiesValidations from './components/OPREntitiesValidations.vue'
 import OprEntitiesRoles from './components/OPREntitiesRoles.vue'
 import OprEntitiesOperations from './components/OPREntitiesOperations.vue'
-import OprDataOperations from './components/OPRDataOperations.vue'
+import OprDataObjects from './components/OPRDataObjects.vue'
 import VueHighlightJS from 'vue-highlight.js';
 import json from 'highlight.js/lib/languages/json';
 import 'highlight.js/styles/default.css';
@@ -54,7 +54,7 @@ var vm = new Vue({
     OprEntitiesRoles,
     OprEntitiesOperations,
     OprRightMenuObjects,
-    OprDataOperations
+    OprDataObjects
   },
   methods:{
     show_form: function (e, form_class) {
