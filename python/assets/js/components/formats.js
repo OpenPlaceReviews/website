@@ -29,7 +29,7 @@ var format = {
             return "'" + o[0] + "'";
        }
        return JSON.stringify(o);
-    }
+    },
     
     getOperationDescription(op){
         return "";
