@@ -22,7 +22,7 @@ var format = {
     },
    
     jsonToString(o) {
-       if(typeof o == 'string')) {
+       if(typeof o == 'string') {
             return "'" + o + "'";
        }
        if(o.length == 1) {
