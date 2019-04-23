@@ -10,7 +10,7 @@
                     {{ op_description }}<br>
                     Object type: <b>{{ ob_name }}</b><br>
                     New objects: <b>{{ op.new ? op.new.length : 0 }}</b><br>
-                    Deleted objects: <b>{{ op.old ? op.old.length : 0 }}</b>
+                    <spam v-if="op.old && op.old.length > 0">Deleted objects: <b>{{ op.old ? op.old.length : 0 }}</b></spam>span
                 </div>
             </div>
             <div class="info">
@@ -19,7 +19,6 @@
                         href=""
                         class="hash"
                         v-bind:title="op.hash | only_hash_number"
-                        {{ block_transaction}}
                     >{{ op.hash | slice_hash }}</a>
                 </div>
             </div>
