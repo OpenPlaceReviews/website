@@ -12,13 +12,13 @@ var format = {
     
     getOperationTitle(op){
         if (op.new && op.new.length > 0 && op.old && op.old.length > 0) {
-            return "Edit " + format.getObjectName(op.type) + " " + format.jsonToString(op.new[0].id);
+            return "Edit " + format.getObjectName(op) + " " + format.jsonToString(op.new[0].id);
         } else if (op.old && op.old.length > 0) {
-            return "Delete  " + format.getObjectName(op.type) + " " + format.jsonToString(op.old[0].id);
+            return "Delete  " + format.getObjectName(op) + " " + format.jsonToString(op.old[0].id);
         } else if (op.new && op.new.length > 0) {
-            return "New  " + format.getObjectName(op.type) + " " + format.jsonToString(op.new[0].id);
+            return "New  " + format.getObjectName(op) + " " + format.jsonToString(op.new[0].id);
         }
-        return "Empty operation " + format.getObjectName(op.type);
+        return "Empty operation " + format.getObjectName(op);
     },
     
     getOperationName(op){
