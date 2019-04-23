@@ -20,6 +20,10 @@ var format = {
         }
         return "Empty operation " + getObjectName(op.type);
     },
+    
+    getOperationName(op){
+        return getOperationTitle(op);
+    },
    
     jsonToString(o) {
        if(typeof o == 'string') {
