@@ -7,7 +7,7 @@
             <div class="content">
                 <div class="content_header">{{ op_title}}</div>
                 <div class="description">
-                    {{ op_description }}<br>
+                    {{ op_description }}<br v-if="op_description.length > 0">
                     Object type: <b>{{ ob_name }}</b><br>
                     New objects: <b>{{ op.new ? op.new.length : 0 }}</b><br>
                     <span v-if="op.old && op.old.length > 0">Deleted objects: <b>{{ op.old ? op.old.length : 0 }}</b></span>
