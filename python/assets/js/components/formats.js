@@ -12,17 +12,17 @@ var format = {
     
     getOperationTitle(op){
         if (op.new && op.new.length > 0 && op.old && op.old.length > 0) {
-            return "Edit " + getObjectName(op.type) + " " + jsonToString(op.new[0].id);
+            return "Edit " + format.getObjectName(op.type) + " " + format.jsonToString(op.new[0].id);
         } else if (op.old && op.old.length > 0) {
-            return "Delete  " + getObjectName(op.type) + " " + jsonToString(op.old[0].id);
+            return "Delete  " + format.getObjectName(op.type) + " " + format.jsonToString(op.old[0].id);
         } else if (op.new && op.new.length > 0) {
-            return "New  " + getObjectName(op.type) + " " + jsonToString(op.new[0].id);
+            return "New  " + format.getObjectName(op.type) + " " + format.jsonToString(op.new[0].id);
         }
-        return "Empty operation " + getObjectName(op.type);
+        return "Empty operation " + format.getObjectName(op.type);
     },
     
     getOperationName(op){
-        return getOperationTitle(op);
+        return format.getOperationTitle(op);
     },
    
     jsonToString(o) {
@@ -59,13 +59,13 @@ var format = {
     },
     
     getObjectTitle(obj){
-        return getObjectName(obj) + ' ' + jsonToString(obj.id);
+        return format.getObjectName(obj) + ' ' + format.jsonToString(obj.id);
     },
     
     getObjectDescription(obj){
         if (obj.comment && obj.comment.length > 0) return obj.comment;
         var op = { new : [obj], type : obj.type};
-        return getOperationTitle(op);
+        return format.getOperationTitle(op);
     }
 
 };
