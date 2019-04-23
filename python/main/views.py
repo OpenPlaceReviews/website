@@ -74,3 +74,13 @@ class OperationView(TemplateView):
         ctx = super().get_context_data(**kwargs)
         ctx['type_op'] = self.kwargs.get('operation_id')
         return ctx
+
+
+class TransactionPageView(TemplateView):
+    template_name = 'main/data_transaction.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['block_hash'] = self.kwargs.get('block_hash')
+        ctx['tr_hash'] = self.kwargs.get('tr_hash')
+        return ctx

@@ -15,7 +15,12 @@
             </div>
             <div class="info">
                 <div class="first_info_block">
-                    <div class="hash" v-bind:title="op.hash | only_hash_number">{{ op.hash | slice_hash }}</div>
+                    <a
+                        href=""
+                        class="hash"
+                        v-bind:title="op.hash | only_hash_number"
+                        {{ block_transaction}}
+                    >{{ op.hash | slice_hash }}</a>
                 </div>
             </div>
         </div>
@@ -61,7 +66,7 @@ export default {
         this.op_name = format.getOperationName(this.op);
         this.icon = format.getIconIter(this.op);
         this.op_title = format.getOperationTitle(this.op);
-        this.op_description = format.getOperationDescription(this.op);
+        this.op_description = this.op.details && this.op.details.length > 0 ? format.getOperationDescription(this.op) : '';
         this.ob_name = format.getObjectName(this.op);
         // this.op_name = this.op.new[0].description && this.op.new[0].description['operation-format'] ? eval(this.op.new[0].description['operation-format']) : this.op.type;
         // this.op_name = typeof this.op_name == 'string' ? this.op_name : this.op_name.join('\n');
