@@ -15,14 +15,16 @@ register = template.Library()
 
 @register.simple_tag
 def queue_url():
-    return '{}?url={}/api/queue'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS)
-
+    # return '{}?url/api/queue'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS)
+    return '/api/queue'
 
 @register.simple_tag
 def blocks_url():
-    return '{}?url={}/api/blocks'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS)
+    # return '{}?url={}/api/blocks'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS)
+    return '/api/blocks'
 
 
 @register.simple_tag
 def objects_url():
-    return '{}?url={}/api/objects?type=sys.operation'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS)
+    # return '{}?url={}/api/objects?type=sys.operation'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS)
+    return '/api/objects?type=sys.operation'
