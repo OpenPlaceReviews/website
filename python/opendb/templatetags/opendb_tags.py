@@ -1,7 +1,6 @@
 from django import template
 from opendb.utils import get_opendb_status
-from django.urls import reverse_lazy
-from django.conf import settings
+
 
 
 register = template.Library()
@@ -15,16 +14,17 @@ register = template.Library()
 
 @register.simple_tag
 def queue_url():
-    # return '{}?url/api/queue'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS)
-    return '/api/queue'
+    from django.conf import settings
+    return '{}/api/queue'.format(settings.PROXY_URL_API)
+
 
 @register.simple_tag
 def blocks_url():
-    # return '{}?url={}/api/blocks'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS)
-    return '/api/blocks'
+    from django.conf import settings
+    return '{}/api/blocks'.format(settings.PROXY_URL_API)
 
 
 @register.simple_tag
 def objects_url():
-    # return '{}?url={}/api/objects?type=sys.operation'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS)
-    return '/api/objects?type=sys.operation'
+    from django.conf import settings
+    return '{}/api/objects?type=sys.operation'.format(settings.PROXY_URL_API)

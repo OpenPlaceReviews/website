@@ -57,7 +57,7 @@ class BlockPage(TemplateView):
 
     def render_to_response(self, context, **response_kwargs):
         if 'json' in self.request.GET:
-            block_url = '{}?url={}/api/block-by-hash?hash={}'.format(reverse_lazy('proxy_url'), settings.SERVER_API_ADDRESS, self.kwargs.get('hash'))
+            block_url = '{}/api/block-by-hash?hash={}'.format(settings.PROXY_URL_API, self.kwargs.get('hash'))
             return HttpResponseRedirect(block_url)
         return super().render_to_response(context, **response_kwargs)
 

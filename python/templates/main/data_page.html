@@ -7,7 +7,7 @@
 <div class="containter_flex">
     <div class="data_content">
         <div class="data_container">
-            <opr-blocks url="{% url 'proxy_url' %}?url={{ settings.SERVER_API_ADDRESS }}/api/blocks"></opr-blocks>
+            <opr-blocks url="{{ settings.PROXY_URL_API }}/api/blocks"></opr-blocks>
         </div>
     </div>
     {% include 'main/_data_right_menu.html' %}

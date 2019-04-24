@@ -210,9 +210,10 @@ OPENDB_SIGN_LOGIN = 'openplacereviews:web_backend'
 OPENDB_USERNAME = 'web_backend'
 OPENDB_SIGN_PK = ''
 SLICE_KEY = 50
+PROXY_URL_API = ''
 
 
-SETTINGS_EXPORT = ('SERVER_API_ADDRESS', 'SITE_URL')
+SETTINGS_EXPORT = ('SITE_URL', 'PROXY_URL_API')
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 try:

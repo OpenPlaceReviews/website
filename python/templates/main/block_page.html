@@ -7,20 +7,8 @@
 {% block content %}
 <div class="containter_flex">
     <div class="data_content">
-        <opr-block url="{% url 'proxy_url' %}?url={{ settings.SERVER_API_ADDRESS }}/api/block-by-hash?hash={{ hash }}"></opr-block>
+        <opr-block url="{{ settings.PROXY_URL_API }}/api/block-by-hash?hash={{ hash }}"></opr-block>
     </div>
     {% include 'main/_data_right_menu.html' %}
 </div>
 {% endblock %}
-<script>
-    import OprOperations from "../../assets/js/components/OPROperations";
-    export default {
-        components: {OprOperations}
-    }
-</script>
-<script>
-    import OprBlock from "../../assets/js/components/OPRBlock";
-    export default {
-        components: {OprBlock}
-    }
-</script>
