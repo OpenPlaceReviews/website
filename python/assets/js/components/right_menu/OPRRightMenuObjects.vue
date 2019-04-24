@@ -38,7 +38,7 @@
             <li v-for="opr_object in objects" class="font_weight_normal {% if url_entities_validations in request.path %}selected{% endif %}">
                 <a class="first_level_menu" v-bind:href="'/data/objects/' + opr_object.id">
                     <img :src="opr_object|get_icon" width="20" height="20">
-                    <span class="unselect" href="#">{{ opr_object | get_name_object }}</span>
+                    <span class="unselect" href="#">{{ opr_object.object_name }}</span>
                 </a>
             </li>
         </ul>
@@ -65,7 +65,14 @@ export default {
   created() {
       axios.get(this.url_objects).then(response => {
           if(!response.data.error){
-              this.objects = response.data.objects;
+              var objects = response.data.objects;
+              objects.sort(function(a, b){ return a.id[0] > b.id[0] ? 1 : -1});
+              for(var i = 0; i < objects.length; i ++){
+                  objects[i]['type'] = objects[i]['id'][0];
+                  objects[i]['object_name'] = format.getObjectName(objects[i]);
+              }
+              objects.sort(function(a, b){ return a.object_name > b.object_name ? 1 : -1});
+              this.objects = objects;
           }
       });
       axios.get(this.url_blocks).then(response => {
