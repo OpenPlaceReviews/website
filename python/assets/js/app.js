@@ -7,12 +7,6 @@ import OprBlocks from './components/OPRBlocks.vue'
 import OprBlock from './components/OPRBlock.vue'
 import OprOperations from './components/OPROperations.vue'
 import OprQueue from './components/OPRQueue.vue'
-import OprEntitiesSignups from './components/OPREntitiesSignups.vue'
-import OprEntitiesLogins from './components/OPREntitiesLogins.vue'
-import OprEntitiesGrants from './components/OPREntitiesGrants.vue'
-import OprEntitiesValidations from './components/OPREntitiesValidations.vue'
-import OprEntitiesRoles from './components/OPREntitiesRoles.vue'
-import OprEntitiesOperations from './components/OPREntitiesOperations.vue'
 import OprDataObjects from './components/OPRDataObjects.vue'
 import VueHighlightJS from 'vue-highlight.js';
 import json from 'highlight.js/lib/languages/json';
@@ -47,12 +41,6 @@ var vm = new Vue({
     OprBlock,
     OprOperations,
     OprQueue,
-    OprEntitiesSignups,
-    OprEntitiesLogins,
-    OprEntitiesGrants,
-    OprEntitiesValidations,
-    OprEntitiesRoles,
-    OprEntitiesOperations,
     OprRightMenuObjects,
     OprDataObjects
   },
