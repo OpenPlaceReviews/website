@@ -12,6 +12,7 @@ import VueHighlightJS from 'vue-highlight.js';
 import json from 'highlight.js/lib/languages/json';
 import 'highlight.js/styles/default.css';
 import OprRightMenuObjects from './components/right_menu/OPRRightMenuObjects.vue';
+import OprTransaction from './components/OPRTransaction.vue';
 
 
 var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
@@ -42,7 +43,8 @@ var vm = new Vue({
     OprOperations,
     OprQueue,
     OprRightMenuObjects,
-    OprDataObjects
+    OprDataObjects,
+    OprTransaction
   },
   methods:{
     show_form: function (e, form_class) {

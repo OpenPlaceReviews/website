@@ -2,7 +2,7 @@ import json
 
 import requests
 from django.conf import settings
-from django.http import HttpResponseNotFound, JsonResponse, HttpResponse
+from django.http import HttpResponseNotFound, Http404
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView
 from django.urls import reverse_lazy
@@ -81,6 +81,23 @@ class TransactionPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['block_hash'] = self.kwargs.get('block_hash')
-        ctx['tr_hash'] = self.kwargs.get('tr_hash')
+        block_hash = self.kwargs.get('block_hash')
+        tr_hash= self.kwargs.get('tr_hash')
+        url_block_api = "{}/api/block-by-hash?hash={}".format(settings.SERVER_API_ADDRESS, block_hash)
+        block = requests.get(url_block_api)
+        if block.json():
+            ctx['block_from_api'] = block.json()
+            has_tr_hash = False
+            for op in block.json().get('ops'):
+                if tr_hash in op.get('hash'):
+                    has_tr_hash = True
+                    ctx['transaction_from_block'] = op
+                    break
+            if not has_tr_hash:
+                raise Http404
+            else:
+                ctx['transaction_hash'] = tr_hash
+
+        else:
+            raise Http404
         return ctx

@@ -17,7 +17,7 @@
             <div class="info">
                 <div class="first_info_block">
                     <a
-                        href=""
+                        :href="op.hash | only_hash_number"
                         class="hash"
                         v-bind:title="op.hash | only_hash_number"
                     >{{ op.hash | slice_hash }}</a>

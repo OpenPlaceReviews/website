@@ -1,17 +1,14 @@
 {% extends 'base_inner.html' %}
 {% load i18n %}
 
-{% block headline %}Blocks{% endblock %}
+{% block headline %}Block <a href="{% url 'block_page' block_from_api.hash|slice:'7:' %}">#{{ block_from_api.block_id }}</a> - Transaction {{ transaction_hash|slice:':8' }} {% endblock %}
 
 {% block content %}
+
 <div class="containter_flex">
-    <div class="data_content">
-        <div class="data_container">
-            <opr-transaction
-                url="{{ settings.PROXY_URL_API }}/api/op-by-hash?hash={{ op_hash }}"
-                :block_hash=block_hash></opr-transaction>
-        </div>
-    </div>
+    <opr-transaction
+        url="{{ settings.PROXY_URL_API }}/api/op-by-hash?hash={{ transaction_hash }}"
+    ></opr-transaction>
     {% include 'main/_data_right_menu.html' %}
 </div>
 {% endblock %}

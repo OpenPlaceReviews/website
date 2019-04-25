@@ -6,8 +6,8 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^$', FrontpageView.as_view(), name='frontpage'),
     url(r'^data/blocks/$', DataPageView.as_view(), name="data_page"),
-    url(r'^data/blocks/(?P<hash>.+)/$', BlockPage.as_view(), name="block_page"),
-    url(r'^data/blocks/(?P<block_hash>.+)/(?P<tr_hash>.+)/$', TransactionPageView.as_view(), name="block_transaction"),
+    url(r'^data/blocks/(?P<hash>[a-zA-Z0-9]+)/$', BlockPage.as_view(), name="block_page"),
+    url(r'^data/blocks/(?P<block_hash>[a-zA-Z0-9]+)/(?P<tr_hash>[a-zA-Z0-9]+)/$', TransactionPageView.as_view(), name="block_transaction"),
     url(r'^data/queue/$',
         TemplateView.as_view(template_name='main/data_page_queue.html'),
         name='data_queue'),
