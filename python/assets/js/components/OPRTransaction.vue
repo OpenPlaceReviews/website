@@ -2,7 +2,7 @@
     <div class="data_content">
         <div class="block_main_info">
             <ul>
-                <li>Hash: <span> transaction_hash </span></li>
+                <li>Hash: <span>{{ tr_data.hash | only_hash_number}}</span></li>
                 <li>Signed by: <span> {{ tr_data.signed_by }} </span></li>
                 <li>Datatime: <span>{{ tr_data.eval.timestamp | date_to_utc_custom }}</span></li>
             </ul>
