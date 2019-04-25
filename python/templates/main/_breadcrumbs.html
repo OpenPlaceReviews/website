@@ -1,7 +1,7 @@
 {% if breadcrumbs %}
 <div class="breadcrumbs">
     <ul>
-        {% for item, url in breadcrumbs.items %}
+        {% for item, url in breadcrumbs %}
             <li><a href="{{ url }}">{{ item }}</a></li>
         {% endfor %}
     </ul>
