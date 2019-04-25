@@ -26,11 +26,6 @@ class DataPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        breadcrumbs = {
-            'Data': reverse_lazy('data_queue'),
-            'Block list': reverse_lazy('data_page')
-        }
-        ctx['breadcrumbs'] = breadcrumbs
         return ctx
 
 
@@ -52,14 +47,28 @@ class BlockPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data()
-        ctx['hash'] = self.kwargs.get('hash')
+        hash = self.kwargs.get('hash')
+        url_block_api = "{}/api/block-by-hash?hash={}".format(settings.SERVER_API_ADDRESS, hash)
+        block = requests.get(url_block_api)
+        if block.json():
+            ctx['block_from_api'] = block.json()
+        else:
+            raise Http404('Not found block by hash {}'.format(hash))
+        ctx['hash'] = hash
+        breadcrumbs = {
+            'Block list': reverse_lazy('data_page'),
+            'Block #' + str(block.json().get('block_id')): ''
+        }
+        ctx['breadcrumbs'] = breadcrumbs
+
+
         return ctx
 
-    def render_to_response(self, context, **response_kwargs):
-        if 'json' in self.request.GET:
-            block_url = '{}/api/block-by-hash?hash={}'.format(settings.PROXY_URL_API, self.kwargs.get('hash'))
-            return HttpResponseRedirect(block_url)
-        return super().render_to_response(context, **response_kwargs)
+    # def render_to_response(self, context, **response_kwargs):
+    #     if 'json' in self.request.GET:
+    #         block_url = '{}/api/block-by-hash?hash={}'.format(settings.PROXY_URL_API, self.kwargs.get('hash'))
+    #         return HttpResponseRedirect(block_url)
+    #     return super().render_to_response(context, **response_kwargs)
 
 
 def block_exm(reqeust):
@@ -94,10 +103,15 @@ class TransactionPageView(TemplateView):
                     ctx['transaction_from_block'] = op
                     break
             if not has_tr_hash:
-                raise Http404
+                raise Http404('Not found transaction by hash {}'.format(tr_hash))
             else:
                 ctx['transaction_hash'] = tr_hash
-
+            breadcrumbs = {
+                'Block list': reverse_lazy('data_page'),
+                'Block #' + str(block.json().get('block_id')): reverse_lazy('block_page', args=[block_hash]),
+                'Transaction ' + tr_hash[:8]: ''
+            }
+            ctx['breadcrumbs'] = breadcrumbs
         else:
-            raise Http404
+            raise Http404('Not found block by hash {}'.format(block_hash))
         return ctx

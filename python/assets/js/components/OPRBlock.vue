@@ -9,14 +9,6 @@
                 <li :title="block_data.date | date_to_utc_string">Datatime: <span>{{ block_data.date | date_to_utc_custom }}</span></li>
             </ul>
         </div>
-        <!--<div class="block_main_info">-->
-            <!--<ul>-->
-                <!--<li>Operations in queue: <span>1111</span></li>-->
-                <!--<li>Oldest operation: <span>1 hour ago (....) 'sys.login' by nickname</span></li>-->
-                <!--<li>Newest operation: <span>5 second ago (...) 'sys.login' by nikcname</span></li>-->
-                <!--<li>Operations description: <span>5 logins, 2 grant permissions, 10 place edits</span></li>-->
-            <!--</ul>-->
-        <!--</div>-->
         <opr-operations :operations="block_data.ops"></opr-operations>
     </div>
 </template>
@@ -31,8 +23,8 @@ export default {
     components: {OprOperations},
     data: () => ({
     block_data:[],
-    op_count: 0
-  }),
+      op_count: 0
+    }),
   comments: [OprOperations],
   props: ['url'],
   created() {
@@ -40,7 +32,7 @@ export default {
           .then(response => {
               if(!response.data.error){
                   this.block_data = response.data;
-                  this.op_count = response.data.ops.length
+                  this.op_count = response.data.ops.length;
                   this.$parent.$refs.header.innerText = 'Transactions – Block #' + this.block_data.block_id;
               }
           })
