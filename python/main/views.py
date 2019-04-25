@@ -115,3 +115,32 @@ class TransactionPageView(TemplateView):
         else:
             raise Http404('Not found block by hash {}'.format(block_hash))
         return ctx
+
+
+class QueueTransactionView(TemplateView):
+    template_name = 'main/queue_transaction.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        tr_hash= self.kwargs.get('tr_hash')
+        queue_url = "{}/api/queue".format(settings.SERVER_API_ADDRESS)
+        queue = requests.get(queue_url)
+        tr_in_queue = False
+        if queue.json():
+            for op in queue.json().get('ops'):
+                if tr_hash in op.get('hash'):
+                    tr_in_queue = True
+                    break
+        if not tr_in_queue:
+            raise Http404('Not found transaction in queue')
+        ctx['transaction_hash'] = tr_hash
+        url_tr_api = "{}/api/op-by-hash?hash={}".format(settings.SERVER_API_ADDRESS, tr_hash)
+        transaction = requests.get(url_tr_api)
+        breadcrumbs = {
+            'Queue': reverse_lazy('data_queue'),
+            'Transaction ' + tr_hash[:8]: ''
+        }
+        ctx['breadcrumbs'] = breadcrumbs
+        if not transaction.json():
+            raise Http404('Not found transaction by hash {}'.format(tr_hash))
+        return ctx
