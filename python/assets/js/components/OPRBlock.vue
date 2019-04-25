@@ -6,7 +6,7 @@
                 <li>Block Hash: <span>{{ block_data.hash | only_hash_number }}</span></li>
                 <li>Operations count: <span>{{ op_count }}</span></li>
                 <li>Signed by: <span>{{ block_data.signed_by }}</span></li>
-                <li :title="block_data.date | date_to_utc_string">Datatime: <span>{{ block_data.date | date_to_utc_custom}}</span></li>
+                <li :title="block_data.date | date_to_utc_string">Datatime: <span>{{ block_data.date | date_to_utc_custom }}</span></li>
             </ul>
         </div>
         <!--<div class="block_main_info">-->

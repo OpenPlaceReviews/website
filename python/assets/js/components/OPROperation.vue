@@ -10,6 +10,7 @@
                     {{ op_description }}<br v-if="op_description.length > 0">
                     Object type: <b>{{ ob_name }}</b><br>
                     New objects: <b>{{ op.new ? op.new.length : 0 }}</b><br>
+                    Datetime: <b>{{ op.eval.timestamp | date_to_utc_custom }}</b><br>
                     <span v-if="op.old && op.old.length > 0">Deleted objects: <b>{{ op.old ? op.old.length : 0 }}</b></span>
                 </div>
             </div>

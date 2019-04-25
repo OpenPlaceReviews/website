@@ -25,8 +25,9 @@ export default {
         var hh = two_digit(datetime.getUTCHours());
         var MM = two_digit(datetime.getUTCMinutes());
         var ss = two_digit(datetime.getUTCSeconds());
+        var ms = datetime.getUTCMilliseconds();
 
-      var str_date = datetime.getUTCFullYear() + '-' + mm + '-' + dd + ' ' + hh + ':' + MM + ':' + ss + ' UTC';
+      var str_date = datetime.getUTCFullYear() + '-' + mm + '-' + dd + ' ' + hh + ':' + MM + ':' + ss + '.' + ms + ' UTC';
       return str_date;
     },
     replace_all: function (str, search, replace) {
