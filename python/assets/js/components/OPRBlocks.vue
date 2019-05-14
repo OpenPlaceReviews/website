@@ -7,7 +7,7 @@
                 <div class="main_info">
                     <div title="block id" class="title_block"><a v-bind:id="'url_block_' + block_data.block_id" v-bind:href="'/data/blocks/' + block_data.hash|only_hash_number">Block #{{ block_data.block_id }}</a></div>
                     <div class="opr_count">Operations count: <span>{{ block_data.eval.operations_size }}</span></div>
-                    <div class="date">Date: <span>{{ block_data.date }}</span></div>
+                    <div class="date">Date: <span>{{ block_data.date | date_to_utc_custom }}</span></div>
                 </div>
                 <div class="second_info">
                     <div class="second_info_container">
