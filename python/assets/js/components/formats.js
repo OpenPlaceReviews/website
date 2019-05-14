@@ -8,17 +8,28 @@ var format = {
         else if (op.type == 'sys.role') return 'ic_user_info';
         else return 'ic_object';
     },
-    
-    
+
     getOperationTitle(op){
-        if (op.new && op.new.length > 0 && op.old && op.old.length > 0) {
-            return "Edit " + format.getObjectName(op) + " " + format.jsonToString(op.new[0].id);
-        } else if (op.old && op.old.length > 0) {
-            return "Delete  " + format.getObjectName(op) + " " + format.jsonToString(op.old[0].id);
-        } else if (op.new && op.new.length > 0) {
-            return "New  " + format.getObjectName(op) + " " + format.jsonToString(op.new[0].id);
+        if(op.type == 'sys.login'){
+            if (op.new && op.new.length > 0 && op.old && op.old.length > 0) {
+                return 'User ' + format.jsonToString(op.new[0].id) + ' updated details';
+            } else if (op.old && op.old.length > 0) {
+                return "User " + format.jsonToString(op.old[0].id + ' was deleted!');
+            } else if (op.new && op.new.length > 0) {
+                return "Welcome new user " + format.jsonToString(op.new[0].id);
+            }
+            return "Empty operation " + format.getObjectName(op);
         }
-        return "Empty operation " + format.getObjectName(op);
+        else{
+            if (op.new && op.new.length > 0 && op.old && op.old.length > 0) {
+                return "Edit " + format.getObjectName(op) + " " + format.jsonToString(op.new[0].id);
+            } else if (op.old && op.old.length > 0) {
+                return "Delete " + format.getObjectName(op) + " " + format.jsonToString(op.old[0].id);
+            } else if (op.new && op.new.length > 0) {
+                return "New " + format.getObjectName(op) + " " + format.jsonToString(op.new[0].id);
+            }
+            return "Empty operation " + format.getObjectName(op);
+        }
     },
     
     getOperationName(op){
