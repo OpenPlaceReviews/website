@@ -4,7 +4,7 @@
             <ul>
                 <li>Hash: <span>{{ tr_data.hash | only_hash_number}}</span></li>
                 <li>Signed by: <span> {{ tr_data.signed_by }} </span></li>
-                <li>Datatime: <span>{{ tr_data.eval.timestamp | date_to_utc_custom }}</span></li>
+                <li>Date: <span>{{ tr_data.eval.timestamp | date_to_utc_custom }}</span></li>
             </ul>
         </div>
         <div class="data_container">
