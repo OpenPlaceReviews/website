@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^map/', MapPageView.as_view(), name="map_page"),
     url(r'^proxy_url$', proxy_url, name='proxy_url'),
     url(r'^block_exm/$', block_exm),
+    url(r'^landing/', TemplateView.as_view(template_name='landing.html'), name='landing'),
 ]

@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Open Place Reviews{% endblock %}</title>
+    <link rel="icon" type="image/png" sizes="180x180" href="{% static 'dist/images/icons/favicon-192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="180x180" href="{% static 'dist/images/icons/favicon-180x180.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'dist/images/icons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'dist/images/icons/favicon-16x16.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'dist/css/app.min.css' %}">
+    {% block extra_styles %}{% endblock %}
+</head>
+<body>
+    <div class="landing-container">
+        <div class="first-screen">
+            <div class="header">
+                <div class="logo">
+                    <a href="{% url 'landing' %}">
+                        <img src="{% static 'dist/images/landing/logo_langing.png' %}" alt="OpenPlaceReviews.org logo"/>
+                    </a>
+                </div>
+                <div class="join_us_btn"><a href="#" class="button">Join Us</a></div>
+            </div>
+            <h1>
+                <p>A new way for reviews</p>
+                Open. Collaborative. Decentralized.
+            </h1>
+
+        </div>
+        <div class="second-screen">
+            <h1>Openness</h1>
+            <p>Make all the data open, so everybody can access and contribute.</p>
+            <div>
+                <div class="openness_open_db">
+                    <img src="{% static 'dist/images/landing/openness_opendb.png' %}">
+                    <a href="#" target="_blank">Open Database</a>
+                </div>
+                <div class="openness_github">
+                    <img src="{% static 'dist/images/landing/openness_github.png' %}">
+                    <a href="https://github.com/OpenPlaceReviews/" target="_blank">GitHub</a>
+                </div>
+            </div>
+        </div>
+        <div class="border-screen2">&nbsp;</div>
+        <div class="third-screen">
+            <h1>Community driven</h1>
+            <p>Build a community to make key decisions about data<br>structure and moderation together.</p>
+            <a href="#">Join discussions</a>
+            <div class="flex_conteiner">
+                <div class="left_clmn">
+                    <h2>Register & Update places</h2>
+                    <p>Register new places, update information about them and link to other web sources about these places</p>
+                    <a>Moderate places</a>
+                    <h2>Define Tagging  & Metadata</h2>
+                    <p>Vote and make decisions about tagging principles of places and reviews</p>
+                </div>
+                <div class="right_clmn">
+                    <h2>Sync with Public Sources</h2>
+                    <p>Connect places to public source of information including OpenStreetMap, Wikipedia, blogs, websites and let crowlers keep information up to date</p>
+                    <h2>Detect fraud, spam and vandalism</h2>
+                    <p>Develop and decide on tools to detect non-desirable reviews</p>
+                </div>
+            </div>
+            <ul>
+                <li><a href="#">Early Signup Registration</a></li>
+                <li><a href="#">View Places</a></li>
+            </ul>
+        </div>
+        <div class="fourth-screen">
+            <div class="border_screen4">&nbsp;</div>
+            <div class="decentralization">
+                <h1>Decentralization</h1>
+                <div class="flex_conteiner">
+                    <div>Develop a decentralized system from the day 1 to avoid scalability issues in the future.</div>
+                    <div>
+                        <a href="#">Blockchain and data explorer</a><br>
+                        <a href="#">Project kickoff article (forum)</a><br>
+                        <a href="#">GitHub repo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fifth-screen">
+            <div class="trust">
+                <h1>Trust</h1>
+                <div class="flex_conteiner">
+                    <div>
+                        <p>Keep all the data open to prevent any data manipulation. Data is stored in a blockchain form, so it is transparent for any changes.</p>
+                        <p><a href="#">Blockchain explorer</a></p>
+                    </div>
+                    <div>
+                        <p>With appropriate data tagging let applications and users decide how to display the data to avoid monopoly on decisions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sixth-screen">
+            <div class="monetization">
+                <img src="{% static 'dist/images/landing/monetization.png' %}">
+                <div>
+                    <h1>Future Monetization</h1>
+                    <p>Make business subscriptions once the project is matured and spread the income between applications, authors, moderators and network operators.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

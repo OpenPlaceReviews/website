@@ -1,0 +1,242 @@
+.landing-container{
+  .first-screen{
+    width: 1300px;
+    height: 740px;
+    margin: 0 auto;
+    background: url("../images/landing/group_2.png") no-repeat ;
+    background-size: contain;
+    .header{
+      display: inline-flex;
+      margin-top: 70px;
+      .logo{
+        margin-left: 105px;
+        img{
+          width: 185px;
+          height: 50px;
+        }
+      }
+      .join_us_btn{
+        margin-left: 775px;
+        margin-top: 15px;
+        .button {
+          background: #C7C7C7;
+          border-radius: 44px;
+          width: 141px;
+          height: 38px;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 27px;
+          color: #ffffff;
+          padding: 8px 40px;
+        }
+      }
+    }
+  }
+  h1{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 45px;
+    line-height: 60px;
+    text-align: center;
+    p{
+      font-style: normal;
+      font-weight: normal;
+      font-size: 40px;
+      line-height: 49px;
+      text-align: center;
+      margin-top: 120px;
+      margin-bottom: 11px;
+    }
+  }
+  h2{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 140%;
+  }
+  a{
+    color: #0A38C2;
+  }
+  .second-screen{
+    text-align: center;
+    font-family: IBM Plex Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 25px;
+    line-height: 150%;
+    letter-spacing: 0.01em;
+    margin-bottom: 75px;
+    .openness_open_db, .openness_github{
+      display: inline-block;
+      margin: 0 80px;
+      width: 300px;
+      img{
+        width: 260px;
+        height: 180px;
+        margin-top: 50px;
+        margin-bottom: 10px;
+      }
+      a{
+        background: #CCD0D9;
+        border-radius: 60px;
+        padding: 10px 20px;
+        color: #0A38C2;
+      }
+    }
+  }
+  .border-screen2{
+    width: 100%;
+    height: 20px;
+    background: url("../images/landing/border_screen2.png") repeat-x;
+  }
+  .third-screen{
+    text-align: center;
+    margin-top: 95px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 25px;
+    line-height: 150%;
+    letter-spacing: 0.01em;
+    border-bottom: 2px solid #E3E5E8;
+    .flex_conteiner{
+      display: flex;
+      width: 1100px;
+      margin: 0 auto;
+      text-align: left;
+      margin-top: 20px;
+      .left_clmn{
+        margin-right: 80px;
+        width: 470px;
+      }
+      .right_clmn{
+        margin-left: 80px;
+        width: 470px;
+      }
+    }
+    ul{
+      display: flex;
+      margin: 0 auto;
+      width: 470px;
+      padding: 0;
+      margin-top: 105px;
+      margin-bottom: 90px;
+      li:first-child{
+        list-style: none;
+        margin-right: 20px;
+      }
+      li:last-child{
+        margin-left: 20px;
+        list-style: none;
+        &:before{
+          content: '.';
+          bottom: 5px;
+          right: 20px;
+          position: relative;
+          color: #CCD0D9;
+        }
+      }
+    }
+  }
+  .fourth-screen{
+    .border_screen4{
+      margin-top: 100px;
+      background: url("../images/landing/border_screen4.png") repeat-x;
+      height: 60px;
+      width: 100%;
+    }
+    .decentralization{
+      width: 1100px;
+      margin: 0 auto;
+      text-align: left;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 25px;
+      line-height: 150%;
+      letter-spacing: 0.01em;
+      margin-bottom: 125px;
+      h1{
+        text-align: left;
+        margin-top: 125px;
+      }
+      .flex_conteiner{
+        display: flex;
+        div:first-child{
+          width: 470px;
+          margin-right: 90px;
+        }
+        div:last-child{
+          border-left: 4px solid #FFC93A;
+          padding-left: 25px;
+        }
+      }
+    }
+  }
+  .fifth-screen{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 25px;
+    line-height: 150%;
+    letter-spacing: 0.01em;
+    background: #F4F6F6;
+    .trust{
+      width: 1100px;
+      margin: 0 auto;
+      padding-bottom: 105px;
+      h1{
+        text-align: left;
+        padding-top: 65px;
+        margin-bottom: 15px;
+      }
+      .flex_conteiner{
+        display: flex;
+        div{
+          width: 500px;
+          p{
+            margin: 0 0 20px 100px;
+          }
+        }
+        div:before{
+          content: url("../images/landing/trust_img.png");
+          position: absolute;
+        }
+        div:first-child{
+          margin-right: 50px;
+        }
+        div:last-child{
+          margin-left: 50px
+        }
+      }
+    }
+  }
+  .sixth-screen{
+    border-bottom: 5px solid #ECF7F1;
+    .monetization{
+      display: flex;
+      width: 1100px;
+      margin: 0 auto;
+      padding-top: 135px;
+      padding-bottom: 175px;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 25px;
+      line-height: 150%;
+      letter-spacing: 0.01em;
+      h1{
+        text-align: left;
+        margin-top: 10px;
+        margin-bottom: 15px;
+      }
+      img{
+        width: 260px;
+        height: 191px;
+        margin-right: 90px;
+      }
+      p{
+        margin-top: 15px;
+      }
+    }
+  }
+  margin-bottom: 300px;
+}
