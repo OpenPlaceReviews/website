@@ -4,6 +4,7 @@
   font-size: 25px;
   line-height: 150%;
   letter-spacing: 0.01em;
+  color: #263A30;
   .first-screen{
     width: 1300px;
     height: 740px;
@@ -44,6 +45,7 @@
     font-size: 45px;
     line-height: 60px;
     text-align: center;
+    color: #000000;
     p{
       font-style: normal;
       font-weight: normal;
@@ -52,6 +54,7 @@
       text-align: center;
       margin-top: 120px;
       margin-bottom: 11px;
+      color: #263A30;
     }
   }
   h2{
@@ -343,6 +346,7 @@
     h1{
       text-align: left;
       margin-top: 0px;
+      color: #ffffff;
     }
     .join_us_form{
       width: 540px;
@@ -373,7 +377,41 @@
       }
     }
   }
+  .mission_container{
+    background: #F4F6F6;
+    height: 100%;
+    .mission_block{
+      width: 820px;
+      text-align: left;
+      margin: 0 auto;
+      padding-top: 80px;
+      padding-bottom: 80px;
+      .missing_hidden{
+        p:first-child{
+          margin-top: 0;
+        }
+      }
+      .collapsed_btn{
+        height: 34px;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 25px;
+        line-height: 33px;
+        text-align: center;
+        letter-spacing: 0.02em;
+        color: #0A38C2;
+        background: #CCD0D9;
+        border-radius: 60px;
+        /* position: absolute; */
+        margin: 0 auto;
+        width: 150px;
+        padding: 10px;
+        cursor: pointer;
+      }
+    }
+  }
   footer{
+    margin-top: 300px;
     background: #F0F0F0;
     text-align: center;
     color: #4C4C4C;
@@ -383,5 +421,5 @@
     padding-top: 25px;
     padding-bottom: 25px;
   }
-  margin-bottom: 300px;
+
 }

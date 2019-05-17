@@ -13,7 +13,7 @@
     {% block extra_styles %}{% endblock %}
 </head>
 <body>
-    <div class="landing-container">
+    <div class="landing-container" id="opr-landing">
         <div class="first-screen">
             <div class="header">
                 <div class="logo">
@@ -49,7 +49,7 @@
                 </div>
                 <div class="openness_open_db">
                     <img src="{% static 'dist/images/landing/openness_opendb.png' %}">
-                    <a href="{% url 'data_page' %}" target="_blank">Open Database</a>
+                    <a href="{% url 'data_page' %}">Open Database</a>
                 </div>
             </div>
         </div>
@@ -57,12 +57,12 @@
         <div class="third-screen">
             <h1>Community driven</h1>
             <p>Build a community to make key decisions about data<br>structure and moderation together.</p>
-            <a href="#">Join discussions</a>
+            <a href="https://forum.openplacereviews.org/" target="_blank">Join discussions</a>
             <div class="flex_conteiner">
                 <div class="left_clmn">
                     <h2>Register & Update places</h2>
                     <p>Register new places, update information about them and link to other web sources about these places</p>
-                    <a>Moderate places</a>
+{#                    <a href="{% url 'data_page' %}">Moderate places</a>#}
                     <h2>Define Tagging  & Metadata</h2>
                     <p>Vote and make decisions about tagging principles of places and reviews</p>
                 </div>
@@ -74,8 +74,8 @@
                 </div>
             </div>
             <ul>
-                <li><a href="#">Early Signup Registration</a></li>
-                <li><a href="#">View Places</a></li>
+                <li><a href="{% url 'account_signup' %}">Early Signup Registration</a></li>
+                <li><a href="{% url 'data_page' %}">View Places</a></li>
             </ul>
         </div>
         <div class="fourth-screen">
@@ -85,9 +85,9 @@
                 <div class="flex_conteiner">
                     <div>Develop a decentralized system from the day 1 to avoid scalability issues in the future.</div>
                     <div>
-                        <a href="#">Blockchain and data explorer</a><br>
-                        <a href="#">Project kickoff article (forum)</a><br>
-                        <a href="#">GitHub repo</a>
+                        <a href="{% url 'data_page' %}">Blockchain and data explorer</a><br>
+                        <a href="https://forum.openplacereviews.org/">Project kickoff article (forum)</a><br>
+                        <a href="https://github.com/OpenPlaceReviews/">GitHub repo</a>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
                 <div class="flex_conteiner">
                     <div>
                         <p>Keep all the data open to prevent any data manipulation. Data is stored in a blockchain form, so it is transparent for any changes.</p>
-                        <p><a href="#">Blockchain explorer</a></p>
+                        <p><a href="{% url 'data_page' %}">Blockchain explorer</a></p>
                     </div>
                     <div>
                         <p>With appropriate data tagging let applications and users decide how to display the data to avoid monopoly on decisions</p>
@@ -135,6 +135,7 @@
                     </div>
                 </div>
             </div>
+            {% comment %}
             <div class="community_leaders">
                 <h1>Community Leaders</h1>
                 <p>Here will be the list of project representatives who will have administration rights</p>
@@ -161,7 +162,51 @@
                     </li>
                 </ul>
             </div>
+            {% endcomment %}
         </div>
+        <expand-missing-block></expand-missing-block>
+        {% comment %}
+        <div class="mission_container">
+            <div class="mission_block">
+                <h1>Mission</h1>
+                <p>
+                    Big commercial companies collect millions of user reviews worldwide via all
+                    possible ways and make huge money on it. Sometimes they manipulate them in
+                    advertisers interest. None of them wants these data to be open and available
+                    for everyone. The amount of data they collect leads to global privacy issues.
+                    They create a monopoly on something that should belong to users.
+                </p>
+
+                <p>
+                    We’ve seen this already with…<br>
+                    … world knowledge monopoly: thus Wikipedia.org was born.<br>
+                    … world map data monopoly: thus OpenStreetMap.org was born.
+                </p>
+                <p>
+                    With all these open projects the world became more open, transparent and better.
+                    Now it is time for users reviews. The world is waiting for OpenPlaceReviews.org to be born.
+                </p>
+                <p>
+                    We believe that any information provided by users could not be collected in any
+                    hidden form and should be available for further distribution.
+                </p>
+                <p>
+                    We are inspired by truly open crowdsource projects like OpenStreetMap and
+                    Wikipedia and as a first step we want to build a platform to leave reviews for
+                    restaurants, hotels, attractions, etc.  We are developers of popular mobile maps
+                    application and we know how to do it.
+                </p>
+                <p>
+                    Join our community and share your feedback. Let’s make the world a better place to live!
+                <p>
+                    ------<br>
+                    Here’s our mission and what we stand for:<br>
+                    Openness that leads to transparency and trustworthy<br>
+                    Collaborativeness that leads to quality
+                </p>
+            </div>
+        </div>
+        {% endcomment %}
         <div class="eighth-screen">
             <div class="flex_conteiner">
                 <div class="cover_full"></div>
@@ -169,7 +214,7 @@
                     <h1>Ready to join us?</h1>
                     <p>Enter your email adress to be the first to know when we launch public.</p>
                     <form action="#">
-                        <input type="email" placeholder="email address">
+                        <input type="email" placeholder="Enter your email adress">
                         <button type="submit">Join</button>
                     </form>
                 </div>
@@ -179,5 +224,6 @@
             <div>© 2019 OpenPlaceReviews.org</div>
         </footer>
     </div>
+    {% include '_scripts.html' %}
 </body>
 </html>

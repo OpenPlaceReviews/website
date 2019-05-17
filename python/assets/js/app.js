@@ -13,6 +13,7 @@ import json from 'highlight.js/lib/languages/json';
 import 'highlight.js/styles/default.css';
 import OprRightMenuObjects from './components/right_menu/OPRRightMenuObjects.vue';
 import OprTransaction from './components/OPRTransaction.vue';
+import ExpandMissingBlock from './components/ExpandMissingBlock.vue';
 
 
 var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
@@ -58,4 +59,11 @@ var vm = new Vue({
         e.target.parentElement.parentElement.classList.toggle('selected');
     }
   }
+});
+
+var vm_landing = new Vue({
+    el: "#opr-landing",
+    components: {
+        ExpandMissingBlock
+    }
 });
