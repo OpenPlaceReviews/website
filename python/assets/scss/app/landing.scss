@@ -1,4 +1,9 @@
 .landing-container{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 150%;
+  letter-spacing: 0.01em;
   .first-screen{
     width: 1300px;
     height: 740px;
@@ -218,11 +223,6 @@
       margin: 0 auto;
       padding-top: 135px;
       padding-bottom: 175px;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 25px;
-      line-height: 150%;
-      letter-spacing: 0.01em;
       h1{
         text-align: left;
         margin-top: 10px;
@@ -237,6 +237,139 @@
         margin-top: 15px;
       }
     }
+  }
+  .seventh-screen{
+    .founders{
+      width: 1100px;
+      margin: 0 auto;
+      padding-bottom: 95px;
+      h1{
+        text-align: left;
+        margin-top: 80px;
+        margin-bottom: 40px;
+      }
+      .founder_block{
+        width: 540px;
+        margin-right: 10px;
+        display: inline-block;
+        &:last-child{
+          margin-right: 0;
+        }
+        img{
+          width: 125px;
+          height: 125px;
+          float: left;
+          margin-right: 20px;
+        }
+        .fuunder_name{
+          font-family: Montserrat;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 25px;
+          line-height: 140%;
+          color: #1A04AE;
+          margin-bottom: 22px;
+        }
+      }
+    }
+    .community_leaders{
+      width: 1100px;
+      margin: 0 auto;
+      h1{
+        text-align: left;
+      }
+      .leaders{
+        padding: 0;
+        display: flex;
+        margin-bottom: 90px;
+        .leader{
+          width: 245px;
+          margin-right: 30px;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 20px;
+          line-height: 32px;
+          letter-spacing: 0.01em;
+          list-style: none;
+          img{
+            width: 125px;
+            height: 125px;
+          }
+          .leader_name{
+            font-family: Montserrat;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 28px;
+            color: #140579;
+          }
+        }
+      }
+    }
+  }
+  .eighth-screen{
+    height: 418px;
+    background: #7BD294;
+    color: #ffffff;
+    padding-top: 82px;
+    .flex_conteiner{
+      display: flex;
+      width: 1200px;
+      @media (min-width: 1600px) {
+        width: 1351px;
+        margin: 0 auto;
+        position: relative;
+        left:-211px;
+      }
+    }
+    .cover_full{
+      background: url('../images/landing/cover_full.png') right no-repeat;
+      width: 811px;
+      height: 418px;
+      background-size: cover;
+    }
+    h1{
+      text-align: left;
+      margin-top: 0px;
+    }
+    .join_us_form{
+      width: 540px;
+      input{
+        width: 540px;
+        background: #FFFFFF;
+        border: 2px solid rgba(0, 0, 0, 0.26);
+        box-sizing: border-box;
+        box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.15);
+        border-radius: 5px;
+        height: 60px;
+        padding-left: 20px;
+      }
+      button{
+        margin-top: 20px;
+        width: 190px;
+        height: 60px;
+        background: #0A38C2;;
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+        color: #ffffff;
+        font-size: 20px;
+        line-height: 30px;
+        border: none;
+        &:hover{
+          background: #140579;
+        }
+      }
+    }
+  }
+  footer{
+    background: #F0F0F0;
+    text-align: center;
+    color: #4C4C4C;
+    font-size: 16px;
+    line-height: 21px;
+    letter-spacing: 0.02em;
+    padding-top: 25px;
+    padding-bottom: 25px;
   }
   margin-bottom: 300px;
 }
