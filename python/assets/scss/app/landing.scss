@@ -72,22 +72,34 @@
     font-size: 25px;
     line-height: 150%;
     letter-spacing: 0.01em;
+    margin: 0 auto;
     margin-bottom: 75px;
-    .openness_open_db, .openness_github{
-      display: inline-block;
-      margin: 0 80px;
-      width: 300px;
-      img{
-        width: 260px;
-        height: 180px;
-        margin-top: 50px;
-        margin-bottom: 10px;
+    display: flex;
+    width: 1100px;
+    text-align: left;
+    h1{
+      text-align: left;
+    }
+    .openness_imgs{
+      text-align: center;
+      background: #F4F6F6;
+      border-radius: 40px;
+      padding: 40px;
+      margin-top: 50px;
+      position: relative;
+      left: 40px;
+      div:first-child{
+        margin-top: 0;
       }
-      a{
-        background: #CCD0D9;
-        border-radius: 60px;
-        padding: 10px 20px;
-        color: #0A38C2;
+      div{
+        margin-top: 20px;
+      }
+      img{
+        width: 190px;
+        height: 130px;
+        //margin-top: 20px;
+        //margin-bottom: 10px;
+
       }
     }
   }
