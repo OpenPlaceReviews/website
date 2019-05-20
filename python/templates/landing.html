@@ -13,7 +13,7 @@
     {% block extra_styles %}{% endblock %}
 </head>
 <body>
-    <div class="landing-container" id="opr-landing">
+    <div class="landing-container" id="opr-app">
         <div class="first-screen">
             <div class="header">
                 <div class="logo">
@@ -213,10 +213,12 @@
                 <div class="join_us_form">
                     <h1>Ready to join us?</h1>
                     <p>Enter your email adress to be the first to know when we launch public.</p>
-                    <form action="#">
-                        <input type="email" placeholder="Enter your email adress">
-                        <button type="submit">Join</button>
-                    </form>
+                    <subscribe-form csrf_token='{% csrf_token %}' action_url="{% url 'subscribe' %}"></subscribe-form>
+{#                    <form action="{% url 'subscribe' %}" method="post">#}
+{#                        {% csrf_token %}#}
+{#                        <input type="email" name="email" placeholder="Enter your email adress">#}
+{#                        <button type="submit">Join</button>#}
+{#                    </form>#}
                 </div>
             </div>
         </div>
