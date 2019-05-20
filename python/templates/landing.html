@@ -15,19 +15,20 @@
 <body>
     <div class="landing-container" id="opr-app">
         <div class="first-screen">
-            <div class="header">
-                <div class="logo">
-                    <a href="{% url 'frontpage' %}">
-                        <img src="{% static 'dist/images/landing/logo_landing.png' %}" alt="OpenPlaceReviews.org logo"/>
-                    </a>
+            <div class="first-screen-container">
+                <div class="header">
+                    <div class="logo">
+                        <a href="{% url 'frontpage' %}">
+                            <img src="{% static 'dist/images/landing/logo_landing.png' %}" alt="OpenPlaceReviews.org logo"/>
+                        </a>
+                    </div>
+                    <div class="join_us_btn"><a href="#join_us" class="button">Join Us</a></div>
                 </div>
-                <div class="join_us_btn"><a href="#join_us" class="button">Join Us</a></div>
+                <h1>
+                    <p>A new way for reviews</p>
+                    Open. Collaborative. Decentralized.
+                </h1>
             </div>
-            <h1>
-                <p>A new way for reviews</p>
-                Open. Collaborative. Decentralized.
-            </h1>
-
         </div>
         <div class="second-screen">
             <div>
@@ -135,78 +136,34 @@
                     </div>
                 </div>
             </div>
-            {% comment %}
-            <div class="community_leaders">
-                <h1>Community Leaders</h1>
-                <p>Here will be the list of project representatives who will have administration rights</p>
-                <ul class="leaders">
-                    <li class="leader">
-                        <img src="{% static 'dist/images/landing/leader_1.png' %}">
-                        <div class="leader_name">Harishan Kobalasingam</div>
-                        <div>Team Lead</div>
-                    </li>
-                    <li class="leader">
-                        <img src="{% static 'dist/images/landing/leader_2.png' %}">
-                        <div class="leader_name">Rylie Bridges</div>
-                        <div>Sale</div>
-                    </li>
-                    <li class="leader">
-                        <img src="{% static 'dist/images/landing/leader_1.png' %}">
-                        <div class="leader_name">Javier Bonilla</div>
-                        <div>Marketing</div>
-                    </li>
-                    <li class="leader">
-                        <img src="{% static 'dist/images/landing/leader_1.png' %}">
-                        <div class="leader_name">Marco Lewis</div>
-                        <div>Team Lead</div>
-                    </li>
-                </ul>
-            </div>
-            {% endcomment %}
+{#            <div class="community_leaders">#}
+{#                <h1>Community Leaders</h1>#}
+{#                <p>Here will be the list of project representatives who will have administration rights</p>#}
+{#                <ul class="leaders">#}
+{#                    <li class="leader">#}
+{#                        <img src="{% static 'dist/images/landing/leader_1.png' %}">#}
+{#                        <div class="leader_name">Harishan Kobalasingam</div>#}
+{#                        <div>Team Lead</div>#}
+{#                    </li>#}
+{#                    <li class="leader">#}
+{#                        <img src="{% static 'dist/images/landing/leader_2.png' %}">#}
+{#                        <div class="leader_name">Rylie Bridges</div>#}
+{#                        <div>Sale</div>#}
+{#                    </li>#}
+{#                    <li class="leader">#}
+{#                        <img src="{% static 'dist/images/landing/leader_1.png' %}">#}
+{#                        <div class="leader_name">Javier Bonilla</div>#}
+{#                        <div>Marketing</div>#}
+{#                    </li>#}
+{#                    <li class="leader">#}
+{#                        <img src="{% static 'dist/images/landing/leader_1.png' %}">#}
+{#                        <div class="leader_name">Marco Lewis</div>#}
+{#                        <div>Team Lead</div>#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </div>#}
         </div>
         <expand-missing-block></expand-missing-block>
-        {% comment %}
-        <div class="mission_container">
-            <div class="mission_block">
-                <h1>Mission</h1>
-                <p>
-                    Big commercial companies collect millions of user reviews worldwide via all
-                    possible ways and make huge money on it. Sometimes they manipulate them in
-                    advertisers interest. None of them wants these data to be open and available
-                    for everyone. The amount of data they collect leads to global privacy issues.
-                    They create a monopoly on something that should belong to users.
-                </p>
-
-                <p>
-                    We’ve seen this already with…<br>
-                    … world knowledge monopoly: thus Wikipedia.org was born.<br>
-                    … world map data monopoly: thus OpenStreetMap.org was born.
-                </p>
-                <p>
-                    With all these open projects the world became more open, transparent and better.
-                    Now it is time for users reviews. The world is waiting for OpenPlaceReviews.org to be born.
-                </p>
-                <p>
-                    We believe that any information provided by users could not be collected in any
-                    hidden form and should be available for further distribution.
-                </p>
-                <p>
-                    We are inspired by truly open crowdsource projects like OpenStreetMap and
-                    Wikipedia and as a first step we want to build a platform to leave reviews for
-                    restaurants, hotels, attractions, etc.  We are developers of popular mobile maps
-                    application and we know how to do it.
-                </p>
-                <p>
-                    Join our community and share your feedback. Let’s make the world a better place to live!
-                <p>
-                    ------<br>
-                    Here’s our mission and what we stand for:<br>
-                    Openness that leads to transparency and trustworthy<br>
-                    Collaborativeness that leads to quality
-                </p>
-            </div>
-        </div>
-        {% endcomment %}
         <div class="eighth-screen" id="join_us">
             <div class="flex_conteiner">
                 <div class="cover_full"></div>
@@ -214,11 +171,6 @@
                     <h1>Ready to join us?</h1>
                     <p>Enter your email adress to be the first to know when we launch public.</p>
                     <subscribe-form csrf_token='{% csrf_token %}' action_url="{% url 'subscribe' %}"></subscribe-form>
-{#                    <form action="{% url 'subscribe' %}" method="post">#}
-{#                        {% csrf_token %}#}
-{#                        <input type="email" name="email" placeholder="Enter your email adress">#}
-{#                        <button type="submit">Join</button>#}
-{#                    </form>#}
                 </div>
             </div>
         </div>
