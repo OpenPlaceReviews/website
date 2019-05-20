@@ -13,6 +13,11 @@ import json from 'highlight.js/lib/languages/json';
 import 'highlight.js/styles/default.css';
 import OprRightMenuObjects from './components/right_menu/OPRRightMenuObjects.vue';
 import OprTransaction from './components/OPRTransaction.vue';
+import ExpandMissingBlock from './components/ExpandMissingBlock.vue';
+import SubscribeForm from './components/SubscribeForm.vue';
+import CxltToastr from 'cxlt-vue2-toastr'
+import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
+
 
 
 var { LMap, LTileLayer, LMarker } = Vue2Leaflet;
@@ -29,6 +34,13 @@ Vue.use(VueHighlightJS, {
 		json
 	}
 });
+var toastrConfigs = {
+    position: 'top right',
+    hideDuration:4000,
+    closeButton: false
+}
+Vue.use(CxltToastr, toastrConfigs)
+
 
 var vm = new Vue({
   el: '#opr-app',
@@ -44,7 +56,9 @@ var vm = new Vue({
     OprQueue,
     OprRightMenuObjects,
     OprDataObjects,
-    OprTransaction
+    OprTransaction,
+    ExpandMissingBlock,
+    SubscribeForm
   },
   methods:{
     show_form: function (e, form_class) {

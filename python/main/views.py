@@ -6,6 +6,9 @@ from django.http import HttpResponseNotFound, JsonResponse, Http404
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_POST
+from .forms import EmailSubscritinoForm
+from ipware import get_client_ip
 
 
 class FrontpageView(TemplateView):
@@ -135,3 +138,16 @@ class QueueTransactionView(TemplateView):
         if not transaction.json():
             raise Http404('Not found transaction by hash {}'.format(tr_hash))
         return ctx
+
+
+@require_POST
+def subscribe(request):
+    form = EmailSubscritinoForm(request.POST)
+    if form.is_valid():
+        email_subsciption = form.save()
+        client_ip, is_routable = get_client_ip(request)
+        email_subsciption.ip = client_ip
+        email_subsciption.save()
+        return JsonResponse({'msg': 'You have successfully subscribed'})
+    else:
+        return JsonResponse({'errors': dict(form.errors.items())})

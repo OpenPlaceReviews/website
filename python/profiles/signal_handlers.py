@@ -5,6 +5,7 @@ from allauth.account.signals import user_logged_in, user_signed_up, \
 from django.conf import settings
 from django.contrib import messages
 from django.dispatch import receiver
+from django.contrib.auth import logout
 
 from opendb.utils import opendb_signup, opendb_login
 from .models import User
@@ -31,6 +32,7 @@ def send_login(request, user, **kwargs):
             user.save()
             messages.success(request, 'Successfully login in OpenDB')
         else:
+            logout(request)
             error_msg = 'Error login in OpenDB: {}'.format(json.loads(response.content.decode('utf-8')).get('message'))
             messages.error(request, error_msg)
     else:

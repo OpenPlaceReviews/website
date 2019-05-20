@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import EmailSubscription
 
-# Register your models here.
+
+class EmailSubscriptionAdmin(admin.ModelAdmin):
+    list_display = ['email', 'active', 'created', 'ip']
+    search_fields = ['email', 'ip']
+
+admin.site.register(EmailSubscription, EmailSubscriptionAdmin)
