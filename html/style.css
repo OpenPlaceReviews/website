@@ -3,6 +3,7 @@
 body {
     /* width: 800px; */
     margin: 0 auto;
+    min-width: 1200px;
     margin-top: 45px;
     font-family: 'Overpass', sans-serif;
     font-weight: 400;
