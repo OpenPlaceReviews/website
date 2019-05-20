@@ -22,6 +22,7 @@
       margin-top: 70px;
       width: 1100px;
       .logo{
+        line-height: 18px;
         img{
           width: 185px;
           height: 50px;
@@ -33,7 +34,7 @@
         margin-left: auto;
         li{
           font-size: 18px;
-          line-height: 150%;
+          line-height: 50px;
           display: inline-block;
           margin-left: 40px;
         }
@@ -89,7 +90,7 @@
       text-align: center;
       background: #F4F6F6;
       border-radius: 40px;
-      padding: 40px;
+      padding: 24px;
       margin-top: 50px;
       position: relative;
       left: 40px;
@@ -105,8 +106,8 @@
         margin-top: 20px;
       }
       img{
-        width: 190px;
-        height: 130px;
+        width: 222px;
+        height: 162px;
       }
     }
   }
@@ -223,7 +224,9 @@
         }
         div:before{
           content: url("../images/landing/trust_img.png");
-          position: absolute;
+          position: relative;
+          float: left;
+          left: -10px;
         }
         div:first-child{
           margin-right: 50px;
@@ -329,10 +332,10 @@
     }
   }
   .eighth-screen{
-    height: 418px;
+    height: 439px;
     background: #7BD294;
     color: #ffffff;
-    padding-top: 82px;
+    padding-top: 50px;
     .flex_conteiner{
       display: flex;
       width: 1100px;
@@ -345,13 +348,13 @@
     }
     .cover_full{
       background: url('../images/landing/cover_full.png') right no-repeat;
-      width: 811px;
-      height: 418px;
+      width: 841px;
+      height: 439px;
       background-size: cover;
     }
     h1{
       text-align: left;
-      margin-top: 0px;
+      margin-top: 20px;
       color: #ffffff;
     }
     .join_us_form{
