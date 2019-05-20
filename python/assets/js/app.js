@@ -36,7 +36,8 @@ Vue.use(VueHighlightJS, {
 });
 var toastrConfigs = {
     position: 'top right',
-    hideDuration:4000
+    hideDuration:4000,
+    closeButton: false
 }
 Vue.use(CxltToastr, toastrConfigs)
 
