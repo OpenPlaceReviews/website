@@ -2,7 +2,7 @@
   <div class="expand-block">
       <div class="mission_container">
         <div class="mission_block">
-          <h1>Mission</h1>
+          <h1 id="mission">Mission</h1>
           <p>
               Big commercial companies collect millions of user reviews worldwide via all
               possible ways and make huge money on it. Sometimes they manipulate them in

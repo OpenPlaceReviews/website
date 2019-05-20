@@ -27,17 +27,15 @@
           height: 50px;
         }
       }
-      .join_us_btn{
+      .menu-landing{
+        margin: 0;
+        padding: 0;
         margin-left: auto;
-        .button {
-          background: #C7C7C7;
-          border-radius: 44px;
-          font-weight: 500;
+        li{
           font-size: 18px;
-          line-height: 27px;
-          color: #ffffff;
-          padding: 8px 40px;
-          white-space: nowrap;
+          line-height: 150%;
+          display: inline-block;
+          margin-left: 40px;
         }
       }
     }
@@ -109,9 +107,6 @@
       img{
         width: 190px;
         height: 130px;
-        //margin-top: 20px;
-        //margin-bottom: 10px;
-
       }
     }
   }
