@@ -397,14 +397,14 @@
     }
   }
   .eighth-screen{
-    height: 439px;
+    //height: 439px;
     background: #7BD294;
     color: #ffffff;
     padding-top: 50px;
     @media (max-width: 1100px) {
       padding-right: 10vw;
       padding-left: 10vw;
-      height: 380px;
+      padding-bottom: 20px;
     }
     .flex_conteiner{
       display: flex;
