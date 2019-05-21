@@ -116,6 +116,7 @@
       @media (max-width: 1180px) {
         display: flex;
         left: 0;
+        flex-wrap: wrap;
         div{
           margin-top: 0;
           margin: 0 auto;
@@ -144,21 +145,24 @@
       margin: 0 auto;
       text-align: left;
       margin-top: 20px;
+      //flex-wrap: wrap;
+
       .left_clmn{
         margin-right: 80px;
         width: 470px;
       }
       .right_clmn{
-        margin-left: 80px;
+        margin-right: 80px;
+        //margin-left:80px;
         width: 470px;
       }
       @media (max-width: 1100px) {
         .left_clmn{
-          margin-right: 20px;
+          margin-right: 0px;
           max-width: 470px;
         }
         .right_clmn{
-          margin-left: 20px;
+          margin-left: 0px;
           max-width: 470px;
         }
       }
@@ -472,6 +476,7 @@
   .mission_container{
     background: #F4F6F6;
     height: 100%;
+    padding: 0 10vw;
     .mission_block{
       max-width: 820px;
       text-align: left;
