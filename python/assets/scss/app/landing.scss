@@ -6,18 +6,68 @@
   letter-spacing: 0.01em;
   color: #263A30;
   .first-screen{
+    .first-screen-bg{
+      display: grid;
+      grid-template-columns: 140px auto 430px;
+      grid-template-rows: 100px 440px 200px;
+      @media (max-width: 950px) {
+        grid-template-columns: 56px auto 172px;
+        grid-template-rows: 40px 370px 80px;
+      }
+      .top-left{
+        background: url("../images/landing/group_2_top_left.png") no-repeat;
+        background-size: 100% 100%;
+      }
+      .top-center{
+        background: url("../images/landing/group_2_top_center.png") repeat-x;
+        background-size: 100% 100%;
+      }
+      .top-right{
+        background: url("../images/landing/group_2_top_right.png") no-repeat;
+        background-size: 100% 100%;
+      }
+      .middle-left{
+        background: url("../images/landing/group_2_middle_left.png") repeat-y;
+        background-size: 100% 100%;
+      }
+      .middle-center{
+        background: url("../images/landing/group_2_middle_center.png") repeat;
+        background-size: 100% 100%;
+      }
+      .middle-right{
+        background: url("../images/landing/group_2_middle_right.png") repeat-y;
+        background-size: 100% 100%;
+      }
+      .buttom-left{
+        background: url("../images/landing/group_2_buttom_left.png") no-repeat;
+        background-size: 100% 100%;
+      }
+      .buttom-center{
+        background: url("../images/landing/group_2_buttom_center.png") repeat-x;
+        background-size: 100% 100%;
+      }
+      .buttom-right{
+        background: url("../images/landing/group_2_buttom_right.png") no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+
     margin: 0 5vw;
     @media (min-width: 1300px){
       width: 1300px;
       margin: 0 auto;
     }
-    height: 740px;
-    background: url("../images/landing/group_2.png") no-repeat ;
+    //height: 740px;
+    //background: url("../images/landing/group_2.png") no-repeat ;
     background-size: 100% 100%;
     .first-screen-container{
       max-width: 1100px;
       margin: 0 auto;
-      padding: 0 5vw;
+      padding: 0 10vw;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
     }
     .header{
       display: flex;
@@ -61,6 +111,9 @@
       margin-top: 120px;
       margin-bottom: 11px;
       color: #263A30;
+      @media (max-width: 950px) {
+        margin-top: 0px;
+      }
     }
   }
   h2{
@@ -187,7 +240,7 @@
       @media (max-width: 1100px) {
         margin-top: 0px;
         margin-bottom: 40px;
-        text-align: left;
+        text-align: center;
       }
       li:first-child{
         list-style: none;
@@ -210,8 +263,10 @@
     .border_screen4{
       margin-top: 100px;
       background: url("../images/landing/border_screen4.png") repeat-x;
-      height: 60px;
+      background-size: 108px 76px;
+      height: 76px;
       width: 100%;
+
     }
     .decentralization{
       max-width: 1100px;
@@ -345,6 +400,17 @@
         p{
           margin-top: 25px;
         }
+      }
+      @media (max-width: 800px) {
+        img{
+          float: none;
+          left: 10px;
+        }
+        h1{
+          text-align: center;
+          width: 100%;
+        }
+        text-align: center;
       }
     }
   }
