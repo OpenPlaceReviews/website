@@ -459,10 +459,13 @@
     .join_us_form{
       width: 540px;
       @media (max-width: 1100px) {
-        width: 80vw;
+        width: 100%;
       }
       input{
         width: 540px;
+        @media (max-width: 950px){
+          width: 100%;
+        }
         background: #FFFFFF;
         border: 2px solid rgba(0, 0, 0, 0.26);
         box-sizing: border-box;
