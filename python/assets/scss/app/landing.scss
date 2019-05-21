@@ -224,11 +224,17 @@
       }
       .flex_conteiner{
         display: flex;
+        @media (max-width: 900px) {
+          flex-wrap: wrap;
+        }
         div:first-child{
           max-width: 470px;
           margin-right: 90px;
           @media (max-width: 1100px) {
             margin-right: 40px;
+          }
+          @media (max-width: 900px) {
+            margin-bottom: 20px;
           }
         }
         div:last-child{
