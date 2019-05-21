@@ -349,6 +349,12 @@
       }
       .flex_conteiner{
         display: flex;
+        @media (max-width: 900px){
+          flex-wrap: wrap;
+          div{
+            margin-bottom: 20px;
+          }
+        }
       }
       .founder_block{
         width: 540px;
