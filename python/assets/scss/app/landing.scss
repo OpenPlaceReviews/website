@@ -540,6 +540,9 @@
       text-align: left;
       margin-top: 20px;
       color: #ffffff;
+      @media (max-width: 950px) {
+        line-height: 56px;
+      }
     }
     .join_us_form{
       width: 540px;
