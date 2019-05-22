@@ -9,7 +9,7 @@
                 <img src="{% static 'dist/images/OpenPlaceReview.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
             </a>
         </div>
-    {% comment %}
+        {% if settings.SHOW_NAVIGATION %}
         <nav>
             <ul>
                 {% url 'map_page' as url %}
@@ -34,6 +34,6 @@
                 {% endif %}
             </ul>
         </nav>
-    {% endcomment %}
+        {% endif %}
     </div>
 </header>

@@ -213,8 +213,9 @@ SLICE_KEY = 50
 PROXY_URL_API = ''
 
 
-SETTINGS_EXPORT = ('SITE_URL', 'PROXY_URL_API')
+SETTINGS_EXPORT = ('SITE_URL', 'PROXY_URL_API', 'SHOW_NAVIGATION')
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+SHOW_NAVIGATION = False
 
 try:
     from .settings_local import *
