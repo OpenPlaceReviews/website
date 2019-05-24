@@ -36,8 +36,7 @@
 </template>
 
 <script>
-import OprOperations from './OPROperations.vue'
-import format from './formats.js'
+import formats from '../mixins/formats'
 
 export default {
   name: 'OprDataObject',
@@ -48,12 +47,13 @@ export default {
         obj_description: ''
   }),
   props: ['obj', 'type_obj'],
+  mixins: [formats],
   created() {
       this.obj_data = this.obj;
       this.obj_data.type = this.type_obj;
-      this.icon = format.getIconIter(this.obj);
-      this.obj_title = format.getObjectTitle(this.obj);
-      this.obj_description = format.getObjectDescription(this.obj);
+      this.icon = this.getIconObject(this.obj);
+      this.obj_title = this.getObjectTitle(this.obj);
+      this.obj_description = this.getObjectDescription(this.obj);
   },
   methods:{
     toggle_show_data: function (event) {

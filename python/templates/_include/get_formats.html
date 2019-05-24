@@ -1,0 +1,33 @@
+{% load main_filters %}
+var FormatsOPR = {
+{% for operation in operations.objects %}
+    {{ operation.id|first|replace_dot }}:{
+        {% if operation.description %}
+            name: '{{ operation.description|get_item:'name' }}',
+            pluralName: '{{ operation.description|get_item:'plural-name' }}',
+            objectIcon: '{{ operation.description|get_item:'object-icon' }}',
+            objectNameFormat: function(obj){
+                {% for op in operation.description|get_item:'object-name-format' %}
+                    {{ op|safe }}
+                {% endfor %}
+            },
+            operationFormat: function(op){
+                {% for op in operation.description|get_item:'operation-format' %}
+                    {{ op|safe }}
+                {% endfor %}
+            },
+            operationIcon: '{{ operation.description|get_item:'operation-icon' }}',
+            objectDescriptionFormat: function(obj){
+                {% for op in operation.description|get_item:'object-description-format' %}
+                    {{ op|safe }}
+                {% endfor %}
+            }
+
+        {% endif %}
+    },
+{% endfor %}
+}
+
+function test(){
+    alert('test from django-template')
+}
