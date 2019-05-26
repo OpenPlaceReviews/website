@@ -6,7 +6,7 @@ body {
     background-color: white;
     font-size: 1em;
     min-height: 100vh;
-    min-width: 600px;
+    min-width: 320px;
 }
 a, a:active{
     color: #2D69E0;
@@ -65,7 +65,7 @@ h1{
     text-align: center;
     margin-top: 50px;
 }
-felx-wrap
+
 .btn {
     background-color: #2d6ae0;
     color: white;
@@ -141,16 +141,17 @@ felx-wrap
 
 header{
     /*width: 100%;*/
-    min-width: 920px;
+    min-width: 280px;
     height: 80px;
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
     align-items: center;
     align-content: center;
     justify-content: center;
-    padding: 0px 30px;
+    padding: 0 20px;
+    //padding: 0px 30px;
     .block-header{
-        display: block;
+        display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         min-width: 920px;
@@ -160,17 +161,17 @@ header{
         position: relative;
         .logo{
             height: 50px;
-            margin: auto 0px;
-            position: absolute;
-            display: inline-block;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            margin: auto;
+            //margin: auto 0px;
+            //position: absolute;
+            //display: inline-block;
+            //top: 0;
+            //right: 0;
+            //bottom: 0;
+            //left: 0;
+            margin: auto 0;
             img{
                 height: 50px;
-                width: 218px;
+                width: 184px;
                 margin: auto 0;
             }
         }
@@ -181,12 +182,12 @@ header{
                 font-size: 16px;
                 letter-spacing: 0.02em;
                 color: #2D69E0;
-                margin: auto 0;
-                height: 16px;
-                right: 0;
-                top: 0;
-                bottom: 0;
-                position: absolute;
+                margin: auto 0 auto auto;
+                //height: 16px;
+                //right: 0;
+                //top: 0;
+                //bottom: 0;
+                //position: absolute;
             ul{
                 margin: 0;
                 padding: 0;
@@ -195,6 +196,9 @@ header{
                     display: inline-block;
                     list-style-type: none;
                     margin-left: 38px;
+                    &:first-child{
+                        margin-left: 0;
+                    }
                     &.active{
                         border-bottom: 2px solid #2D69E0;
                         a{
@@ -251,14 +255,219 @@ header{
                 }
             }
         }
+
+
+//$items: 4;
+//$transition-duration: 0.5s;
+//$transition-delay: 0.05s;
+//#toggle {
+//  position: absolute;
+//  left: -100%;
+//  top: -100%;
+//}
+//
+//#toggle:focus {
+//  & ~ .toggle-container .button-toggle {
+//    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1);
+//  }
+//}
+//
+//
+//// Styles for the 'open' state, if the checkbox is checked
+//#toggle:checked {
+//  // Any element you need to change the style if menu is open goes here, using the sibling selector (~) as follows
+//
+//  // Making the "X" icon using `:before` and `:after` pseudo-elements
+//  & ~ .toggle-container .button-toggle {
+//    box-shadow: 0 0 0 550px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1);
+//
+//    &:hover {
+//      box-shadow: 0 0 0 550px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1), 0 0 0 8px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1);
+//    }
+//
+//    &:before {
+//      transform: translateY(-50%) rotate(45deg) scale(1);
+//    }
+//
+//    &:after {
+//      transform: translateY(-50%) rotate(-45deg) scale(1);
+//    }
+//  }
+//
+//  &:focus ~ .toggle-container .button-toggle {
+//    box-shadow: 0 0 0 550px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1), 0 0 0 8px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1);
+//  }
+//
+//  // Open nav
+//  & ~ .nav {
+//    margin-bottom: 200px;
+//    pointer-events: auto;
+//    transform: translate(50px, 50px);
+//
+//    // Restoring nav items from "lines" in the menu icon
+//    ul li a {
+//      color: #EC7263;
+//      letter-spacing: 0;
+//      height: 40px;
+//      line-height: 40px;
+//      margin-top: 0;
+//      opacity: 1;
+//      transform: scaleY(1);
+//      transition: $transition-duration, opacity 0.1s;
+//
+//      // Setting delays for the nav items in open transition
+//      @for $i from 1 through $items {
+//        &:nth-child(#{$i}) {
+//          $delay: ($items - $i) * $transition-delay;
+//          transition-delay: $delay;
+//          &:before {
+//            transition-delay: $delay;
+//          }
+//        }
+//      }
+//
+//      // Hiding the lines
+//      &:before {
+//        opacity: 0;
+//      }
+//    }
+//  }
+//
+//  // Dummy content
+//  & ~ .dummy-content {
+//    padding-top: 30px;
+//
+//    &:before {
+//      background-color: rgba(0, 0, 0, 0.3);
+//    }
+//  }
+//}
+//
+//.button-toggle {
+//  position: absolute;
+//  display: inline-block;
+//  width: 20px;
+//  height: 20px;
+//  margin: 25px;
+//  background-color: transparent;
+//  border: 2px solid red;
+//  cursor: pointer;
+//  border-radius: 100%;
+//  transition: $transition-duration + 0.1;
+//
+//  // Shadow on hover
+//  &:hover {
+//    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1);
+//  }
+//
+//  // Making the "X" icon using `:before` and `:after` pseudo-elements
+//  // Initially hidden because `scale(0)` transformation
+//
+//  &:before, &:after {
+//    position: absolute;
+//    content: '';
+//    top: 50%;
+//    left: 0;
+//    width: 100%;
+//    height: 2px;
+//    background-color: #EC7263;
+//    border-radius: 5px;
+//    transition: $transition-duration;
+//  }
+//
+//  &:before {
+//    transform: translateY(-50%) rotate(45deg) scale(0);
+//  }
+//
+//  &:after {
+//    transform: translateY(-50%) rotate(-45deg) scale(0);
+//  }
+//}
+//
+//.nav {
+//  display: inline-block;
+//  margin: 25px 25px 20px;
+//  // Don't want pointer-events as menu is closed
+//  pointer-events: none;
+//  transition: $transition-duration;
+//}
+//
+//// Showing nav items as lines, making up the hamburger menu icon
+//.nav ul li a {
+//  position: relative;
+//  display: inline-block;
+//  float: left;
+//  clear: both;
+//  color: transparent;
+//  font-size: 14px;
+//  letter-spacing: -6.2px;
+//  height: 7px;
+//  line-height: 7px;
+//  text-transform: uppercase;
+//  white-space: nowrap;
+//  transform: scaleY(0.2);
+//  transition: $transition-duration, opacity 1s;
+//
+//  // Setting delays for the nav items in close transition
+//  @for $i from 1 through $items {
+//    &:nth-child(#{$i}) {
+//      $delay: ($i - 1) * $transition-delay;
+//      transition-delay: $delay;
+//      &:before {
+//        transition-delay: $delay;
+//      }
+//    }
+//  }
+//
+//  // Adjusting width for the first line
+//  &:nth-child(1) {
+//    letter-spacing: -8px;
+//  }
+//
+//  // Adjusting width for the second line
+//  &:nth-child(2) {
+//    letter-spacing: -7px;
+//  }
+//
+//  // Adjusting from the fourth element onwards
+//  &:nth-child(n + 4) {
+//    letter-spacing: -8px;
+//    margin-top: -7px;
+//    opacity: 0;
+//  }
+//
+//  // Getting the lines for the hamburger menu icon
+//  &:before {
+//    position: absolute;
+//    content: '';
+//    top: 50%;
+//    left: 0;
+//    width: 100%;
+//    height: 2px;
+//    background-color: #EC7263;
+//    transform: translateY(-50%) scaleY(5);
+//    transition: $transition-duration;
+//  }
+//}
+//.nav {
+//  display: inline-block;
+//  margin: 25px 25px 20px;
+//  // Don't want pointer-events as menu is closed
+//  pointer-events: none;
+//  transition: $transition-duration;
+//}
+
+
+
     }
 }
 
 .auth-page{
-    min-width: 600px;
+    min-width: 280px;
+    padding: 0 20px;
     .block-header{
-        width: 540px;
-        min-width: 540px;
+        max-width: 540px;
+        min-width: 280px;
         nav ul li{
             &.my_account, &.avatar_my_account{
                 margin-top: 0;
@@ -270,8 +479,8 @@ header{
     border: none!important;
 }
 .auth-container{
-    width: 540px;
-    min-width: 540px;
+    min-width: 280px;
+    max-width: 540px;
     margin: 0 auto;
     color: #212121;
     font-style: normal;
@@ -279,8 +488,9 @@ header{
     line-height: 26px;
     font-size: 16px;
     letter-spacing: 0.02em;
-    padding: 1px 30px 80px 30px;
     min-height: calc(100vh - 217px);
+    margin-bottom: 40px;
+    padding: 0 20px;
     h1{
         margin-top: 40px;
         margin-bottom: 20px;
@@ -301,7 +511,7 @@ header{
 }
 .socialaccount_ballot ul li{
     list-style-type: none;
-    width: 540px;
+    max-width: 540px;
     border-bottom: 1px solid #E4E7ED;
 }
 .socialaccount_ballot ul li:last-child{
@@ -364,8 +574,10 @@ header{
     display: none;
 }
 .login-form-input{
+    width: 100%;
     text-indent: 10px;
-    width: 540px;
+    max-width: 540px;
+    min-width: 280px;
     height: 40px;
     background: #F7F7F7;
     border: 1px solid #CCD0D9;
@@ -446,12 +658,6 @@ button:hover{
     margin-bottom: 10px;
     line-height: 18px;
 }
-
-.form-item-boolean{
-    border: 1px solid #CCD0D9;
-    box-sizing: border-box;
-    border-radius: 4px;
-}
 .signup-checkbox-block{
     display: flex;
     flex-direction: row;
@@ -467,10 +673,10 @@ button:hover{
     margin-bottom: 15px;
 }
 .form-item-boolean {
+    border: 1px solid #CCD0D9;
+    box-sizing: border-box;
+    border-radius: 4px;
     margin-bottom: 20px;
-}
-.form-item-boolean {
-    display: inline-block;
     input[type="checkbox"] {
         display: none;
     }

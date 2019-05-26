@@ -6,10 +6,14 @@
     <div class="block-header">
         <div class="logo">
            <a href="{% url 'frontpage' %}">
-                <img src="{% static 'dist/images/OpenPlaceReview.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
+                <img src="{% static 'dist/images/OpenPlaceReview.svg' %}" alt="OpenPlaceReviews.org logo" class="center"/>
             </a>
         </div>
-        <nav>
+{#        <input id="toggle" type="checkbox">#}
+{#        <label class="toggle-container" for="toggle">#}
+{#            <span class="button button-toggle"></span>#}
+{#        </label>#}
+        <nav class="nav">
             <ul>
                 {% if request.user.is_authenticated %}
                     <li class="my_account">

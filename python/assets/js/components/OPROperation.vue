@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import format from './formats';
+import formats from '../mixins/formats';
 
 export default {
     name: 'OprOperation',
@@ -53,6 +53,7 @@ export default {
             }
         }
     },
+    mixins: [formats],
     data() {
         return {
             op_name: '',
@@ -63,19 +64,11 @@ export default {
         }
     },
     created() {
-        this.op_name = format.getOperationName(this.op);
-        this.icon = format.getIconIter(this.op);
-        this.op_title = format.getOperationTitle(this.op);
-        this.op_description = this.op.details && this.op.details.length > 0 ? format.getOperationDescription(this.op) : '';
-        this.ob_name = format.getObjectName(this.op);
-        // this.op_name = this.op.new[0].description && this.op.new[0].description['operation-format'] ? eval(this.op.new[0].description['operation-format']) : this.op.type;
-        // this.op_name = typeof this.op_name == 'string' ? this.op_name : this.op_name.join('\n');
-        // var op = this.op;
-        // this.op_name = "if(op.new && op.new.length > 0 && (!op.old || op.old.length == 0)) 'Welcome new user ' + op.new[0].id + '!'"
-        // if(op.new && op.new.length > 0 && (!op.old || op.old.length == 0)) return 'Welcome new user ' + op.new[0].id + '!';
-        // if(op.old && op.old.length > 0 && (!op.new || op.new.length == 0)) return 'User ' + op.old[0].id + ' was deleted!';
-        // return 'User ' + op.new[0].id + ' updated details';
-        // console.log(this.op_name);
+        this.op_name = this.getOperationName(this.op);
+        this.icon = this.getIconOperation(this.op);
+        this.op_title = this.getOperationTitle(this.op);
+        this.op_description = this.op.details && this.op.details.length > 0 ? this.getOperationDescription(this.op) : '';
+        this.ob_name = this.getObjectName(this.op);
     }
 }
 </script>

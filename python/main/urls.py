@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import FrontpageView, DataPageView, MapPageView, proxy_url, \
     BlockPage, block_exm, OperationView, TransactionPageView, QueueTransactionView, \
-    subscribe
+    subscribe, GetFormatsView
 from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^proxy_url$', proxy_url, name='proxy_url'),
     url(r'^block_exm/$', block_exm),
     url(r'^subscribe/$', subscribe, name='subscribe'),
+    url(r'^get_formats.js$', GetFormatsView.as_view(), name='get_formats_js'),
 ]

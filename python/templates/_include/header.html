@@ -6,11 +6,15 @@
     <div class="block-header">
         <div class="logo">
            <a href="{% url 'frontpage' %}">
-                <img src="{% static 'dist/images/OpenPlaceReview.png' %}" alt="OpenPlaceReviews.org logo" class="center"/>
+                <img src="{% static 'dist/images/OpenPlaceReview.svg' %}" alt="OpenPlaceReviews.org logo" class="center"/>
             </a>
         </div>
-    {% comment %}
-        <nav>
+        {% if settings.SHOW_NAVIGATION %}
+{#        <input id="toggle" type="checkbox">#}
+{#        <label class="toggle-container" for="toggle">#}
+{#            <span class="button button-toggle"></span>#}
+{#        </label>#}
+        <nav class="nav">
             <ul>
                 {% url 'map_page' as url %}
                 <li{% if request.path == url %} class="active"{% endif %}><a href="{{ url }}">Map</a></li>
@@ -34,6 +38,6 @@
                 {% endif %}
             </ul>
         </nav>
-    {% endcomment %}
+        {% endif %}
     </div>
 </header>

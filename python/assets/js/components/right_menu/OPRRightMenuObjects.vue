@@ -48,7 +48,7 @@
 <script>
 import axios from 'axios';
 import OprRightMenuItemBlock from './OPRMenuItemBlock.vue'
-import format from '../formats'
+import formats from '../../mixins/formats'
 
 export default {
   name: 'OprRightMenuObjects',
@@ -62,6 +62,7 @@ export default {
     }
   }),
   props: ['url_objects', 'url_blocks', 'url_queue', 'queue_page_url', 'blocks_page_url'],
+  mixins: [formats],
   created() {
       axios.get(this.url_objects).then(response => {
           if(!response.data.error){
@@ -69,7 +70,7 @@ export default {
               objects.sort(function(a, b){ return a.id[0] > b.id[0] ? 1 : -1});
               for(var i = 0; i < objects.length; i ++){
                   objects[i]['type'] = objects[i]['id'][0];
-                  objects[i]['object_name'] = format.getObjectName(objects[i]);
+                  objects[i]['object_name'] = this.getObjectName(objects[i]);
               }
               objects.sort(function(a, b){ return a.object_name > b.object_name ? 1 : -1});
               this.objects = objects;
@@ -111,7 +112,6 @@ export default {
               break;
           }
       }
-
   },
   filters: {
       slice_sys: function (value) {
@@ -119,11 +119,11 @@ export default {
       },
       get_icon: function (obj) {
           obj.type = obj.id[0];
-          return '/static/images/' + format.getIconIter(obj) + '.png';
+          return '/static/images/' + formats.methods.getIconObject(obj) + '.png';
       },
       get_name_object(obj) {
           obj.type = obj.id[0];
-          return format.getObjectName(obj);
+          return formats.methods.getObjectName(obj);
       }
   }
 }

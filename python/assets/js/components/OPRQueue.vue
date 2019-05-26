@@ -20,22 +20,21 @@
 <script>
 import axios from 'axios';
 import OprOperations from './OPROperations.vue'
-import format from './formats.js'
-
+import formats from '../mixins/formats'
 
 export default {
     name: 'OprQueue',
-        components: {OprOperations},
-        data: () => ({
-            queue_data: [],
-            oldest_date: 1,
-            newest_date: 1,
-            oldest_desc: '',
-            newest_desc: '',
-            queue_desc: ''
+    components: {OprOperations},
+    data: () => ({
+        queue_data: [],
+        oldest_date: 1,
+        newest_date: 1,
+        oldest_desc: '',
+        newest_desc: '',
+        queue_desc: ''
     }),
-    comments: [OprOperations],
     props: ['url'],
+    mixins: [formats],
     created() {
         axios.get(this.url)
             .then(response => {
@@ -52,8 +51,8 @@ export default {
                             else{
                                 types_oprs[this.queue_data.ops[i].type] = {
                                     'count': 1,
-                                    'name': format.getObjectName(this.queue_data.ops[i]),
-                                    'plural_name': format.getTypePluralName(this.queue_data.ops[i].type)
+                                    'name': this.getObjectName(this.queue_data.ops[i]),
+                                    'plural_name': this.getTypePluralName(this.queue_data.ops[i].type)
                                 }
                             }
                         }
