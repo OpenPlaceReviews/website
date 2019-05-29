@@ -162,6 +162,6 @@ class GetFormatsView(TemplateView):
         url_api = "{}/api/objects?type=sys.operation".format(settings.SERVER_API_ADDRESS)
         operations = requests.get(url_api)
         if operations.status_code == 200:
-            ctx['operations'] = json.loads(operations.content)
+            ctx['operations'] = operations.json()
         ctx['test'] = {'test': 'test text'}
         return ctx
