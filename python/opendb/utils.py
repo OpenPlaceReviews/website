@@ -3,6 +3,7 @@ import json
 import logging
 import requests
 from django.core.cache import cache
+from django.contrib import messages
 
 
 logger = logging.getLogger(__name__)
@@ -81,6 +82,15 @@ def opendb_login(nickname, pwd=None, oauth_provider=None,
     else:
         logger.error('Error signed on OpenDB: {}'.format(response.content.decode('utf-8')))
     return response
+
+
+def set_login_session(user, pubkey, privatekey, request):
+    # request.session['opendb_pubkey'] = pubkey[settings.SLICE_KEY:]
+    request.session['opendb_privatekey'] = privatekey[settings.SLICE_KEY:]
+    user.pubkey = pubkey
+    user.privatekey = privatekey
+    user.save()
+    messages.success(request, 'Successfully login in OpenDB')
 
 
 def get_opendb_status():

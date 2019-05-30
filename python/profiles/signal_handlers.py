@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.dispatch import receiver
 from django.contrib.auth import logout
 
-from opendb.utils import opendb_signup, opendb_login
+from opendb.utils import opendb_signup, opendb_login, set_login_session
 from .models import User
 
 
@@ -25,12 +25,7 @@ def send_login(request, user, **kwargs):
         if response.status_code == 200:
             pubkey = json.loads(response.content.decode('utf-8')).get('new')[0].get('pubkey')
             privatekey = json.loads(response.content.decode('utf-8')).get('eval').get('privatekey')
-            request.session['opendb_pubkey'] = pubkey[settings.SLICE_KEY:]
-            request.session['opendb_privatekey'] = privatekey[settings.SLICE_KEY:]
-            user.pubkey = pubkey
-            user.privatekey = privatekey
-            user.save()
-            messages.success(request, 'Successfully login in OpenDB')
+            set_login_session(user, pubkey, privatekey, request)
         else:
             logout(request)
             error_msg = 'Error login in OpenDB: {}'.format(json.loads(response.content.decode('utf-8')).get('message'))
