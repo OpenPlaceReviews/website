@@ -1,2 +1,21 @@
 {% extends 'base.html' %}
-{% block header %}404 Error. Page not found{% endblock %}
+
+{% block container %}
+    <main class="inner" id="opr-app">
+        <div class="inner_container">
+            <div class="containter_flex page-error">
+                <div class="img-page-error"> </div>
+                <div class="txt-page-error">
+                    <h1>We can't find the page you are looking for.</h1>
+                    <p class="error-description">Error code: 404</p>
+                    <p>You can try one of this pages:</p>
+                    <ul>
+                        <li><a href="{% url 'data_page' %}">Database</a></li>
+{#                        <li><a href="#">Docs</a></li>#}
+{#                        <li><a href="#">Account</a></li>#}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
