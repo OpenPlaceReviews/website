@@ -2,17 +2,19 @@
 {% load i18n %}
 {% load static %}
 {% block title %}{% block head_title %}{% endblock %}{% endblock %}
-{% block header %}<header class="auth-page">
+{% block header %}
+<input id="toggle" type="checkbox">
+<header class="auth-page">
+
     <div class="block-header">
         <div class="logo">
            <a href="{% url 'frontpage' %}">
                 <img src="{% static 'dist/images/OpenPlaceReview.svg' %}" alt="OpenPlaceReviews.org logo" class="center"/>
             </a>
         </div>
-{#        <input id="toggle" type="checkbox">#}
-{#        <label class="toggle-container" for="toggle">#}
-{#            <span class="button button-toggle"></span>#}
-{#        </label>#}
+        <label class="toggle-container" for="toggle">
+            <span class="button button-toggle"></span>
+        </label>
         <nav class="nav">
             <ul>
                 {% if request.user.is_authenticated %}
