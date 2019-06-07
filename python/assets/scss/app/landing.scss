@@ -64,17 +64,11 @@
       width: 100%;
       margin: 0 0 87px 0;
     }
-    //height: 740px;
-    //background: url("../images/landing/group_2.png") no-repeat ;
     background-size: 100% 100%;
     .first-screen-container{
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 10vw 0 0;
-      //position: absolute;
-      //top: 0;
-      //left: 0;
-      //right: 0;
       @keyframes EmojiFadeInOut {
         0% {
           opacity:1;
@@ -159,19 +153,6 @@
     line-height: 60px;
     text-align: center;
     color: #000000;
-    //p{
-    //  font-style: normal;
-    //  font-weight: normal;
-    //  font-size: 40px;
-    //  line-height: 49px;
-    //  text-align: center;
-    //  margin-top: 120px;
-    //  margin-bottom: 11px;
-    //  color: #263A30;
-    //  @media (max-width: 950px) {
-    //    margin-top: 0px;
-    //  }
-    //}
   }
   h2{
     font-family: Montserrat;
@@ -673,13 +654,73 @@
   }
   footer{
     background: #F0F0F0;
-    text-align: center;
+    text-align: left;
     color: #4C4C4C;
     font-size: 16px;
     line-height: 21px;
     letter-spacing: 0.02em;
-    padding-top: 25px;
-    padding-bottom: 25px;
+    padding-top: 40px;
+    padding-bottom: 50px;
+
+    .footer-container{
+      max-width: 1100px;
+      margin: 0 auto;
+      .copyright{
+        img{
+          width: 193px;
+          height: 47px;
+        }
+        div{
+          font-family: IBM Plex Sans;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 18px;
+          line-height: 27px;
+          letter-spacing: 0.01em;
+          color: #A3ABC2;
+          margin-top: 25px;
+        }
+      }
+      .about{
+        max-width: 165px;
+      }
+      h2{
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 21px;
+        color: #A3ABC2;
+        margin-top: 0;
+        margin-bottom: 7px;
+      }
+      ul{
+        margin: 0;
+        padding: 0;
+        li{
+          list-style: none;
+          font-family: IBM Plex Sans;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0.01em;
+          margin-top: 7px;
+          a.gray, a.gray:hover{
+            color: #6A7181;
+          }
+        }
+      }
+      div{
+        margin: 0 auto;
+      }
+      div.copyright{
+        margin: 0 auto 0 0;
+      }
+      div.community{
+        margin: 0 0 0 auto;
+      }
+    }
   }
 
 }
