@@ -10,6 +10,7 @@ export default {
             return JSON.stringify(o);
         },
         getIconOperation: function(op) {
+            console.log(op.type)
             var custom_op_type = op.type.replace('.', '_');
             if (FormatsOPR[custom_op_type].hasOwnProperty('operationIcon')) {
                 return FormatsOPR[custom_op_type].operationIcon.split(':').reverse()[0];
@@ -89,12 +90,12 @@ export default {
             if (FormatsOPR[custom_op_type].hasOwnProperty('operationFormat')) {
                 return FormatsOPR[custom_op_type].operationFormat(op);
             }
-            else if (op.new && op.new.length > 0 && op.old && op.old.length > 0) {
-                return "Edit " + this.getObjectName(op) + " " + this.jsonToString(op.new[0].id);
-            } else if (op.old && op.old.length > 0) {
-                return "Delete " + this.getObjectName(op) + " " + this.jsonToString(op.old[0].id);
-            } else if (op.new && op.new.length > 0) {
-                return "New " + this.getObjectName(op) + " " + this.jsonToString(op.new[0].id);
+            else if (op.create && op.create.length > 0 && op.delete && op.delete.length > 0) {
+                return "Edit " + this.getObjectName(op) + " " + this.jsonToString(op.create[0].id);
+            } else if (op.delete && op.delete.length > 0) {
+                return "Delete " + this.getObjectName(op) + " " + this.jsonToString(op.delete[0].id);
+            } else if (op.create && op.create.length > 0) {
+                return "New " + this.getObjectName(op) + " " + this.jsonToString(op.create[0].id);
             }
             return "Empty operation " + this.getObjectName(op);
         },

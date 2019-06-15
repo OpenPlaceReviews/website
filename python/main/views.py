@@ -9,7 +9,6 @@ from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
 from .forms import EmailSubscritinoForm
 from ipware import get_client_ip
-from django.template.defaultfilters import safe
 
 
 class FrontpageView(TemplateView):
@@ -155,7 +154,7 @@ def subscribe(request):
 
 
 class GetFormatsView(TemplateView):
-    template_name = '_include/get_formats.html'
+    template_name = 'main/get_formats.html'
 
     def get_context_data(self, **kwargs):
         ctx = super(GetFormatsView, self).get_context_data(**kwargs)
@@ -163,5 +162,4 @@ class GetFormatsView(TemplateView):
         operations = requests.get(url_api)
         if operations.status_code == 200:
             ctx['operations'] = operations.json()
-        ctx['test'] = {'test': 'test text'}
         return ctx

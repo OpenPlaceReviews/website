@@ -115,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = 'frontpage'
+LOGIN_REDIRECT_URL = 'profile_page'
 LOGOUT_REDIRECT_URL = 'frontpage'
 
 AUTH_USER_MODEL = 'profiles.User'
