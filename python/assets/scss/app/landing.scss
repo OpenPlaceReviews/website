@@ -659,10 +659,10 @@
     font-size: 16px;
     line-height: 21px;
     letter-spacing: 0.02em;
-    padding-top: 40px;
-    padding-bottom: 50px;
-
+    padding: 40px 10vw 50px 10vw;
     .footer-container{
+      flex-direction: row;
+      align-items: stretch;
       max-width: 1100px;
       margin: 0 auto;
       .copyright{
@@ -678,11 +678,8 @@
           line-height: 27px;
           letter-spacing: 0.01em;
           color: #A3ABC2;
-          margin-top: 25px;
+          margin-top: 5px;
         }
-      }
-      .about{
-        max-width: 165px;
       }
       h2{
         font-family: Montserrat;
@@ -711,16 +708,29 @@
           }
         }
       }
-      div{
-        margin: 0 auto;
+      .contact, .about{
+        margin: 20px auto 0 0;
+        flex: 1;
+        padding-right: 20px;
+        min-width: 240px;
       }
-      div.copyright{
-        margin: 0 auto 0 0;
+      .copyright{
+        margin: 20px auto 0 0;
+        flex: 1;
+        padding-right: 20px;
+        min-width: 240px;
       }
-      div.community{
-        margin: 0 0 0 auto;
+      .community{
+        margin: 20px 0 0 auto;
+        flex: 1;
+        padding-right: 20px;
+        min-width: 240px;
+      }
+      @media (max-width: 1100px) {
+        .copyright{
+          order: 4;
+        }
       }
     }
   }
-
 }
