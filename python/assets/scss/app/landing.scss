@@ -36,10 +36,6 @@
       display: grid;
       grid-template-columns: 10vw auto 150px 20vw;
       grid-template-rows: 100% 87px;
-      @media (max-width: 950px) {
-        grid-template-columns: 56px auto 172px;
-        grid-template-rows: auto 87px;
-      }
       .left-line{
         background: url(../images/vertical_line_header.png) top right repeat-y
       }
@@ -51,24 +47,40 @@
         background-size: contain;
       }
       .bottom-center{
-        background: url("../images/landing/center_bottom_header.png") repeat-x;
+        background: url("../images/landing/center_bottom_header.png") no-repeat;
         background-size: 100% 100%;
       }
       .bottom-line{
-        background: url("../images/landing/bottom_line_header.png") no-repeat;
+        background: url("../images/landing/bottom_line_header.png") repeat-x;
         background-size: 100% 100%;
       }
+      @media (max-width: 950px) {
+        grid-template-columns: 7vw auto 75px 10vw;
+        grid-template-rows: 100% 87px;
+        .left-line{
+          background-size: 25% 50%;
+        }
+        .bottom-left{
+          background-size: 25% 50%;
+        }
+        .bottom-center, .bottom-line{
+          background-size: 100% 50%;
+        }
+      }
     }
-    margin: 0 5vw;
     @media (min-width: 1300px){
       width: 100%;
       margin: 0 0 87px 0;
+
     }
     background-size: 100% 100%;
     .first-screen-container{
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 10vw 0 0;
+      @media (max-width: 950px) {
+        padding: 0 10vw 0 3vw;
+      }
       @keyframes EmojiFadeInOut {
         0% {
           opacity:1;
@@ -174,6 +186,7 @@
     letter-spacing: 0.01em;
     margin: 0 auto;
     margin-bottom: 75px;
+    margin-top: 87px;
     display: flex;
     max-width: 1100px;
     text-align: left;
