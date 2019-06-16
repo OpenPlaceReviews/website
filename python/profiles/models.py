@@ -22,7 +22,6 @@ class User(AbstractUser):
     email = models.EmailField(_('email address'), blank=True, null=True)
     pubkey = models.CharField(max_length=255, blank=True, default='')
     privatekey = models.CharField(max_length=255, blank=True, default='')
-    oauth_hash = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserManager()
 
