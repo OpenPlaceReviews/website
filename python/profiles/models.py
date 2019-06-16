@@ -5,6 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.functional import cached_property
 from operator import itemgetter
 import json
+from allauth.account.models import EmailAddress
+
 
 countries_json = open('profiles/countries.json').read()
 countries_data = json.loads(countries_json)
@@ -35,3 +37,8 @@ class User(AbstractUser):
     @cached_property
     def get_oauth_uid(self):
         return self.socialaccount_set.all()[0].uid if self.socialaccount_set.exists() else None
+
+    def add_email_address(self, request, new_email):
+        # Add a new email address for the user, and send email confirmation.
+        # Old email will remain the primary until the new one is confirmed.
+        return EmailAddress.objects.add_email(request, self, new_email, confirm=True)

@@ -4,6 +4,7 @@ from allauth.account.forms import SignupForm, LoginForm
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from opendb.utils import opendb_signup, opendb_login, set_login_session, get_object_by_name
 import json
+from allauth.account.models import EmailAddress
 
 
 class CustomSignupForm(SignupForm):
@@ -107,6 +108,7 @@ class CustomSocialSignupForm(SocialSignupForm):
         user.save()
         return user
 
+
 class CustomLoginForm(LoginForm):
     def clean_login(self):
         username = self.cleaned_data.get('login')
@@ -156,3 +158,16 @@ class CustomLoginForm(LoginForm):
                         set_login_session(user, pubkey, privatekey, self.request)
         super(CustomLoginForm, self).clean()
         return self.cleaned_data
+
+
+class ProfileEditForm(forms.Form):
+    email = forms.EmailField(required=True)
+    languages = forms.MultipleChoiceField(required=False, choices=LANGUAGES)
+    country = forms.ChoiceField(required=False, choices=COUNTRIES)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if 'email' in self.changed_data:
+            if EmailAddress.objects.filter(email=self.cleaned_data.get('email')).exists():
+                raise forms.ValidationError('This email already used other user')
+        return email

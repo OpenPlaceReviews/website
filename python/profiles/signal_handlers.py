@@ -1,6 +1,6 @@
 import json
 
-from allauth.account.signals import user_logged_in, user_logged_out, user_signed_up
+from allauth.account.signals import user_logged_in, user_logged_out, email_confirmed
 from django.conf import settings
 from django.contrib import messages
 from django.dispatch import receiver
@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from opendb.utils import opendb_login, set_login_session, opendb_signup,\
     get_object_by_name
 from .models import User
+from allauth.account.models import EmailAddress
 
 
 @receiver(user_logged_in, sender=User)
@@ -48,3 +49,9 @@ def send_logout(request, user, **kwargs):
     request.session['opendb_pubkey'] = ''
     user.pubkey = ''
     user.save()
+
+
+@receiver(email_confirmed)
+def update_user_email(sender, request, email_address, **kwargs):
+    email_address.set_as_primary()
+    EmailAddress.objects.filter(user=email_address.user).exclude(primary=True).delete()
