@@ -16,11 +16,13 @@ languages_data = json.loads(languages_json)
 LANGUAGES = [[k, '{}-{}'.format(v.get('name'), v.get('native'))] for k, v in languages_data.items()]
 LANGUAGES = sorted(LANGUAGES, key=itemgetter(1))
 
+
 class User(AbstractUser):
     username = models.CharField(_('username'), max_length=255, unique=True)
     email = models.EmailField(_('email address'), blank=True, null=True)
     pubkey = models.CharField(max_length=255, blank=True, default='')
     privatekey = models.CharField(max_length=255, blank=True, default='')
+    oauth_hash = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserManager()
 
