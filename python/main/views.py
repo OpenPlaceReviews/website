@@ -163,3 +163,11 @@ class GetFormatsView(TemplateView):
         if operations.status_code == 200:
             ctx['operations'] = operations.json()
         return ctx
+
+
+class TermsOfServicesView(TemplateView):
+    template_name = 'main/static_pages/terms_of_service.html'
+
+
+class ContributorTremsView(TemplateView):
+    template_name = 'main/static_pages/contributor_terms.html'

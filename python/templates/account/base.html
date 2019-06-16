@@ -19,7 +19,7 @@
             <ul>
                 {% if request.user.is_authenticated %}
                     <li class="my_account">
-                        <a href="#">My account</a>
+                        <a href="{% url 'profile_page' %}">My account</a>
                     </li>
                     <li class="avatar_my_account"><a href="{% url 'account_logout' %}"><img src="{% static 'dist/images/avatar-default.png' %}"></a></li>
                 {% else %}
