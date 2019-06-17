@@ -15,44 +15,7 @@
 </head>
 <body>
     <div class="landing-container" id="opr-app">
-        <div class="first-screen">
-            <div class="first-screen-bg">
-                <div class="top-left"></div>
-                <div class="top-center"></div>
-                <div class="top-right"></div>
-                <div class="middle-left"></div>
-                <div class="middle-center">
-
-
-            <div class="first-screen-container">
-                <div>
-                    <div class="header">
-                        <div class="logo">
-                            <a href="{% url 'frontpage' %}">
-                                <img src="{% static 'dist/images/OpenPlaceReview.svg' %}" alt="OpenPlaceReviews.org logo"/>
-                            </a>
-                        </div>
-                        <ul class="menu-landing">
-                            <li><a href="#mission">Mission</a></li>
-                            <li><a href="#join_us" class="button">Join Us</a></li>
-                        </ul>
-                    </div>
-                    <h1>
-                        <p>A new way for reviews</p>
-                        Open. Collaborative. Decentralized.
-                    </h1>
-                </div>
-            </div>
-
-
-                </div>
-                <div class="middle-right"></div>
-                <div class="buttom-left"></div>
-                <div class="buttom-center"></div>
-                <div class="buttom-right"></div>
-            </div>
-
-        </div>
+        {% include 'landing/first_screen.html' %}
 
         <div class="second-screen">
             <div>
@@ -201,9 +164,7 @@
                 </div>
             </div>
         </div>
-        <footer>
-            <div>© 2019 OpenPlaceReviews.org</div>
-        </footer>
+        {% include 'landing/footer.html' %}
 
     </div>
     {% include '_scripts.html' %}

@@ -115,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = 'frontpage'
+LOGIN_REDIRECT_URL = 'profile_page'
 LOGOUT_REDIRECT_URL = 'frontpage'
 
 AUTH_USER_MODEL = 'profiles.User'
@@ -159,13 +159,16 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 ACCOUNT_ADAPTER = 'profiles.adapter.OPRAccountAdapter'
-ACCOUNT_FORMS = {'signup': 'profiles.forms.CustomSignupForm'}
+ACCOUNT_FORMS = {
+    'signup': 'profiles.forms.CustomSignupForm',
+    'login': 'profiles.forms.CustomLoginForm'
+}
 SOCIALACCOUNT_FORMS = {'signup': 'profiles.forms.CustomSocialSignupForm'}
 ACCOUNT_USERNAME_MIN_LENGTH = 1
 SOCIALACCOUNT_AUTO_SIGNUP = False
 ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = '[OpenPlaceRewiews.org]'
 
 LANGUAGE_CODE = 'en'

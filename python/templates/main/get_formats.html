@@ -1,4 +1,5 @@
 {% load main_filters %}
+{% autoescape off %}
 var FormatsOPR = {
 {% for operation in operations.objects %}
     {{ operation.id|first|replace_dot }}:{
@@ -8,18 +9,18 @@ var FormatsOPR = {
             objectIcon: '{{ operation.description|get_item:'object-icon' }}',
             objectNameFormat: function(obj){
                 {% for op in operation.description|get_item:'object-name-format' %}
-                    {{ op|safe }}
+                    {{ op|safe|replace_value:'.new|.create'|replace_value:'.old|.delete' }}
                 {% endfor %}
             },
             operationFormat: function(op){
                 {% for op in operation.description|get_item:'operation-format' %}
-                    {{ op|safe }}
+                    {{ op|safe|replace_value:'.new|.create'|replace_value:'.old|.delete' }}
                 {% endfor %}
             },
             operationIcon: '{{ operation.description|get_item:'operation-icon' }}',
             objectDescriptionFormat: function(obj){
                 {% for op in operation.description|get_item:'object-description-format' %}
-                    {{ op|safe }}
+                    {{ op|safe|replace_value:'.new|.create'|replace_value:'.old|.delete' }}
                 {% endfor %}
             }
 
@@ -27,7 +28,4 @@ var FormatsOPR = {
     },
 {% endfor %}
 }
-
-function test(){
-    alert('test from django-template')
-}
+{% endautoescape %}

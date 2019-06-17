@@ -1,0 +1,30 @@
+{% load static %}
+<footer>
+    <div class="container_flex footer-container">
+        <div class="copyright">
+            <img src="{% static 'dist/images/OpenPlaceReview.svg' %}">
+            <div>© 2019 OpenPlaceReviews.org</div>
+        </div>
+        <div class="contact">
+            <h2>Contact Us</h2>
+            <ul>
+                <li><a href="mailto:hello@openplacereviews.org">hello@openplacereviews.org</a></li>
+            </ul>
+        </div>
+        <div class="about">
+            <h2>About</h2>
+            <ul>
+                <li><a class="gray" href="{% url 'data_page' %}">Blockchain exolorer (developer only)</a></li>
+                <li><a href="https://github.com/OpenPlaceReviews/">GitHub</a></li>
+                <li><a href="#">For investors</a></li>
+            </ul>
+        </div>
+        <div class="community">
+            <h2>Community</h2>
+            <ul>
+                <li><a href="https://forum.openplacereviews.org/">Forum</a></li>
+                <li><a href="#">Telegram channel</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>

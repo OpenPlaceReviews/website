@@ -15,6 +15,7 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     url(r'^accounts/password/reset/', page_not_found),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^accounts/', include('profiles.urls')),
     url(r'', include('main.urls')),
     url(r'', include('profiles.urls')),
 )

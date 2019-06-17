@@ -3,6 +3,7 @@ import json
 import logging
 import requests
 from django.core.cache import cache
+from django.contrib import messages
 
 
 logger = logging.getLogger(__name__)
@@ -77,10 +78,19 @@ def opendb_login(nickname, pwd=None, oauth_provider=None,
         cookies = {'JSESSIONID': get_jsessionid()}
         response = requests.post(api_url, data=data, cookies=cookies)
     if response.status_code == 200:
-        logger.info('Signed user {}'.format(json.loads(response.content.decode('utf-8')).get('name')))
+        logger.info('Login user {}'.format(json.loads(response.content.decode('utf-8')).get('name')))
     else:
-        logger.error('Error signed on OpenDB: {}'.format(response.content.decode('utf-8')))
+        logger.error('Error login on OpenDB: {}'.format(response.content.decode('utf-8')))
     return response
+
+
+def set_login_session(user, pubkey, privatekey, request):
+    # request.session['opendb_pubkey'] = pubkey[settings.SLICE_KEY:]
+    request.session['opendb_privatekey'] = privatekey[settings.SLICE_KEY:]
+    user.pubkey = pubkey
+    user.privatekey = privatekey
+    user.save()
+    messages.success(request, 'Successfully login in OpenDB')
 
 
 def get_opendb_status():
@@ -113,3 +123,23 @@ def get_opendb_status():
         'objects': objects_count
     }
     return statuses
+
+def get_object_by_name(name):
+    url = '/api/object-by-id?type=sys.signup&key={}'.format(name)
+    url = '{}{}'.format(settings.SERVER_API_ADDRESS, url)
+    try:
+        objects_data = requests.get(url)
+        if objects_data.status_code == 200:
+            objects_data = objects_data.json()
+        else:
+            objects_data = {
+                'errors': True,
+                'messages': objects_data.content
+            }
+        return objects_data
+    except requests.ConnectionError:
+        objects_data = {
+            'errors': True,
+            'messages': 'Connection Error'
+        }
+        return objects_data
