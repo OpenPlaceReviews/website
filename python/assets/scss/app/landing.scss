@@ -853,10 +853,12 @@
     }
     .screen_3_maps{
       background: url(../images/landing/screen_3_maps.png) no-repeat;
-      height: 737px;
-      width: 1240px;
+      height: 654px;
+      width: 100%;
+      max-width: 1100px;
       margin: 0 auto;
       margin-bottom: 155px;
+      background-size: contain;
     }
   }
   .fourth-screen{
@@ -1220,33 +1222,38 @@
     }
     .tab_1_diagramm{
       background: url('../images/landing/tab_1_diagramm.svg') right no-repeat;
-      background-size: cover;
-      width: 1240px;
-      height: 1240px;
+      background-size: contain;
+      width: 900px;
+      height: 900px;
+      margin: auto;
     }
     .tab_2_diagramm{
       background: url('../images/landing/tab_2_diagramm.svg') right no-repeat;
-      background-size: cover;
-      width: 1240px;
-      height: 1240px;
+      background-size: contain;
+      width: 900px;
+      height: 900px;
+      margin: auto;
     }
     .tab_3_diagramm{
       background: url('../images/landing/tab_3_diagramm.svg') right no-repeat;
-      background-size: cover;
-      width: 1246px;
-      height: 1240px;
+      background-size: contain;
+      width: 900px;
+      height: 900px;
+      margin: auto;
     }
     .tab_4_diagramm{
       background: url('../images/landing/tab_4_diagramm.svg') right no-repeat;
-      background-size: cover;
-      width: 1240px;
-      height: 1240px;
+      background-size: contain;
+      width: 900px;
+      height: 900px;
+      margin: auto;
     }
     .tab_5_diagramm{
       background: url('../images/landing/tab_5_diagramm.svg') right no-repeat;
-      background-size: cover;
-      width: 1240px;
-      height: 1240px;
+      background-size: contain;
+      width: 900px;
+      height: 900px;
+      margin: auto;
     }
   }
   .tenth-screen{
