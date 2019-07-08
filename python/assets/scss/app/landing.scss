@@ -853,10 +853,12 @@
     }
     .screen_3_maps{
       background: url(../images/landing/screen_3_maps.png) no-repeat;
-      height: 737px;
-      width: 1240px;
+      height: 654px;
+      width: 100%;
+      max-width: 1100px;
       margin: 0 auto;
       margin-bottom: 155px;
+      background-size: contain;
     }
   }
   .fourth-screen{
