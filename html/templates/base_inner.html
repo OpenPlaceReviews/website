@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block extra_metas %}
+<meta name="viewport" content="width=1100">
+{% endblock %}
+
+{% block container %}
+    <main class="inner" id="opr-app">
+        {% block breadcrumbs %}
+            {% include 'main/_breadcrumbs.html' %}
+        {% endblock %}
+        {% block headline_and_content %}
+            <h1 ref="header">
+                {% block headline %}
+                {% endblock %}
+            </h1>
+            <div class="inner_container">
+                {% block content %}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </main>
+{% endblock %}

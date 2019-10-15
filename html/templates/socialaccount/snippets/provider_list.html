@@ -1,0 +1,25 @@
+{% load socialaccount %}
+{% load static %}
+
+{% get_providers as socialaccount_providers %}
+
+{% for provider in socialaccount_providers %}
+<li>
+    <div class="method-auth">
+        {% if provider.id == 'google' %}
+            <img src="{% static 'dist/images/icon-google.png' %}"/>
+        {% elif provider.id == 'facebook'  %}
+            <img src="{% static 'dist/images/icon-facebook.png' %}"/>
+        {% elif provider.id == 'osm'  %}
+            <img src="{% static 'dist/images/icon-osm.png' %}"/>
+        {% endif %}
+        <a title="{{ provider.name }}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">{{ provider.name }}</a>
+    </div>
+</li>
+{% endfor %}
+<li>
+    <div class="method-auth-nickname{% if form.errors %} method-auth-nickname-active-form{% endif %}">
+        <img src="{% static 'dist/images/icon-nickname.png' %}"/>
+        <div class="nickname-method" v-on:click.once="show_form($event, 'form-hidden')">Use nickname and password</div>
+    </div>
+</li>

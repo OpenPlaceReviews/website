@@ -1,0 +1,14 @@
+{% extends 'base_inner.html' %}
+{% load i18n %}
+
+{% block headline %}Transactions &ndash; Block #{{ block_id }}{% endblock %}
+
+{#{% block headline_and_content %}#}
+{% block content %}
+<div class="containter_flex">
+    <div class="data_content">
+        <opr-block url="{{ settings.PROXY_URL_API }}/api/block-by-hash?hash={{ hash }}"></opr-block>
+    </div>
+    {% include 'main/_data_right_menu.html' %}
+</div>
+{% endblock %}
