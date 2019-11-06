@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormMixin
 from django.contrib.auth.decorators import login_required
@@ -8,6 +8,10 @@ from .forms import ProfileEditForm
 from django.urls import reverse_lazy
 from allauth.account.models import EmailAddress
 from allauth.account.utils import sync_user_email_addresses
+from django.contrib.auth import get_user_model
+from django.contrib.sessions.models import Session
+from django.http import JsonResponse
+from django.core.exceptions import PermissionDenied
 
 
 @method_decorator(login_required, name='dispatch')
@@ -55,3 +59,18 @@ class ProfileView(FormMixin, TemplateView):
         else:
             return self.form_invalid(form)
         return render(request, self.template_name, self.get_context_data())
+
+
+@login_required
+def get_private_key_by_session_id(request, session_id):
+    User = get_user_model()
+    session = get_object_or_404(Session, session_key=session_id)
+    user_id = session.get_decoded().get('_auth_user_id')
+    if request.user.id == int(user_id):
+        user = get_object_or_404(User, pk=user_id)
+        user_data = {
+            'private_key': user.privatekey,
+        }
+        return JsonResponse(user_data)
+    else:
+        raise PermissionDenied()
