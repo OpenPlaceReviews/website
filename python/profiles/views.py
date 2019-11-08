@@ -70,6 +70,7 @@ def get_private_key_by_session_id(request, session_id):
         user = get_object_or_404(User, pk=user_id)
         user_data = {
             'private_key': user.privatekey,
+            'username':user.username
         }
         return JsonResponse(user_data)
     else:
