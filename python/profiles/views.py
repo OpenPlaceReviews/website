@@ -8,10 +8,7 @@ from .forms import ProfileEditForm
 from django.urls import reverse_lazy
 from allauth.account.models import EmailAddress
 from allauth.account.utils import sync_user_email_addresses
-from django.contrib.auth import get_user_model
-from django.contrib.sessions.models import Session
 from django.http import JsonResponse
-from django.core.exceptions import PermissionDenied
 
 
 @method_decorator(login_required, name='dispatch')
@@ -47,7 +44,6 @@ class ProfileView(FormMixin, TemplateView):
     def form_valid(self, form):
         if 'email' in form.changed_data:
             email = form.cleaned_data.get('email')
-            print(email, '--------------')
             user = self.request.user
             user.add_email_address(self.request, email)
         return super().form_valid(form)
@@ -62,16 +58,11 @@ class ProfileView(FormMixin, TemplateView):
 
 
 @login_required
-def get_private_key_by_session_id(request, session_id):
-    User = get_user_model()
-    session = get_object_or_404(Session, session_key=session_id)
-    user_id = session.get_decoded().get('_auth_user_id')
-    if request.user.id == int(user_id):
-        user = get_object_or_404(User, pk=user_id)
-        user_data = {
-            'private_key': user.privatekey,
-            'username':user.username
-        }
-        return JsonResponse(user_data)
-    else:
-        raise PermissionDenied()
+def get_json_profile(request):
+    user = request.user
+    user_data = {
+        'private_key': user.privatekey,
+        'username':user.username,
+        'email': user.email
+    }
+    return JsonResponse(user_data)
