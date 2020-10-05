@@ -1,0 +1,34 @@
+{% load static %}
+<div class="first-screen">
+    <div class="first-screen-bg">
+        <div></div>
+        <div class="header-body">
+            <div class="first-screen-container">
+                <div class="header">
+                    <div class="logo">
+                        <a href="{% url 'frontpage' %}">
+                            <img src="{% static 'dist/images/OpenPlaceReview.svg' %}" alt="OpenPlaceReviews.org logo"/>
+                        </a>
+                    </div>
+                    <ul class="menu-landing">
+                        <li><a href="{% url 'frontpage' %}#mission">Mission</a></li>
+                        <li><a href="{% url 'frontpage' %}#join_us" class="button">Join Us</a></li>
+{#                        <li><a href="#">For Investors</a></li>#}
+                    </ul>
+                </div>
+                <div class="container_flex">
+                    <h1>
+                        Read, share and manage reviews about local places
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="right-line"></div>
+        <div class="bottom-line"></div>
+        <div class="bottom-center"></div>
+        <div class="bottom-line"></div>
+        <div class="bottom-right"></div>
+
+    </div>
+
+</div>

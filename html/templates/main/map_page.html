@@ -1,0 +1,30 @@
+{% extends 'base_inner.html' %}
+{% load i18n %}
+
+{% block extra_styles %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css">
+    <style>
+    html, body{
+      height: calc(100% - 69px);
+      min-height: calc(100% - 69px);
+    }
+
+    .map_page_layout{
+      height: 100%;
+      margin: 0;
+    }
+    </style>
+{% endblock %}
+
+{% block messages %}{% endblock %}
+
+{% block container %}
+    <div class="map_page_layout" id="opr-app">
+     <l-map :zoom="13" :center="[47.413220, -1.219482]">
+      <l-tile-layer
+          url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      ></l-tile-layer>
+    </l-map>
+    </div>
+{% endblock %}

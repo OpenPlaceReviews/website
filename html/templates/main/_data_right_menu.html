@@ -1,0 +1,112 @@
+{% load opendb_tags %}
+
+<div>
+    <opr-right-menu-objects
+            url_queue="{% queue_url %}"
+            url_blocks="{% blocks_url %}"
+            url_objects="{% objects_url %}"
+            queue_page_url="{% url 'data_queue' %}"
+            blocks_page_url="{% url 'data_page' %}"
+
+    ></opr-right-menu-objects>
+{#    <div class="menu">#}
+{#        {% opendb_status as opr_status %}#}
+{#        <ul class="menu_items">#}
+{#            <li class="menu_header">Filter</li>#}
+{#            {% url 'data_queue' as url_data_queue %}#}
+{#            <li class="bottom_border{% if request.path == url_data_queue %} selected{% endif %}">#}
+{#                <a href="{{ url_data_queue }}" class="first_level_menu">#}
+{#                    <div class="icon_queue"></div>#}
+{#                    <span class="unselect">Queue</span>#}
+{#                    <div class="menu_opr_count">{{ opr_status.queue }}</div>#}
+{#                </a>#}
+{#            </li>#}
+{#            {% url 'data_page' as url_data_page %}#}
+{#            <li {% if url_data_page in request.path %}class="selected"{% endif %}>#}
+{#                <a href="{{ url_data_page }}" class="first_level_menu">#}
+{#                    <div class="icon_blocks"></div>#}
+{#                    <span class="unselect">All Blocks</span>#}
+{#                    <div class="menu_opr_count">{{ opr_status.blocks }}</div>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="font_weight_normal {% if url_data_page in request.path %}selected_{% endif %}">#}
+{#                <a href="{{ url_data_page }}" class="first_level_menu">#}
+{#                    <div class="icon_block"></div>#}
+{#                    <span class="unselect" >Block #1</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="font_weight_normal {% if url_data_page in request.path %}selected_{% endif %}">#}
+{#                <a href="{{ url_data_page }}" class="first_level_menu">#}
+{#                    <div class="icon_block"></div>#}
+{#                    <span class="unselect" >Block #2</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="bottom_border font_weight_normal">#}
+{#                <div class="first_level_menu">#}
+{#                    <div class=""></div>#}
+{#                    <a class="unselect" href="{{ url_data_page }}">Show more</a>#}
+{#                </div>#}
+{#            </li>#}
+{#            {% url 'data_queue' as url_data_queue %}#}
+{#            <li class="{% if request.path == url_data_queue %}selected{% endif %}">#}
+{#                <div class="first_level_menu">#}
+{#                    <div class="icon_database"></div>#}
+{#                    <div class="select" v-on:click="click_menu">Operations</div>#}
+{#                </div>#}
+{#                <ul class="submenu_items">#}
+{#                    <li class="submenu_item {% if request.path == url_data_queue %}selected{% endif %}"><a href="{{ url_data_queue }}">Queue</a></li>#}
+{#                    <li class="submenu_item"><a href="#">Last block</a></li>#}
+{#                </ul>#}
+            {#            </li>#}
+{#        </ul>#}
+{#        <ul class="menu_items">#}
+{#            {% url 'data_entities_signups' as url_entities_signups %}#}
+{#            {% url 'data_entities_logins' as url_entities_logins %}#}
+{#            {% url 'data_entities_grants' as url_entities_grants %}#}
+{#            {% url 'data_entities_validations' as url_entities_validations %}#}
+{#            {% url 'data_entities_operations' as url_entities_operations %}#}
+{#            {% url 'data_entities_roles' as url_entities_roles %}#}
+{#            <li class="menu_header">#}
+{#                <div>Objects</div>#}
+{#                <div class="menu_opr_count">{{ opr_status.queue }}</div>#}
+{#            </li>#}
+{#            <li class="font_weight_normal {% if url_entities_operations in request.path %}selected{% endif %}">#}
+{#                <a href="{{ url_entities_operations }}" class="first_level_menu">#}
+{#                    <div class="icon_object"></div>#}
+{#                    <span class="unselect" >Object type</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            <li class="font_weight_normal {% if url_entities_logins in request.path %}selected{% endif %}">#}
+{#                <div class="first_level_menu">#}
+{#                    <div class="icon_user_login"></div>#}
+{#                    <a class="unselect" href="{{ url_entities_logins }}">User login</a>#}
+{#                </div>#}
+{#            </li>#}
+{#            <li class="font_weight_normal {% if url_entities_grants in request.path %}selected{% endif %}">#}
+{#                <div class="first_level_menu">#}
+{#                    <div class="icon_permission"></div>#}
+{#                    <a class="unselect" href="{{ url_entities_grants }}">User permission</a>#}
+{#                </div>#}
+{#            </li>#}
+{#            <li class="font_weight_normal {% if url_entities_roles in request.path %}selected{% endif %}">#}
+{#                <div class="first_level_menu">#}
+{#                    <div class="icon_user_role"></div>#}
+{#                    <a class="unselect" href="{{ url_entities_roles }}">User role</a>#}
+{#                </div>#}
+{#            </li>#}
+{#            <li class="font_weight_normal {% if url_entities_signups in request.path %}selected{% endif %}">#}
+{#                <div class="first_level_menu">#}
+{#                    <div class="icon_user_signup"></div>#}
+{#                    <a class="unselect" href="{{ url_entities_signups }}">User signup</a>#}
+{#                </div>#}
+{#            </li>#}
+{#            <li class="font_weight_normal {% if url_entities_validations in request.path %}selected{% endif %}">#}
+{#                <div class="first_level_menu">#}
+{#                    <div class="icon_validation"></div>#}
+{#                    <a class="unselect" href="{{ url_entities_validations }}">Validation rule</a>#}
+{#                </div>#}
+{#            </li>#}
+{##}
+{#        </ul>#}
+{#    </div>#}
+</div>

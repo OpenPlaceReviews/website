@@ -1,0 +1,15 @@
+{% extends 'base_inner.html' %}
+{% load i18n %}
+
+{#{% block headline %}{{ type_op }}{% endblock %}#}
+
+{% block content %}
+<div class="containter_flex">
+    <div class="data_content">
+        <div class="data_container">
+            <opr-data-objects url="{{ settings.PROXY_URL_API }}/api/objects?type={{ type_op }}" type_obj="{{ type_op }}"></opr-data-objects>
+        </div>
+    </div>
+    {% include 'main/_data_right_menu.html' %}
+</div>
+{% endblock %}
