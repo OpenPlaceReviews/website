@@ -1,2 +1,3 @@
-# Open Geo Reviews
-This is a main Landing Page for OpenGeoReviews site
+# Open Place Reviews
+This is a main Landing Page for OpenPlaceReviews site
+
