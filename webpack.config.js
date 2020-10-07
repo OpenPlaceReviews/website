@@ -1,6 +1,6 @@
-var path = require('path');
+const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const { VueLoaderPlugin } = require('vue-loader');
 
@@ -52,7 +52,6 @@ module.exports = {
     new CopyWebpackPlugin([
           {from:'*.html',to:'../'},
           {from:'src/images',to:'../images/'},
-          {from:'src/fonts',to:'../fonts/'},
       ]),
   ],
   resolve: {
