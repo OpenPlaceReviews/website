@@ -371,7 +371,7 @@
   var addClickListener = false;
   function refreshData(params="") {
     $("#map-header-text").text("Loading data...");
-    $.getJSON("api/geo/index/data?"+params, function (mp) {
+    $.getJSON("api/public/geo/index/data?"+params, function (mp) {
       let data = mp.geo;
       placesCache[""] = { data: data };
       if("date" in mp.parameters) {
@@ -561,7 +561,7 @@
         if(!placesCache[tileId]) {
           placesCache[tileId] = { "access": 1 };
           // on failure we can clear cache
-          $.getJSON("api/geo/index/data?tileid=" + tileId, function (mp) {
+          $.getJSON("api/public/geo/index/data?tileid=" + tileId, function (mp) {
             let data = mp.geo;
             placesCache[tileId].data = data;
             refreshMapDelay();
