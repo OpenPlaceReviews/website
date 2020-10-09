@@ -1,7 +1,7 @@
 import React from "react";
 
 import Footer from "./landing/Footer";
-import Header from "./landing/Header";
+import Header from "./Header";
 import InvestingTabs from "./landing/InvestingTabs";
 import Mission from "./landing/Mission";
 
@@ -10,13 +10,13 @@ import evgeneLisovskyPhoto from "../assets/images/evgene_lisovsky.png";
 
 export default () => {
   return <div className="for_investors landing-container" id="opr-app">
+    <Header/>
+
     <div className="first-screen">
       <div className="first-screen-bg">
         <div></div>
         <div className="header-body">
           <div className="first-screen-container">
-            <Header/>
-
             <div className="container_flex">
               <h1>
                 Read, share and manage reviews about local places

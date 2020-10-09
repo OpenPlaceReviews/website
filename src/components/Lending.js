@@ -1,7 +1,7 @@
 import React from "react";
 
 import Footer from "./landing/Footer";
-import Header from "./landing/Header";
+import Header from "./Header";
 import Mission from "./landing/Mission";
 
 import victorShcherbPhoto from "../assets/images/victor_shcherb.png";
@@ -14,13 +14,13 @@ import monetizationImg from "../assets/images/monetization.png";
 
 export default () => {
   return <div className="landing-container" id="opr-app">
+    <Header/>
+
     <div className="first-screen">
       <div className="first-screen-bg">
         <div className="left-line"></div>
         <div className="header-body">
           <div className="first-screen-container">
-            <Header/>
-
             <div className="container_flex">
               <h1>
                 Read, share and manage reviews about local places
