@@ -1,62 +1,96 @@
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-const { VueLoaderPlugin } = require('vue-loader');
+const path = require("path");
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
-  entry: [
-    './src/js/app.js', './src/scss/app.scss',
+  entry: "./src/index.js",
+  mode: "development",
+  devtool: "eval-source-map",
+  output: {
+    filename: "./main.js",
+    path: path.resolve(__dirname, "./html")
+  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: "./src/index.html",
+      filename: "./index.html"
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: "./src/assets/images/icons/",
+          to: "./assets/images/icons/[name].[ext]"
+        }
+      ]
+    }),
+    new MiniCssExtractPlugin({
+      filename: "./app.css"
+    }),
+    new CleanWebpackPlugin()
   ],
   module: {
     rules: [
       {
-        test: /\.vue$/,
-        use: 'vue-loader'
+        test: /\.(ttf|woff|woff2)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "./assets/fonts/[name].[ext]"
+            }
+          }
+        ]
       },
       {
-        test: /\.css$/,
-        loaders: ['style-loader', 'css-loader']
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "./assets/images/[name].[ext]"
+            }
+          }
+        ]
       },
       {
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
-        })
+        test: /\.s?css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              modules: false
+            }
+          },
+          "sass-loader"
+        ]
       },
       {
-        test: /\.(png|jpg|svg)$/,
-        loader: 'file-loader',
-        options:{
-          name: '../images/[name].[ext]',
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
         }
       },
       {
-        test: /\.(eot|ttf|woff|woff2)$/,
-        loader: 'file-loader',
-        options: {
-          name: '../fonts/[name].[ext]',
-        }
-      },
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader"
+          }
+        ]
+      }
     ]
   },
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'html/js')
-  },
-  plugins: [
-    new ExtractTextPlugin('../css/app.min.css'),
-    new VueLoaderPlugin(),
-    new CopyWebpackPlugin([
-          {from:'*.html',to:'../'},
-          {from:'src/images',to:'../images/'},
-      ]),
-  ],
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-    }
+  devServer: {
+    contentBase: path.resolve(__dirname, "./html"),
+    compress: true,
+    port: 9000,
+    watchContentBase: true,
+    historyApiFallback: true,
+    writeToDisk: false,
+    progress: true
   }
 };

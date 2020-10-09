@@ -1,0 +1,831 @@
+body {
+    width: 100%;
+    margin: 0;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 400;
+    background-color: white;
+    font-size: 1em;
+    min-height: 100vh;
+    min-width: 320px;
+}
+a, a:active{
+    color: #2D69E0;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+    color: #2D69E0;
+}
+
+h1{
+    margin-top: 40px;
+    margin-bottom: 20px;
+    line-height: 50px;
+    font-size: 40px;
+    letter-spacing: 0.01em;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+   /*  width: 100%; */
+}
+
+.main {
+    width: 800px;
+    margin: 0 auto;
+    padding-bottom: 80px;
+    min-height: calc(100vh - 256px);
+    h1 {
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        font-size: 2.5em;
+        line-height: 2em;
+        color: #596680;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+    }
+    p {
+        padding: 0px;
+        margin: 0px;
+        line-height: 1em;
+    }
+    ul {
+        width: 600px;
+        line-height: 1.5em;
+        font-size: 1.1em;
+        li {
+            margin: 0 0 20px 0;
+        }
+    }
+}
+
+.btn-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn {
+    background-color: #2d6ae0;
+    color: white;
+    padding: 0px 25px 0px 25px;
+    min-height: 60px;
+    line-height: 60px;
+    border: none;
+    margin:0 auto;
+    display: inline-block;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 3px 14px 2px #00000036;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow: 0px 3px 14px 2px #00000036;  /* Firefox 3.5 - 3.6 */
+    box-shadow: 0px 3px 14px 2px #00000036;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.btn:hover {
+    background-color: #140579;
+}
+
+.footer {
+    //position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-top: 5px;
+    background-color: #ebf2f5;
+    color: #596680;
+    text-align: center;
+    height: 50px;
+    p {
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+    a {
+        text-decoration-color: #140579;
+        text-decoration-line: none;
+    }
+    a:hover {
+        text-decoration-color: #140579;
+        text-decoration-line: underline;
+    }
+}
+.messages-notify{
+    margin: 0;
+    padding: 0;
+}
+.messages-notify .success{
+    background-color: #ebf2f5;
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    list-style: none;
+}
+
+.messages-notify .error{
+    background-color: #FF595E;
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    list-style: none;
+}
+.messages-notify .info{
+    background-color: #7cffb6;
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    list-style: none;
+}
+#toggle {
+    position: absolute;
+    left: -100%;
+    top: -100%;
+}
+
+
+
+@media (max-width: 500px) {
+  $items: 3;
+  $transition-duration: 0.5s;
+  $transition-delay: 0.05s;
+  #toggle:focus {
+    & ~ * .toggle-container .button-toggle {
+      box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.0), inset 0 0 0 20px rgba(0, 0, 0, 0.0);
+    }
+  }
+
+
+      // Styles for the 'open' state, if the checkbox is checked
+      #toggle:checked {
+        // Any element you need to change the style if menu is open goes here, using the sibling selector (~) as follows
+
+        // Making the "X" icon using `:before` and `:after` pseudo-elements
+        & ~ * .toggle-container .button-toggle {
+          box-shadow: 0 0 0 1200px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1);
+          border-radius: 100%;
+          background: none;
+          &:hover {
+            box-shadow: 0 0 0 1200px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1), 0 0 0 8px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1);
+          }
+
+          &:before {
+            transform: translateY(-50%) rotate(45deg) scale(1);
+          }
+
+          &:after {
+            transform: translateY(-50%) rotate(-45deg) scale(1);
+          }
+        }
+
+        &:focus ~ * .toggle-container .button-toggle {
+          box-shadow: 0 0 0 1200px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1), 0 0 0 8px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        // Open nav
+        & ~ * .nav {
+          //margin-bottom: 200px;
+          pointer-events: auto;
+          position: relative;
+          transform: translate(0px, 0px);
+          .nav_login, .nav_signup{
+            display: block;
+            border: none;
+            a{
+              border: none;
+            }
+            a:before{
+              display: none;
+              content: '';
+            }
+          }
+          // Restoring nav items from "lines" in the menu icon
+          ul li a {
+            color: #2D69E0;
+            letter-spacing: 0;
+            height: 40px;
+            line-height: 40px;
+            margin-top: 0;
+            opacity: 1;
+            transform: scaleY(1);
+            display: block;
+            transition: $transition-duration, opacity 0.1s;
+
+            // Setting delays for the nav items in open transition
+            @for $i from 1 through $items {
+              &:nth-child(#{$i}) {
+                $delay: ($items - $i) * $transition-delay;
+                transition-delay: $delay;
+                &:before {
+                  transition-delay: $delay;
+                }
+              }
+            }
+
+            // Hiding the lines
+            &:before {
+              opacity: 0;
+            }
+          }
+
+        }
+        & ~ * .logo{
+          display: none
+        }
+        & ~ header{
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.6);
+        }
+        & ~ * .block-header{
+          height: 100%;
+        }
+        // Dummy content
+        //& ~ .dummy-content {
+        //  height: 170px;
+        //  background-color: rgba(0, 0, 0, 0.6);
+        //
+        //  //&:before {
+        //  //  background-color: rgba(0, 0, 0, 0.6);
+        //  //}
+        //}
+
+      }
+}
+
+
+
+
+
+header{
+    /*width: 100%;*/
+    min-width: 280px;
+    height: 80px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    padding: 0 20px;
+    //padding: 0px 30px;
+    .block-header {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      //min-width: 920px;
+      max-width: 1100px;
+      margin: auto;
+      height: 80px;
+      position: relative;
+      .logo {
+        height: 50px;
+        //margin: auto 0px;
+        //position: absolute;
+        //display: inline-block;
+        //top: 0;
+        //right: 0;
+        //bottom: 0;
+        //left: 0;
+        margin: auto 0;
+        img {
+          height: 50px;
+          width: 184px;
+          margin: auto 0;
+        }
+      }
+      nav {
+        font-style: normal;
+        font-weight: bold;
+        line-height: normal;
+        font-size: 16px;
+        letter-spacing: 0.02em;
+        color: #2D69E0;
+        margin: auto 0 auto auto;
+        //height: 16px;
+        //right: 0;
+        //top: 0;
+        //bottom: 0;
+        //position: absolute;
+        ul {
+          margin: 0;
+          padding: 0;
+          display: block;
+          li {
+            display: inline-block;
+            list-style-type: none;
+            margin-left: 38px;
+            &:first-child {
+              margin-left: 0;
+            }
+            &.active {
+              border-bottom: 2px solid #2D69E0;
+              a {
+                color: #140579;
+              }
+            }
+            a:hover {
+              color: #140579;
+              text-decoration: none;
+            }
+            &.nav_login {
+              border-radius: 22px 0px 0px 22px;
+              border: 1px solid #E4E7ED;
+              border-right: none;
+              padding: 10px 0px 10px 20px;
+              margin-top: 0px;
+              display: initial;
+              a {
+                padding: 3px 20px 3px 0;
+              }
+            }
+            &.nav_signup {
+              border-radius: 0px 22px 22px 0px;
+              border: 1px solid #E4E7ED;
+              border-left: none;
+              padding: 10px 20px 10px 0px;
+              margin-left: 0;
+              margin-top: 0px;
+              display: initial;
+              a {
+                border-left: 2px solid #E4E7ED;
+                padding: 3px 0 3px 20px;
+              }
+            }
+            &.my_account {
+              display: inline-block;
+              a:first-child {
+                border-left: 2px solid #E4E7ED;
+                padding: 3px 0 3px 20px;
+              }
+            }
+            &.avatar_my_account {
+              margin-left: 20px;
+              margin-right: 30px;
+              img {
+                position: absolute;
+                top: 0;
+                width: 30px;
+                height: 30px;
+                margin: auto;
+                bottom: 0;
+              }
+            }
+          }
+        }
+      }
+
+
+
+    @media (max-width: 500px){
+      $items: 3;
+      $transition-duration: 0.5s;
+      $transition-delay: 0.05s;
+
+      .button-toggle {
+        position: absolute;
+        right: 0;
+        display: inline-block;
+        width: 29px;
+        height: 29px;
+        margin: 25px;
+        background-color: transparent;
+        color: #2D69E0;
+        cursor: pointer;
+        //border-radius: 100%;
+        transition: $transition-duration + 0.1;
+        background: url("../images/icon-menu.svg") no-repeat;
+        // Shadow on hover
+        &:hover {
+          box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.0), inset 0 0 0 20px rgba(0, 0, 0, 0.0);
+        }
+
+        // Making the "X" icon using `:before` and `:after` pseudo-elements
+        // Initially hidden because `scale(0)` transformation
+
+        &:before, &:after {
+          position: absolute;
+          content: '';
+          top: 50%;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background-color: #2D69E0;
+          border-radius: 5px;
+          transition: $transition-duration;
+        }
+
+        &:before {
+          transform: translateY(-50%) rotate(45deg) scale(0);
+        }
+
+        &:after {
+          transform: translateY(-50%) rotate(-45deg) scale(0);
+        }
+      }
+
+      .nav {
+        position: absolute;
+        right: 0;
+        display: inline-block;
+        margin: 25px 25px 20px;
+        // Don't want pointer-events as menu is closed
+        pointer-events: none;
+        transition: $transition-duration;
+        ul li{
+          margin: 0;
+          padding: 0;
+          display: block;
+        }
+        .nav_login, .nav_signup{
+          display: block;
+          border: none;
+          margin: 0;
+          padding: 0;
+          a{
+            margin: 0;
+            padding: 0;
+            border: none;
+            :before{
+              display: none;
+            }
+          }
+        }
+      }
+
+      // Showing nav items as lines, making up the hamburger menu icon
+      .nav ul li a {
+        width: 30px;
+        position: relative;
+        display: block;
+        float: left;
+        clear: both;
+        color: transparent;
+        font-size: 14px;
+        letter-spacing: -6.2px;
+        height: 7px;
+        line-height: 7px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        display: none;
+        //transform: scaleY(0.3);
+        //transition: $transition-duration, opacity 0.1s;
+        //
+        //// Setting delays for the nav items in close transition
+        //@for $i from 1 through $items {
+        //  &:nth-child(#{$i}) {
+        //    $delay: ($i - 1) * $transition-delay;
+        //    transition-delay: $delay;
+        //    &:before {
+        //      transition-delay: $delay;
+        //    }
+        //  }
+        //}
+        //
+        //// Adjusting width for the first line
+        //&:nth-child(1) {
+        //  letter-spacing: -8px;
+        //}
+        //
+        //// Adjusting width for the second line
+        //&:nth-child(2) {
+        //  letter-spacing: -7px;
+        //}
+        //
+        //// Adjusting from the fourth element onwards
+        //&:nth-child(n + 4) {
+        //  letter-spacing: -8px;
+        //  margin-top: -7px;
+        //  opacity: 0;
+        //}
+
+        // Getting the lines for the hamburger menu icon
+        &:before {
+          position: absolute;
+          content: '';
+          top: 50%;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background-color: #2D69E0;
+          transform: translateY(-50%) scaleY(5);
+          transition: $transition-duration;
+        }
+      }
+      .nav {
+        display: inline-block;
+        margin: 25px 25px 20px;
+        // Don't want pointer-events as menu is closed
+        pointer-events: none;
+        transition: $transition-duration;
+      }
+    }
+
+
+
+
+
+    }
+}
+
+.auth-page{
+    min-width: 280px;
+    padding: 0 20px;
+    .block-header{
+        max-width: 540px;
+        min-width: 280px;
+        nav ul li{
+            &.my_account, &.avatar_my_account{
+                margin-top: 0;
+            }
+        }
+    }
+}
+.not-border{
+    border: none!important;
+}
+.auth-container{
+    min-width: 280px;
+    max-width: 540px;
+    margin: 0 auto;
+    color: #212121;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 26px;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    min-height: calc(100vh - 217px);
+    margin-bottom: 40px;
+    padding: 0 20px;
+    h1{
+        margin-top: 40px;
+        margin-bottom: 20px;
+        line-height: 48px;
+        font-size: 40px;
+        letter-spacing: 0.01em;
+    }
+    p{
+        margin-top: 13px;
+    }
+}
+
+.socialaccount_ballot p{
+    font-weight: 600;
+}
+.socialaccount_ballot ul{
+    padding: 0;
+}
+.socialaccount_ballot ul li{
+    list-style-type: none;
+    max-width: 540px;
+    border-bottom: 1px solid #E4E7ED;
+}
+.socialaccount_ballot ul li:last-child{
+    border-bottom: none;
+}
+.method-auth{
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+}
+.method-auth img{
+    height: 20px;
+    margin-top: 15px;
+    margin-right: 14px;
+    margin-left: 10px;
+}
+.method-auth a{
+    margin-block-start: 15px;
+}
+.method-auth-nickname{
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+}
+.method-auth-nickname{
+}
+
+.method-auth-nickname-active-form{
+    background: #2D69E0;
+    cursor: pointer;
+    color: #FFFFFF;
+    border: 1px solid #2D69E0;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+
+.method-auth-nickname img{
+    height: 20px;
+    margin-top: 15px;
+    margin-right: 14px;
+    margin-left: 10px;
+}
+.nickname-method{
+    margin-block-start: 15px;
+    color: #2D69E0;
+    cursor: pointer;
+}
+.method-auth-nickname-active-form .nickname-method{
+    color: #FFFFFF;
+}
+
+.form-item{
+    margin-bottom: 20px;
+}
+.form-hidden{
+    display: none;
+}
+.block_hidden{
+    display: none;
+}
+.login-form-input{
+    width: 100%;
+    text-indent: 10px;
+    max-width: 540px;
+    min-width: 280px;
+    height: 40px;
+    background: #F7F7F7;
+    border: 1px solid #CCD0D9;
+    box-sizing: border-box;
+    box-shadow: inset 0px 2px 0px rgba(228, 231, 237, 0.3);
+    border-radius: 4px;
+}
+.login-form-input:focus{
+    background: #FFFFFF;
+    border: 1px solid #2D69E0;
+    box-shadow: inset 0px 4px 2px rgba(0, 0, 0, 0.1), inset 0px 0px 5px rgba(0, 0, 0, 0.35);
+}
+.form-item .input-description{
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: rgba(49, 50, 51, 0.7);
+}
+
+button{
+    background: #F1F4FC;
+    border: 2px solid #2D69E0;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    color: #2D69E0;
+    padding: 0 20px;
+    font-weight: bold;
+    line-height: normal;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    height: 40px;
+}
+
+button:hover{
+    color: #FFFFFF;
+    height: 40px;
+    background: #2D69E0;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    padding: 0 20px;
+    font-weight: bold;
+    line-height: normal;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+}
+.form-error, .form-field-error{
+    display: flex;
+    width: 540px;
+    min-height: 40px;
+    background: #FF595E;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+.error-field{
+    border-color: #FF595E;
+    border-width: 1px;
+}
+
+.form-error img, .form-field-error img{
+    width: 20px;
+    height: 20px;
+    margin: 10px 6px 10px 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.form-error .erorr-description, .form-field-error .erorr-description{
+    margin-top: 12px;
+    max-width: 500px;
+    right: 0;
+    display: block;
+    margin-bottom: 10px;
+    line-height: 18px;
+}
+.signup-checkbox-block{
+    display: flex;
+    flex-direction: row;
+}
+.signup-input-label{
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+.form-item-boolean {
+    border: 1px solid #CCD0D9;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    input[type="checkbox"] {
+        display: none;
+    }
+    input[type="checkbox"]:checked + .box::before {
+        content: "\f14a";
+        color: #2D69E0;
+        animation: checkanimate 200ms;
+    }
+    .box::before {
+        content: "\f096";
+        color: #CCD0D9;
+        font-family: "FontAwesome";
+        font-weight: normal;
+        font-style: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        display: inline-block;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 20px 0px 20px 20px;
+        width: 16px
+    }
+}
+.expand-block{
+    display: block;
+}
+.signup-input-description{
+    margin-left: 20px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+    margin-bottom: 8px;
+    margin-right: 20px;
+}
+.expand-btn{
+    padding: 9px 0px 8px 57px;
+    cursor: pointer;
+    background: #F1F4FC;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    color: #2D69E0;
+}
+.expanded_block{
+    display: none;
+}
+
+.expand-block-data{
+    margin: 15px 20px;
+}
+.optional-fields{
+    margin-bottom: 30px;
+}
+
+.headline-optional-fields{
+    font-style: normal;
+    font-weight: 800;
+    line-height: 25px;
+    font-size: 20px;
+    letter-spacing: 0.03em;
+    color: #140579;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.optional-field{
+    line-height: 1.15em;
+    margin-bottom: 15px;
+    .optional_field_lable{
+        line-height: 26px;
+    }
+}
+.oauth_avatar {
+    position: absolute;
+    margin-left: -70px;
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50px; /* Радиус скругления */
+        //border: 3px solid green; /* Параметры рамки */
+    }
+}
