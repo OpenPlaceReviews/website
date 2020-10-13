@@ -10,6 +10,7 @@ module.exports = {
   devtool: "eval-source-map",
   output: {
     filename: "./main.js",
+    publicPath: '/',
     path: path.resolve(__dirname, "./html")
   },
   plugins: [
