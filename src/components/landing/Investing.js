@@ -1,16 +1,12 @@
 import React from "react";
 
-import Footer from "./landing/Footer";
-import Header from "./Header";
-import InvestingTabs from "./landing/InvestingTabs";
-import Mission from "./landing/Mission";
+import InvestingTabs from "./InvestingTabs";
 
-import victorShcherbPhoto from "../assets/images/victor_shcherb.png";
-import evgeneLisovskyPhoto from "../assets/images/evgene_lisovsky.png";
+import victorShcherbPhoto from "../../assets/images/victor_shcherb.png";
+import evgeneLisovskyPhoto from "../../assets/images/evgene_lisovsky.png";
 
 export default () => {
-  return <div className="for_investors landing-container" id="opr-app">
-    <Header/>
+  return <div className="for_investors">
 
     <div className="first-screen">
       <div className="first-screen-bg">
@@ -382,9 +378,6 @@ export default () => {
       <div className="email_address"><a href="mailto:hello@openplacereviews.org">hello@openplacereviews.org</a></div>
       <div><a className="button" href="mailto:hello@openplacereviews.org">Send request</a></div>
     </div>
-
-    <Mission />
-    <Footer />
 
   </div>;
 };

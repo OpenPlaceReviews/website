@@ -10,6 +10,7 @@ module.exports = {
   devtool: "eval-source-map",
   output: {
     filename: "./main.js",
+    publicPath: '/',
     path: path.resolve(__dirname, "./html")
   },
   plugins: [
@@ -99,6 +100,12 @@ module.exports = {
     watchContentBase: true,
     historyApiFallback: true,
     writeToDisk: false,
-    progress: true
+    progress: true,
+    proxy: {
+      '/api/**': {
+        target: `https://test.openplacereviews.org/`,
+        secure: false,
+      }
+    }
   }
 };

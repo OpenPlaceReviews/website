@@ -144,7 +144,27 @@ h1{
     top: -100%;
 }
 
-
+.collapsed {
+  p:first-child{
+    margin-top: 0;
+  }
+}
+.collapsed_btn {
+  height: 34px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 33px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #0A38C2;
+  background: #CCD0D9;
+  border-radius: 60px;
+  margin: 0 auto;
+  width: 150px;
+  padding: 10px;
+  cursor: pointer;
+}
 
 @media (max-width: 500px) {
   $items: 3;
@@ -600,8 +620,7 @@ header{
     display: flex;
     flex-direction: row;
     height: 50px;
-}
-.method-auth-nickname{
+    align-items: center;
 }
 
 .method-auth-nickname-active-form{
@@ -616,12 +635,10 @@ header{
 
 .method-auth-nickname img{
     height: 20px;
-    margin-top: 15px;
     margin-right: 14px;
     margin-left: 10px;
 }
 .nickname-method{
-    margin-block-start: 15px;
     color: #2D69E0;
     cursor: pointer;
 }
@@ -629,6 +646,9 @@ header{
     color: #FFFFFF;
 }
 
+.form-alert {
+  margin-bottom: 20px;
+}
 .form-item{
     margin-bottom: 20px;
 }
@@ -643,7 +663,7 @@ header{
     text-indent: 10px;
     max-width: 540px;
     min-width: 280px;
-    height: 40px;
+    //height: 40px;
     background: #F7F7F7;
     border: 1px solid #CCD0D9;
     box-sizing: border-box;
@@ -676,6 +696,7 @@ button{
     height: 40px;
 }
 
+/*
 button:hover{
     color: #FFFFFF;
     height: 40px;
@@ -689,6 +710,8 @@ button:hover{
     letter-spacing: 0.02em;
     cursor: pointer;
 }
+ */
+
 .form-error, .form-field-error{
     display: flex;
     width: 540px;
@@ -765,6 +788,9 @@ button:hover{
         margin: 20px 0px 20px 20px;
         width: 16px
     }
+    .inject {
+      padding: 0 1.3em 1.3em 1.3em;
+    }
 }
 .expand-block{
     display: block;
@@ -776,7 +802,7 @@ button:hover{
     line-height: normal;
     font-size: 16px;
     letter-spacing: 0.01em;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
     margin-right: 20px;
 }
 .expand-btn{

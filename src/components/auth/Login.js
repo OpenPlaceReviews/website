@@ -1,31 +1,39 @@
 import React from 'react';
-import {NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 
-import Header from "../Header";
-import Footer from "../Footer";
+import iconNickname from "../../assets/images/icon-nickname.png";
 
 export default () => {
-  return <div>
-    <Header/>
+  return <div className="auth-container" id="opr-app">
+    <h1>Login</h1>
 
-    <div className="auth-container" id="opr-app">
-      <h1>Login</h1>
+    <p>Don't have an account? <Link to="/signup">Create account</Link></p>
 
-      <p>Don't have an account? <NavLink to="/signup">Create account</NavLink></p>
-      <form className="login-form form-hidden" method="POST" action="#">
-        <div className="form-item">
-          <div>Nickname:</div>
-          <div><input name="form.login.html_name" placeholder="Enter your nickname" className="login-form-input" required="true"/></div>
-        </div>
-        <div className="form-item">
-          <div>Password:</div>
-          <div><input type="password" name="form.password.html_name" placeholder="Enter strong password" className="login-form-input" required="true"/></div>
-          <div className="input-description">We don't save your password, if you loose it, we can't help you get back access to account.</div>
-        </div>
-        <button className="primaryAction" type="submit">Continue</button>
-      </form>
+    <div className="socialaccount_ballot">
+      <p>Select login method:</p>
+      <ul className="socialaccount_providers">
+        <li>
+          <div className="method-auth-nickname">
+            <img src={iconNickname} alt="Nickname icon"/>
+            <div className="nickname-method" onClick={()=> history.push(`/signup/password`)}>
+              Use nickname and password
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
 
-    <Footer/>
+    <form className="login-form" method="POST" action="#">
+      <div className="form-item">
+        <div>Nickname:</div>
+        <div><input name="login" placeholder="Enter your nickname" className="login-form-input" required="true"/></div>
+      </div>
+      <div className="form-item">
+        <div>Password:</div>
+        <div><input type="password" name="password" placeholder="Enter strong password" className="login-form-input" required="true"/></div>
+        <div className="input-description">We don't save your password, if you loose it, we can't help you get back access to account.</div>
+      </div>
+      <button className="primaryAction" type="submit">Continue</button>
+    </form>
   </div>;
 };
