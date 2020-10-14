@@ -61,7 +61,7 @@ export default () => {
         </div>
         <div className="openness_open_db">
           <img src={openDBLogo} alt="Opendb"/>
-          <a href="#">Open Database</a>
+          <a href="/api/admin">Open Database</a>
         </div>
       </div>
     </div>
@@ -72,9 +72,9 @@ export default () => {
       <a href="https://forum.openplacereviews.org/" target="_blank">Join discussions</a>
       <div className="flex_conteiner">
         <div className="left_clmn">
-          <h2>Register & Update places</h2>
+          <h2>Register &amp; Update places</h2>
           <p>Register new places, update information about them and link to other web sources about these places</p>
-          <h2>Define Tagging & Metadata</h2>
+          <h2>Define Tagging &amp; Metadata</h2>
           <p>Vote and make decisions about tagging principles of places and reviews</p>
         </div>
         <div className="right_clmn">
@@ -85,9 +85,6 @@ export default () => {
           <p>Develop and decide on tools to detect non-desirable reviews</p>
         </div>
       </div>
-      <ul>
-        <li><a href="#">Early Signup Registration (Alpha)</a></li>
-      </ul>
     </div>
     <div className="fourth-screen">
       <div className="border_screen4">&nbsp;</div>
@@ -96,10 +93,9 @@ export default () => {
         <div className="flex_conteiner">
           <div>Develop a decentralized system from the day 1 to avoid scalability issues in the future.</div>
           <div>
-            <a href="#">Blockchain and data explorer</a><br/>
-            <a href="https://forum.openplacereviews.org/t/blockchain-opendb-kickoff/64">Project kickoff article
-              (forum)</a><br/>
-            <a href="https://github.com/OpenPlaceReviews/">GitHub repo</a>
+            <a href="/api/admin">Blockchain and data explorer</a><br/>
+            <a href="https://forum.openplacereviews.org/t/blockchain-opendb-kickoff/64">Project Abstract</a><br/>
+            <a href="https://github.com/OpenPlaceReviews/">GitHub Repo</a>
           </div>
         </div>
       </div>
@@ -111,7 +107,7 @@ export default () => {
           <div>
             <p>Keep all the data open to prevent any data manipulation. Data is stored in a blockchain form, so it is
               transparent for any changes.</p>
-            <p><a href="#">Blockchain explorer</a></p>
+            <p><a href="/api/admin">Blockchain explorer</a></p>
           </div>
           <div>
             <p>With appropriate data tagging let applications and users decide how to display the data to avoid
