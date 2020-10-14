@@ -44,13 +44,13 @@ export default () => {
           <li><a href="/map.html">Map</a></li>
           <li><a href="/api/admin">Blockchain</a></li>
           <li><a href="/api/test-auth.html">Test Signup</a></li>
-          <!-- 
+          /* 
           <li><a href="#">Leaderboard</a></li>
           <li><a href="#">News</a></li>
           <li><a href="#">Docs</a></li>
           <li><a href="#">Tasks</a></li>
-          <li><NavLink to="/investing">For Investors</NavLink></li>  -->
-
+          <li><NavLink to="/investing">For Investors</NavLink></li>  
+          */
           <UserMenuFragment isLoggedIn={false}/>
         </ul>
       </nav>
