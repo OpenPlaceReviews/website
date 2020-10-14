@@ -1,21 +1,46 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import {TextField, Button} from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 
-import OptionalUserFields from "./blocks/OptionalUserFields";
 import TOSBlock from "./blocks/TOSBlock";
 import COSBlock from "./blocks/COSBlock";
 import auth from "../../api/auth";
-import ErrorBlock from "./blocks/ErrorBlock";
 
+const PASSWORD_MIN_LENGTH = 10;
+const TYPING_TIMEOUT = 1000;
+
+let writeTimeout = null;
 export default () => {
+  const [showAlert, setAlert] = useState(false);
+  const [showSuccess, setSuccess] = useState(false);
+  const [isSubmit, setSubmit] = useState(false);
+  const [isReady, setReady] = useState(false);
+
   const [formData, setData] = useState({
-    name: '',
-    email: '',
-    pwd: '',
-    pwdRepeat: '',
-    contribution_terms: false,
-    terms_of_service: false,
-    languages: [],
-    country: '',
+    name: {
+      value: '',
+      error: ''
+    },
+    email: {
+      value: '',
+      error: ''
+    },
+    pwd: {
+      value: '',
+      error: ''
+    },
+    pwdRepeat: {
+      value: '',
+      error: ''
+    },
+    contribution_terms: {
+      value: false,
+      error: ''
+    },
+    terms_of_service: {
+      value: false,
+      error: ''
+    }
   });
 
   const handler = (event) => {
@@ -23,64 +48,115 @@ export default () => {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const { name } = target;
 
-    setData( formData => ({ ...formData, [name]: value }));
+    setData( formData => ({
+      ...formData,
+      [name]: {
+        ...formData[name],
+        value
+      }
+    }));
   };
-
-  const [errorMsg, setError] = useState(null);
-  const [isSubmit, setSubmit] = useState(false);
-
-  useEffect(() => {
-    if (!formData.pwd.length && !formData.pwdRepeat.length) {
-      return;
-    }
-
-    if (formData.pwd !== formData.pwdRepeat) {
-      setError('Passwords mismatch');
-    } else if (formData.pwd.length < 6) {
-      setError('Password must be grather then 6 symbols')
-    } else {
-      setError(null);
-    }
-  }, [formData.pwd, formData.pwdRepeat]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await auth.checkName(formData.name);
-        setError(null);
-      } catch (error) {
-        if (error.response) {
-          setError(error.response.msg);
-        } else {
-          setError('Error while processing request. Please try again later,');
+        const { data } = await auth.checkName(formData.name.value);
+        let error = '';
+        if (data && data["db-name"] === "ok") {
+          error = 'NickName already in use';
         }
+
+        setData( formData => ({
+          ...formData,
+          name: {
+            ...formData.name,
+            error,
+          }
+        }));
+        setAlert(false);
+      } catch (error) {
+        setAlert(true);
       }
     };
 
-    if (formData.name) {
-      fetchData();
+
+
+    if (formData.name.value.length) {
+      clearTimeout(writeTimeout);
+      writeTimeout = setTimeout(() => {
+        fetchData();
+      }, TYPING_TIMEOUT);
     }
-  }, [formData.name]);
+  }, [formData.name.value]);
+
+  useEffect(() => {
+    const pwdValue = formData.pwd.value;
+    const pwdRepeatValue = formData.pwdRepeat.value;
+
+    const validatePasswords = () => {
+      let pwdError = '';
+      let pwdRepeatError = '';
+
+      if (pwdValue.length > 0 && pwdValue.length < PASSWORD_MIN_LENGTH) {
+        pwdError = `Password must be greater then ${PASSWORD_MIN_LENGTH} symbols`;
+      } else if (pwdRepeatValue.length > 0 && pwdValue !== pwdRepeatValue) {
+        pwdError = 'Passwords mismatch';
+        pwdRepeatError = 'Passwords mismatch';
+      }
+
+      setData( formData => ({
+        ...formData,
+        pwd: {
+          ...formData.pwd,
+          error: pwdError,
+        },
+        pwdRepeat: {
+          ...formData.pwdRepeat,
+          error: pwdRepeatError,
+        }
+      }));
+    };
+
+    if (pwdValue.length || pwdRepeatValue.length) {
+      clearTimeout(writeTimeout);
+      writeTimeout = setTimeout(() => {
+        validatePasswords();
+      }, TYPING_TIMEOUT);
+    }
+  }, [formData.pwd.value, formData.pwdRepeat.value]);
+
+  const formRef = useRef();
+
+  useEffect(() => {
+    const unlockForm = () => {
+      let errors = 0;
+      for (let field in formData) {
+        if (formData[field].error.length) {
+          errors++;
+        }
+      }
+
+      setReady(errors === 0 && formRef.current.checkValidity());
+    };
+
+    unlockForm();
+  }, [formData, isReady]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = {
-        name: formData.name,
-        email: formData.email,
-        pwd: formData.pwd,
-        languages: formData.languages,
-        country: formData.country,
+      const params = {
+        name: formData.name.value,
+        email: formData.email.value,
+        pwd: formData.pwd.value
       };
 
       try {
-        const result = await auth.signUp(data);
-        setError(null);
+        const {data} = await auth.signUp(params);
+        console.log(data);
+        setSuccess(true);
+        setAlert(false);
       } catch (error) {
-        if (error.response) {
-          setError(error.response.msg);
-        } else {
-          setError('Error while processing request. Please try again later,');
-        }
+        setAlert(true);
       }
 
       setSubmit(false);
@@ -91,73 +167,89 @@ export default () => {
     }
   }, [isSubmit]);
 
-  return <form className="signup" method="post" action="#">
-    {errorMsg && <ErrorBlock message={errorMsg}/>}
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setSubmit(true);
+  };
+
+  return <form className="signup" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
+    {showAlert && <Alert
+      className="form-alert"
+      severity="error"
+      onClose={() => setAlert(false)}>
+      Error while processing request. Please try again later.
+    </Alert>}
+    {showSuccess && <Alert
+      className="form-alert"
+      severity="success"
+      onClose={() => setSuccess(false)}>
+      You success register. Coming soon...
+    </Alert>}
 
     <div className="form-item">
-      <div>Nickname:</div>
-      <div>
-        <input
-          name="name"
-          required="true"
-          className="login-form-input"
-          placeholder="Enter a nickname"
-          onChange={handler}
-          value={formData.name}
-        />
-      </div>
+      <TextField
+        name="name"
+        required={true}
+        label="Nickname"
+        placeholder="Enter a nickname"
+        onChange={handler}
+        value={formData.name.value}
+        error={formData.name.error.length > 0}
+        helperText={formData.name.error ? formData.name.error : ''}
+        variant="outlined"
+        fullWidth={true}
+      />
     </div>
 
     <div className="form-item">
-      <div>E-mail*:</div>
-      <div>
-        <input
-          name="email"
-          required="true"
-          className="login-form-input"
-          placeholder="Enter email"
-          onChange={handler}
-          value={formData.email}
-        />
-      </div>
-      <div className="input-description">
-        Will not be published to Open Place Reviews and will be only used for system notifications
-      </div>
+      <TextField
+        name="email"
+        required={true}
+        label="E-mail"
+        placeholder="Enter email"
+        onChange={handler}
+        value={formData.email.value}
+        variant="outlined"
+        helperText="Will not be published to Open Place Reviews and will be only used for system notifications"
+        fullWidth={true}
+      />
     </div>
 
-      <div className="form-item">
-        <div>Password:</div>
-        <div>
-          <input
-            name="pwd"
-            className="login-form-input"
-            placeholder="Enter strong password"
-            type="password"
-            required="true"
-            onChange={handler}
-            value={formData.pwd}
-          />
-        </div>
-      </div>
-      <div className="form-item">
-        <div>Password (again):</div>
-        <div>
-          <input
-            name="pwdRepeat"
-            className="login-form-input"
-            placeholder="Repeat password"
-            type="password"
-            required="true"
-            onChange={handler}
-            value={formData.pwdRepeat}
-          />
-        </div>
-      </div>
+    <div className="form-item">
+      <TextField
+        name="pwd"
+        label="Password"
+        placeholder="Enter strong password"
+        type="password"
+        required={true}
+        variant="outlined"
+        onChange={handler}
+        value={formData.pwd.value}
+        error={(formData.pwd.error.length > 0)}
+        helperText={formData.pwd.error ? formData.pwd.error : ''}
+        fullWidth={true}
+      />
+    </div>
 
-      <COSBlock onChange={handler} isAccept={formData.contribution_terms}/>
-      <TOSBlock onChange={handler} isAccept={formData.terms_of_service}/>
-      <OptionalUserFields onChange={handler} languages={formData.languages} country={formData.country}/>
+    <div className="form-item">
+      <TextField
+        name="pwdRepeat"
+        label="Password (again)"
+        placeholder="Repeat password"
+        type="password"
+        required={true}
+        variant="outlined"
+        onChange={handler}
+        value={formData.pwdRepeat.value}
+        error={(formData.pwdRepeat.error.length > 0)}
+        helperText={formData.pwdRepeat.error ? formData.pwdRepeat.error : ''}
+        fullWidth={true}
+      />
+    </div>
 
-      <button type="button" className="btn-blue1" onClick={() => setSubmit(true)}>Sign Up</button>
-    </form>;
+    <COSBlock onChange={handler} isAccept={formData.contribution_terms.value}/>
+    <TOSBlock onChange={handler} isAccept={formData.terms_of_service.value}/>
+
+    <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Sign Up</Button>
+  </form>;
 };

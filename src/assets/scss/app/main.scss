@@ -635,12 +635,10 @@ header{
 
 .method-auth-nickname img{
     height: 20px;
-    margin-top: 15px;
     margin-right: 14px;
     margin-left: 10px;
 }
 .nickname-method{
-    margin-block-start: 15px;
     color: #2D69E0;
     cursor: pointer;
 }
@@ -648,6 +646,9 @@ header{
     color: #FFFFFF;
 }
 
+.form-alert {
+  margin-bottom: 20px;
+}
 .form-item{
     margin-bottom: 20px;
 }
@@ -662,7 +663,7 @@ header{
     text-indent: 10px;
     max-width: 540px;
     min-width: 280px;
-    height: 40px;
+    //height: 40px;
     background: #F7F7F7;
     border: 1px solid #CCD0D9;
     box-sizing: border-box;
@@ -695,6 +696,7 @@ button{
     height: 40px;
 }
 
+/*
 button:hover{
     color: #FFFFFF;
     height: 40px;
@@ -708,6 +710,8 @@ button:hover{
     letter-spacing: 0.02em;
     cursor: pointer;
 }
+ */
+
 .form-error, .form-field-error{
     display: flex;
     width: 540px;
@@ -798,7 +802,7 @@ button:hover{
     line-height: normal;
     font-size: 16px;
     letter-spacing: 0.01em;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
     margin-right: 20px;
 }
 .expand-btn{

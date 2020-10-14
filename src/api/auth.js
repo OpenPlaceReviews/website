@@ -18,16 +18,12 @@ const POST_CONFIG = {
   ],
 };
 
-const signUp = async ({name, email, pwd, oauthAccessToken = '', languages = [], country = ''}) => {
+const signUp = async ({name, email, pwd, oauthAccessToken = ''}) => {
   return await post(SIGNUP_URL, {
     name,
     email,
     pwd,
     oauthAccessToken,
-    userDetails: JSON.stringify({
-      languages,
-      country,
-    }),
   }, POST_CONFIG);
 };
 

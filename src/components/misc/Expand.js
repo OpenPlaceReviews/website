@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Button} from "@material-ui/core";
 import PropTypes from "prop-types";
 import Tabs from "./Tabs";
 
@@ -13,7 +14,7 @@ const Expand = (props) => {
     <div className="collapsed" style={{display: isExpand ? "block" : "none"}} >
       {props.children}
     </div>
-    <div className="collapsed_btn" onClick={() => setExpand(!isExpand)}>{isExpand ? "Collapse" : "Read more"}</div>
+    <Button variant="contained" onClick={() => setExpand(!isExpand)}>{isExpand ? "Collapse" : "Read more"}</Button>
 </div>;
 };
 
