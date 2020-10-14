@@ -9,7 +9,6 @@ export default () => {
 
   return <div className="auth-container" id="opr-app">
     <h1>Sign Up</h1>
-
     <p>
       OpenPlaceReviews has a public database, so we do not store any private data.
       You can select a nickname and it will be visible to everyone.<br />
@@ -20,11 +19,9 @@ export default () => {
       <p>Select sign up method:</p>
       <ul className="socialaccount_providers">
         <li>
-          <div className="method-auth-nickname">
+          <div className="method-auth-nickname" onClick={()=> setVisibilityForm(true)}>
             <img src={iconNickname} alt="Nickname icon"/>
-            <div className="nickname-method" onClick={()=> {
-              if(isFormHidden) setVisibilityForm(false);
-            }}>
+            <div className="nickname-method">
               Use nickname and password
             </div>
           </div>
@@ -32,6 +29,6 @@ export default () => {
       </ul>
     </div>
 
-    <SignUpForm isHidden={isFormHidden}/>
+    {isFormHidden && <SignUpForm/>}
   </div>;
 };

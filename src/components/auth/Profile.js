@@ -1,7 +1,8 @@
 import React from 'react';
-import OptionalUserFields from "./OptionalUserFields";
-import TOSBlock from "./TOSBlock";
-import COSBlock from "./COSBlock";
+
+import OptionalUserFields from "./blocks/OptionalUserFields";
+import TOSBlock from "./blocks/TOSBlock";
+import COSBlock from "./blocks/COSBlock";
 
 export default ({user}) => {
   return <div className="auth-container" id="opr-app">

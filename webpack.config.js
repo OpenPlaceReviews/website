@@ -100,6 +100,12 @@ module.exports = {
     watchContentBase: true,
     historyApiFallback: true,
     writeToDisk: false,
-    progress: true
+    progress: true,
+    proxy: {
+      '/api/**': {
+        target: `https://test.openplacereviews.org/`,
+        secure: false,
+      }
+    }
   }
 };
