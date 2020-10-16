@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import PropTypes from 'prop-types';
 import {TextField, Button} from "@material-ui/core";
 import Alert from '@material-ui/lab/Alert';
 
@@ -10,9 +11,8 @@ const PASSWORD_MIN_LENGTH = 10;
 const TYPING_TIMEOUT = 1000;
 
 let writeTimeout = null;
-export default () => {
-  const [showAlert, setAlert] = useState(false);
-  const [showSuccess, setSuccess] = useState(false);
+const SignUpForm = ({onSuccess}) => {
+  const [showAlert, setAlert] = useState(null);
   const [isSubmit, setSubmit] = useState(false);
   const [isReady, setReady] = useState(false);
 
@@ -42,6 +42,8 @@ export default () => {
       error: ''
     }
   });
+
+  const defaultAlertMsg = "Error while processing request. Please try again later.";
 
   const handler = (event) => {
     const { target } = event;
@@ -73,13 +75,15 @@ export default () => {
             error,
           }
         }));
-        setAlert(false);
+        setAlert(null);
       } catch (error) {
-        setAlert(true);
+        if (error.response && error.response.data){
+          setAlert(error.response.data.message);
+        } else {
+          setAlert(defaultAlertMsg);
+        }
       }
     };
-
-
 
     if (formData.name.value.length) {
       clearTimeout(writeTimeout);
@@ -126,7 +130,6 @@ export default () => {
   }, [formData.pwd.value, formData.pwdRepeat.value]);
 
   const formRef = useRef();
-
   useEffect(() => {
     const unlockForm = () => {
       let errors = 0;
@@ -151,12 +154,15 @@ export default () => {
       };
 
       try {
-        const {data} = await auth.signUp(params);
-        console.log(data);
-        setSuccess(true);
-        setAlert(false);
+        await auth.signUp(params);
+        onSuccess({name: formData.name.value});
+        return;
       } catch (error) {
-        setAlert(true);
+        if (error.response && error.response.data){
+            setAlert(error.response.data.message);
+        } else {
+            setAlert(defaultAlertMsg);
+        }
       }
 
       setSubmit(false);
@@ -176,14 +182,8 @@ export default () => {
     {showAlert && <Alert
       className="form-alert"
       severity="error"
-      onClose={() => setAlert(false)}>
-      Error while processing request. Please try again later.
-    </Alert>}
-    {showSuccess && <Alert
-      className="form-alert"
-      severity="success"
-      onClose={() => setSuccess(false)}>
-      You success register. Coming soon...
+      onClose={() => setAlert(null)}>
+      {showAlert}
     </Alert>}
 
     <div className="form-item">
@@ -253,3 +253,9 @@ export default () => {
     <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Sign Up</Button>
   </form>;
 };
+
+SignUpForm.propTypes = {
+  onSuccess: PropTypes.func.isRequired,
+};
+
+export default SignUpForm;

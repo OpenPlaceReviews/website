@@ -1,5 +1,6 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
+
 import Lending from "./landing/Lending";
 import Investing from "./landing/Investing";
 
@@ -9,7 +10,7 @@ import Header from "./Header";
 
 export default () => {
   return <div className="landing-container" id="opr-app">
-    <Header/>
+    <Header />
 
     <Switch>
       <Route exact path="/" component={Lending} />

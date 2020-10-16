@@ -27,14 +27,14 @@ const signUp = async ({name, email, pwd, oauthAccessToken = ''}) => {
   }, POST_CONFIG);
 };
 
-const signUpConfirm = async (name, token) => {
+const signUpConfirm = async ({name, token}) => {
   return await post(SIGNUP_CONFIRM_URL, {
     name,
     token,
   }, POST_CONFIG);
 };
 
-const logIn = async (name, pwd, oauthAccessToken = '') => {
+const logIn = async ({name, pwd, oauthAccessToken = ''}) => {
   return await post(LOGIN_URL, {
     name,
     pwd,
@@ -48,14 +48,14 @@ const logOut = async (name) => {
   }, POST_CONFIG);
 };
 
-const resetPwd = async (name, email) => {
+const resetPwd = async ({name, email}) => {
   return await post(RESET_PWD_URL, {
     name,
     email,
   }, POST_CONFIG);
 };
 
-const resetPwdConfirm = async (name, token, newPwd) => {
+const resetPwdConfirm = async ({name, token, newPwd}) => {
   return await post(RESET_PWD_CONFIRM_URL, {
     name,
     token,

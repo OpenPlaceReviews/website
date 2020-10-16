@@ -1,9 +1,25 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {Link} from "react-router-dom";
 
 import iconNickname from "../../assets/images/icon-nickname.png";
+import {UserContext} from "../../context";
+
+import LoginForm from "./LoginForm";
+
 
 export default () => {
+  const {authData, logIn} = useContext(UserContext);
+  const [isFormHidden, setVisibilityForm] = useState(true);
+
+  // TODO: Refactor duplicate code to auth base page.
+  if (authData.name && !authData.isVerified) {
+    return <div className="auth-container" id="opr-app">
+      <p>
+        Please check your email to confirm account.
+      </p>
+    </div>;
+  }
+
   return <div className="auth-container" id="opr-app">
     <h1>Login</h1>
 
@@ -13,9 +29,9 @@ export default () => {
       <p>Select login method:</p>
       <ul className="socialaccount_providers">
         <li>
-          <div className="method-auth-nickname">
+          <div className="method-auth-nickname" onClick={()=> setVisibilityForm(true)}>
             <img src={iconNickname} alt="Nickname icon"/>
-            <div className="nickname-method" onClick={()=> history.push(`/signup/password`)}>
+            <div className="nickname-method">
               Use nickname and password
             </div>
           </div>
@@ -23,17 +39,6 @@ export default () => {
       </ul>
     </div>
 
-    <form className="login-form" method="POST" action="#">
-      <div className="form-item">
-        <div>Nickname:</div>
-        <div><input name="login" placeholder="Enter your nickname" className="login-form-input" required="true"/></div>
-      </div>
-      <div className="form-item">
-        <div>Password:</div>
-        <div><input type="password" name="password" placeholder="Enter strong password" className="login-form-input" required="true"/></div>
-        <div className="input-description">We don't save your password, if you loose it, we can't help you get back access to account.</div>
-      </div>
-      <button className="primaryAction" type="submit">Continue</button>
-    </form>
+    {isFormHidden && <LoginForm onSuccess={logIn} />}
   </div>;
 };
