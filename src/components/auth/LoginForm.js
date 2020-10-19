@@ -7,7 +7,7 @@ import SignUpForm from "./SignUpForm";
 
 import auth from "../../api/auth";
 
-const LoginForm = (onLogIn) => {
+const LoginForm = ({ onSuccess }) => {
   const [showAlert, setAlert] = useState(null);
   const [isSubmit, setSubmit] = useState(false);
   const [isReady, setReady] = useState(false);
@@ -62,17 +62,18 @@ const LoginForm = (onLogIn) => {
       };
 
       try {
-        const data = await auth.logIn(params);
-        onLogIn({
+        const { data } = await auth.logIn(params);
+        onSuccess({
           name: formData.name.value,
-          token: data.msg.token || "",
-          isVerified: (data.msg && data.msg.token),
+          token: data.eval.privatekey,
+          isVerified: true,
         });
         return;
       } catch (error) {
         if (error.response && error.response.data){
           setAlert(error.response.data.message);
         } else {
+          console.log(error);
           setAlert(defaultAlertMsg);
         }
       }

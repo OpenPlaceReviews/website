@@ -14,6 +14,7 @@ export default () => {
 
   const onLogIn = (data) => {
     logIn(data);
+    return null;
   };
 
   if(authData.name) {

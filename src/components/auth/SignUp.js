@@ -12,6 +12,7 @@ export default () => {
 
   const onSignUp = (data) => {
     signUp(data);
+    return null;
   };
 
   if(authData.name && !authData.isVerified) {

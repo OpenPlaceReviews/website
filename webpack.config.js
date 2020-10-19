@@ -105,6 +105,7 @@ module.exports = {
       '/api/**': {
         target: `https://test.openplacereviews.org/`,
         secure: false,
+        logLevel: "debug",
       }
     }
   }

@@ -15,10 +15,10 @@ export default ({location}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const {name, token} = await auth.signUpConfirm(params);
+        const {data} = await auth.signUpConfirm(params);
         logIn({
-          name,
-          token,
+          name: params.name,
+          token: data.eval.privatekey,
           isVerified: true,
         });
 
