@@ -5,7 +5,7 @@ import {UserContext} from "../../context";
 import auth from "../../api/auth";
 
 export default () => {
-  const {authData, logIn} = useContext(UserContext);
+  const {authData, authStatus, updateStatus} = useContext(UserContext);
   const history = useHistory();
 
   useEffect(() => {
@@ -13,32 +13,7 @@ export default () => {
       const { data } = await auth.checkName(authData.name);
       if (!data) return;
 
-      const { 'db-name': name, 'email-expired': emailExpired, email, blockchain} = data;
-
-      if (name !== 'ok') {
-        if (blockchain !== 'ok') {
-          history.push('/signup');
-        } else {
-          history.push('/login');
-        }
-      } else {
-        if (blockchain !== 'ok') {
-          if (email === 'ok' && emailExpired !== 'ok') {
-            if(authData.isVerified === true) {
-              logIn({
-                ...authData,
-                isVerified: false,
-              });
-            }
-          } else {
-            history.push('/signup');
-          }
-        } else {
-          if (!authData.token) {
-            history.push('/login');
-          }
-        }
-      }
+      updateStatus(data);
     };
 
     if (authData.name) {
@@ -48,12 +23,40 @@ export default () => {
 
   if (!authData.name) {
     history.push('/login');
+    return null;
   }
 
-  if (!authData.isVerified) {
+  if (!authStatus) {
     return <div className="auth-container" id="opr-app">
-      <p>Please check your email to confirm account.</p>
+      <p>Checking status...</p>
     </div>;
+  }
+
+  const { 'db-name': name, 'email-expired': emailExpired, email, blockchain} = authStatus;
+  if (name !== 'ok') {
+    if (blockchain !== 'ok') {
+      history.push('/signup');
+      return null;
+    } else {
+      history.push('/login');
+      return null;
+    }
+  } else {
+    if (blockchain !== 'ok') {
+      if (email === 'ok' && emailExpired !== false) {
+        return <div className="auth-container" id="opr-app">
+          <p>Please check your email to confirm account.</p>
+        </div>;
+      } else {
+        history.push('/signup');
+        return null;
+      }
+    } else {
+      if (!authData.token) {
+        history.push('/login');
+        return null;
+      }
+    }
   }
 
   return <div className="auth-container" id="opr-app">

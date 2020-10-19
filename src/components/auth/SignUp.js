@@ -15,8 +15,9 @@ export default () => {
     return null;
   };
 
-  if(authData.name && !authData.isVerified) {
+  if(authData.name) {
     history.push("/profile");
+    return null;
   }
 
   return <div className="auth-container" id="opr-app">

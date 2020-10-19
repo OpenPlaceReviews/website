@@ -12,6 +12,16 @@ export default ({location}) => {
 
   const params = qs.parse(location.search.substring(1));
 
+  if (authData.token) {
+    history.push('/profile');
+    return null;
+  }
+
+  if (!params.name || !params.token) {
+    history.push('/');
+    return null;
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -19,7 +29,6 @@ export default ({location}) => {
         logIn({
           name: params.name,
           token: data.eval.privatekey,
-          isVerified: true,
         });
 
         setResult(<>
@@ -44,14 +53,6 @@ export default ({location}) => {
       fetchData();
     }
   }, []);
-
-  if (authData.token) {
-    history.push('/profile');
-  }
-
-  if (!params.name || !params.token) {
-    history.push('/');
-  }
 
   return <div className="auth-container" id="opr-app">
     {result}

@@ -10,8 +10,8 @@ export default (props) => {
     data: {
       token: storage.get('opr-token') || "",
       name: authName,
-      isVerified: (storage.get('opr-verified') === 'true'),
     },
+    status: storage.get('opr-status'),
     actions: {
       doLogout: false,
     }
@@ -31,10 +31,9 @@ export default (props) => {
     });
   };
 
-  const logIn = ({name, token = "", isVerified = false}) => {
+  const logIn = ({name, token = ""}) => {
     storage.set('opr-nickname', name);
     storage.set('opr-token', token);
-    storage.set('opr-verified', isVerified);
 
     setAuthData((state) => {
       return {
@@ -42,7 +41,6 @@ export default (props) => {
         data: {
           name,
           token,
-          isVerified,
         }
       }
     })
@@ -56,6 +54,16 @@ export default (props) => {
           ...state.actions,
           doLogout: true,
         }
+      }
+    });
+  };
+
+  const updateStatus = (data) => {
+    storage.set('opr-status', data);
+    setAuthData((state) => {
+      return {
+        ...state,
+        status: data,
       }
     });
   };
@@ -75,7 +83,6 @@ export default (props) => {
           data: {
             name: "",
             token: "",
-            isVerified: false,
           },
           actions: {
             ...state,
@@ -88,9 +95,11 @@ export default (props) => {
 
   const userContextValue = {
     authData: authData.data,
+    authStatus: authData.status,
     signUp,
     logOut,
     logIn,
+    updateStatus,
   };
 
   return <UserContext.Provider value={userContextValue}>

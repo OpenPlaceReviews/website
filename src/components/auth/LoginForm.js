@@ -66,7 +66,6 @@ const LoginForm = ({ onSuccess }) => {
         onSuccess({
           name: formData.name.value,
           token: data.eval.privatekey,
-          isVerified: true,
         });
         return;
       } catch (error) {

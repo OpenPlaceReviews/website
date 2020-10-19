@@ -155,7 +155,9 @@ const SignUpForm = ({onSuccess}) => {
 
       try {
         await auth.signUp(params);
-        onSuccess({name: formData.name.value});
+        onSuccess({
+          name: formData.name.value,
+        });
         return;
       } catch (error) {
         if (error.response && error.response.data){

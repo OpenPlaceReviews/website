@@ -11,7 +11,11 @@ const set = (name, data, expires = null) => {
 };
 
 const get = (name) => {
-  return Cookie.get(name);
+  try {
+    return Cookie.getJSON(name);
+  } catch (e) {
+    return Cookie.get(name);
+  }
 };
 
 const has = (name) => {
