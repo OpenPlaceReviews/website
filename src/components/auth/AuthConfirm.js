@@ -5,7 +5,7 @@ import {UserContext} from "../../context";
 import auth from "../../api/auth";
 
 export default ({location}) => {
-  const {authData, logIn} = useContext(UserContext);
+  const {logIn} = useContext(UserContext);
   const [result, setResult] = useState("Checking...");
 
   const params = qs.parse(location.search.substring(1));
@@ -13,16 +13,28 @@ export default ({location}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await auth.signUpConfirm(params);
-        console.log(data);
+        const {name, token} = await auth.signUpConfirm(params);
+        logIn({
+          name,
+          token,
+          isVerified: true,
+        });
 
-        setResult("Your email iis successfully confirmed. Start using OpenPlaceReviews.org.");
+        setResult(<>
+          <h1>Email is confirmed</h1>
+          <p>Your email is successfully confirmed and you can start contributing to OpenPlaceReviews.</p>
+          <p>Please visit <a href="/map.html">map</a> to find places to contribute.</p>
+        </>);
       } catch (error) {
+        let errMessage = "Error while processing request. Please try again later.";
         if (error.response && error.response.data){
-          setResult(error.response.data.message);
-        } else {
-          setResult("Error while processing request. Please try again later.");
+          errMessage = error.response.data.message;
         }
+
+        setResult(<>
+          <h1>Email not confirmed</h1>
+          <p>{errMessage}</p>
+        </>);
       }
     };
 
@@ -32,9 +44,6 @@ export default ({location}) => {
   }, []);
 
   return <div className="auth-container" id="opr-app">
-    <h1>Email confirmation</h1>
-    <p>
-      {result}
-    </p>
+    {result}
   </div>;
 };

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 import iconNickname from "../../assets/images/icon-nickname.png"
 import SignUpForm from "./SignUpForm";
@@ -8,14 +8,15 @@ import {UserContext} from "../../context";
 export default () => {
   const {authData, signUp} = useContext(UserContext);
   const [isFormHidden, setVisibilityForm] = useState(true);
+  const history = useHistory();
 
-  // TODO: Refactor duplicate code to auth base page.
-  if (authData.name && !authData.isVerified) {
-    return <div className="auth-container" id="opr-app">
-      <p>
-        Please check your email to confirm account.
-      </p>
-    </div>;
+  const onSignUp = (data) => {
+    signUp(data);
+  };
+
+  if(authData.name) {
+    history.push("/profile");
+    return;
   }
 
   return <div className="auth-container" id="opr-app">
@@ -40,6 +41,6 @@ export default () => {
       </ul>
     </div>
 
-    {isFormHidden && <SignUpForm onSuccess={signUp} />}
+    {isFormHidden && <SignUpForm onSuccess={onSignUp} />}
   </div>;
 };

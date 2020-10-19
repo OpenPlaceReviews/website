@@ -1,40 +1,76 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
+import {useHistory} from "react-router-dom";
 
-import OptionalUserFields from "./blocks/OptionalUserFields";
-import TOSBlock from "./blocks/TOSBlock";
-import COSBlock from "./blocks/COSBlock";
+import {UserContext} from "../../context";
+import auth from "../../api/auth";
 
-export default ({user}) => {
+export default () => {
+  const {authData, logIn} = useContext(UserContext);
+  const history = useHistory();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await auth.checkName(authData.name);
+      if (!data) return;
+
+      const { 'db-name': name, 'email-expired': emailExpired, email, blockchain} = data;
+
+      if (name !== 'ok') {
+        if (blockchain !== 'ok') {
+          history.push('/signup');
+        } else {
+          history.push('/login');
+        }
+      } else {
+        if (blockchain !== 'ok') {
+          if (email === 'ok' && emailExpired !== 'ok') {
+            logIn({
+              ...authData,
+              isVerified: false,
+            });
+
+            return;
+          }
+
+          history.push('/signup');
+        } else {
+          if (!authData.token) {
+            history.push('/login');
+          }
+        }
+      }
+    };
+
+    if (authData.name) {
+      fetchData();
+    }
+  }, [authData]);
+
+  if (!authData.name) {
+    history.push('/login');
+    return;
+  }
+
+  if (!authData.token) {
+    if (!authData.isVerified) {
+      return <div className="auth-container" id="opr-app">
+        <p>Please check your email to confirm account.</p>
+      </div>;
+    } else {
+      history.push('/login');
+      return;
+    }
+  }
+
   return <div className="auth-container" id="opr-app">
     <h1>
       <div className="oauth_avatar">
         <img src="../../assets/images/avatar-default.png" alt="Default avatar"/>
       </div>
-      Welcome, { user.username }!
+      Welcome, { authData.name }!
     </h1>
 
-    <form className="signup" method="post" action="#">
-
-      <div className="form-item">
-        <div>Nickname:</div>
-        <div>
-          <input name="username" required="true" className="login-form-input" placeholder="Enter a nickname"/>
-        </div>
-      </div>
-
-      <div className="form-item">
-        <div>E-mail*:</div>
-        <div><input name="email" required="required" className="login-form-input" placeholder="Enter email"/></div>
-        <div className="input-description">
-          Will not be published to Open Place Reviews and will be only used for system notifications
-        </div>
-      </div>
-
-      <COSBlock/>
-      <TOSBlock/>
-      <OptionalUserFields/>
-
-      <button type="submit" className="btn-blue1">"Update"</button>
-    </form>
+    <p>tart contributing to OpenPlaceReviews.</p>
+    <p>Please visit <a href="/map.html">map</a> to find places to contribute.</p>
   </div>;
 };

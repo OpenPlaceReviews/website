@@ -2,8 +2,6 @@ import React, {useContext} from 'react';
 import {NavLink} from "react-router-dom";
 import {UserContext} from "../context";
 
-import Alert from '@material-ui/lab/Alert';
-
 import openPlaceReviewLogo from "../assets/images/OpenPlaceReview.svg";
 import avatarDefault from "../assets/images/avatar-default.png";
 
@@ -67,6 +65,5 @@ export default () => {
         </nav>
       </div>
     </header>
-    {(authData.name && !authData.isVerified && !authData.isVerified) ? <Alert severity="info">Your email is not verified</Alert> : ''}
   </>;
 };

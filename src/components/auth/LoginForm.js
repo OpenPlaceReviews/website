@@ -7,10 +7,7 @@ import SignUpForm from "./SignUpForm";
 
 import auth from "../../api/auth";
 
-const TYPING_TIMEOUT = 1000;
-
-let writeTimeout = null;
-const LoginForm = () => {
+const LoginForm = (onLogIn) => {
   const [showAlert, setAlert] = useState(null);
   const [isSubmit, setSubmit] = useState(false);
   const [isReady, setReady] = useState(false);
@@ -59,48 +56,18 @@ const LoginForm = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const { data } = await auth.checkName(formData.name.value);
-        let error = '';
-        if (data && data["db-name"] !== "ok") {
-          error = 'User with this nickName not exists';
-        }
-
-        setData( formData => ({
-          ...formData,
-          name: {
-            ...formData.name,
-            error,
-          }
-        }));
-        setAlert(null);
-      } catch (error) {
-        if (error.response && error.response.data){
-          setAlert(error.response.data.message);
-        } else {
-          setAlert(defaultAlertMsg);
-        }
-      }
-    };
-
-    if (formData.name.value.length) {
-      clearTimeout(writeTimeout);
-      writeTimeout = setTimeout(() => {
-        fetchData();
-      }, TYPING_TIMEOUT);
-    }
-  }, [formData.name.value]);
-
-  useEffect(() => {
-    const fetchData = async () => {
       const params = {
         name: formData.name.value,
         pwd: formData.pwd.value
       };
 
       try {
-        await auth.logIn(params);
-        logIn({name: formData.name.value});
+        const data = await auth.logIn(params);
+        onLogIn({
+          name: formData.name.value,
+          token: data.msg.token || null,
+          isVerified: (data.msg && data.msg.token),
+        });
         return;
       } catch (error) {
         if (error.response && error.response.data){
