@@ -18,7 +18,6 @@ export default () => {
 
   if(authData.name) {
     history.push("/profile");
-    return;
   }
 
   return <div className="auth-container" id="opr-app">

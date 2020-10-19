@@ -28,11 +28,9 @@ export default () => {
               ...authData,
               isVerified: false,
             });
-
-            return;
+          } else {
+            history.push('/signup');
           }
-
-          history.push('/signup');
         } else {
           if (!authData.token) {
             history.push('/login');
@@ -48,7 +46,6 @@ export default () => {
 
   if (!authData.name) {
     history.push('/login');
-    return;
   }
 
   if (!authData.token) {
