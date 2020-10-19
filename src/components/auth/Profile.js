@@ -24,10 +24,12 @@ export default () => {
       } else {
         if (blockchain !== 'ok') {
           if (email === 'ok' && emailExpired !== 'ok') {
-            logIn({
-              ...authData,
-              isVerified: false,
-            });
+            if(authData.isVerified === true) {
+              logIn({
+                ...authData,
+                isVerified: false,
+              });
+            }
           } else {
             history.push('/signup');
           }
@@ -42,21 +44,16 @@ export default () => {
     if (authData.name) {
       fetchData();
     }
-  }, [authData]);
+  }, []);
 
   if (!authData.name) {
     history.push('/login');
   }
 
-  if (!authData.token) {
-    if (!authData.isVerified) {
-      return <div className="auth-container" id="opr-app">
-        <p>Please check your email to confirm account.</p>
-      </div>;
-    } else {
-      history.push('/login');
-      return;
-    }
+  if (!authData.isVerified) {
+    return <div className="auth-container" id="opr-app">
+      <p>Please check your email to confirm account.</p>
+    </div>;
   }
 
   return <div className="auth-container" id="opr-app">

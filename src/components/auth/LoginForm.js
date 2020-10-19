@@ -65,7 +65,7 @@ const LoginForm = (onLogIn) => {
         const data = await auth.logIn(params);
         onLogIn({
           name: formData.name.value,
-          token: data.msg.token || null,
+          token: data.msg.token || "",
           isVerified: (data.msg && data.msg.token),
         });
         return;
@@ -103,7 +103,6 @@ const LoginForm = (onLogIn) => {
         name="name"
         label="Nickname"
         placeholder="Enter your nickname"
-        type="password"
         required={true}
         variant="outlined"
         onChange={handler}

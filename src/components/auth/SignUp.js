@@ -14,7 +14,7 @@ export default () => {
     signUp(data);
   };
 
-  if(authData.name) {
+  if(authData.name && !authData.isVerified) {
     history.push("/profile");
   }
 

@@ -5,12 +5,12 @@ import auth from "../api/auth";
 import storage from "../storage";
 
 export default (props) => {
-  const authName = storage.get('opr-nickname') || null;
+  const authName = storage.get('opr-nickname') || "";
   const initialAuthData = {
     data: {
-      token: storage.get('opr-token') || null,
+      token: storage.get('opr-token') || "",
       name: authName,
-      isVerified: storage.get('opr-verified') || false,
+      isVerified: (storage.get('opr-verified') === 'true'),
     },
     actions: {
       doLogout: false,
@@ -31,7 +31,7 @@ export default (props) => {
     });
   };
 
-  const logIn = ({name, token = null, isVerified = false}) => {
+  const logIn = ({name, token = "", isVerified = false}) => {
     storage.set('opr-nickname', name);
     storage.set('opr-token', token);
     storage.set('opr-verified', isVerified);
@@ -73,8 +73,8 @@ export default (props) => {
       setAuthData((state) => {
         return {
           data: {
-            name: null,
-            token: null,
+            name: "",
+            token: "",
             isVerified: false,
           },
           actions: {

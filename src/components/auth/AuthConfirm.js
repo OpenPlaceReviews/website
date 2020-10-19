@@ -1,12 +1,14 @@
 import React, {useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import qs from "qs";
 import {UserContext} from "../../context";
 
 import auth from "../../api/auth";
 
 export default ({location}) => {
-  const {logIn} = useContext(UserContext);
+  const {authData, logIn} = useContext(UserContext);
   const [result, setResult] = useState("Checking...");
+  const history = useHistory();
 
   const params = qs.parse(location.search.substring(1));
 
@@ -42,6 +44,14 @@ export default ({location}) => {
       fetchData();
     }
   }, []);
+
+  if (authData.token) {
+    history.push('/profile');
+  }
+
+  if (!params.name || !params.token) {
+    history.push('/');
+  }
 
   return <div className="auth-container" id="opr-app">
     {result}
