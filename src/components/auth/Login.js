@@ -25,6 +25,7 @@ export default () => {
     <h1>Login</h1>
 
     <p>Don't have an account? <Link to="/signup">Create account</Link></p>
+    <p>Forgot password? <Link to="/reset-password">Reset password</Link></p>
 
     <div className="socialaccount_ballot">
       <p>Select login method:</p>

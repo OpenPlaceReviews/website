@@ -1,62 +1,25 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext} from "react";
 import {useHistory} from "react-router-dom";
 import qs from "qs";
 import {UserContext} from "../../context";
 
-import auth from "../../api/auth";
+import EmailConfirmation from "./EmailConfirmation";
+import ResetPwdConfirmation from "./ResetPwdConfirmation";
 
 export default ({location}) => {
   const {authData, logIn} = useContext(UserContext);
-  const [errorMsg, setError] = useState('');
   const history = useHistory();
 
   const params = qs.parse(location.search.substring(1));
 
-  if (!params.name || !params.token) {
+  if (!params.name && !params.token && !params.op) {
     history.push('/');
     return null;
   }
 
-  if (authData.token) {
-    return <div className="auth-container" id="opr-app">
-      <h1>Email is confirmed</h1>
-      <p>Your email is successfully confirmed and you can start contributing to OpenPlaceReviews.</p>
-      <p>Please visit <a href="/map.html">map</a> to find places to contribute.</p>
-    </div>
+  if (params.op === 'signup_confirm') {
+    return <EmailConfirmation isLoggedIn={authData.token && authData.token.length} params={params} onSuccess={logIn}/>
+  } else if (params.op === 'reset_pwd') {
+    return <ResetPwdConfirmation params={params}/>
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {data} = await auth.signUpConfirm(params);
-        logIn({
-          name: params.name,
-          token: data.eval.privatekey,
-        });
-
-      } catch (error) {
-        let errMessage = "Error while processing request. Please try again later.";
-        if (error.response && error.response.data){
-          errMessage = error.response.data.message;
-        }
-
-        setError(errMessage);
-      }
-    };
-
-    if (params.name && params.token) {
-      fetchData();
-    }
-  }, []);
-
-  if (errorMsg) {
-    return <div className="auth-container" id="opr-app">
-      <h1>Email not confirmed</h1>
-      <p>{errorMsg}</p>
-    </div>;
-  }
-
-  return <div className="auth-container" id="opr-app">
-    Checking confirmation...
-  </div>;
 };

@@ -25,7 +25,7 @@ export default () => {
     <p>
       OpenPlaceReviews has a public database, so we do not store any private data.
       You can select a nickname and it will be visible to everyone.<br />
-      Already have an account? Then please <Link to="/login">Login</Link>.
+      Already have an account? Then please <Link to="/login">Login</Link>.<br />
     </p>
 
     <div className="socialaccount_ballot">
