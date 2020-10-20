@@ -1,15 +1,13 @@
 import React, {useContext} from 'react';
-import {useHistory} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 
 import {UserContext} from "../../context";
 
 export default () => {
   const {authData, authStatus} = useContext(UserContext);
-  const history = useHistory();
 
   if (!authData.name) {
-    history.push('/login');
-    return null;
+    return <Redirect to={"/login"}/>;
   }
 
   if (!authStatus) {
@@ -21,11 +19,9 @@ export default () => {
   const { 'db-name': name, 'email-expired': emailExpired, email, blockchain} = authStatus;
   if (name !== 'ok') {
     if (blockchain !== 'ok') {
-      history.push('/signup');
-      return null;
+      return <Redirect to={"/signup"}/>;
     } else {
-      history.push('/login');
-      return null;
+      return <Redirect to={"/login"}/>;
     }
   } else {
     if (blockchain !== 'ok') {
@@ -34,13 +30,11 @@ export default () => {
           <p>Please check your email to confirm account.</p>
         </div>;
       } else {
-        history.push('/signup');
-        return null;
+        return <Redirect to={"/signup"}/>;
       }
     } else {
       if (!authData.token) {
-        history.push('/login');
-        return null;
+        return <Redirect to={"/login"}/>;
       }
     }
   }

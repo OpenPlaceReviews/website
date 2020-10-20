@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {Link, useHistory} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
 import iconNickname from "../../assets/images/icon-nickname.png"
 import SignUpForm from "./SignUpForm";
@@ -8,16 +8,14 @@ import {UserContext} from "../../context";
 export default () => {
   const {authData, signUp} = useContext(UserContext);
   const [isFormHidden, setVisibilityForm] = useState(true);
-  const history = useHistory();
 
   const onSignUp = (data) => {
     signUp(data);
-    return null;
+    return <Redirect to={"/profile"}/>;
   };
 
   if(authData.name) {
-    history.push("/profile");
-    return null;
+    return <Redirect to={"/profile"}/>;
   }
 
   return <div className="auth-container" id="opr-app">

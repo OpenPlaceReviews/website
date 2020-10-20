@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {useHistory} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import qs from "qs";
 import {UserContext} from "../../context";
 
@@ -8,13 +8,10 @@ import ResetPwdConfirmation from "./ResetPwdConfirmation";
 
 export default ({location}) => {
   const {authData, logIn} = useContext(UserContext);
-  const history = useHistory();
 
   const params = qs.parse(location.search.substring(1));
-
   if (!params.name && !params.token && !params.op) {
-    history.push('/');
-    return null;
+    return <Redirect to={"/"}/>;
   }
 
   if (params.op === 'signup_confirm') {
