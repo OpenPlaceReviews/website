@@ -67,7 +67,7 @@ export default () => {
       Welcome, { authData.name }!
     </h1>
 
-    <p>tart contributing to OpenPlaceReviews.</p>
+    <p>Start contributing to OpenPlaceReviews.</p>
     <p>Please visit <a href="/map.html">map</a> to find places to contribute.</p>
   </div>;
 };

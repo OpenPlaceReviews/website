@@ -7,19 +7,22 @@ import auth from "../../api/auth";
 
 export default ({location}) => {
   const {authData, logIn} = useContext(UserContext);
-  const [result, setResult] = useState("Checking...");
+  const [errorMsg, setError] = useState('');
   const history = useHistory();
 
   const params = qs.parse(location.search.substring(1));
 
-  if (authData.token) {
-    history.push('/profile');
-    return null;
-  }
-
   if (!params.name || !params.token) {
     history.push('/');
     return null;
+  }
+
+  if (authData.token) {
+    return <div className="auth-container" id="opr-app">
+      <h1>Email is confirmed</h1>
+      <p>Your email is successfully confirmed and you can start contributing to OpenPlaceReviews.</p>
+      <p>Please visit <a href="/map.html">map</a> to find places to contribute.</p>
+    </div>
   }
 
   useEffect(() => {
@@ -31,21 +34,13 @@ export default ({location}) => {
           token: data.eval.privatekey,
         });
 
-        setResult(<>
-          <h1>Email is confirmed</h1>
-          <p>Your email is successfully confirmed and you can start contributing to OpenPlaceReviews.</p>
-          <p>Please visit <a href="/map.html">map</a> to find places to contribute.</p>
-        </>);
       } catch (error) {
         let errMessage = "Error while processing request. Please try again later.";
         if (error.response && error.response.data){
           errMessage = error.response.data.message;
         }
 
-        setResult(<>
-          <h1>Email not confirmed</h1>
-          <p>{errMessage}</p>
-        </>);
+        setError(errMessage);
       }
     };
 
@@ -54,7 +49,14 @@ export default ({location}) => {
     }
   }, []);
 
+  if (errorMsg) {
+    return <div className="auth-container" id="opr-app">
+      <h1>Email not confirmed</h1>
+      <p>{errorMsg}</p>
+    </div>;
+  }
+
   return <div className="auth-container" id="opr-app">
-    {result}
+    Checking confirmation...
   </div>;
 };
