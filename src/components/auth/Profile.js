@@ -1,25 +1,11 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {useHistory} from "react-router-dom";
 
 import {UserContext} from "../../context";
-import auth from "../../api/auth";
 
 export default () => {
-  const {authData, authStatus, updateStatus} = useContext(UserContext);
+  const {authData, authStatus} = useContext(UserContext);
   const history = useHistory();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await auth.checkName(authData.name);
-      if (!data) return;
-
-      updateStatus(data);
-    };
-
-    if (authData.name) {
-      fetchData();
-    }
-  }, []);
 
   if (!authData.name) {
     history.push('/login');

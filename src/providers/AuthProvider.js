@@ -11,7 +11,7 @@ export default (props) => {
       token: storage.get('opr-token') || "",
       name: authName,
     },
-    status: storage.get('opr-status'),
+    status: storage.get('opr-status') | {},
     actions: {
       doLogout: false,
     }
@@ -58,17 +58,6 @@ export default (props) => {
     });
   };
 
-  const updateStatus = (data) => {
-    storage.set('opr-status', data);
-    setAuthData((state) => {
-      return {
-        ...state,
-        status: data,
-      }
-    });
-  };
-
-  //LogOut
   useEffect(() => {
     const fetchData = async () => {
       await auth.logOut(authData.data.name);
@@ -93,13 +82,31 @@ export default (props) => {
     }
   }, [authData.actions.doLogout]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await auth.checkName(authData.data.name);
+      if (!data) return;
+
+      storage.set('opr-status', data);
+      setAuthData((state) => {
+        return {
+          ...state,
+          status: data,
+        }
+      });
+    };
+
+    if (authData.data.name) {
+      fetchData();
+    }
+  }, [authData.data.name]);
+
   const userContextValue = {
     authData: authData.data,
     authStatus: authData.status,
     signUp,
     logOut,
     logIn,
-    updateStatus,
   };
 
   return <UserContext.Provider value={userContextValue}>

@@ -60,7 +60,7 @@ export default () => {
           <li><a href="#">Tasks</a></li>
           <li><NavLink to="/investing">For Investors</NavLink></li>
           */}
-            <UserMenuFragment isLoggedIn={authData.name} logOut={logOut}/>
+            <UserMenuFragment isLoggedIn={authData.name && authData.name.length} logOut={logOut}/>
           </ul>
         </nav>
       </div>
