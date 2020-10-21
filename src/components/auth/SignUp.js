@@ -1,13 +1,16 @@
 import React, {useState, useContext} from 'react';
 import {Link, Redirect} from "react-router-dom";
+import qs from "qs";
 
-import iconNickname from "../../assets/images/icon-nickname.png"
 import SignUpForm from "./SignUpForm";
 import {UserContext} from "../../context";
+import ChangeAuthType from "./blocks/ChangeAuthType";
 
 export default () => {
+  const oauthParams = qs.parse(location.search.substring(1));
+  const isPostAuth = Object.keys(oauthParams).length > 0;
   const {authData, signUp} = useContext(UserContext);
-  const [isFormHidden, setVisibilityForm] = useState(true);
+  const [isFormVisible, setVisibilityForm] = useState(isPostAuth);
 
   const onSignUp = (data) => {
     signUp(data);
@@ -26,20 +29,8 @@ export default () => {
       Already have an account? Then please <Link to="/login">Login</Link>.<br />
     </p>
 
-    <div className="socialaccount_ballot">
-      <p>Select sign up method:</p>
-      <ul className="socialaccount_providers">
-        <li>
-          <div className="method-auth-nickname" onClick={()=> setVisibilityForm(true)}>
-            <img src={iconNickname} alt="Nickname icon"/>
-            <div className="nickname-method">
-              Use nickname and password
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
+    {(!isPostAuth) && <ChangeAuthType showForm={() => setVisibilityForm(true)}/>}
 
-    {isFormHidden && <SignUpForm onSuccess={onSignUp} />}
+    {isFormVisible && <SignUpForm onSuccess={onSignUp} oauthParams={oauthParams}/>}
   </div>;
 };

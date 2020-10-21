@@ -11,18 +11,18 @@ const PASSWORD_MIN_LENGTH = 10;
 const TYPING_TIMEOUT = 1000;
 
 let writeTimeout = null;
-const SignUpForm = ({onSuccess}) => {
+const SignUpForm = ({onSuccess, oauthParams = {}}) => {
   const [showAlert, setAlert] = useState(null);
   const [isSubmit, setSubmit] = useState(false);
   const [isReady, setReady] = useState(false);
 
   const [formData, setData] = useState({
     name: {
-      value: '',
+      value: oauthParams.name || '',
       error: ''
     },
     email: {
-      value: '',
+      value: oauthParams.email || '',
       error: ''
     },
     pwd: {
@@ -150,7 +150,9 @@ const SignUpForm = ({onSuccess}) => {
       const params = {
         name: formData.name.value,
         email: formData.email.value,
-        pwd: formData.pwd.value
+        pwd: formData.pwd.value,
+        oauthAccessToken: oauthParams.oauthAccessToken || '',
+        userDetails: oauthParams.userDetails || '',
       };
 
       try {

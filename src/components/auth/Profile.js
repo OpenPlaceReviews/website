@@ -25,7 +25,7 @@ export default () => {
     }
   } else {
     if (blockchain !== 'ok') {
-      if (email === 'ok' && emailExpired !== false) {
+      if (email === 'ok' && emailExpired !== true) {
         return <div className="auth-container" id="opr-app">
           <p>Please check your email to confirm account.</p>
         </div>;

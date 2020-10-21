@@ -1,15 +1,18 @@
 import React, {useContext, useState} from 'react';
 import {Link, Redirect} from "react-router-dom";
+import qs from "qs";
 
-import iconNickname from "../../assets/images/icon-nickname.png";
 import {UserContext} from "../../context";
 
 import LoginForm from "./LoginForm";
+import ChangeAuthType from "./blocks/ChangeAuthType";
 
 
 export default () => {
+  const oauthParams = qs.parse(location.search.substring(1));
+  const isPostAuth = Object.keys(oauthParams).length > 0;
   const {authData, logIn} = useContext(UserContext);
-  const [isFormHidden, setVisibilityForm] = useState(true);
+  const [isFormVisible, setVisibilityForm] = useState(isPostAuth);
 
   const onLogIn = (data) => {
     logIn(data);
@@ -26,20 +29,8 @@ export default () => {
     <p>Don't have an account? <Link to="/signup">Create account</Link></p>
     <p>Forgot password? <Link to="/reset-password">Reset password</Link></p>
 
-    <div className="socialaccount_ballot">
-      <p>Select login method:</p>
-      <ul className="socialaccount_providers">
-        <li>
-          <div className="method-auth-nickname" onClick={()=> setVisibilityForm(true)}>
-            <img src={iconNickname} alt="Nickname icon"/>
-            <div className="nickname-method">
-              Use nickname and password
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
+    {(!isPostAuth) && <ChangeAuthType showForm={() => setVisibilityForm(true)}/>}
 
-    {isFormHidden && <LoginForm onSuccess={onLogIn} />}
+    {isFormVisible && <LoginForm onSuccess={onLogIn} oauthParams={oauthParams}/>}
   </div>;
 };

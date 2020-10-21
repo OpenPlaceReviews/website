@@ -9,7 +9,7 @@ const LOGIN_URL = `${API_BASE}/api/auth/user-login`;
 const LOGOUT_URL = `${API_BASE}/api/auth/user-logout`;
 const RESET_PWD_URL = `${API_BASE}/api/auth/user-reset-password-email`;
 const RESET_PWD_CONFIRM_URL = `${API_BASE}/api/auth/user-reset-password-confirm`;
-const OAUTH_LOGIN_URL = `${API_BASE}/api/auth/user-oauth-auth`;
+const OAUTH_CONFIRM_URL = `${API_BASE}/api/auth/user-oauth-postauth`;
 const CHECK_NAME_URL = `${API_BASE}/api/auth/user-status`;
 
 const POST_CONFIG = {
@@ -63,10 +63,12 @@ const resetPwdConfirm = async ({name, token, newPwd}) => {
   }, POST_CONFIG);
 };
 
-const oauthLogin = async (oauthProvider) => {
-  return await get(OAUTH_LOGIN_URL, {
-    params: { oauthProvider },
-  });
+const oauthConfirm = async ({token, oauthVerifier, code}) => {
+  return await post(OAUTH_CONFIRM_URL, {
+    token,
+    oauthVerifier,
+    code,
+  }, POST_CONFIG);
 };
 
 const checkName = async (name) => {
@@ -83,5 +85,5 @@ export default {
   logOut,
   resetPwd,
   resetPwdConfirm,
-  oauthLogin,
+  oauthConfirm,
 }

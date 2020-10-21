@@ -30,7 +30,7 @@ export default ({isLoggedIn, params, onSuccess}) => {
       }
     };
 
-    if (params.name && params.token && params.op) {
+    if (params.name && params.token) {
       fetchData();
     }
   }, []);

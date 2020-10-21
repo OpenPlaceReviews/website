@@ -7,13 +7,13 @@ import SignUpForm from "./SignUpForm";
 
 import auth from "../../api/auth";
 
-const LoginForm = ({ onSuccess }) => {
+const LoginForm = ({ onSuccess, oauthParams = {} }) => {
   const [showAlert, setAlert] = useState(null);
   const [isSubmit, setSubmit] = useState(false);
   const [isReady, setReady] = useState(false);
   const [formData, setData] = useState({
     name: {
-      value: '',
+      value: oauthParams.name || '',
       error: '',
     },
     pwd: {
@@ -58,7 +58,8 @@ const LoginForm = ({ onSuccess }) => {
     const fetchData = async () => {
       const params = {
         name: formData.name.value,
-        pwd: formData.pwd.value
+        pwd: formData.pwd.value,
+        oauthAccessToken: oauthParams.oauthAccessToken || '',
       };
 
       try {
@@ -72,7 +73,6 @@ const LoginForm = ({ onSuccess }) => {
         if (error.response && error.response.data){
           setAlert(error.response.data.message);
         } else {
-          console.log(error);
           setAlert(defaultAlertMsg);
         }
       }
