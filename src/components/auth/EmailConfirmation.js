@@ -4,14 +4,6 @@ import auth from "../../api/auth";
 export default ({isLoggedIn, params, onSuccess}) => {
   const [errorMsg, setError] = useState('');
 
-  if (isLoggedIn) {
-    return <div className="auth-container" id="opr-app">
-      <h1>Email is confirmed</h1>
-      <p>Your email is successfully confirmed and you can start contributing to OpenPlaceReviews.</p>
-      <p>Please visit <a href="/map.html">map</a> to find places to contribute.</p>
-    </div>
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,6 +26,14 @@ export default ({isLoggedIn, params, onSuccess}) => {
       fetchData();
     }
   }, []);
+
+  if (isLoggedIn) {
+    return <div className="auth-container" id="opr-app">
+      <h1>Email is confirmed</h1>
+      <p>Your email is successfully confirmed and you can start contributing to OpenPlaceReviews.</p>
+      <p>Please visit <a href="/map.html">map</a> to find places to contribute.</p>
+    </div>
+  }
 
   if (errorMsg) {
     return <div className="auth-container" id="opr-app">

@@ -5,10 +5,6 @@ import {Redirect} from "react-router-dom";
 export default ({isLoggedIn, params, onSuccess}) => {
   const [errorMsg, setError] = useState('');
 
-  if (isLoggedIn) {
-    return <Redirect to={"/profile"}/>
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,7 +40,7 @@ export default ({isLoggedIn, params, onSuccess}) => {
         });
       } catch (error) {
         let errMessage = "Error while processing request. Please try again later.";
-        if (error.response && error.response.data){
+        if (error.response && error.response.data) {
           errMessage = error.response.data.message;
         }
 
@@ -52,10 +48,14 @@ export default ({isLoggedIn, params, onSuccess}) => {
       }
     };
 
-    if (params.token || params.oauthVerifier || params.code) {
+    if (!isLoggedIn && (params.code || params.oauth_token || params.oauth_verifier)) {
       fetchData();
     }
   }, []);
+
+  if (isLoggedIn) {
+    return <Redirect to={"/profile"}/>
+  }
 
   if (errorMsg) {
     return <div className="auth-container" id="opr-app">
