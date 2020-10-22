@@ -7,13 +7,13 @@ import SignUpForm from "./SignUpForm";
 
 import auth from "../../api/auth";
 
-const LoginForm = ({ onSuccess, oauthParams = {} }) => {
+const LoginForm = ({ onSuccess }) => {
   const [showAlert, setAlert] = useState(null);
   const [isSubmit, setSubmit] = useState(false);
   const [isReady, setReady] = useState(false);
   const [formData, setData] = useState({
     name: {
-      value: oauthParams.name || '',
+      value: '',
       error: '',
     },
     pwd: {
@@ -59,7 +59,6 @@ const LoginForm = ({ onSuccess, oauthParams = {} }) => {
       const params = {
         name: formData.name.value,
         pwd: formData.pwd.value,
-        oauthAccessToken: oauthParams.oauthAccessToken || '',
       };
 
       try {

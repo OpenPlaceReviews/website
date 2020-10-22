@@ -24,7 +24,7 @@ export default ({location}) => {
     }
   } else if (isOAuth) {
     const params = {oauth_token, oauth_verifier, code};
-    return <OAuthConfirmation isLoggedIn={isLoggedIn} params={params}/>
+    return <OAuthConfirmation isLoggedIn={isLoggedIn} params={params} onSuccess={logIn}/>
   }
 
 

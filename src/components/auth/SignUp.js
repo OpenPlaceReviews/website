@@ -1,16 +1,13 @@
 import React, {useState, useContext} from 'react';
 import {Link, Redirect} from "react-router-dom";
-import qs from "qs";
 
 import SignUpForm from "./SignUpForm";
 import {UserContext} from "../../context";
 import ChangeAuthType from "./blocks/ChangeAuthType";
 
 export default () => {
-  const oauthParams = qs.parse(location.search.substring(1));
-  const isPostAuth = Object.keys(oauthParams).length > 0;
   const {authData, signUp} = useContext(UserContext);
-  const [isFormVisible, setVisibilityForm] = useState(isPostAuth);
+  const [isFormVisible, setVisibilityForm] = useState(false);
 
   const onSignUp = (data) => {
     signUp(data);
@@ -29,8 +26,8 @@ export default () => {
       Already have an account? Then please <Link to="/login">Login</Link>.<br />
     </p>
 
-    {(!isPostAuth) && <ChangeAuthType showForm={() => setVisibilityForm(true)}/>}
+    <ChangeAuthType showForm={() => setVisibilityForm(true)}/>
 
-    {isFormVisible && <SignUpForm onSuccess={onSignUp} oauthParams={oauthParams}/>}
+    {isFormVisible && <SignUpForm onSuccess={onSignUp}/>}
   </div>;
 };

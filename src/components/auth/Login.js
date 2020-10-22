@@ -1,6 +1,5 @@
 import React, {useContext, useState} from 'react';
 import {Link, Redirect} from "react-router-dom";
-import qs from "qs";
 
 import {UserContext} from "../../context";
 
@@ -9,10 +8,8 @@ import ChangeAuthType from "./blocks/ChangeAuthType";
 
 
 export default () => {
-  const oauthParams = qs.parse(location.search.substring(1));
-  const isPostAuth = Object.keys(oauthParams).length > 0;
   const {authData, logIn} = useContext(UserContext);
-  const [isFormVisible, setVisibilityForm] = useState(isPostAuth);
+  const [isFormVisible, setVisibilityForm] = useState(false);
 
   const onLogIn = (data) => {
     logIn(data);
@@ -29,8 +26,8 @@ export default () => {
     <p>Don't have an account? <Link to="/signup">Create account</Link></p>
     <p>Forgot password? <Link to="/reset-password">Reset password</Link></p>
 
-    {(!isPostAuth) && <ChangeAuthType showForm={() => setVisibilityForm(true)}/>}
+    <ChangeAuthType showForm={() => setVisibilityForm(true)}/>
 
-    {isFormVisible && <LoginForm onSuccess={onLogIn} oauthParams={oauthParams}/>}
+    {isFormVisible && <LoginForm onSuccess={onLogIn}/>}
   </div>;
 };

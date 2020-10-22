@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from "react";
-import qs from "qs";
-import {Redirect} from 'react-router-dom';
 import auth from "../../api/auth";
 
-export default ({isLoggedIn, params}) => {
+export default ({isLoggedIn, params, onSuccess}) => {
   const [errorMsg, setError] = useState('');
-  const [oauthParams, setOauthParams] = useState({});
 
   if (isLoggedIn) {
     return <div className="auth-container" id="opr-app">
@@ -29,16 +26,25 @@ export default ({isLoggedIn, params}) => {
         }
 
         const {data: status} = await auth.checkName(confirmData.nickname);
-        const op = (status.blockchain === 'ok' ? 'login' :  'signup');
 
-        setOauthParams({
+        if (status.blockchain !== 'ok') {
+          await auth.signUp({
+            name: confirmData.nickname,
+            oauthAccessToken: confirmData.accessToken,
+            userDetails: confirmData.details,
+            email,
+          });
+        }
+
+        const {data} = await auth.logIn({
           name: confirmData.nickname,
-          oauthAccessToken: confirmData.accessToken,
-          userDetails: JSON.stringify(confirmData.details),
-          email,
-          op,
-        })
+          oauthAccessToken: confirmData.accessToken
+        });
 
+        onSuccess({
+          name: confirmData.nickname,
+          token: data.eval.privatekey,
+        });
       } catch (error) {
         let errMessage = "Error while processing request. Please try again later.";
         if (error.response && error.response.data){
@@ -53,10 +59,6 @@ export default ({isLoggedIn, params}) => {
       fetchData();
     }
   }, []);
-
-  if (oauthParams.op) {
-    return <Redirect to={`/${oauthParams.op}?${qs.stringify(oauthParams)}`}/>
-  }
 
   if (errorMsg) {
     return <div className="auth-container" id="opr-app">
