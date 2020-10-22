@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from "react";
 import auth from "../../api/auth";
+import {Redirect} from "react-router-dom";
 
 export default ({isLoggedIn, params, onSuccess}) => {
   const [errorMsg, setError] = useState('');
 
   if (isLoggedIn) {
-    return <div className="auth-container" id="opr-app">
-      <h1>Email is confirmed</h1>
-      <p>Your email is successfully confirmed and you can start contributing to OpenPlaceReviews.</p>
-      <p>Please visit <a href="/map.html">map</a> to find places to contribute.</p>
-    </div>
+    return <Redirect to={"/profile"}/>
   }
 
   useEffect(() => {
