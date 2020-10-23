@@ -12,24 +12,25 @@ export default ({isLoggedIn, params, onSuccess}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const {data: confirmData} = await auth.oauthConfirm({
+        const {data: postAuthData} = await auth.oauthConfirm({
           token: params.oauth_token,
           oauthVerifier: params.oauth_verifier,
           code: params.code,
         });
 
-        if (confirmData.possibeSignups.length) {
+        if (postAuthData.possibleSignups.length) {
+          let name = postAuthData.possibleSignups[0];
           const {data: loginData} = await auth.logIn({
-            name: confirmData.possibeSignups[0],
-            oauthAccessToken: confirmData.accessToken
+            name,
+            oauthAccessToken: postAuthData.accessToken
           });
 
           onSuccess({
-            name: confirmData.possibeSignups[0],
+            name,
             token: loginData.eval.privatekey,
           });
         } else {
-          setConfirmData(confirmData);
+          setConfirmData(postAuthData);
         }
       } catch (error) {
         console.log(error);
