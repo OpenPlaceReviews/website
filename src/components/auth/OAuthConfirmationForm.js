@@ -111,6 +111,7 @@ export default ({oauthNickname, oauthAccessToken, userDetails, onSuccess, onErro
           token: data.eval.privatekey,
         });
       } catch (error) {
+        console.log(error);
         if (error.response && error.response.data){
           onError(error.response.data.message);
         } else {

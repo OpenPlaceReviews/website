@@ -32,6 +32,7 @@ export default ({isLoggedIn, params, onSuccess}) => {
           setConfirmData(confirmData);
         }
       } catch (error) {
+        console.log(error);
         if (error.response && error.response.data) {
           setError(error.response.data.message);
         } else {
