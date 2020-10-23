@@ -32,7 +32,6 @@ export default ({isLoggedIn, params, onSuccess}) => {
           setConfirmData(confirmData);
         }
       } catch (error) {
-        console.log(error);
         if (error.response && error.response.data) {
           setError(error.response.data.message);
         } else {
@@ -41,10 +40,10 @@ export default ({isLoggedIn, params, onSuccess}) => {
       }
     };
 
-    if (!isLoggedIn && (params.code || params.oauth_token || params.oauth_verifier)) {
+    if (!isLoggedIn && !confirmData && (params.code || params.oauth_token || params.oauth_verifier)) {
       fetchData();
     }
-  }, [confirmData]);
+  }, []);
 
   if (isLoggedIn) {
     return <Redirect to={"/profile"}/>
@@ -58,13 +57,18 @@ export default ({isLoggedIn, params, onSuccess}) => {
   }
 
   if (confirmData) {
-    return <OAuthConfirmationForm
-      oauthNickname={confirmData.oauthNickname}
-      oauthAccessToken={confirmData.accessToken}
-      details={confirmData.details}
-      onSuccess={onSuccess}
-      onError={setError}
-    />
+
+    return <div className="auth-container" id="opr-app">
+      <h1>Login</h1>
+
+      <OAuthConfirmationForm
+        oauthNickname={confirmData.oauthNickname}
+        oauthAccessToken={confirmData.accessToken}
+        userDetails={confirmData.details}
+        onSuccess={onSuccess}
+        onError={setError}
+      />
+    </div>;
   }
 
   return <div className="auth-container" id="opr-app">

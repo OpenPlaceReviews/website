@@ -8,13 +8,13 @@ import auth from "../../api/auth";
 const TYPING_TIMEOUT = 1000;
 
 let writeTimeout = null;
-export default ({name, oauthAccessToken, userDetails, onSuccess, onError}) => {
+export default ({oauthNickname, oauthAccessToken, userDetails, onSuccess, onError}) => {
   const [showAlert, setAlert] = useState(null);
   const [isReady, setReady] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
   const [formData, setData] = useState({
     oauthNickname: {
-      value: name,
+      value: oauthNickname,
       error: ''
     },
   });
@@ -107,6 +107,7 @@ export default ({name, oauthAccessToken, userDetails, onSuccess, onError}) => {
         });
 
         onSuccess({
+          name: formData.oauthNickname.value,
           token: data.eval.privatekey,
         });
       } catch (error) {
@@ -130,8 +131,7 @@ export default ({name, oauthAccessToken, userDetails, onSuccess, onError}) => {
     setSubmit(true);
   };
 
-  return <div className="auth-container" id="opr-app">
-    <form className="signup-form" autoComplete="off" onSubmit={onSubmit}>
+  return <form className="signup-form" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
       {showAlert && <Alert
         className="form-alert"
         severity="error">
@@ -153,7 +153,6 @@ export default ({name, oauthAccessToken, userDetails, onSuccess, onError}) => {
         />
       </div>
 
-      <Button variant="outlined" type="submit" color="primary" disabled={isReady !== false}>Send</Button>
-    </form>
-  </div>;
+      <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Send</Button>
+    </form>;
 }
