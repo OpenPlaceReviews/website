@@ -18,12 +18,13 @@ const POST_CONFIG = {
   ],
 };
 
-const signUp = async ({name, email, pwd, oauthAccessToken = ''}) => {
+const signUp = async ({name, email, pwd, oauthAccessToken = '', userDetails = ''}) => {
   return await post(SIGNUP_URL, {
     name,
     email,
     pwd,
     oauthAccessToken,
+    userDetails,
   }, POST_CONFIG);
 };
 
@@ -73,7 +74,7 @@ const oauthConfirm = async ({token, oauthVerifier, code}) => {
 
 const checkName = async (name) => {
   return await get(CHECK_NAME_URL, {
-    params: { name },
+    params: { name: encodeURI(name) },
   });
 };
 

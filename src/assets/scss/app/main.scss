@@ -827,6 +827,11 @@ button:hover{
     margin-bottom: 30px;
 }
 
+.optional-fields-grid {
+  display: flex;
+  justify-content: space-between;
+}
+
 .headline-optional-fields{
     font-style: normal;
     font-weight: 800;
@@ -841,6 +846,7 @@ button:hover{
 .optional-field{
     line-height: 1.15em;
     margin-bottom: 15px;
+    width: 250px;
     .optional_field_lable{
         line-height: 26px;
     }
@@ -854,4 +860,13 @@ button:hover{
         border-radius: 50px; /* Радиус скругления */
         //border: 3px solid green; /* Параметры рамки */
     }
+}
+
+@media (max-width: 500px) {
+  .optional-fields-grid {
+    display: block;
+  }
+  .optional-field {
+    width: 100%;
+  }
 }

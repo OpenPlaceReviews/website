@@ -6,6 +6,7 @@ import Alert from '@material-ui/lab/Alert';
 import TOSBlock from "./blocks/TOSBlock";
 import COSBlock from "./blocks/COSBlock";
 import auth from "../../api/auth";
+import OptionalUserFields from "./blocks/OptionalUserFields";
 
 const PASSWORD_MIN_LENGTH = 10;
 const TYPING_TIMEOUT = 1000;
@@ -40,6 +41,14 @@ const SignUpForm = ({onSuccess}) => {
     terms_of_service: {
       value: false,
       error: ''
+    },
+    languages: {
+      value: [],
+      error: ''
+    },
+    country: {
+      value: '',
+      error: '',
     }
   });
 
@@ -152,7 +161,10 @@ const SignUpForm = ({onSuccess}) => {
         email: formData.email.value,
         pwd: formData.pwd.value,
         oauthAccessToken: '',
-        userDetails: '',
+        userDetails: {
+          languages: formData.languages.value,
+          country: formData.country.value,
+        },
       };
 
       try {
@@ -253,6 +265,12 @@ const SignUpForm = ({onSuccess}) => {
 
     <COSBlock onChange={handler} isAccept={formData.contribution_terms.value}/>
     <TOSBlock onChange={handler} isAccept={formData.terms_of_service.value}/>
+
+    <OptionalUserFields
+      onChange={handler}
+      languages={formData.languages}
+      country={formData.country}
+    />
 
     <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Sign Up</Button>
   </form>;
