@@ -40,7 +40,7 @@ export default () => {
     <header>
       <div className="block-header">
         <div className="logo">
-          <NavLink to="/">
+          <NavLink exact to="/">
             <img src={openPlaceReviewLogo} alt="OpenPlaceReviews.org logo" className="center" />
           </NavLink>
         </div>

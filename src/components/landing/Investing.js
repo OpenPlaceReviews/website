@@ -46,7 +46,7 @@ export default () => {
         <div className="user_need_item">
           As an <b>active mapper</b>, I would like to provide more details about
           place and its facilities like attach place photo, detailed
-          list of service and I can’t do it today in OSM
+          list of service and I can’t do it today in OpenStreetMap
           <div className="user_need_border"></div>
           <div><b>OpenStreetMap community</b> • 5M</div>
           <div className="gray_text"><i>Place catalog</i></div>

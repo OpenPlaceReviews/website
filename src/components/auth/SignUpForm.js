@@ -102,7 +102,7 @@ const SignUpForm = ({onSuccess}) => {
       let pwdRepeatError = '';
 
       if (pwdValue.length > 0 && pwdValue.length < PASSWORD_MIN_LENGTH) {
-        pwdError = `Password must be greater then ${PASSWORD_MIN_LENGTH} symbols`;
+        pwdError = `Password must be greater than ${PASSWORD_MIN_LENGTH} symbols`;
       } else if (pwdRepeatValue.length > 0 && pwdValue !== pwdRepeatValue) {
         pwdError = 'Passwords mismatch';
         pwdRepeatError = 'Passwords mismatch';

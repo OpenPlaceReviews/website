@@ -8,7 +8,7 @@ export default ({params}) => {
   if (isSuccess) {
     return <div className="auth-container" id="opr-app">
       <h1>Password reset</h1>
-      <p>Password reset successfully. Try to <Link to="/login">login</Link> with new password.</p>
+      <p>Password was reset successfully. Try to <Link to="/login">login</Link> with new password.</p>
     </div>;
   }
 

@@ -37,18 +37,7 @@ export default ({oauthNickname, oauthAccessToken, userDetails, onSuccess, onErro
 
   const formRef = useRef();
   useEffect(() => {
-    const unlockForm = () => {
-      let errors = 0;
-      for (let field in formData) {
-        if (formData[field].error.length) {
-          errors++;
-        }
-      }
-
-      setReady(errors === 0 && formRef.current.checkValidity());
-    };
-
-    unlockForm();
+    setReady(!formData.oauthNickname.error.length && formRef.current.checkValidity());
   }, [formData, isReady]);
 
   useEffect(() => {
@@ -143,15 +132,36 @@ export default ({oauthNickname, oauthAccessToken, userDetails, onSuccess, onErro
         <TextField
           name="oauthNickname"
           required={true}
+          fullWidth={true}
+          onChange={handler}
           label="Nickname"
           placeholder="Enter a nickname"
-          onChange={handler}
           value={formData.oauthNickname.value}
           error={formData.oauthNickname.error.length > 0}
           helperText={formData.oauthNickname.error ? formData.oauthNickname.error : ''}
           variant="outlined"
-          fullWidth={true}
         />
+
+
+        {/*<Autocomplete*/}
+        {/*  id="combo-box-demo"*/}
+        {/*  options={possibleSignups}*/}
+        {/*  value={formData.oauthNickname.value}*/}
+        {/*  onChange={handler}*/}
+        {/*  fullWidth={true}*/}
+        {/*  renderInput={(params) => {*/}
+        {/*    return <TextField*/}
+        {/*      {...params}*/}
+        {/*      name="oauthNickname"*/}
+        {/*      required={true}*/}
+        {/*      label="Nickname"*/}
+        {/*      placeholder="Enter a nickname"*/}
+        {/*      error={formData.oauthNickname.error.length > 0}*/}
+        {/*      helperText={formData.oauthNickname.error ? formData.oauthNickname.error : ''}*/}
+        {/*      variant="outlined"*/}
+        {/*    />*/}
+        {/*  }}*/}
+        {/*/>*/}
       </div>
 
       <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Send</Button>

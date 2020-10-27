@@ -89,6 +89,8 @@ const LoginForm = ({ onSuccess }) => {
     setSubmit(true);
   };
 
+  const forgetPwdText = <>If you forget your password, please follow the <a href="/reset-password">link</a> to reset it.</>;
+
   return <form className="login-form" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
     {showAlert && <Alert
       className="form-alert"
@@ -122,7 +124,7 @@ const LoginForm = ({ onSuccess }) => {
         onChange={handler}
         value={formData.pwd.value}
         error={(formData.pwd.error.length > 0)}
-        helperText={formData.pwd.error ? formData.pwd.error : 'We don\'t save your password, if you loose it, we can\'t help you get back access to account.'}
+        helperText={formData.pwd.error ? formData.pwd.error : forgetPwdText}
         fullWidth={true}
       />
     </div>

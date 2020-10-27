@@ -18,20 +18,10 @@ export default ({isLoggedIn, params, onSuccess}) => {
           code: params.code,
         });
 
-        if (postAuthData.possibleSignups.length) {
-          let name = postAuthData.possibleSignups[0];
-          const {data: loginData} = await auth.logIn({
-            name,
-            oauthAccessToken: postAuthData.accessToken
-          });
+        postAuthData.oauthNickname = 'Ramenky27';
+        postAuthData.possibleSignups = ['Ramenky', 'Ramenky2'];
 
-          onSuccess({
-            name,
-            token: loginData.eval.privatekey,
-          });
-        } else {
-          setConfirmData(postAuthData);
-        }
+        setConfirmData(postAuthData);
       } catch (error) {
         console.log(error);
         if (error.response && error.response.data) {
@@ -67,6 +57,7 @@ export default ({isLoggedIn, params, onSuccess}) => {
         oauthNickname={confirmData.oauthNickname}
         oauthAccessToken={confirmData.accessToken}
         userDetails={confirmData.details}
+        possibleSignups={confirmData.possibleSignups}
         onSuccess={onSuccess}
         onError={setError}
       />

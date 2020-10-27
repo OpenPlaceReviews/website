@@ -16,8 +16,8 @@ export default ({showForm}) => {
       </li>
       <li>
         <div className="method-auth">
-          <img src={iconOSM} alt="OSM icon"/>
-          <a href="/api/auth/user-oauth-auth?oauthProvider=osm">OSM</a>
+          <img src={iconOSM} alt="OpenStreetMap icon"/>
+          <a href="/api/auth/user-oauth-auth?oauthProvider=osm">OpenStreetMap</a>
         </div>
       </li>
       <li>
