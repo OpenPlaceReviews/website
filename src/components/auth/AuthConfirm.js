@@ -16,7 +16,7 @@ export default ({location}) => {
   const isLoggedIn = (authData.token && authData.token.length);
 
   if (isConfirmation) {
-    const params = {name, token};
+    const params = {name, token, op};
     if (op === 'signup_confirm') {
       return <EmailConfirmation isLoggedIn={isLoggedIn} params={params} onSuccess={logIn}/>
     } else if (op === 'reset_pwd') {

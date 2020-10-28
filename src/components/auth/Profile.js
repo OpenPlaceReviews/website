@@ -2,9 +2,10 @@ import React, {useContext} from 'react';
 import {Redirect} from "react-router-dom";
 
 import {UserContext} from "../../context";
+import EmailConfirmation from "./EmailConfirmation";
 
 export default () => {
-  const {authData, authStatus} = useContext(UserContext);
+  const {authData, authStatus, logIn} = useContext(UserContext);
 
   if (!authData.name) {
     return <Redirect to={"/login"}/>;
@@ -26,9 +27,7 @@ export default () => {
   } else {
     if (blockchain !== 'ok') {
       if (email === 'ok' && emailExpired !== true) {
-        return <div className="auth-container" id="opr-app">
-          <p>Please check your email to confirm account.</p>
-        </div>;
+        return <EmailConfirmation params={{name: authData.name}} onSuccess={logIn}/>;
       } else {
         return <Redirect to={"/signup"}/>;
       }

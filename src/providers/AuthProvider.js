@@ -11,7 +11,7 @@ export default (props) => {
       token: storage.get('opr-token') || "",
       name: authName,
     },
-    status: storage.get('opr-status') | {},
+    status: storage.get('opr-status') || {},
     actions: {
       doLogout: false,
     }
