@@ -6,7 +6,7 @@ import iconGithub from "../../../assets/images/icon-github.png";
 
 export default ({showForm}) => {
   return <div className="socialaccount_ballot">
-    <p>Select sign up method:</p>
+    <p>Select registration method:</p>
     <ul className="socialaccount_providers">
       <li>
         <div className="method-auth">
@@ -32,6 +32,9 @@ export default ({showForm}) => {
           <div className="nickname-method" onClick={showForm}>
             Use nickname and password
           </div>
+        </div>
+        <div className="help_text">
+          For OAuth methods you can add the nickname in the next step, but this will not completely hide your id.
         </div>
       </li>
     </ul>

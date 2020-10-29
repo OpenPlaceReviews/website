@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
-import {TextField, Button} from "@material-ui/core";
-import Alert from '@material-ui/lab/Alert';
 
+import Alert from '@material-ui/lab/Alert';
+import {Button, TextField} from "@material-ui/core";
+
+import auth from "../../api/auth";
 import TOSBlock from "./blocks/TOSBlock";
 import COSBlock from "./blocks/COSBlock";
-import auth from "../../api/auth";
 import OptionalUserFields from "./blocks/OptionalUserFields";
 
 const PASSWORD_MIN_LENGTH = 10;
@@ -16,7 +17,6 @@ const SignUpForm = ({onSuccess}) => {
   const [showAlert, setAlert] = useState(null);
   const [isSubmit, setSubmit] = useState(false);
   const [isReady, setReady] = useState(false);
-
   const [formData, setData] = useState({
     name: {
       value: '',

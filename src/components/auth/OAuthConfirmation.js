@@ -18,12 +18,18 @@ export default ({isLoggedIn, params, onSuccess}) => {
           code: params.code,
         });
 
-        postAuthData.oauthNickname = 'Ramenky27';
-        postAuthData.possibleSignups = ['Ramenky', 'Ramenky2'];
+        // TODO: Remove mock
+        // const postAuthData = {
+        //   oauthNickname: 'Ramenky27',
+        //   possibleSignups: ['Ramenky', 'Ramenky2'],
+        //   details: {
+        //     email: 'ramenky27@gmail.com'
+        //   },
+        //   accessToken: '666',
+        // };
 
         setConfirmData(postAuthData);
       } catch (error) {
-        console.log(error);
         if (error.response && error.response.data) {
           setError(error.response.data.message);
         } else {
@@ -32,7 +38,7 @@ export default ({isLoggedIn, params, onSuccess}) => {
       }
     };
 
-    if (!isLoggedIn && !confirmData && (params.code || params.oauth_token || params.oauth_verifier)) {
+    if (!isLoggedIn && (params.code || params.oauth_token || params.oauth_verifier)) {
       fetchData();
     }
   }, []);
@@ -49,9 +55,13 @@ export default ({isLoggedIn, params, onSuccess}) => {
   }
 
   if (confirmData) {
-
     return <div className="auth-container" id="opr-app">
-      <h1>Login</h1>
+      <h1>Welcome, <span className="username">{confirmData.oauthNickname}</span></h1>
+
+      <p>
+        You are almost ready to sign up.<br/>
+        Open Place Reviews <span className="highlight bold">stores all changes in a public database</span> except private data marked with *.
+      </p>
 
       <OAuthConfirmationForm
         oauthNickname={confirmData.oauthNickname}
