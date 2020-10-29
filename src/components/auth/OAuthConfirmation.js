@@ -18,16 +18,6 @@ export default ({isLoggedIn, params, onSuccess}) => {
           code: params.code,
         });
 
-        // TODO: Remove mock
-        // const postAuthData = {
-        //   oauthNickname: 'Ramenky27',
-        //   possibleSignups: ['Ramenky', 'Ramenky2'],
-        //   details: {
-        //     email: 'ramenky27@gmail.com'
-        //   },
-        //   accessToken: '666',
-        // };
-
         setConfirmData(postAuthData);
       } catch (error) {
         if (error.response && error.response.data) {

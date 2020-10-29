@@ -128,19 +128,12 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       };
 
       try {
-        // await auth.signUp(params);
+        await auth.signUp(params);
 
         const {data} = await auth.logIn({
           name: formData.oauthNickname.value,
           oauthAccessToken,
         });
-
-        // TODO: Remove mock
-        // const data = {
-        //   eval: {
-        //     privatekey: '666'
-        //   }
-        // };
 
         onSuccess({
           name: formData.oauthNickname.value,
