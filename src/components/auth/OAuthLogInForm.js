@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 import Alert from "@material-ui/lab/Alert";
 import {Button, TextField, FormHelperText} from "@material-ui/core";
@@ -9,10 +9,10 @@ import auth from "../../api/auth";
 const TYPING_TIMEOUT = 1000;
 
 let writeTimeout = null;
-export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDetails = {}, onSuccess, onError}) => {
+export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSuccess, onError}) => {
   const [showAlert, setAlert] = useState(null);
+  const [isReady, setReady] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
-
   const [formData, setData] = useState({
     oauthNickname: {
       value: possibleSignups.length ? possibleSignups[0] : oauthNickname,
@@ -20,9 +20,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     },
   });
 
-  if (userDetails.email) {
-    delete userDetails.email;
-  }
+  const isAutoLogin = possibleSignups.length === 1;
 
   const defaultAlertMsg = "Error while processing request. Please try again later.";
 
@@ -67,13 +65,29 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       }
     };
 
-    if (formData.oauthNickname.value.length) {
+    if (formData.oauthNickname.value.length && !isAutoLogin) {
       clearTimeout(writeTimeout);
       writeTimeout = setTimeout(() => {
         fetchData();
       }, TYPING_TIMEOUT);
     }
   }, [formData.oauthNickname.value]);
+
+  const formRef = useRef();
+  useEffect(() => {
+    const unlockForm = () => {
+      let errors = 0;
+      for (let field in formData) {
+        if (formData[field].error.length) {
+          errors++;
+        }
+      }
+
+      setReady(errors === 0 && formRef.current.checkValidity());
+    };
+
+    unlockForm();
+  }, [formData, isReady]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,13 +115,12 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       setSubmit(false);
     };
 
-    if (isSubmit) {
+    if (isSubmit || isAutoLogin) {
       fetchData();
     }
   }, [isSubmit]);
 
-  if (possibleSignups.length === 1) {
-    setSubmit(true);
+  if (isAutoLogin) {
     return <div className="loader">Loading...</div>;
   }
 
@@ -116,7 +129,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     setSubmit(true);
   };
 
-  return <form className="signup-form" autoComplete="off" onSubmit={onSubmit}>
+  return <form className="signup-form" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
     {showAlert && <Alert
       className="form-alert"
       severity="error">
@@ -148,6 +161,6 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       </FormHelperText>
     </div>
 
-    <Button variant="outlined" type="submit" color="primary" disabled={!formData.oauthNickname.value}>Send</Button>
+    <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Send</Button>
   </form>;
 }

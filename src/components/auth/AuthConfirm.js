@@ -18,14 +18,14 @@ export default ({location}) => {
   if (isLoggedIn) {
     return <Redirect to="/profile"/>
   } else if (isConfirmation) {
-    const params = {name, token, op, force_signup};
+    const params = {name, token, op};
     if (op === 'signup_confirm') {
       return <EmailConfirmation isLoggedIn={isLoggedIn} params={params} onSuccess={logIn}/>
     } else if (op === 'reset_pwd') {
       return <ResetPwdConfirmation params={params}/>
     }
   } else if (isOAuth) {
-    const params = {oauth_token, oauth_verifier, code};
+    const params = {oauth_token, oauth_verifier, code, force_signup};
     return <OAuthConfirmation isLoggedIn={isLoggedIn} params={params} onSuccess={logIn}/>
   }
 
