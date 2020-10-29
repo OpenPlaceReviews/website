@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import {UserContext} from "../context";
 
 import openPlaceReviewLogo from "../assets/images/OpenPlaceReview.svg";
@@ -35,6 +35,12 @@ const UserMenuFragment = ({isLoggedIn, logOut}) => {
 
 export default () => {
   const {authData, logOut} = useContext(UserContext);
+  const history = useHistory();
+
+  const onLogOut = () => {
+    logOut();
+    history.push('/');
+  };
 
   return <>
     <header>
@@ -59,7 +65,7 @@ export default () => {
           <li><a href="#">Tasks</a></li>
           <li><NavLink to="/investing">For Investors</NavLink></li>
           */}
-            <UserMenuFragment isLoggedIn={authData.name && authData.name.length} logOut={logOut}/>
+            <UserMenuFragment isLoggedIn={authData.name && authData.name.length} logOut={onLogOut}/>
           </ul>
         </nav>
       </div>

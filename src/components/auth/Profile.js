@@ -13,7 +13,7 @@ export default () => {
 
   if (!authStatus) {
     return <div className="auth-container" id="opr-app">
-      <p>Checking status...</p>
+      <div className="loader">Loading...</div>
     </div>;
   }
 

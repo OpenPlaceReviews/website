@@ -187,7 +187,9 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
           />
         }}
       />
-      <FormHelperText error={true}>{formData.oauthNickname.error}</FormHelperText>
+      <FormHelperText error={formData.oauthNickname.error.length > 0}>
+        {formData.oauthNickname.error ? formData.oauthNickname.error : 'Username is public'}
+      </FormHelperText>
     </div>
 
     <div className="form-item">

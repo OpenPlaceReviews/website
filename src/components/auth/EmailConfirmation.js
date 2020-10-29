@@ -4,7 +4,7 @@ import {Button, TextField} from "@material-ui/core";
 import auth from "../../api/auth";
 import {UserContext} from "../../context";
 
-export default ({isLoggedIn = false, params = {}, onSuccess}) => {
+export default ({params = {}, onSuccess}) => {
   const {logOut} = useContext(UserContext);
 
   const [isError, setError] = useState(false);
@@ -43,14 +43,10 @@ export default ({isLoggedIn = false, params = {}, onSuccess}) => {
     }
   }, [isSubmit]);
 
-  const goToSignup = () => {
+  const onSignup = () => {
     logOut();
     setRedirect("/signup")
   };
-
-  if (isLoggedIn) {
-    return <Redirect to={"/profile"}/>
-  }
 
   if (redirectTo) {
     return <Redirect to={redirectTo}/>;
@@ -74,7 +70,7 @@ export default ({isLoggedIn = false, params = {}, onSuccess}) => {
     return <div className="auth-container" id="opr-app">
       <h1>Email is not yet confirmed</h1>
       <p>Email validation link is out of date. Please signup again.</p>
-      <Button variant="outlined" type="submit" color="primary" onClick={goToSignup}>Signup</Button>
+      <Button variant="outlined" type="submit" color="primary" onClick={onSignup}>Signup</Button>
     </div>
   }
 
@@ -110,6 +106,6 @@ export default ({isLoggedIn = false, params = {}, onSuccess}) => {
   }
 
   return <div className="auth-container" id="opr-app">
-    <p>Checking status...</p>
+    <div className="loader">Loading...</div>
   </div>;
 }

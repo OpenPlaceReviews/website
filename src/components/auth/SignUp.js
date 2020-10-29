@@ -8,13 +8,18 @@ import ChangeAuthType from "./blocks/ChangeAuthType";
 export default () => {
   const {authData, signUp} = useContext(UserContext);
   const [isFormVisible, setVisibilityForm] = useState(false);
+  const [redirectTo, setRedirect] = useState('');
 
   const onSignUp = (data) => {
     signUp(data);
-    return <Redirect to={"/profile"}/>;
+    setRedirect('/profile');
   };
 
-  if(authData.name) {
+  if (redirectTo) {
+    return <Redirect to={redirectTo}/>;
+  }
+
+  if (authData.token) {
     return <Redirect to={"/profile"}/>;
   }
 

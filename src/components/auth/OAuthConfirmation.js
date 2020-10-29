@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import auth from "../../api/auth";
-import {Redirect} from "react-router-dom";
-import OAuthConfirmationForm from "./OAuthConfirmationForm";
+import OAuthSignUpForm from "./OAuthSignUpForm";
+import OAuthLogInForm from "./OAuthLogInForm";
 
-export default ({isLoggedIn, params, onSuccess}) => {
+export default ({params, onSuccess}) => {
   const [errorMsg, setError] = useState('');
   const [confirmData, setConfirmData] = useState(null);
 
@@ -28,14 +28,10 @@ export default ({isLoggedIn, params, onSuccess}) => {
       }
     };
 
-    if (!isLoggedIn && (params.code || params.oauth_token || params.oauth_verifier)) {
+    if (params.code || params.oauth_token || params.oauth_verifier) {
       fetchData();
     }
   }, []);
-
-  if (isLoggedIn) {
-    return <Redirect to={"/profile"}/>
-  }
 
   if (errorMsg) {
     return <div className="auth-container" id="opr-app">
@@ -45,26 +41,43 @@ export default ({isLoggedIn, params, onSuccess}) => {
   }
 
   if (confirmData) {
-    return <div className="auth-container" id="opr-app">
-      <h1>Welcome, <span className="username">{confirmData.oauthNickname}</span></h1>
+    if(!confirmData.possibleSignups.length || params.force_signup) {
+      return <div className="auth-container" id="opr-app">
+        <h1>Welcome, <span className="username">{confirmData.oauthNickname}</span></h1>
 
-      <p>
-        You are almost ready to sign up.<br/>
-        Open Place Reviews <span className="highlight bold">stores all changes in a public database</span> except private data marked with *.
-      </p>
+        <p>
+          You are almost ready to sign up.<br/>
+          Open Place Reviews <span className="highlight bold">stores all changes in a public database</span> except private data marked with *.
+        </p>
 
-      <OAuthConfirmationForm
-        oauthNickname={confirmData.oauthNickname}
-        oauthAccessToken={confirmData.accessToken}
-        userDetails={confirmData.details}
-        possibleSignups={confirmData.possibleSignups}
-        onSuccess={onSuccess}
-        onError={setError}
-      />
-    </div>;
+        <OAuthSignUpForm
+          oauthNickname={confirmData.oauthNickname}
+          oauthAccessToken={confirmData.accessToken}
+          userDetails={confirmData.details}
+          possibleSignups={confirmData.possibleSignups}
+          onSuccess={onSuccess}
+          onError={setError}
+        />
+      </div>;
+    } else {
+      return <div className="auth-container" id="opr-app">
+        <h1>Welcome, <span className="username">{confirmData.oauthNickname}</span></h1>
+
+        <p>You are almost ready to login.</p>
+
+        <OAuthLogInForm
+          oauthNickname={confirmData.oauthNickname}
+          oauthAccessToken={confirmData.accessToken}
+          userDetails={confirmData.details}
+          possibleSignups={confirmData.possibleSignups}
+          onSuccess={onSuccess}
+          onError={setError}
+        />
+      </div>;
+    }
   }
 
   return <div className="auth-container" id="opr-app">
-    Checking token...
+    <div className="loader">Loading...</div>
   </div>;
 }

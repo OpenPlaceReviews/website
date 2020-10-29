@@ -211,7 +211,7 @@ const SignUpForm = ({onSuccess}) => {
         onChange={handler}
         value={formData.name.value}
         error={formData.name.error.length > 0}
-        helperText={formData.name.error ? formData.name.error : ''}
+        helperText={formData.name.error ? formData.name.error : 'Username is public'}
         variant="outlined"
         fullWidth={true}
       />
