@@ -98,22 +98,6 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     }
   }, [formData.oauthNickname.value]);
 
-  const formRef = useRef();
-  useEffect(() => {
-    const unlockForm = () => {
-      let errors = 0;
-      for (let field in formData) {
-        if (formData[field].error.length) {
-          errors++;
-        }
-      }
-
-      setReady(errors === 0 && formRef.current.checkValidity());
-    };
-
-    unlockForm();
-  }, [formData, isReady]);
-
   useEffect(() => {
     const fetchData = async () => {
       const params = {
@@ -155,6 +139,22 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       fetchData();
     }
   }, [isSubmit]);
+
+  const formRef = useRef();
+  useEffect(() => {
+    const unlockForm = () => {
+      let errors = 0;
+      for (let field in formData) {
+        if (formData[field].error.length) {
+          errors++;
+        }
+      }
+
+      setReady(errors === 0 && formRef.current.checkValidity());
+    };
+
+    unlockForm();
+  }, [formData, isReady]);
 
   const onSubmit = (e) => {
     e.preventDefault();
