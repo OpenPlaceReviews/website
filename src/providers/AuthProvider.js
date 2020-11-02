@@ -99,7 +99,7 @@ export default (props) => {
     if (authData.data.name) {
       fetchData();
     }
-  }, [authData.data.name]);
+  }, []);
 
   const userContextValue = {
     authData: authData.data,
