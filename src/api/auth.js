@@ -74,7 +74,7 @@ const oauthConfirm = async ({token, oauthVerifier, code}) => {
 
 const checkName = async (name) => {
   return await get(CHECK_NAME_URL, {
-    params: { name: encodeURI(name) },
+    params: { name: name },
   });
 };
 
