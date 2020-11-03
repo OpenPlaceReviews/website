@@ -681,7 +681,7 @@ header{
     color: rgba(49, 50, 51, 0.7);
 }
 
-button{
+button:not(.MuiButtonBase-root){
     background: #F1F4FC;
     border: 2px solid #2D69E0;
     box-sizing: border-box;

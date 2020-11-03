@@ -179,6 +179,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
           return <TextField
             {...params}
             error={formData.oauthNickname.error.length > 0}
+            onChange={handler}
             name="oauthNickname"
             required={true}
             label="Nickname"
