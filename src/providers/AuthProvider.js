@@ -64,8 +64,6 @@ export default (props) => {
     };
 
     if (authData.actions.doLogout) {
-      fetchData();
-
       storage.clear();
       setAuthData((state) => {
         return {
@@ -79,6 +77,8 @@ export default (props) => {
           },
         };
       });
+
+      fetchData();
     }
   }, [authData.actions.doLogout]);
 
@@ -99,7 +99,7 @@ export default (props) => {
     if (authData.data.name) {
       fetchData();
     }
-  }, []);
+  }, [authData.data.name]);
 
   const userContextValue = {
     authData: authData.data,
