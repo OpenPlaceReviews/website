@@ -49,7 +49,6 @@ export default ({params, onSuccess}) => {
           You are almost ready to sign up.<br/>
           Open Place Reviews <span className="highlight bold">stores all changes in a public database</span> except private data marked with *.
         </p>
-
         <OAuthSignUpForm
           oauthNickname={confirmData.oauthNickname}
           oauthAccessToken={confirmData.accessToken}

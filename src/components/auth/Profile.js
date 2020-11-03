@@ -1,23 +1,38 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Redirect} from "react-router-dom";
 
 import {UserContext} from "../../context";
 import EmailConfirmation from "./EmailConfirmation";
+import auth from "../../api/auth";
 
 export default () => {
-  const {authData, authStatus, logIn} = useContext(UserContext);
+  const {authData, logIn} = useContext(UserContext);
+  const [status, setStatus] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await auth.checkName(authData.name);
+      if (!data) return;
+
+      setStatus(data);
+    };
+
+    if (!status) {
+      fetchData();
+    }
+  }, []);
 
   if (!authData.name) {
     return <Redirect to={"/login"}/>;
   }
 
-  if (!authStatus) {
+  if (!status) {
     return <div className="auth-container" id="opr-app">
       <div className="loader">Loading...</div>
     </div>;
   }
 
-  const { 'db-name': name, 'email-expired': emailExpired, email, blockchain} = authStatus;
+  const { 'db-name': name, 'email-expired': emailExpired, email, blockchain} = status;
   if (name !== 'ok') {
     if (blockchain !== 'ok') {
       return <Redirect to={"/signup"}/>;
