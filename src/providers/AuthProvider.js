@@ -59,6 +59,19 @@ export default (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const { data } = await auth.checkToken(authData.data);
+      if (data && data.result === 'ok') return;
+
+      logOut(authData.data.name);
+    };
+
+    if (authData.data.token) {
+      fetchData();
+    }
+  }, [authData.data.token]);
+
+  useEffect(() => {
+    const fetchData = async () => {
       await auth.logOut(authData.data.name);
     };
 

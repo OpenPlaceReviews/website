@@ -11,6 +11,7 @@ const RESET_PWD_URL = `${API_BASE}/api/auth/user-reset-password-email`;
 const RESET_PWD_CONFIRM_URL = `${API_BASE}/api/auth/user-reset-password-confirm`;
 const OAUTH_CONFIRM_URL = `${API_BASE}/api/auth/user-oauth-postauth`;
 const CHECK_NAME_URL = `${API_BASE}/api/auth/user-status`;
+const CHECK_LOGIN_TOKEN = `${API_BASE}/api/auth/user-check-loginkey`;
 
 const POST_CONFIG = {
   transformRequest: [
@@ -78,8 +79,15 @@ const checkName = async (name) => {
   });
 };
 
+const checkToken = async (name, privateKey) => {
+  return await get(CHECK_LOGIN_TOKEN, {
+    params: { name, privateKey },
+  });
+};
+
 export default {
   checkName,
+  checkToken,
   signUp,
   signUpConfirm,
   logIn,
