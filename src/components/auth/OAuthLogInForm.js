@@ -65,7 +65,9 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
       }
     };
 
-    if (formData.oauthNickname.value.length && !isAutoLogin) {
+    const username = formData.oauthNickname.value;
+
+    if (username.length && !isAutoLogin && !possibleSignups.includes(username)) {
       clearTimeout(writeTimeout);
       writeTimeout = setTimeout(() => {
         fetchData();

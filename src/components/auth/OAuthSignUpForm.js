@@ -90,7 +90,9 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       }
     };
 
-    if (formData.oauthNickname.value.length) {
+    const username = formData.oauthNickname.value;
+
+    if (username.length && !possibleSignups.includes(username)) {
       clearTimeout(writeTimeout);
       writeTimeout = setTimeout(() => {
         fetchData();
