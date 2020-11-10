@@ -137,7 +137,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
     </Alert>}
 
     <div className="form-item">
-      <p>Please select previous username from list or enter new</p>
+      <p>We noticed that you already using this OAuth method. Please select one of the accounts below to continue.</p>
       <Autocomplete
         freeSolo
         options={possibleSignups}
@@ -158,7 +158,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
         }}
       />
       <FormHelperText error={formData.oauthNickname.error.length > 0}>
-        {formData.oauthNickname.error ? formData.oauthNickname.error : 'Username is public'}
+        {formData.oauthNickname.error ? formData.oauthNickname.error : ''}
       </FormHelperText>
     </div>
 
