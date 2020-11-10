@@ -1,5 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {Link, Redirect} from "react-router-dom";
+import qs from "qs";
+import storage from "../../storage";
 
 import SignUpForm from "./SignUpForm";
 import {UserContext} from "../../context";
@@ -9,11 +11,16 @@ export default () => {
   const {authData, signUp} = useContext(UserContext);
   const [isFormVisible, setVisibilityForm] = useState(false);
   const [redirectTo, setRedirect] = useState('');
+  const {force_signup} = qs.parse(location.search.substring(1));
 
   const onSignUp = (data) => {
     signUp(data);
     setRedirect('/profile');
   };
+
+  if (force_signup === 'true') {
+    storage.set('opr-force-signup', true);
+  }
 
   if (redirectTo) {
     return <Redirect to={redirectTo}/>;

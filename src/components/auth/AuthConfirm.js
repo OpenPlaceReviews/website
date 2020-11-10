@@ -6,14 +6,16 @@ import {UserContext} from "../../context";
 import EmailConfirmation from "./EmailConfirmation";
 import ResetPwdConfirmation from "./ResetPwdConfirmation";
 import OAuthConfirmation from "./OAuthConfirmation";
+import storage from "../../storage";
 
 export default ({location}) => {
   const {authData, logIn} = useContext(UserContext);
 
-  const {op, name, token, oauth_token, oauth_verifier, code, force_signup} = qs.parse(location.search.substring(1));
+  const {op, name, token, oauth_token, oauth_verifier, code} = qs.parse(location.search.substring(1));
   const isConfirmation = (name && token && op);
   const isOAuth = (oauth_token || oauth_verifier || code);
   const isLoggedIn = (authData.token && authData.token.length);
+  const force_signup = storage.get('opr-force-signup');
 
   if (isLoggedIn) {
     return <Redirect to="/profile"/>
