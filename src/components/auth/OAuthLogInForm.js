@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 import {Button, Select, FormHelperText} from "@material-ui/core";
 
 import auth from "../../api/auth";
 
 export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSuccess, onError}) => {
-  const [isSubmit, setSubmit] = useState(false);
+ const [isSubmit, setSubmit] = useState(false);
   const [formData, setData] = useState({
     oauthNickname: {
       value: possibleSignups.length ? possibleSignups[0] : oauthNickname,
