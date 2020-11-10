@@ -1,17 +1,10 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 
-import Alert from "@material-ui/lab/Alert";
-import {Button, TextField, FormHelperText} from "@material-ui/core";
-import { Autocomplete } from '@material-ui/lab';
+import {Button, Select, FormHelperText} from "@material-ui/core";
 
 import auth from "../../api/auth";
 
-const TYPING_TIMEOUT = 1000;
-
-let writeTimeout = null;
 export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSuccess, onError}) => {
-  const [showAlert, setAlert] = useState(null);
-  const [isReady, setReady] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
   const [formData, setData] = useState({
     oauthNickname: {
@@ -37,43 +30,6 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
       }
     }));
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await auth.checkName(formData.oauthNickname.value);
-        let error = '';
-        if (data && data["db-name"] === "ok" && data["blockchain"] === 'ok') {
-          error = 'Username already inuse';
-        }
-
-        setData( formData => ({
-          ...formData,
-          oauthNickname: {
-            ...formData.oauthNickname,
-            error,
-          }
-        }));
-
-        setAlert(null);
-      } catch (error) {
-        if (error.response && error.response.data){
-          setAlert(error.response.data.message);
-        } else {
-          setAlert(defaultAlertMsg);
-        }
-      }
-    };
-
-    const username = formData.oauthNickname.value;
-
-    if (username.length && !isAutoLogin && !possibleSignups.includes(username)) {
-      clearTimeout(writeTimeout);
-      writeTimeout = setTimeout(() => {
-        fetchData();
-      }, TYPING_TIMEOUT);
-    }
-  }, [formData.oauthNickname.value]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,61 +66,30 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
     return <div className="loader">Loading...</div>;
   }
 
-  const formRef = useRef();
-  useEffect(() => {
-    const unlockForm = () => {
-      let errors = 0;
-      for (let field in formData) {
-        if (formData[field].error.length) {
-          errors++;
-        }
-      }
-
-      setReady(errors === 0 && formRef.current.checkValidity());
-    };
-
-    unlockForm();
-  }, [formData, isReady]);
-
   const onSubmit = (e) => {
     e.preventDefault();
     setSubmit(true);
   };
 
-  return <form className="signup-form" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
-    {showAlert && <Alert
-      className="form-alert"
-      severity="error">
-      {showAlert}
-    </Alert>}
-
+  return <form className="signup-form" autoComplete="off" onSubmit={onSubmit}>
     <div className="form-item">
       <p>We noticed that you already using this OAuth method. Please select one of the accounts below to continue.</p>
-      <Autocomplete
-        freeSolo
-        options={possibleSignups}
+      <Select
         name="oauthNickname"
         value={formData.oauthNickname.value}
         onChange={handler}
         fullWidth={true}
-        renderInput={(params) => {
-          return <TextField
-            {...params}
-            error={formData.oauthNickname.error.length > 0}
-            onChange={handler}
-            name="oauthNickname"
-            required={true}
-            label="Username"
-            placeholder="Enter a username"
-            variant="outlined"
-          />
-        }}
+        error={formData.oauthNickname.error.length > 0}
+        required={true}
+        label="Username"
+        placeholder="Select a username"
+        variant="outlined"
       />
       <FormHelperText error={formData.oauthNickname.error.length > 0}>
         {formData.oauthNickname.error ? formData.oauthNickname.error : ''}
       </FormHelperText>
     </div>
 
-    <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Send</Button>
+    <Button variant="outlined" type="submit" color="primary">Send</Button>
   </form>;
 }
