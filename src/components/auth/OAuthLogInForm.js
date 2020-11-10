@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 
-import {Button, Select, FormHelperText} from "@material-ui/core";
+import {Button, Select, FormHelperText, MenuItem} from "@material-ui/core";
 
 import auth from "../../api/auth";
 
@@ -84,7 +84,9 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
         label="Username"
         placeholder="Select a username"
         variant="outlined"
-      />
+      >
+        {possibleSignups.map((name, i) => <MenuItem value={name} key={i}>{name}</MenuItem> )}
+      </Select>
       <FormHelperText error={formData.oauthNickname.error.length > 0}>
         {formData.oauthNickname.error ? formData.oauthNickname.error : ''}
       </FormHelperText>
