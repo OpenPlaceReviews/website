@@ -60,7 +60,7 @@ export default (props) => {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await auth.checkToken(authData.data);
-      if (data && data.result === 'ok') return;
+      if (data && data.result === 'OK') return;
 
       logOut(authData.data.name);
     };
