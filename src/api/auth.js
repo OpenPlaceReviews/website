@@ -79,9 +79,9 @@ const checkName = async (name) => {
   });
 };
 
-const checkToken = async (name, privateKey) => {
+const checkToken = async ({name, token}) => {
   return await get(CHECK_LOGIN_TOKEN, {
-    params: { name, privateKey },
+    params: { name, privateKey: token },
   });
 };
 
