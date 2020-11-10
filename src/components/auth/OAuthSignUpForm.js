@@ -173,6 +173,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     <div className="form-item">
       <Autocomplete
         freeSolo
+        name="oauthNickname"
         options={possibleSignups}
         value={formData.oauthNickname.value}
         onChange={handler}

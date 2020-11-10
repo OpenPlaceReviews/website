@@ -143,6 +143,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
       <Autocomplete
         freeSolo
         options={possibleSignups}
+        name="oauthNickname"
         value={formData.oauthNickname.value}
         onChange={handler}
         fullWidth={true}
