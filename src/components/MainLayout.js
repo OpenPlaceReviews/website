@@ -9,6 +9,7 @@ import SignUp from "./auth/SignUp";
 import Profile from "./auth/Profile";
 import AuthConfirm from "./auth/AuthConfirm";
 import ResetPwd from "./auth/ResetPwd";
+import Map from "./Map";
 
 import Error404 from "./404";
 
@@ -22,6 +23,7 @@ export default () => {
       <Route path="/profile" component={Profile} />
       <Route path="/reset-password" component={ResetPwd} />
       <Route path="/auth" component={AuthConfirm} />
+      <Route path="/map" component={Map} />
 
       <Route path="*" component={Error404} />
     </Switch>
