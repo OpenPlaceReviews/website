@@ -53,7 +53,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
   const handler = (event) => {
     const { target } = event;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    const { name } = target;
+    const name = target.name || target.id;
 
     setData( formData => ({
       ...formData,
@@ -91,7 +91,9 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       }
     };
 
-    if (formData.oauthNickname.value.length) {
+    const username = formData.oauthNickname.value;
+
+    if (username.length && !possibleSignups.includes(username)) {
       clearTimeout(writeTimeout);
       writeTimeout = setTimeout(() => {
         fetchData();
@@ -172,6 +174,8 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     <div className="form-item">
       <Autocomplete
         freeSolo
+        id="oauthNickname"
+        name="oauthNickname"
         options={possibleSignups}
         value={formData.oauthNickname.value}
         onChange={handler}
