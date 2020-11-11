@@ -23,7 +23,8 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     },
     email: {
       value: userDetails.email || '',
-      error: ''
+      error: '',
+      readonly: !!userDetails.email,
     },
     contribution_terms: {
       value: false,
@@ -69,7 +70,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
         const { data } = await auth.checkName(formData.oauthNickname.value);
         let error = '';
         if (data && data["db-name"] === "ok" && data["blockchain"] === 'ok') {
-          error = 'Username already inuse';
+          error = 'The username already exists. Please use a different username';
         }
 
         setData( formData => ({
@@ -181,7 +182,6 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
             error={formData.oauthNickname.error.length > 0}
             onChange={handler}
             name="oauthNickname"
-            required={true}
             label="Nickname"
             placeholder="Enter a nickname"
             variant="outlined"
@@ -189,7 +189,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
         }}
       />
       <FormHelperText error={formData.oauthNickname.error.length > 0}>
-        {formData.oauthNickname.error ? formData.oauthNickname.error : ''}
+        {formData.oauthNickname.error ? formData.oauthNickname.error : 'Your changes will be public and associated with nickname.'}
       </FormHelperText>
     </div>
 
@@ -197,6 +197,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       <TextField
         name="email"
         required={true}
+        disabled={formData.email.readonly}
         label="E-mail"
         placeholder="Enter email"
         onChange={handler}
@@ -216,6 +217,6 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       country={formData.country}
     />
 
-    <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Send</Button>
+    <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Sign Up</Button>
   </form>;
 }

@@ -74,7 +74,7 @@ const SignUpForm = ({onSuccess}) => {
         const { data } = await auth.checkName(formData.name.value);
         let error = '';
         if (data && data["db-name"] === "ok" && data["blockchain"] === 'ok') {
-          error = 'Username already inuse';
+          error = 'The username already exists. Please use a different username';
         }
 
         setData( formData => ({
