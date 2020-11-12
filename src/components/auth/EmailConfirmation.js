@@ -60,7 +60,7 @@ export default ({params = {}, onSuccess}) => {
       <Button variant="outlined" type="submit" color="primary" onClick={() => {
         onSuccess({
           name: confirmData.name,
-          authToken,
+          token: authToken,
         });
       }}>Continue</Button>
     </div>
