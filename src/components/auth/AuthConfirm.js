@@ -22,9 +22,6 @@ export default ({location}) => {
   } else if (isConfirmation) {
     const params = {name, token, op};
     if (op === 'signup_confirm') {
-      if (authData.name && authData.name.length) {
-        return <Redirect to="/profile"/>;
-      }
       return <EmailConfirmation isLoggedIn={isLoggedIn} params={params} onSuccess={logIn}/>
     } else if (op === 'reset_pwd') {
       return <ResetPwdConfirmation params={params}/>
