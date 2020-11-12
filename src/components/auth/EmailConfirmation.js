@@ -67,13 +67,6 @@ export default ({params = {}, onSuccess}) => {
       <h1>Email confirmed!</h1>
       <p>Your email is successfully confirmed. Start using OpenPlaceReviews.org by clicking continue.</p>
 
-      {showAlert && <Alert
-        className="form-alert"
-        severity="error"
-        onClose={() => setAlert(null)}>
-        {showAlert}
-      </Alert>}
-
       <Button variant="outlined" type="submit" color="primary" onClick={() => {
         onSuccess({
           name: confirmData.name,
@@ -97,6 +90,13 @@ export default ({params = {}, onSuccess}) => {
       <p>Your account registration is not complete yet. You should have received and email with verification link. You can aslo copy and paste activation code from it.</p>
 
       <form className="signup" autoComplete="off">
+        {showAlert && <Alert
+          className="form-alert"
+          severity="error"
+          onClose={() => setAlert(null)}>
+          {showAlert}
+        </Alert>}
+
         <div className="form-item">
           <TextField
             name="token"
