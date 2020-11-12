@@ -70,7 +70,8 @@ export default ({params, onLogIn, onSignUp}) => {
           oauthAccessToken={confirmData.accessToken}
           userDetails={confirmData.details}
           possibleSignups={confirmData.possibleSignups}
-          onSuccess={onLogIn}
+          onLogIn={onLogIn}
+          onSignUp={onSignUp}
           onError={setError}
         />
       </div>;
