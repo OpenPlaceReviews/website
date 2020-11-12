@@ -3,6 +3,7 @@ import {Redirect} from "react-router-dom";
 import {Button, TextField} from "@material-ui/core";
 import auth from "../../api/auth";
 import {UserContext} from "../../context";
+import Alert from "@material-ui/lab/Alert";
 
 export default ({params = {}, onSuccess}) => {
   const {logOut} = useContext(UserContext);
@@ -11,6 +12,7 @@ export default ({params = {}, onSuccess}) => {
   const [authToken, setAuthToken] = useState('');
   const [isSubmit, setSubmit] = useState(false);
   const [redirectTo, setRedirect] = useState('');
+  const [showAlert, setAlert] = useState(null);
   const [confirmData, setData] = useState({
     token: params.token || '',
     name: params.name || '',
@@ -32,7 +34,15 @@ export default ({params = {}, onSuccess}) => {
         const {data} = await auth.signUpConfirm(confirmData);
         setAuthToken(data.eval.privatekey);
       } catch (error) {
-        setError(true);
+        if(!params.name && !params.token) {
+          setError(true);
+        } else {
+          if (error.response && error.response.data){
+            setAlert(error.response.data.message);
+          } else {
+            setAlert("Error while processing request. Please try again later.");
+          }
+        }
       }
 
       setSubmit(false);
@@ -56,6 +66,13 @@ export default ({params = {}, onSuccess}) => {
     return <div className="auth-container" id="opr-app">
       <h1>Email confirmed!</h1>
       <p>Your email is successfully confirmed. Start using OpenPlaceReviews.org by clicking continue.</p>
+
+      {showAlert && <Alert
+        className="form-alert"
+        severity="error"
+        onClose={() => setAlert(null)}>
+        {showAlert}
+      </Alert>}
 
       <Button variant="outlined" type="submit" color="primary" onClick={() => {
         onSuccess({

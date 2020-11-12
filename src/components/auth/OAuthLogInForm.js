@@ -1,11 +1,18 @@
 import React, {useEffect, useState} from "react";
 
-import {Button, Select, FormHelperText, MenuItem} from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
+import {Button, TextField, FormHelperText} from "@material-ui/core";
+import { Autocomplete } from '@material-ui/lab';
 
 import auth from "../../api/auth";
 
-export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSuccess, onError}) => {
- const [isSubmit, setSubmit] = useState(false);
+const TYPING_TIMEOUT = 1000;
+
+let writeTimeout = null;
+export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onLogIn, onSignUp, onError}) => {
+  const [showAlert, setAlert] = useState(null);
+  const [isReady, setReady] = useState(false);
+  const [isSubmit, setSubmit] = useState(false);
   const [formData, setData] = useState({
     oauthNickname: {
       value: possibleSignups.length ? possibleSignups[0] : oauthNickname,
@@ -39,12 +46,18 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
       };
 
       try {
-        const {data} = await auth.logIn(params);
+        const { data: { name, email, emailExpired } } = await auth.checkName(params.name);
 
-        onSuccess({
-          name: formData.oauthNickname.value,
-          token: data.eval.privatekey,
-        });
+        if (name === 'ok' && email === 'ok' && emailExpired === false) {
+          onSignUp({ name: params.name });
+        } else {
+          const {data} = await auth.logIn(params);
+
+          onLogIn({
+            name: params.name,
+            token: data.eval.privatekey,
+          });
+        }
       } catch (error) {
         const {response} = error;
         if (response && response.data && response.data.message){
@@ -71,7 +84,13 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
     setSubmit(true);
   };
 
-  return <form className="signup-form" autoComplete="off" onSubmit={onSubmit}>
+  return <form className="signup-form" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
+    {showAlert && <Alert
+      className="form-alert"
+      severity="error">
+      {showAlert}
+    </Alert>}
+
     <div className="form-item">
       <p>We noticed that you already using this OAuth method. Please select one of the accounts below to continue.</p>
       <Select
