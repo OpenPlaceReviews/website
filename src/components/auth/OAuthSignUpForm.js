@@ -68,10 +68,13 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await auth.checkName(formData.oauthNickname.value);
         let error = '';
-        if (data && data["db-name"] === "ok" && data["blockchain"] === 'ok') {
-          error = 'The username already exists. Please use a different username';
+
+        if(!possibleSignups.includes(formData.oauthNickname.value)){
+          const { data } = await auth.checkName(formData.oauthNickname.value);
+          if (data && data["db-name"] === "ok" && data["blockchain"] === 'ok') {
+            error = 'The username already exists. Please use a different username';
+          }
         }
 
         setData( formData => ({
@@ -92,9 +95,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       }
     };
 
-    const username = formData.oauthNickname.value;
-
-    if (username.length && !possibleSignups.includes(username)) {
+    if (!!formData.oauthNickname.value) {
       clearTimeout(writeTimeout);
       writeTimeout = setTimeout(() => {
         fetchData();
@@ -140,6 +141,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
         if (response && response.data && response.data.message){
           onError(response.data.message);
         } else {
+          console.log(error);
           onError(defaultAlertMsg);
         }
       }
