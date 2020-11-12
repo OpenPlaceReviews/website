@@ -13,7 +13,7 @@ import OptionalUserFields from "./blocks/OptionalUserFields";
 const TYPING_TIMEOUT = 1000;
 
 let writeTimeout = null;
-export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDetails = {}, onSuccess, onError}) => {
+export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDetails = {}, onSignUp, onLogIn, onError}) => {
   const [showAlert, setAlert] = useState(null);
   const [isReady, setReady] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
@@ -117,20 +117,24 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
 
       try {
         if (!possibleSignups.include(params.name)) {
-          await auth.signUp(params);
+            await auth.signUp(params);
         }
-
-        const {data} = await auth.logIn({
-          name: formData.oauthNickname.value,
-          oauthAccessToken,
-        });
 
         storage.remove('opr-force-signup');
 
-        onSuccess({
-          name: formData.oauthNickname.value,
-          token: data.eval.privatekey,
-        });
+        if (!!userDetails.email) {
+          const {data} = await auth.logIn({
+            name: formData.oauthNickname.value,
+            oauthAccessToken,
+          });
+
+          onLogIn({
+            name: formData.oauthNickname.value,
+            token: data.eval.privatekey,
+          });
+        } else {
+          onSignUp(formData.oauthNickname.value);
+        }
       } catch (error) {
         const {response} = error;
         if (response && response.data && response.data.message){
