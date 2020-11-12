@@ -117,7 +117,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       };
 
       try {
-        if (!possibleSignups.include(params.name)) {
+        if (!possibleSignups.includes(params.name)) {
             await auth.signUp(params);
         }
 
@@ -141,7 +141,6 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
         if (response && response.data && response.data.message){
           onError(response.data.message);
         } else {
-          console.log(error);
           onError(defaultAlertMsg);
         }
       }
