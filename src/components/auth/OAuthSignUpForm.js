@@ -53,7 +53,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
   const handler = (event) => {
     const { target } = event;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name || target.id.split('-')[0];
+    const name = target.name;
 
     setData( formData => ({
       ...formData,
@@ -164,6 +164,16 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     setSubmit(true);
   };
 
+  const onAutoSelect = (e) => {
+    const event = {
+      target: {
+        name: "oauthNickname",
+        value: e.target.value,
+      }
+    }
+    handler(event);
+  };
+
   return <form className="signup-form" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
     {showAlert && <Alert
       className="form-alert"
@@ -178,7 +188,8 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
         name="oauthNickname"
         options={possibleSignups}
         value={formData.oauthNickname.value}
-        onChange={handler}
+        onChange={onAutoSelect}
+        disableClearable={true}
         fullWidth={true}
         renderInput={(params) => {
           return <TextField
