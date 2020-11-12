@@ -208,6 +208,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
             error={formData.oauthNickname.error.length > 0}
             name="oauthNickname"
             label="Nickname"
+            required={true}
             placeholder="Enter a nickname"
             variant="outlined"
             inputProps={{
