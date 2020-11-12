@@ -39,7 +39,7 @@ export default () => {
     }
   } else {
     if (blockchain !== 'ok') {
-      if (email === 'ok' && emailExpired !== true) {
+      if (email === 'ok' && emailExpired !== "true") {
         return <EmailConfirmation params={{name: authData.name}} onSuccess={logIn}/>;
       } else {
         return <Redirect to={"/signup"}/>;
