@@ -9,7 +9,7 @@ import OAuthConfirmation from "./OAuthConfirmation";
 import storage from "../../storage";
 
 export default ({location}) => {
-  const {authData, logIn} = useContext(UserContext);
+  const {authData, logIn, signUp} = useContext(UserContext);
 
   const {op, name, token, oauth_token, oauth_verifier, code} = qs.parse(location.search.substring(1));
   const isConfirmation = (name && token && op);
@@ -28,7 +28,7 @@ export default ({location}) => {
     }
   } else if (isOAuth) {
     const params = {oauth_token, oauth_verifier, code, force_signup};
-    return <OAuthConfirmation isLoggedIn={isLoggedIn} params={params} onSuccess={logIn}/>
+    return <OAuthConfirmation isLoggedIn={isLoggedIn} params={params} onSignUp={signUp} onLogIn={logIn}/>
   }
 
   return <Redirect to={"/"}/>;

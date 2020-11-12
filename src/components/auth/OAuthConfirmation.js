@@ -3,7 +3,7 @@ import auth from "../../api/auth";
 import OAuthSignUpForm from "./OAuthSignUpForm";
 import OAuthLogInForm from "./OAuthLogInForm";
 
-export default ({params, onSuccess}) => {
+export default ({params, onLogIn, onSignUp}) => {
   const [errorMsg, setError] = useState('');
   const [confirmData, setConfirmData] = useState(null);
 
@@ -54,7 +54,8 @@ export default ({params, onSuccess}) => {
           oauthAccessToken={confirmData.accessToken}
           userDetails={confirmData.details}
           possibleSignups={confirmData.possibleSignups}
-          onSuccess={onSuccess}
+          onLogIn={onLogIn}
+          onSignUp={onSignUp}
           onError={setError}
         />
       </div>;
@@ -69,7 +70,7 @@ export default ({params, onSuccess}) => {
           oauthAccessToken={confirmData.accessToken}
           userDetails={confirmData.details}
           possibleSignups={confirmData.possibleSignups}
-          onSuccess={onSuccess}
+          onSuccess={onLogIn}
           onError={setError}
         />
       </div>;
