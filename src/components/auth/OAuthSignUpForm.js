@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import Alert from "@material-ui/lab/Alert";
 import {Button, TextField, FormHelperText} from "@material-ui/core";
 import { Autocomplete } from '@material-ui/lab';
+import storage from "../../storage";
 
 import auth from "../../api/auth";
 import COSBlock from "./blocks/COSBlock";
@@ -121,6 +122,8 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
           name: formData.oauthNickname.value,
           oauthAccessToken,
         });
+
+        storage.remove('opr-force-signup');
 
         onSuccess({
           name: formData.oauthNickname.value,

@@ -20,6 +20,8 @@ export default () => {
 
   if (force_signup === 'true') {
     storage.set('opr-force-signup', true);
+  } else {
+    storage.remove('opr-force-signup');
   }
 
   if (redirectTo) {
