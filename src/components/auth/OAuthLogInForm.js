@@ -1,17 +1,10 @@
 import React, {useEffect, useState} from "react";
 
-import Alert from "@material-ui/lab/Alert";
-import {Button, TextField, FormHelperText} from "@material-ui/core";
-import { Autocomplete } from '@material-ui/lab';
+import {Button, Select, FormHelperText} from "@material-ui/core";
 
 import auth from "../../api/auth";
 
-const TYPING_TIMEOUT = 1000;
-
-let writeTimeout = null;
 export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onLogIn, onSignUp, onError}) => {
-  const [showAlert, setAlert] = useState(null);
-  const [isReady, setReady] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
   const [formData, setData] = useState({
     oauthNickname: {
@@ -84,13 +77,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onLogIn,
     setSubmit(true);
   };
 
-  return <form className="signup-form" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
-    {showAlert && <Alert
-      className="form-alert"
-      severity="error">
-      {showAlert}
-    </Alert>}
-
+  return <form className="signup-form" autoComplete="off" onSubmit={onSubmit}>
     <div className="form-item">
       <p>We noticed that you already using this OAuth method. Please select one of the accounts below to continue.</p>
       <Select
