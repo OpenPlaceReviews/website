@@ -25,7 +25,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     email: {
       value: userDetails.email || '',
       error: '',
-      readonly: !!userDetails.email,
+      isProvided: !!userDetails.email,
     },
     contribution_terms: {
       value: false,
@@ -45,13 +45,9 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     },
   });
 
-  let hasEmail = false;
-  if (!!userDetails.email) {
-    hasEmail = true;
+  if (formData.email.isProvided) {
     delete userDetails.email;
   }
-
-  console.log(hasEmail);
 
   const defaultAlertMsg = "Error while processing request. Please try again later.";
 
@@ -127,9 +123,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
 
         storage.remove('opr-force-signup');
 
-        console.log(hasEmail);
-
-        if (hasEmail) {
+        if (formData.email.isProvided) {
           const {data} = await auth.logIn({
             name: params.name,
             oauthAccessToken,
@@ -231,7 +225,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       <TextField
         name="email"
         required={true}
-        disabled={formData.email.readonly}
+        disabled={formData.email.isProvided}
         label="E-mail"
         placeholder="Enter email"
         onChange={handler}
