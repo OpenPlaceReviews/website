@@ -125,16 +125,16 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
 
         if (!!userDetails.email) {
           const {data} = await auth.logIn({
-            name: formData.oauthNickname.value,
+            name: params.name,
             oauthAccessToken,
           });
 
           onLogIn({
-            name: formData.oauthNickname.value,
+            name: params.name,
             token: data.eval.privatekey,
           });
         } else {
-          onSignUp(formData.oauthNickname.value);
+          onSignUp({ name: params.name });
         }
       } catch (error) {
         const {response} = error;
