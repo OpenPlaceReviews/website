@@ -116,7 +116,9 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       };
 
       try {
-        await auth.signUp(params);
+        if (!possibleSignups.include(params.name)) {
+          await auth.signUp(params);
+        }
 
         const {data} = await auth.logIn({
           name: formData.oauthNickname.value,
