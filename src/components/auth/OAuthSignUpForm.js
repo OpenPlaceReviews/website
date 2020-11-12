@@ -168,7 +168,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     const event = {
       target: {
         name: "oauthNickname",
-        value: e.target.value,
+        value: e.target.label,
       }
     }
     handler(event);
@@ -194,6 +194,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
         renderInput={(params) => {
           return <TextField
             {...params}
+            onChange={handler}
             error={formData.oauthNickname.error.length > 0}
             name="oauthNickname"
             label="Nickname"
