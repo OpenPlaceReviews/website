@@ -51,6 +51,8 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     delete userDetails.email;
   }
 
+  console.log(hasEmail);
+
   const defaultAlertMsg = "Error while processing request. Please try again later.";
 
   const handler = (event) => {
@@ -124,6 +126,8 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
         }
 
         storage.remove('opr-force-signup');
+
+        console.log(hasEmail);
 
         if (hasEmail) {
           const {data} = await auth.logIn({
