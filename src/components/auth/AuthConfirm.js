@@ -14,7 +14,7 @@ export default ({location}) => {
   const {op, name, token, oauth_token, oauth_verifier, code} = qs.parse(location.search.substring(1));
   const isConfirmation = (name && token && op);
   const isOAuth = (oauth_token || oauth_verifier || code);
-  const isLoggedIn = (authData.token && authData.token.length);
+  const isLoggedIn = (authData.name && authData.name.length);
   const force_signup = storage.get('opr-force-signup');
 
   if (isLoggedIn) {
