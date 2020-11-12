@@ -53,7 +53,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
   const handler = (event) => {
     const { target } = event;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name || target.id;
+    const name = target.name || target.id.split('-')[0];
 
     setData( formData => ({
       ...formData,
