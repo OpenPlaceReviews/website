@@ -168,7 +168,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     const event = {
       target: {
         name: "oauthNickname",
-        value: e.target.label,
+        value: e.target.innerText,
       }
     }
     handler(event);
