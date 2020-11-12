@@ -45,9 +45,9 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     },
   });
 
-  const hasEmail = !!userDetails.email;
-
-  if (hasEmail) {
+  let hasEmail = false;
+  if (!!userDetails.email) {
+    hasEmail = true;
     delete userDetails.email;
   }
 
