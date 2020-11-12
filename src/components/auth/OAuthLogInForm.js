@@ -9,7 +9,7 @@ import auth from "../../api/auth";
 const TYPING_TIMEOUT = 1000;
 
 let writeTimeout = null;
-export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSuccess, onError}) => {
+export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onLogIn, onSignUp, onError}) => {
   const [showAlert, setAlert] = useState(null);
   const [isReady, setReady] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
@@ -81,12 +81,18 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onSucces
       };
 
       try {
-        const {data} = await auth.logIn(params);
+        const { data: { name, email, emailExpired } } = await auth.checkName(params.name);
 
-        onSuccess({
-          name: formData.oauthNickname.value,
-          token: data.eval.privatekey,
-        });
+        if (name === 'ok' && email === 'ok' && emailExpired === false) {
+          onSignUp({ name: params.name });
+        } else {
+          const {data} = await auth.logIn(params);
+
+          onLogIn({
+            name: params.name,
+            token: data.eval.privatekey,
+          });
+        }
       } catch (error) {
         const {response} = error;
         if (response && response.data && response.data.message){

@@ -20,7 +20,7 @@ export default () => {
     if (!status) {
       fetchData();
     }
-  }, []);
+  }, [authData]);
 
   if (!authData.name) {
     return <Redirect to={"/login"}/>;
