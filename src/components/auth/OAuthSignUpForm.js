@@ -45,7 +45,9 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
     },
   });
 
-  if (userDetails.email) {
+  const hasEmail = !!userDetails.email;
+
+  if (hasEmail) {
     delete userDetails.email;
   }
 
@@ -123,7 +125,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
 
         storage.remove('opr-force-signup');
 
-        if (!!userDetails.email) {
+        if (hasEmail) {
           const {data} = await auth.logIn({
             name: params.name,
             oauthAccessToken,
