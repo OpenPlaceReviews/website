@@ -39,7 +39,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onLogIn,
       };
 
       try {
-        const { data: { name, email, emailExpired } } = await auth.checkName(params.name);
+        const { data: { 'db-name': name, email, emailExpired } } = await auth.checkName(params.name);
 
         if (name === 'ok' && email === 'ok' && emailExpired === false) {
           onSignUp({ name: params.name });
