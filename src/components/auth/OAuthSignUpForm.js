@@ -195,11 +195,13 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
           return <TextField
             {...params}
             error={formData.oauthNickname.error.length > 0}
-            onChange={handler}
             name="oauthNickname"
             label="Nickname"
             placeholder="Enter a nickname"
             variant="outlined"
+            inputProps={{
+              ...params.inputProps
+            }}
           />
         }}
       />
