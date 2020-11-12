@@ -17,9 +17,7 @@ export default () => {
       setStatus(data);
     };
 
-    if (!status) {
-      fetchData();
-    }
+    fetchData();
   }, [authData]);
 
   if (!authData.name) {
