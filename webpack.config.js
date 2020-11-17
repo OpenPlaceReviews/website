@@ -103,9 +103,10 @@ module.exports = {
     progress: true,
     proxy: {
       '/api/**': {
-        target: `http://localhost:6464/`,
+        target: `https://test.openplacereviews.org/`,
         secure: false,
         logLevel: "debug",
+        changeOrigin: true,
       }
     }
   }

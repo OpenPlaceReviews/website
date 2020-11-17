@@ -23,7 +23,7 @@ export default () => {
       <Route path="/profile" component={Profile} />
       <Route path="/reset-password" component={ResetPwd} />
       <Route path="/auth" component={AuthConfirm} />
-      <Route path="/map" component={Map} />
+      <Route path="/map-v2" component={Map} />
 
       <Route path="*" component={Error404} />
     </Switch>
