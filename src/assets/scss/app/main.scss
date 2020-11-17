@@ -166,6 +166,34 @@ h1{
   cursor: pointer;
 }
 
+.leaflet-container {
+  height:100vw;
+}
+
+.leaflet-popup dl {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  border: 1px solid #ddd;
+}
+.leaflet-popup p {
+  margin: 0;
+}
+.tags-item {
+  padding: 0.3rem;
+  margin: 0;
+}
+.tags-grid dt {
+  background-color: #F6F6F6;
+  border-top: 1px solid #ddd;
+}
+.tags-grid dd {
+  border-left: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+}
+.tags-grid dt:first-child {
+  border-top: none;
+}
+
 @media (max-width: 500px) {
   $items: 3;
   $transition-duration: 0.5s;
