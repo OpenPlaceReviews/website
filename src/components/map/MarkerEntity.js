@@ -19,7 +19,7 @@ export default ({feature}) => {
   return <Marker
     position={latLng}
   >
-    <Popup>
+    <Popup autoPan={false}>
       <p><strong>{title}</strong></p>
       {!!opr_id && <p>
         <strong>ID: </strong>
@@ -30,11 +30,11 @@ export default ({feature}) => {
         {latLng[0]}, {latLng[1]}
       </p>
       <dl className="tags-grid">
-        {popupTags.map((tag) => {
-          return <>
+        {popupTags.map((tag, i) => {
+          return <React.Fragment key={i}>
             <dt className="tags-item">{tag.name}</dt>
             <dd className="tags-item">{tag.value}</dd>
-          </>;
+          </React.Fragment>;
         })}
       </dl>
       {!!osm_id && <p><a href={`https://www.openstreetmap.org/${osm_type}/${osm_id}`}>OpenStreetMap</a></p>}
