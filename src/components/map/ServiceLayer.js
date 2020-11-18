@@ -1,12 +1,30 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useMap, useMapEvent} from "react-leaflet";
-import L from "leaflet";
 import {OpenLocationCode} from "open-location-code";
 import {isEqual} from "lodash";
-import {fetchData} from "../../api/geo";
+import L from "leaflet";
 
-export default ({currentBounds, setBounds, placesCache, setPlaces, isTileBased, setLayer}) => {
+import {fetchData} from "../../api/geo";
+import GeoGSONLayer from "./GeoGSONLayer";
+
+let refreshTimeout = null;
+const REFRESH_TIMEOUT = 1000;
+
+export default () => {
+  const [isTileBased, setTileBased] = useState(false);
+  const [currentBounds, setCurrentBounds] = useState({});
+  const [currentLayer, setCurrentLayer] = useState({});
+  const [placesCache, setPlacesCahe] = useState({
+    "" : {
+      data: {
+        "type":"FeatureCollection",
+        "features":[]
+      }
+    }
+  });
+
   const map = useMap();
+  const openLocationCode = new OpenLocationCode()
   let storage = window.localStorage;
 
   try {
@@ -18,13 +36,6 @@ export default ({currentBounds, setBounds, placesCache, setPlaces, isTileBased, 
     console.warn("Your browser blocks access to localStorage");
     storage = null;
   }
-
-  useEffect(() => {
-    const view = JSON.parse(storage.mapView || '');
-    if (!!view) {
-      map.setView(L.latLng(view.lat, view.lng), view.zoom);
-    }
-  }, []);
 
   const onMapChange = async () => {
     if (!!storage) {
@@ -42,7 +53,6 @@ export default ({currentBounds, setBounds, placesCache, setPlaces, isTileBased, 
 
       const lcodes = {};
       const INT_PR = 20;
-      const openLocationCode = new OpenLocationCode()
       const tllat = Math.ceil(bounds.getNorth() * INT_PR);
       const tllon = Math.floor(bounds.getWest() * INT_PR);
       const brlat = Math.floor(bounds.getSouth() * INT_PR);
@@ -61,7 +71,7 @@ export default ({currentBounds, setBounds, placesCache, setPlaces, isTileBased, 
       } else if (!isEqual(lcodes, currentBounds)) {
         const updatedPlaces = { ...placesCache };
 
-        console.log("map change");
+        console.log("---------- map change ----------");
         console.log("currentBounds", lcodes);
         console.log("bounds equality", isEqual(lcodes, currentBounds));
 
@@ -76,19 +86,34 @@ export default ({currentBounds, setBounds, placesCache, setPlaces, isTileBased, 
           }
         }
 
-        console.log("updatedPlaces", updatedPlaces);
+        clearTimeout(refreshTimeout);
+        refreshTimeout = setTimeout(() => {
+          setPlacesCahe(updatedPlaces);
+        }, REFRESH_TIMEOUT);
 
-        setPlaces(updatedPlaces)
-        setBounds(lcodes);
+        setCurrentBounds(lcodes);
       }
     }
   };
 
   useEffect(() => {
+    const request = async () => {
+      const {tileBased, geo: data} = await fetchData();
+      setTileBased(tileBased);
+      setPlacesCahe({ "": { data }});
+    };
+
+    const view = JSON.parse(storage.mapView || '');
+    if (!!view) {
+      map.setView(L.latLng(view.lat, view.lng), view.zoom);
+    }
+
+    request();
     onMapChange();
-  }, [isTileBased]);
+  }, []);
 
   useEffect(() => {
+
     let geoJson = {
       "type":"FeatureCollection",
       "features":[]
@@ -119,8 +144,8 @@ export default ({currentBounds, setBounds, placesCache, setPlaces, isTileBased, 
 
     //TODO: Show message
     console.log(msg);
-
-    setLayer(geoJson);
+    console.log("---------- refresh data ----------");
+    setCurrentLayer(geoJson);
 
     if(Object.keys(placesCache).length >= 150) {
       const toDel = {};
@@ -135,17 +160,13 @@ export default ({currentBounds, setBounds, placesCache, setPlaces, isTileBased, 
         delete updatedPlaces[k];
       }
 
-      setPlaces(updatedPlaces);
+      setPlacesCahe(updatedPlaces);
     }
-
-    console.log("---------- refresh data ----------");
-    console.log("currentLayer", geoJson);
-    console.log("placesCache", placesCache);
-  }, [currentBounds, placesCache]);
+  }, [placesCache]);
 
   useMapEvent('moveend', () => {
     onMapChange();
   })
 
-  return null;
+  return <GeoGSONLayer data={currentLayer}/>;
 };

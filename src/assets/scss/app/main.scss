@@ -167,7 +167,12 @@ h1{
 }
 
 .leaflet-container {
-  height:100vw;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  width: 100%;
 }
 
 .leaflet-popup dl {
