@@ -199,6 +199,34 @@ h1{
   border-top: none;
 }
 
+.marker-cluster {
+  width: 40px;
+  height: 40px;
+  border-radius: 30px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.leaflet-oldie .marker-cluster-large,
+.leaflet-oldie .marker-cluster-large div,
+.leaflet-oldie .marker-cluster-medium,
+.leaflet-oldie .marker-cluster-medium div,
+.leaflet-oldie .marker-cluster-small,
+.leaflet-oldie .marker-cluster-small div,
+.marker-cluster-large,
+.marker-cluster-medium,
+.marker-cluster-small,
+.marker-cluster-large div,
+.marker-cluster-medium div,
+.marker-cluster-small div {
+  background: #FFFFFF;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 21px;
+  color: #2D69E0;
+}
+
 @media (max-width: 500px) {
   $items: 3;
   $transition-duration: 0.5s;

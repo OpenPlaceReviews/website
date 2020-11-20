@@ -2,7 +2,6 @@ import React from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 
 import 'leaflet/dist/leaflet.css';
-import 'react-leaflet-markercluster/dist/styles.min.css';
 
 import ServiceLayer from "./map/ServiceLayer";
 
@@ -14,6 +13,6 @@ export default () => {
       id="tiles"
     />
 
-    <ServiceLayer />
+    <ServiceLayer/>
   </MapContainer>;
 }
