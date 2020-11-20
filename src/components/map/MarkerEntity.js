@@ -1,10 +1,9 @@
 import React from "react";
 import {Marker, Popup} from "react-leaflet";
-import "leaflet/dist/images/marker-icon-2x.png";
-import "leaflet/dist/images/marker-shadow.png";
+import MarkerIcon from './MrkerIcon';
 
 export default function ({feature}) {
-  const {title, opr_id, tags, osm_id, osm_type} = feature.properties;
+  const {title, opr_id, tags, osm_id, osm_type, place_type} = feature.properties;
   const popupTags = [];
   for (let t in tags) {
     popupTags.push({
@@ -16,7 +15,10 @@ export default function ({feature}) {
   const lngLat = feature.geometry.coordinates;
   const latLng = [lngLat[1], lngLat[0]];
 
+  const icon = MarkerIcon(place_type);
+
   return <Marker
+    icon={icon}
     position={latLng}
   >
     <Popup autoPan={false}>

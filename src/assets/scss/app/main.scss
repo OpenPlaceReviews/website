@@ -221,9 +221,11 @@ h1{
 .marker-cluster-medium div,
 .marker-cluster-small div {
   background: #FFFFFF;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 21px;
+  color: #2D69E0;
 }
-
-
 
 @media (max-width: 500px) {
   $items: 3;
