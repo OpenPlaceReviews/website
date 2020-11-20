@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useMap, useMapEvent} from "react-leaflet";
 import {OpenLocationCode} from "open-location-code";
-import {isEqual} from "lodash";
+import {isEqual, has, get} from "lodash";
 import L from "leaflet";
 
 import {fetchData} from "../../api/geo";
@@ -10,18 +10,19 @@ import GeoGSONLayer from "./GeoGSONLayer";
 let refreshTimeout = null;
 const REFRESH_TIMEOUT = 1000;
 
-export default () => {
-  const [isTileBased, setTileBased] = useState(false);
-  const [currentBounds, setCurrentBounds] = useState({});
-  const [currentLayer, setCurrentLayer] = useState({});
-  const [placesCache, setPlacesCahe] = useState({
-    "" : {
-      data: {
-        "type":"FeatureCollection",
-        "features":[]
-      }
+let isTileBased = false;
+let placesCache = {
+  "" : {
+    data: {
+      "type":"FeatureCollection",
+      "features":[]
     }
-  });
+  }
+};
+let currentBounds = {};
+
+export default () => {
+  const [currentLayer, setCurrentLayer] = useState({});
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
@@ -36,6 +37,64 @@ export default () => {
     console.warn("Your browser blocks access to localStorage");
     storage = null;
   }
+
+  const refreshMapDelay = (geoJson) => {
+    clearTimeout(refreshTimeout);
+    refreshTimeout = setTimeout(() => {
+      setCurrentLayer(geoJson);
+    }, REFRESH_TIMEOUT);
+  };
+
+  const refreshMap = () => {
+    let geoJson = {
+      "type":"FeatureCollection",
+      "features":[]
+    };
+
+    let msg;
+    if (isTileBased) {
+      let tiles = 0;
+      let missing = 0;
+      for (let k in currentBounds) {
+        console.log('tile data:', placesCache[k]);
+        if (has(placesCache, `${k}.data.features`)) {
+          const features = get(placesCache, `${k}.data.features`);
+          tiles++;
+          geoJson.features = geoJson.features.concat(features);
+          //TODO: filterVal !==all
+        } else {
+          missing++;
+        }
+      }
+
+      msg = `${tiles} tiles have ${geoJson.features.length} places `;
+      if (missing > 0) {
+        msg += ` (${missing} tiles loading...) `;
+      }
+    } else {
+      geoJson = placesCache[""].data;
+      msg = `Loaded ${geoJson.features.length} places`;
+    }
+
+    //TODO: Show message
+    console.log(msg);
+    console.log("---------- refresh data ----------");
+    console.log("geojson", geoJson);
+    refreshMapDelay(geoJson);
+
+    if(Object.keys(placesCache).length >= 150) {
+      const toDel = {};
+
+      for(let k in placesCache) {
+        if(!(k in currentBounds)) {
+          toDel[k] = placesCache[k].access;
+        }
+      }
+      for(let k in toDel) {
+        delete placesCache[k];
+      }
+    }
+  };
 
   const onMapChange = async () => {
     if (!!storage) {
@@ -69,29 +128,25 @@ export default () => {
       if (map.getZoom() <= 10) {
         console.log('zooming to get data');
       } else if (!isEqual(lcodes, currentBounds)) {
-        const updatedPlaces = { ...placesCache };
-
         console.log("---------- map change ----------");
         console.log("currentBounds", lcodes);
         console.log("bounds equality", isEqual(lcodes, currentBounds));
 
         for(let tileId in lcodes) {
           if(!placesCache[tileId]) {
-            updatedPlaces[tileId] = { "access": 1 };
+            placesCache[tileId] = { "access": 1 };
             // on failure we can clear cache
             const { geo } = await fetchData({tileId});
-            updatedPlaces[tileId].data = geo;
+            placesCache[tileId].data = geo;
+
+            refreshMap();
           } else {
-            updatedPlaces[tileId].access = placesCache[tileId].access + 1;
+            placesCache[tileId].access = placesCache[tileId].access + 1;
           }
         }
 
-        clearTimeout(refreshTimeout);
-        refreshTimeout = setTimeout(() => {
-          setPlacesCahe(updatedPlaces);
-        }, REFRESH_TIMEOUT);
-
-        setCurrentBounds(lcodes);
+        currentBounds = { ...lcodes };
+        refreshMap();
       }
     }
   };
@@ -99,8 +154,10 @@ export default () => {
   useEffect(() => {
     const request = async () => {
       const {tileBased, geo: data} = await fetchData();
-      setTileBased(tileBased);
-      setPlacesCahe({ "": { data }});
+      isTileBased = tileBased;
+      placesCache = { "": { data }};
+
+      onMapChange();
     };
 
     const view = JSON.parse(storage.mapView || '');
@@ -109,60 +166,7 @@ export default () => {
     }
 
     request();
-    onMapChange();
   }, []);
-
-  useEffect(() => {
-
-    let geoJson = {
-      "type":"FeatureCollection",
-      "features":[]
-    };
-
-    let msg;
-    if (isTileBased) {
-      let tiles = 0;
-      let missing = 0;
-      for (let k in currentBounds) {
-        if (placesCache.hasOwnProperty(k)) {
-          const {data: { features }} = placesCache[k];
-          tiles++;
-          geoJson.features = geoJson.features.concat(features);
-          //TODO: filterVal !==all
-        } else {
-          missing++;
-        }
-      }
-      msg = `${tiles} tiles have ${geoJson.features.length} places `;
-      if (missing > 0) {
-        msg += ` (${missing} tiles loading...) `;
-      }
-    } else {
-      geoJson = placesCache[""].data;
-      msg = `Loaded ${geoJson.features.length} places`;
-    }
-
-    //TODO: Show message
-    console.log(msg);
-    console.log("---------- refresh data ----------");
-    setCurrentLayer(geoJson);
-
-    if(Object.keys(placesCache).length >= 150) {
-      const toDel = {};
-      const updatedPlaces = { ...placesCache };
-
-      for(let k in updatedPlaces) {
-        if(!(k in currentBounds)) {
-          toDel[k] = updatedPlaces[k].access;
-        }
-      }
-      for(let k in toDel) {
-        delete updatedPlaces[k];
-      }
-
-      setPlacesCahe(updatedPlaces);
-    }
-  }, [placesCache]);
 
   useMapEvent('moveend', () => {
     onMapChange();
