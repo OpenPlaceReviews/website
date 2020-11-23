@@ -243,6 +243,33 @@ h1{
   margin: 0;
 }
 
+.map-filter {
+  width: 100%;
+}
+
+.map-filter-header {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 31px;
+  letter-spacing: 0.02em;
+  color: #2D2F33;
+}
+
+.map-filter-select {
+  height: 40px;
+  border: 1px solid #CCD0D9;
+  box-sizing: border-box;
+  border-radius: 22px;
+  margin: 15px 0;
+}
+
+.map-filter-option {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 21px;
+  color: #2D69E0;
+}
+
 @media (max-width: 500px) {
   $items: 3;
   $transition-duration: 0.5s;
