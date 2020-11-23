@@ -6,10 +6,19 @@ import L from "leaflet";
 
 import {fetchData} from "../../api/geo";
 import GeoGSONLayer from "./GeoGSONLayer";
+import MapSidebar from "./MapSidebar";
+import StatusBar from "./StatusBar";
+import Filter from "./Filter";
+
+const OPRStatusBar = React.memo(StatusBar);
+const OPRMarkersLayer = React.memo(GeoGSONLayer, (prevProps, nextProps) => {
+  return isEqual(prevProps, nextProps);
+});
 
 let refreshTimeout = null;
 const REFRESH_TIMEOUT = 1000;
 
+let isMapMoving = false;
 let isTileBased = false;
 let placesCache = {
   "" : {
@@ -23,6 +32,7 @@ let currentBounds = {};
 
 export default () => {
   const [currentLayer, setCurrentLayer] = useState({});
+  const [status, setStatus] = useState('Loading data...');
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
@@ -39,6 +49,8 @@ export default () => {
   }
 
   const refreshMapDelay = (geoJson) => {
+    if (isMapMoving) return;
+
     clearTimeout(refreshTimeout);
     refreshTimeout = setTimeout(() => {
       setCurrentLayer(geoJson);
@@ -76,8 +88,7 @@ export default () => {
       msg = `Loaded ${geoJson.features.length} places`;
     }
 
-    //TODO: Show message
-    console.log(msg);
+    setStatus(msg);
     console.log("---------- refresh data ----------");
     console.log("geojson", geoJson);
     refreshMapDelay(geoJson);
@@ -126,6 +137,7 @@ export default () => {
       }
 
       if (map.getZoom() <= 10) {
+        setStatus('zooming to get data');
         console.log('zooming to get data');
       } else if (!isEqual(lcodes, currentBounds)) {
         console.log("---------- map change ----------");
@@ -136,10 +148,10 @@ export default () => {
           if(!placesCache[tileId]) {
             placesCache[tileId] = { "access": 1 };
             // on failure we can clear cache
-            const { geo } = await fetchData({tileId});
-            placesCache[tileId].data = geo;
-
-            refreshMap();
+            fetchData({tileId}).then(({ geo }) => {
+              placesCache[tileId].data = geo;
+              refreshMap();
+            });
           } else {
             placesCache[tileId].access = placesCache[tileId].access + 1;
           }
@@ -169,8 +181,18 @@ export default () => {
   }, []);
 
   useMapEvent('moveend', () => {
+    isMapMoving = false;
     onMapChange();
   })
 
-  return <GeoGSONLayer data={currentLayer}/>;
+  useMapEvent('movestart', () => {
+    isMapMoving = true;
+  })
+
+  return <div className="opr-layer">
+    <MapSidebar>
+      <OPRStatusBar status={status}/>
+    </MapSidebar>
+    <OPRMarkersLayer data={currentLayer}/>
+  </div>;
 };
