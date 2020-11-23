@@ -8,7 +8,6 @@ import {fetchData} from "../../api/geo";
 import GeoGSONLayer from "./GeoGSONLayer";
 import MapSidebar from "./MapSidebar";
 import StatusBar from "./StatusBar";
-import Filter from "./Filter";
 
 const OPRStatusBar = React.memo(StatusBar);
 const OPRMarkersLayer = React.memo(GeoGSONLayer, (prevProps, nextProps) => {
@@ -172,9 +171,13 @@ export default () => {
       onMapChange();
     };
 
-    const view = JSON.parse(storage.mapView || '');
-    if (!!view) {
-      map.setView(L.latLng(view.lat, view.lng), view.zoom);
+    try {
+      const view = JSON.parse(storage.mapView || '');
+      if (!!view) {
+        map.setView(L.latLng(view.lat, view.lng), view.zoom);
+      }
+    } catch (e) {
+       console.log('Error while decoding saved view');
     }
 
     request();
