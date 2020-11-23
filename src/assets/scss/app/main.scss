@@ -171,7 +171,7 @@ h1{
   top: 80px;
   left: 0;
   right: 0;
-  bottom: 10px;
+  bottom: 0;
   width: 100%;
 }
 
@@ -225,6 +225,22 @@ h1{
   font-size: 16px;
   line-height: 21px;
   color: #2D69E0;
+}
+
+.map-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 15px;
+
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  width: 384px;
+}
+
+.map-sidebar p {
+  margin: 0;
 }
 
 @media (max-width: 500px) {

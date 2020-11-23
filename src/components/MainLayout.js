@@ -9,7 +9,7 @@ import SignUp from "./auth/SignUp";
 import Profile from "./auth/Profile";
 import AuthConfirm from "./auth/AuthConfirm";
 import ResetPwd from "./auth/ResetPwd";
-import Map from "./Map";
+import Map from "./map/Map";
 
 import Error404 from "./404";
 
