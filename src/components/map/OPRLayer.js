@@ -8,9 +8,14 @@ import {fetchData} from "../../api/geo";
 import GeoGSONLayer from "./GeoGSONLayer";
 import MapSidebar from "./MapSidebar";
 import StatusBar from "./StatusBar";
+import Filter from "./Filter";
 
 const OPRStatusBar = React.memo(StatusBar);
 const OPRMarkersLayer = React.memo(GeoGSONLayer, (prevProps, nextProps) => {
+  return isEqual(prevProps, nextProps);
+});
+
+const OPRMarkersFilter = React.memo(Filter, (prevProps, nextProps) => {
   return isEqual(prevProps, nextProps);
 });
 
@@ -31,7 +36,9 @@ let currentBounds = {};
 
 export default () => {
   const [currentLayer, setCurrentLayer] = useState({});
+  const [placeTypes, setPlaceTypes] = useState({});
   const [status, setStatus] = useState('Loading data...');
+  const [filterVal, setFilter] = useState('all');
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
@@ -67,12 +74,20 @@ export default () => {
       let tiles = 0;
       let missing = 0;
       for (let k in currentBounds) {
-        console.log('tile data:', placesCache[k]);
         if (has(placesCache, `${k}.data.features`)) {
           const features = get(placesCache, `${k}.data.features`);
           tiles++;
-          geoJson.features = geoJson.features.concat(features);
-          //TODO: filterVal !==all
+
+          if (filterVal === "all") {
+            geoJson.features = geoJson.features.concat(features);
+          } else {
+            for (let i = 0; i < features.length; i++) {
+              const f = features[i];
+              if (f.properties && f.properties.place_type === filterVal) {
+                geoJson.features.push(f);
+              }
+            }
+          }
         } else {
           missing++;
         }
@@ -88,8 +103,6 @@ export default () => {
     }
 
     setStatus(msg);
-    console.log("---------- refresh data ----------");
-    console.log("geojson", geoJson);
     refreshMapDelay(geoJson);
 
     if(Object.keys(placesCache).length >= 150) {
@@ -137,12 +150,7 @@ export default () => {
 
       if (map.getZoom() <= 10) {
         setStatus('zooming to get data');
-        console.log('zooming to get data');
       } else if (!isEqual(lcodes, currentBounds)) {
-        console.log("---------- map change ----------");
-        console.log("currentBounds", lcodes);
-        console.log("bounds equality", isEqual(lcodes, currentBounds));
-
         for(let tileId in lcodes) {
           if(!placesCache[tileId]) {
             placesCache[tileId] = { "access": 1 };
@@ -164,10 +172,11 @@ export default () => {
 
   useEffect(() => {
     const request = async () => {
-      const {tileBased, geo: data} = await fetchData();
+      const {tileBased, geo: data, placeTypes} = await fetchData();
       isTileBased = tileBased;
       placesCache = { "": { data }};
 
+      setPlaceTypes(placeTypes);
       onMapChange();
     };
 
@@ -177,23 +186,28 @@ export default () => {
         map.setView(L.latLng(view.lat, view.lng), view.zoom);
       }
     } catch (e) {
-       console.log('Error while decoding saved view');
+       console.warn('Error while decoding saved view');
     }
 
     request();
   }, []);
 
+  useEffect(() => {
+    refreshMap();
+  },[filterVal]);
+
   useMapEvent('moveend', () => {
     isMapMoving = false;
     onMapChange();
-  })
+  });
 
   useMapEvent('movestart', () => {
     isMapMoving = true;
-  })
+  });
 
   return <div className="opr-layer">
     <MapSidebar>
+      <OPRMarkersFilter placeTypes={placeTypes} onSelect={setFilter}/>
       <OPRStatusBar status={status}/>
     </MapSidebar>
     <OPRMarkersLayer data={currentLayer}/>
