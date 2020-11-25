@@ -25,7 +25,7 @@ module.exports = {
           to: "./assets/images/icons/[name].[ext]"
         },
         {
-          from: "./src/map.html",
+          from: "./src/map-legacy.html",
           to: "./[name].[ext]"
         },
         {
