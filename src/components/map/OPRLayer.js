@@ -11,34 +11,21 @@ import StatusBar from "./StatusBar";
 import Filter from "./Filter";
 
 const OPRStatusBar = React.memo(StatusBar);
-const OPRMarkersLayer = React.memo(GeoGSONLayer, (prevProps, nextProps) => {
-  return isEqual(prevProps, nextProps);
-});
-
-const OPRMarkersFilter = React.memo(Filter, (prevProps, nextProps) => {
-  return isEqual(prevProps, nextProps);
-});
-
-let refreshTimeout = null;
-const REFRESH_TIMEOUT = 1000;
+const OPRMarkersLayer = React.memo(GeoGSONLayer);
+const OPRMarkersFilter = React.memo(Filter);
 
 let isMapMoving = false;
-let isTileBased = false;
-let placesCache = {
-  "" : {
-    data: {
-      "type":"FeatureCollection",
-      "features":[]
-    }
-  }
-};
-let currentBounds = {};
+let refreshTimeout = null;
+const REFRESH_TIMEOUT = 500;
 
 export default () => {
-  const [currentLayer, setCurrentLayer] = useState({});
+  const [isTileBased, setTileBased] = useState(false);
+  const [placesCache, setPlacesCache] = useState({});
   const [placeTypes, setPlaceTypes] = useState({});
   const [status, setStatus] = useState('Loading data...');
   const [filterVal, setFilter] = useState('all');
+  const [currentLayer, setCurrentLayer] = useState([]);
+  const [currentBounds, setCurrentBounds] = useState({});
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
@@ -54,71 +41,6 @@ export default () => {
     storage = null;
   }
 
-  const refreshMapDelay = (geoJson) => {
-    if (isMapMoving) return;
-
-    clearTimeout(refreshTimeout);
-    refreshTimeout = setTimeout(() => {
-      setCurrentLayer(geoJson);
-    }, REFRESH_TIMEOUT);
-  };
-
-  const refreshMap = () => {
-    let geoJson = {
-      "type":"FeatureCollection",
-      "features":[]
-    };
-
-    let msg;
-    if (isTileBased) {
-      let tiles = 0;
-      let missing = 0;
-      for (let k in currentBounds) {
-        if (has(placesCache, `${k}.data.features`)) {
-          const features = get(placesCache, `${k}.data.features`);
-          tiles++;
-
-          if (filterVal === "all") {
-            geoJson.features = geoJson.features.concat(features);
-          } else {
-            for (let i = 0; i < features.length; i++) {
-              const f = features[i];
-              if (f.properties && f.properties.place_type === filterVal) {
-                geoJson.features.push(f);
-              }
-            }
-          }
-        } else {
-          missing++;
-        }
-      }
-
-      msg = `${tiles} tiles have ${geoJson.features.length} places `;
-      if (missing > 0) {
-        msg += ` (${missing} tiles loading...) `;
-      }
-    } else {
-      geoJson = placesCache[""].data;
-      msg = `Loaded ${geoJson.features.length} places`;
-    }
-
-    setStatus(msg);
-    refreshMapDelay(geoJson);
-
-    if(Object.keys(placesCache).length >= 150) {
-      const toDel = {};
-
-      for(let k in placesCache) {
-        if(!(k in currentBounds)) {
-          toDel[k] = placesCache[k].access;
-        }
-      }
-      for(let k in toDel) {
-        delete placesCache[k];
-      }
-    }
-  };
-
   const onMapChange = async () => {
     if (!!storage) {
       const view = {
@@ -130,53 +52,40 @@ export default () => {
       storage.mapView = JSON.stringify(view);
     }
 
-    if (isTileBased) {
-      const bounds = map.getBounds();
+    if (map.getZoom() <= 10) {
+      setStatus('zooming to get data');
+      setCurrentLayer({});
+      return;
+    }
 
-      const lcodes = {};
-      const INT_PR = 20;
-      const tllat = Math.ceil(bounds.getNorth() * INT_PR);
-      const tllon = Math.floor(bounds.getWest() * INT_PR);
-      const brlat = Math.floor(bounds.getSouth() * INT_PR);
-      const brlon = Math.ceil(bounds.getEast() * INT_PR);
-      for (let lat = tllat; lat > brlat; lat--) {
-        for (let lon = tllon; lon < brlon; lon++) {
-          const clat = (lat - 0.5) / INT_PR ;
-          const clon = (lon + 0.5) / INT_PR ;
-          const tileId = openLocationCode.encode(clat, clon, 6).substring(0, 6);
-          lcodes[tileId] = {};
-        }
+    const bounds = map.getBounds();
+
+    const lcodes = {};
+    const INT_PR = 20;
+    const tllat = Math.ceil(bounds.getNorth() * INT_PR);
+    const tllon = Math.floor(bounds.getWest() * INT_PR);
+    const brlat = Math.floor(bounds.getSouth() * INT_PR);
+    const brlon = Math.ceil(bounds.getEast() * INT_PR);
+    for (let lat = tllat; lat > brlat; lat--) {
+      for (let lon = tllon; lon < brlon; lon++) {
+        const clat = (lat - 0.5) / INT_PR ;
+        const clon = (lon + 0.5) / INT_PR ;
+        const tileId = openLocationCode.encode(clat, clon, 6).substring(0, 6);
+        lcodes[tileId] = {};
       }
+    }
 
-      if (map.getZoom() <= 10) {
-        setStatus('zooming to get data');
-      } else if (!isEqual(lcodes, currentBounds)) {
-        for(let tileId in lcodes) {
-          if(!placesCache[tileId]) {
-            placesCache[tileId] = { "access": 1 };
-            // on failure we can clear cache
-            fetchData({tileId}).then(({ geo }) => {
-              placesCache[tileId].data = geo;
-              refreshMap();
-            });
-          } else {
-            placesCache[tileId].access = placesCache[tileId].access + 1;
-          }
-        }
-
-        currentBounds = { ...lcodes };
-        refreshMap();
-      }
+    if (!isEqual(lcodes, currentBounds)) {
+      setCurrentBounds(lcodes);
     }
   };
 
   useEffect(() => {
     const request = async () => {
-      const {tileBased, geo: data, placeTypes} = await fetchData();
-      isTileBased = tileBased;
-      placesCache = { "": { data }};
-
+      const {tileBased, placeTypes} = await fetchData();
+      setTileBased(tileBased);
       setPlaceTypes(placeTypes);
+
       onMapChange();
     };
 
@@ -193,23 +102,110 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    refreshMap();
-  },[filterVal]);
+    const updateCache = async () => {
+      let missing = 0;
+      let tiles = 0;
+      for (let tileId in currentBounds) {
+        if (!placesCache[tileId]) {
+          missing++;
+        } else {
+          tiles++;
+        }
+      }
+
+      if (missing > 0) {
+        setStatus(`${tiles} tiles displayed (${missing} tiles loading...) `);
+      }
+
+      const newCache = { ...placesCache };
+
+      for (let tileId in currentBounds) {
+        if(!placesCache[tileId]) {
+          const {geo} = await fetchData({tileId});
+          newCache[tileId] = {
+            "access": 1,
+            data: geo,
+          };
+        } else {
+          newCache[tileId].access = placesCache[tileId].access + 1;
+        }
+      }
+
+      setPlacesCache(newCache);
+    };
+
+    if (isTileBased) {
+      updateCache();
+    }
+  },[currentBounds]);
+
+  useEffect(() => {
+    const updateLayer = () => {
+      let newLayer = [];
+      let tiles = 0;
+
+      for (let tileId in currentBounds) {
+        if (has(placesCache, `${tileId}.data.features`)) {
+          const features = get(placesCache, `${tileId}.data.features`);
+          if (filterVal === "all") {
+            newLayer = newLayer.concat(features);
+          } else {
+            newLayer = newLayer.concat(features.filter((f) => f.properties.place_type === filterVal));
+          }
+
+          tiles++;
+        }
+      }
+
+      setStatus(`${tiles} tiles have ${newLayer.length} places `);
+
+      if (!isMapMoving) {
+        setCurrentLayer(newLayer);
+      }
+    };
+
+    if (isTileBased) {
+      updateLayer();
+    }
+  }, [placesCache, filterVal]);
+
+  useEffect(() => {
+    if(Object.keys(placesCache).length >= 150) {
+      const newCache = { ...placesCache };
+      const toDel = {};
+
+      for(let tileId in placesCache) {
+        if(!(tileId in currentBounds)) {
+          toDel[tileId] = placesCache[tileId].access;
+        }
+      }
+      for(let tileId in toDel) {
+        delete newCache[tileId];
+      }
+
+      setPlacesCache(newCache);
+    }
+  }, [placesCache]);
 
   useMapEvent('moveend', () => {
-    isMapMoving = false;
-    onMapChange();
+    clearTimeout(refreshTimeout);
+    refreshTimeout = setTimeout(() => {
+      isMapMoving = false;
+      onMapChange();
+    }, REFRESH_TIMEOUT);
   });
 
   useMapEvent('movestart', () => {
     isMapMoving = true;
   });
 
+  console.log(currentLayer);
+
   return <div className="opr-layer">
     <MapSidebar>
       <OPRMarkersFilter placeTypes={placeTypes} onSelect={setFilter}/>
       <OPRStatusBar status={status}/>
     </MapSidebar>
-    <OPRMarkersLayer data={currentLayer}/>
+    <OPRMarkersLayer features={currentLayer}/>
   </div>;
 };
