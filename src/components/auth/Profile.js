@@ -1,18 +1,65 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import {Redirect} from "react-router-dom";
 
-import Header from "../Header";
-import Footer from "../Footer";
+import {UserContext} from "../../context";
+import EmailConfirmation from "./EmailConfirmation";
+import auth from "../../api/auth";
 
 export default () => {
-  return <div>
-    <Header/>
+  const {authData, logIn} = useContext(UserContext);
+  const [status, setStatus] = useState(null);
 
-    <div className="auth-container" id="opr-app">
-      <h1>Your profile</h1>
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await auth.checkName(authData.name);
+      if (!data) return;
 
-      <p>User profile here</p>
-    </div>
+      setStatus(data);
+    };
 
-    <Footer/>
+    fetchData();
+  }, [authData]);
+
+  if (!authData.name) {
+    return <Redirect to={"/login"}/>;
+  }
+
+  if (!status) {
+    return <div className="auth-container" id="opr-app">
+      <div className="loader">Loading...</div>
+    </div>;
+  }
+
+  const { 'db-name': name, 'email-expired': emailExpired, email, blockchain} = status;
+  if (name !== 'ok') {
+    if (blockchain !== 'ok') {
+      return <Redirect to={"/signup"}/>;
+    } else {
+      return <Redirect to={"/login"}/>;
+    }
+  } else {
+    if (blockchain !== 'ok') {
+      if (email === 'ok' && emailExpired !== "true") {
+        return <EmailConfirmation params={{name: authData.name}} onSuccess={logIn}/>;
+      } else {
+        return <Redirect to={"/signup"}/>;
+      }
+    } else {
+      if (!authData.token) {
+        return <Redirect to={"/login"}/>;
+      }
+    }
+  }
+
+  return <div className="auth-container" id="opr-app">
+    <h1>
+      <div className="oauth_avatar">
+        <img src="../../assets/images/avatar-default.png" alt="Default avatar"/>
+      </div>
+      Welcome, { authData.name }!
+    </h1>
+
+    <p>Start contributing to OpenPlaceReviews.</p>
+    <p>Please visit <a href="/map">map</a> to find places to contribute.</p>
   </div>;
 };

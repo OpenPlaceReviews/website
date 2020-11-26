@@ -1,11 +1,7 @@
-import React, { useState } from "react";
-import {SlideDown} from 'react-slidedown'
-import 'react-slidedown/lib/slidedown.css'
+import React from "react";
+import Expand from "../misc/Expand";
 
 export default () => {
-
-  const [isExpand, setExpand] = useState(false);
-
   return <div className="expand-block">
     <div className="mission_container">
       <div className="mission_block">
@@ -23,7 +19,7 @@ export default () => {
           … world knowledge monopoly: thus Wikipedia.org was born.<br />
           … world map data monopoly: thus OpenStreetMap.org was born.
         </p>
-        <div style={{display: isExpand ? "block" : "none"}} className="missing_hidden">
+        <Expand>
           <p>
             With all these open projects the world became more open, transparent and better.
             Now it is time for users reviews. The world is waiting for OpenPlaceReviews.org to be born.
@@ -42,13 +38,12 @@ export default () => {
             Join our community and share your feedback. Let's make the world a better place to live!
           </p>
           <p>
-              ------<br />
-              Here’s our mission and what we stand for:<br />
-              Openness that leads to transparency and trustworthy<br />
-              Collaborativeness that leads to quality
+            ------<br />
+            Here’s our mission and what we stand for:<br />
+            Openness that leads to transparency and trustworthy<br />
+            Collaborativeness that leads to quality
           </p>
-        </div>
-        <div className="collapsed_btn" onClick={() => setExpand(!isExpand)}>{isExpand ? "Collapse" : "Read more"}</div>
+        </Expand>
     </div>
   </div>
 </div>;

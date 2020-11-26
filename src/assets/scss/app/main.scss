@@ -144,7 +144,132 @@ h1{
     top: -100%;
 }
 
+.collapsed {
+  p:first-child{
+    margin-top: 0;
+  }
+}
+.collapsed_btn {
+  height: 34px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 25px;
+  line-height: 33px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #0A38C2;
+  background: #CCD0D9;
+  border-radius: 60px;
+  margin: 0 auto;
+  width: 150px;
+  padding: 10px;
+  cursor: pointer;
+}
 
+.leaflet-container {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.leaflet-popup dl {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  border: 1px solid #ddd;
+}
+.leaflet-popup p {
+  margin: 0;
+}
+.tags-item {
+  padding: 0.3rem;
+  margin: 0;
+}
+.tags-grid dt {
+  background-color: #F6F6F6;
+  border-top: 1px solid #ddd;
+}
+.tags-grid dd {
+  border-left: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+}
+.tags-grid dt:first-child {
+  border-top: none;
+}
+
+.marker-cluster {
+  width: 40px;
+  height: 40px;
+  border-radius: 30px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.leaflet-oldie .marker-cluster-large,
+.leaflet-oldie .marker-cluster-large div,
+.leaflet-oldie .marker-cluster-medium,
+.leaflet-oldie .marker-cluster-medium div,
+.leaflet-oldie .marker-cluster-small,
+.leaflet-oldie .marker-cluster-small div,
+.marker-cluster-large,
+.marker-cluster-medium,
+.marker-cluster-small,
+.marker-cluster-large div,
+.marker-cluster-medium div,
+.marker-cluster-small div {
+  background: #FFFFFF;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 21px;
+  color: #2D69E0;
+}
+
+.map-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 15px;
+
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  width: 384px;
+}
+
+.map-sidebar p {
+  margin: 0;
+}
+
+.map-filter {
+  width: 100%;
+}
+
+.map-filter-header {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 31px;
+  letter-spacing: 0.02em;
+  color: #2D2F33;
+}
+
+.map-filter-select {
+  height: 40px;
+  border: 1px solid #CCD0D9;
+  box-sizing: border-box;
+  border-radius: 22px;
+  margin: 15px 0;
+  padding-left: 10px;
+}
+
+.map-filter-option {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 21px;
+  color: #2D69E0;
+}
 
 @media (max-width: 500px) {
   $items: 3;
@@ -600,8 +725,7 @@ header{
     display: flex;
     flex-direction: row;
     height: 50px;
-}
-.method-auth-nickname{
+    align-items: center;
 }
 
 .method-auth-nickname-active-form{
@@ -616,12 +740,10 @@ header{
 
 .method-auth-nickname img{
     height: 20px;
-    margin-top: 15px;
     margin-right: 14px;
     margin-left: 10px;
 }
 .nickname-method{
-    margin-block-start: 15px;
     color: #2D69E0;
     cursor: pointer;
 }
@@ -629,6 +751,9 @@ header{
     color: #FFFFFF;
 }
 
+.form-alert {
+  margin-bottom: 20px;
+}
 .form-item{
     margin-bottom: 20px;
 }
@@ -643,7 +768,7 @@ header{
     text-indent: 10px;
     max-width: 540px;
     min-width: 280px;
-    height: 40px;
+    //height: 40px;
     background: #F7F7F7;
     border: 1px solid #CCD0D9;
     box-sizing: border-box;
@@ -661,7 +786,7 @@ header{
     color: rgba(49, 50, 51, 0.7);
 }
 
-button{
+button:not(.MuiButtonBase-root){
     background: #F1F4FC;
     border: 2px solid #2D69E0;
     box-sizing: border-box;
@@ -676,6 +801,7 @@ button{
     height: 40px;
 }
 
+/*
 button:hover{
     color: #FFFFFF;
     height: 40px;
@@ -689,6 +815,8 @@ button:hover{
     letter-spacing: 0.02em;
     cursor: pointer;
 }
+ */
+
 .form-error, .form-field-error{
     display: flex;
     width: 540px;
@@ -765,6 +893,9 @@ button:hover{
         margin: 20px 0px 20px 20px;
         width: 16px
     }
+    .inject {
+      padding: 0 1.3em 1.3em 1.3em;
+    }
 }
 .expand-block{
     display: block;
@@ -776,7 +907,7 @@ button:hover{
     line-height: normal;
     font-size: 16px;
     letter-spacing: 0.01em;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
     margin-right: 20px;
 }
 .expand-btn{
@@ -801,6 +932,11 @@ button:hover{
     margin-bottom: 30px;
 }
 
+.optional-fields-grid {
+  display: flex;
+  justify-content: space-between;
+}
+
 .headline-optional-fields{
     font-style: normal;
     font-weight: 800;
@@ -815,6 +951,7 @@ button:hover{
 .optional-field{
     line-height: 1.15em;
     margin-bottom: 15px;
+    width: 250px;
     .optional_field_lable{
         line-height: 26px;
     }
@@ -828,4 +965,35 @@ button:hover{
         border-radius: 50px; /* Радиус скругления */
         //border: 3px solid green; /* Параметры рамки */
     }
+}
+
+@media (max-width: 500px) {
+  .optional-fields-grid {
+    display: block;
+  }
+  .optional-field {
+    width: 100%;
+  }
+}
+
+.help_text {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.75rem;
+  text-align: left;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.66;
+  letter-spacing: 0.03333em;
+}
+
+.highlight {
+  border-bottom: 2px solid #FED30A;
+  line-height: 1.3em;
+  .bold {
+    font-weight: bold;
+  }
+}
+
+.username {
+  color: #2D69E0;
 }

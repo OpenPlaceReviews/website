@@ -1,16 +1,12 @@
 import React from "react";
 
-import Footer from "./landing/Footer";
-import Header from "./Header";
-import InvestingTabs from "./landing/InvestingTabs";
-import Mission from "./landing/Mission";
+import InvestingTabs from "./InvestingTabs";
 
-import victorShcherbPhoto from "../assets/images/victor_shcherb.png";
-import evgeneLisovskyPhoto from "../assets/images/evgene_lisovsky.png";
+import victorShcherbPhoto from "../../assets/images/victor_shcherb.png";
+import evgeneLisovskyPhoto from "../../assets/images/evgene_lisovsky.png";
 
 export default () => {
-  return <div className="for_investors landing-container" id="opr-app">
-    <Header/>
+  return <div className="for_investors">
 
     <div className="first-screen">
       <div className="first-screen-bg">
@@ -50,7 +46,7 @@ export default () => {
         <div className="user_need_item">
           As an <b>active mapper</b>, I would like to provide more details about
           place and its facilities like attach place photo, detailed
-          list of service and I can’t do it today in OSM
+          list of service and I can’t do it today in OpenStreetMap
           <div className="user_need_border"></div>
           <div><b>OpenStreetMap community</b> • 5M</div>
           <div className="gray_text"><i>Place catalog</i></div>
@@ -382,9 +378,6 @@ export default () => {
       <div className="email_address"><a href="mailto:hello@openplacereviews.org">hello@openplacereviews.org</a></div>
       <div><a className="button" href="mailto:hello@openplacereviews.org">Send request</a></div>
     </div>
-
-    <Mission />
-    <Footer />
 
   </div>;
 };

@@ -238,6 +238,7 @@
 </div>
 <div id='map'>
 </div>
+
 <!-- https://github.com/makinacorpus/Leaflet.RestoreView/blob/master/leaflet.restoreview.js -->
 <script>
   (function() {
@@ -438,6 +439,7 @@
       geoJson = placesCache[""].data;
       msg = "Loaded " + geoJson.features.length + " places";
     }
+
     $("#map-header-text").text(msg);
     currentLayer = L.markerClusterGroup();
     let currentLayerPoints = L.geoJSON(geoJson , {

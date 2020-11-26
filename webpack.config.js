@@ -10,6 +10,7 @@ module.exports = {
   devtool: "eval-source-map",
   output: {
     filename: "./main.js",
+    publicPath: '/',
     path: path.resolve(__dirname, "./html")
   },
   plugins: [
@@ -24,7 +25,7 @@ module.exports = {
           to: "./assets/images/icons/[name].[ext]"
         },
         {
-          from: "./src/map.html",
+          from: "./src/map-legacy.html",
           to: "./[name].[ext]"
         },
         {
@@ -99,6 +100,14 @@ module.exports = {
     watchContentBase: true,
     historyApiFallback: true,
     writeToDisk: false,
-    progress: true
+    progress: true,
+    proxy: {
+      '/api/**': {
+        target: `https://test.openplacereviews.org/`,
+        secure: false,
+        logLevel: "debug",
+        changeOrigin: true,
+      }
+    }
   }
 };

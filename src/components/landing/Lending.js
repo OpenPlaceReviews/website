@@ -1,20 +1,13 @@
 import React from "react";
 
-import Footer from "./landing/Footer";
-import Header from "./Header";
-import Mission from "./landing/Mission";
-
-import victorShcherbPhoto from "../assets/images/victor_shcherb.png";
-import evgeneLisovskyPhoto from "../assets/images/evgene_lisovsky.png";
-import githubLogo from "../assets/images/openness_github.png";
-import openDBLogo from "../assets/images/openness_opendb.png";
-import monetizationImg from "../assets/images/monetization.png";
-
-
+import victorShcherbPhoto from "../../assets/images/victor_shcherb.png";
+import evgeneLisovskyPhoto from "../../assets/images/evgene_lisovsky.png";
+import githubLogo from "../../assets/images/openness_github.png";
+import openDBLogo from "../../assets/images/openness_opendb.png";
+import monetizationImg from "../../assets/images/monetization.png";
 
 export default () => {
-  return <div className="landing-container" id="opr-app">
-    <Header/>
+  return <div>
 
     <div className="first-screen">
       <div className="first-screen-bg">
@@ -157,9 +150,6 @@ export default () => {
         </div>
       </div>
     </div>
-
-    <Mission />
-    <Footer />
 
   </div>;
 };

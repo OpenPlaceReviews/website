@@ -1,19 +1,17 @@
 import React from "react";
-import { Link, Route, Switch } from "react-router-dom";
-import Lending from "./components/Lending";
-import Investing from "./components/Investing";
-import Login from "./components/auth/Login";
-import SignUp from "./components/auth/SignUp";
-import Profile from "./components/auth/Profile";
+import { Route, Switch } from "react-router-dom";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
+import AuthProvider from "./providers/AuthProvider";
+import LendingLayout from "./components/LandingLayout";
+import MainLayout from "./components/MainLayout";
 
 export default () => {
-  return <div>
+  return <AuthProvider>
     <Switch>
-      <Route exact path="/" component={Lending} />
-      <Route path="/investing" component={Investing} />
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={SignUp} />
-      <Route path="/profile" component={Profile} />
+      <Route exact path={["/", "/investing"]} component={LendingLayout}/>
+      <Route path="*" component={MainLayout}/>
     </Switch>
-  </div>;
+  </AuthProvider>;
 };
