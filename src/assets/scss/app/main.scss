@@ -18,7 +18,7 @@ a:hover{
 }
 
 h1{
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 20px;
     line-height: 50px;
     font-size: 40px;
@@ -94,7 +94,6 @@ h1{
     //position: absolute;
     bottom: 0;
     width: 100%;
-    padding-top: 5px;
     background-color: #ebf2f5;
     color: #596680;
     text-align: center;
@@ -668,7 +667,7 @@ header{
 .not-border{
     border: none!important;
 }
-.auth-container{
+.auth-container {
     min-width: 280px;
     max-width: 540px;
     margin: 0 auto;
@@ -691,6 +690,10 @@ header{
     p{
         margin-top: 13px;
     }
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .socialaccount_ballot p{
