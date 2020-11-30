@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 import {Grid} from "@material-ui/core";
-import BlockSvgIcon from "./BlockSvgIcon";
+import BlockIcon from "../icons/BlockIcon";
 import JSONViewer from "../JSONViewer";
 
 const useStyles = makeStyles({
@@ -40,7 +40,7 @@ export default ({header, footer, json, hash, icon, children}) => {
   }
 
   if (!icon) {
-    icon = <BlockSvgIcon/>;
+    icon = <BlockIcon/>;
   }
 
   return <div className={classes.item}>

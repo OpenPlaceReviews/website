@@ -51,12 +51,12 @@ export default () => {
   return <div>
     <h1 className={classes.h1}>Blocks</h1>
     <Grid container justify="center" spacing={3}>
-      <Grid item xs={10}>
+      <Grid item xs={9}>
         <div className={classes.list}>
           {content}
         </div>
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={3}>
         <Sidebar/>
       </Grid>
     </Grid>
