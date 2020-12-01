@@ -80,7 +80,18 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          options: {
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets: "> 0.25%, not dead, chrome 30, android 4.4",
+                  debug: true,
+                },
+              ]
+            ],
+          }
         }
       },
       {
