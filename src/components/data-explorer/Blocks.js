@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-import {Grid} from "@material-ui/core";
+import {Box, Button, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 
 import { getBlocks } from "../../api/data";
@@ -22,30 +22,52 @@ const useStyles = makeStyles({
   },
 });
 
+const BLOCKS_PER_PAGE = 3;
+
 export default () => {
-  const [objectsList, setObjects] = useState(null);
+  const [objectsList, setObjects] = useState([]);
+  const [lastBlock, setlastBlock] = useState('');
+  const [hasMore, setHasMore] = useState(false);
   const classes = useStyles();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const blocks = await getBlocks();
-        setObjects(blocks);
+        let lastBlockValue = '';
+        let limit = BLOCKS_PER_PAGE;
+        if (lastBlock.includes(":")) {
+          lastBlockValue = lastBlock.split(":").pop();
+          limit = limit + 1;
+        }
+
+        const blocks = await getBlocks({
+          limit,
+          to: lastBlockValue,
+        });
+
+        setHasMore(blocks.length > 0);
+        setObjects((existsBlocks) => [
+          ...existsBlocks,
+          ...blocks,
+        ]);
       } catch (e) {
         console.warn('Network request failed');
       }
     };
 
     fetchData();
-  }, []);
+  }, [lastBlock]);
+
+  const getMore = () => {
+    const [ last ] = objectsList.slice(-1);
+    setlastBlock(last.hash);
+  }
 
   let content;
-  if (objectsList === null) {
-    content = <Loader/>;
-  } else if (objectsList.length) {
+  if (objectsList.length) {
     content = objectsList.map((entity) => <BlockItem key={entity.block_id} entity={entity}/>)
   } else {
-    content = "No entities available"
+    content = (<Box display="flex" justifyContent="center"><p className={classes.noContent}>No entities available</p></Box>);
   }
 
   return <div>
@@ -54,6 +76,10 @@ export default () => {
       <Grid item xs={9}>
         <div className={classes.list}>
           {content}
+          <Loader/>
+          {hasMore && <Box display="flex" justifyContent="center">
+            <Button onClick={getMore}>Show more</Button>
+          </Box>}
         </div>
       </Grid>
       <Grid item xs={3}>
