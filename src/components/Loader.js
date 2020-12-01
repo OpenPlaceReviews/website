@@ -1,5 +1,6 @@
 import React from "react";
 import {createUseStyles} from 'react-jss';
+import { usePromiseTracker } from "react-promise-tracker";
 import "../assets/images/loader.png";
 
 const useStyles = createUseStyles({
@@ -18,6 +19,7 @@ const useStyles = createUseStyles({
 });
 
 export default () => {
+  const { promiseInProgress } = usePromiseTracker();
   const classes = useStyles();
-  return <i className={classes.loader}/>;
+  return (promiseInProgress && <i className={classes.loader}/>);
 }
