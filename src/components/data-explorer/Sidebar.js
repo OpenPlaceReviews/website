@@ -1,20 +1,15 @@
 import React from 'react';
 import {makeStyles} from "@material-ui/styles";
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import QueueIcon from "./icons/QueueIcon";
-import BlockIcon from "./icons/BlockIcon";
-import BlockIconActive from "./icons/BlockIconActive";
-import BlocksIcon from "./icons/BlocksIcon";
-import ObjectTypeIcon from "./icons/ObjectTypeIcon";
-import UserLoginIcon from "./icons/UserLoginIcon";
-import UserPermissionIcon from "./icons/UserPermissionIcon";
-import UserSignUpIcon from "./icons/UserSignUpIcon";
-import ValidationRuleIcon from "./icons/ValidationRuleIcon";
+import SidebarHeader from "./sidebar/SidebarHeader";
+import Queue from "./sidebar/Queue";
+import BlocksFilter from "./sidebar/BlocksFilter";
+import Objects from "./sidebar/Objects";
+
+const MemoQueue = React.memo(Queue);
+const MemoBlocksFilter = React.memo(BlocksFilter);
+const MemoObjects = React.memo(Objects);
 
 const useStyles = makeStyles({
   root: {
@@ -34,85 +29,15 @@ export default function NestedList() {
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          Filter
-        </ListSubheader>
+        <SidebarHeader text="Filter"/>
       }
       className={classes.root}
     >
-      <ListItem button>
-        <ListItemIcon>
-          <QueueIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Queue" />
-      </ListItem>
-
-      <Divider />
-
-      <ListItem button>
-        <ListItemIcon>
-          <BlocksIcon/>
-        </ListItemIcon>
-        <ListItemText primary="All blocks" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <BlockIconActive/>
-        </ListItemIcon>
-        <ListItemText primary="Block #" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <BlockIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Block #" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <BlockIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Block #" />
-      </ListItem>
-      <ListItem button>
-        <ListItemText primary="Show more" />
-      </ListItem>
-
-      <Divider />
-
-      <ListSubheader component="div" id="nested-list-subheader">
-        Objects
-      </ListSubheader>
-
-      <ListItem button>
-        <ListItemIcon>
-          <ObjectTypeIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Object type" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <UserLoginIcon/>
-        </ListItemIcon>
-        <ListItemText primary="User login" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <UserPermissionIcon />
-        </ListItemIcon>
-        <ListItemText primary="User permission" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <UserSignUpIcon />
-        </ListItemIcon>
-        <ListItemText primary="User signup" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <ValidationRuleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Validation rule" />
-      </ListItem>
+      <MemoQueue/>
+      <Divider/>
+      <MemoBlocksFilter/>
+      <Divider/>
+      <MemoObjects/>
     </List>
   );
 }

@@ -40,10 +40,14 @@ export default () => {
           limit = limit + 1;
         }
 
-        const blocks = await getBlocks({
+        const { blocks } = await getBlocks({
           limit,
           to: lastBlockValue,
         });
+
+        if (!!lastBlock) {
+          blocks.shift();
+        }
 
         setHasMore(blocks.length > 0);
         setObjects((existsBlocks) => [
