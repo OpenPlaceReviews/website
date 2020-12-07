@@ -29,8 +29,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({json, links}) => {
-  const [isOpen, toggleOpen] = useState(false);
+export default ({json, links, open = false}) => {
+  const [isOpen, toggleOpen] = useState(open);
   const classes = useStyles();
 
   const onExpandClick = (e) => {

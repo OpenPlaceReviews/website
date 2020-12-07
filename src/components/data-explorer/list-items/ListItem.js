@@ -33,12 +33,6 @@ const useStyles = makeStyles({
 export default ({header, footer, json, hash, icon, children}) => {
   const classes = useStyles();
 
-  let smallHash = '';
-  if (hash.includes(":")) {
-    const hashPart = hash.split(":").pop();
-    smallHash = hashPart.substring(0, 16);
-  }
-
   if (!icon) {
     icon = <BlockIcon/>;
   }
@@ -51,7 +45,7 @@ export default ({header, footer, json, hash, icon, children}) => {
       <Grid item xs={11}>
         <div className={classes.twoColumn}>
           <h2 className={classes.header}>{header}</h2>
-          <div className={classes.hash}>{smallHash}</div>
+          <div className={classes.hash}>{hash}</div>
         </div>
 
         {children}

@@ -5,6 +5,7 @@ import BlockIcon from "../icons/BlockIcon";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import {getBlocks} from "../../../api/data";
+import {NavLink} from "react-router-dom";
 
 const BLOCKS_LIMIT = 3;
 
@@ -17,16 +18,14 @@ export default () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let lastBlockValue = '';
         let limit = BLOCKS_LIMIT;
-        if (lastBlock.includes(":")) {
-          lastBlockValue = lastBlock.split(":").pop();
+        if (lastBlock.length) {
           limit = limit + 1;
         }
 
         const { blocks, count } = await getBlocks({
           limit,
-          to: lastBlockValue,
+          to: lastBlock,
         });
 
         if (!!lastBlock) {
@@ -54,16 +53,19 @@ export default () => {
 
   let content;
   if (blocks.length) {
-    content = blocks.map((b) => <SidebarItem
-      key={b.block_id}
-      count={b.operations_size}
-      text={`Block #${b.block_id}`}
-      Icon={BlockIcon}
-    />)
+    content = blocks.map((b) => <NavLink to={`/data/blocks/${b.block_id}/transactions`} key={b.block_id}>
+        <SidebarItem
+          count={b.operations_size}
+          text={`Block #${b.block_id}`}
+          Icon={BlockIcon}
+        />
+    </NavLink>)
   }
 
   return <>
-    <SidebarItem count={blocksCount} text="All blocks" Icon={BlocksIcon}/>
+    <NavLink to={`/data/blocks`}>
+      <SidebarItem count={blocksCount} text="All blocks" Icon={BlocksIcon}/>
+    </NavLink>
     {content}
     {(hasMore && blocks.length) &&
       <ListItem button>

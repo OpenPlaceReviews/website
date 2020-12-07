@@ -13,6 +13,7 @@ const MemoObjects = React.memo(Objects);
 
 const useStyles = makeStyles({
   root: {
+    marginTop: '114px',
     width: '100%',
     maxWidth: 360,
     border: "1px solid #CCD0D9",
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function NestedList() {
+export default ({opsTypes}) => {
   const classes = useStyles();
 
   return (
@@ -37,7 +38,7 @@ export default function NestedList() {
       <Divider/>
       <MemoBlocksFilter/>
       <Divider/>
-      <MemoObjects/>
+      <MemoObjects opsTypes={opsTypes}/>
     </List>
   );
 }

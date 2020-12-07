@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {getOperations} from "../../../api/data";
+import React from 'react';
 import SidebarHeader from "./SidebarHeader";
 import SidebarItem from "./SidebarItem";
 import ObjectTypeIcon from "../icons/ObjectTypeIcon";
@@ -58,31 +57,16 @@ const listSettings = {
   },
 };
 
-export default () => {
-  const [data, setData] = useState({});
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responce = await getOperations();
-        setData(responce);
-      } catch (e) {
-        console.warn('Network request failed');
-      }
-    }
-
-    fetchData();
-  }, []);
-
+export default ({opsTypes}) => {
   let content = [];
-  if (data.count) {
-    data.objects.sort((p, n) => {
+  if (opsTypes.count) {
+    opsTypes.objects.sort((p, n) => {
       const pOrder = listSettings[p.object_id].order;
       const nOrder = listSettings[n.object_id].order;
       return pOrder - nOrder;
     });
 
-    content = data.objects.map((o) => {
+    content = opsTypes.objects.map((o) => {
       const id = o.id[0];
       const object = listSettings[o.object_id];
       const icon = object.icon || BlockIcon;
@@ -92,7 +76,7 @@ export default () => {
   }
 
   return <>
-    <SidebarHeader text="Objects" count={data.count}/>
+    <SidebarHeader text="Objects" count={opsTypes.count}/>
     {content}
   </>;
 };
