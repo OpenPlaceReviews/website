@@ -3,7 +3,6 @@ import {makeStyles} from "@material-ui/styles";
 import {usePromiseTracker} from "react-promise-tracker";
 
 import {getBlocks} from "../../api/data";
-import Breadcrumbs from "./Breadcrumbs";
 import Loader from "../Loader";
 import Item from "./Item";
 
@@ -17,8 +16,8 @@ const useStyles = makeStyles({
 
 export default ({match}) => {
   const classes = useStyles();
+  const {promiseInProgress} = usePromiseTracker();
   const [block, setBlock] = useState({});
-  const { promiseInProgress } = usePromiseTracker();
   const {params: { hash }} = match;
 
   useEffect(() => {
@@ -42,14 +41,7 @@ export default ({match}) => {
     return <Loader/>;
   }
 
-  const crumbs = [
-    {url: '/data', text: 'Data'},
-    {url: '/data/blocks', text: 'Blocks'},
-    {url: `/data/blocks/${hash}`, text: `Block #${block.block_id}`},
-  ];
-
   return <div>
-    <Breadcrumbs crumbs={crumbs}/>
     <h1 className={classes.h1}>Block #{block.block_id}</h1>
     <Item block={block}>
       <p>Operations count: <span>{block.operations_size}</span></p>

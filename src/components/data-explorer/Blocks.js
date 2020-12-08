@@ -6,7 +6,6 @@ import { usePromiseTracker } from "react-promise-tracker";
 
 import { getBlocks } from "../../api/data";
 import BlockItem from "./list-items/BlockItem";
-import Breadcrumbs from "./Breadcrumbs";
 import Loader from "../Loader";
 
 const useStyles = makeStyles({
@@ -26,10 +25,14 @@ const useStyles = makeStyles({
 const BLOCKS_PER_PAGE = 3;
 
 export default () => {
-  const [objectsList, setObjects] = useState([]);
-  const [lastBlock, setlastBlock] = useState('');
-  const [hasMore, setHasMore] = useState(false);
-  const [isLoaded, setLoaded] = useState(false);
+  const [load, setLoad] = useState(true);
+  const [state, setState] = useState({
+    hasMore: false,
+    lastBlock: '',
+    blocks: [],
+    isLoaded: false,
+  });
+
   const classes = useStyles();
 
   const { promiseInProgress } = usePromiseTracker();
@@ -37,66 +40,54 @@ export default () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let limit = BLOCKS_PER_PAGE;
-        if (lastBlock.length) {
-          limit = limit + 1;
-        }
-
-        const { blocks } = await getBlocks({
+        const limit = BLOCKS_PER_PAGE + 1;
+        const { blocks: newBlocks, count } = await getBlocks({
           limit,
-          to: lastBlock,
+          to: state.lastBlock,
         });
 
-        if (!!lastBlock) {
-          blocks.shift();
+        const newState = { ...state };
+
+        if (newBlocks.length === limit) {
+          const lastBlock = newBlocks.pop();
+          newState.lastBlock = lastBlock.hash;
         }
 
-        if (!isLoaded) {
-          setLoaded(true);
-        }
+        newState.blocks = newState.blocks.concat(newBlocks);
+        newState.hasMore = newState.blocks.length < count;
+        newState.isLoaded = true;
 
-        setHasMore(blocks.length > 0);
-        setObjects((existsBlocks) => [
-          ...existsBlocks,
-          ...blocks,
-        ]);
+        setState(newState);
+        setLoad(false);
       } catch (e) {
+        console.log(e);
         console.warn('Network request failed');
       }
     };
 
-    fetchData();
-  }, [lastBlock]);
-
-  const getMore = () => {
-    const [ last ] = objectsList.slice(-1);
-    setlastBlock(last.hash);
-  }
+    if (load) {
+      fetchData();
+    }
+  }, [load]);
 
   let content;
-  if (objectsList.length) {
-    content = objectsList.map((entity) => <BlockItem key={entity.block_id} entity={entity}/>)
-  } else {
-    content = (<Box display="flex" justifyContent="center"><p>No entities available</p></Box>);
+  if (state.isLoaded) {
+    if (state.blocks.length) {
+      content = state.blocks.map((b) => <BlockItem key={b.block_id} entity={b}/>)
+    } else {
+      content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
+    }
   }
-
-  if (!isLoaded || promiseInProgress) {
-    return <Loader/>;
-  }
-
-  const crumbs = [
-    {url: '/data', text: 'Data'},
-    {url: '/data/blocks', text: 'Blocks'},
-  ];
 
   return <div className={classes.list}>
-      <Breadcrumbs crumbs={crumbs}/>
       <h1 className={classes.h1}>Blocks</h1>
 
       {content}
 
-      {hasMore && <Box display="flex" justifyContent="center">
-        <Button onClick={getMore}>Show more</Button>
+      {state.hasMore && <Box display="flex" justifyContent="center">
+        <Button onClick={() => setLoad(true)}>Show more</Button>
       </Box>}
+
+      {promiseInProgress && <Loader/>}
     </div>;
 };

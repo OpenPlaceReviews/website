@@ -62,6 +62,14 @@ export default ({json, links, open = false}) => {
           iconStyle="triangle"
           displayObjectSize={false}
           displayDataTypes={false}
+          collapseStringsAfterLength={80}
+          style={{
+            background: "#F2F2F2",
+            border: "1px solid #CCD0D9",
+            borderRadius: "5px",
+            padding: "15px",
+            marginTop: "10px",
+          }}
         />
       </Collapse>
     </Grid>

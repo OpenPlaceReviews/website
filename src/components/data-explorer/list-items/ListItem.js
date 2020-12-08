@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 
-import {Grid} from "@material-ui/core";
+import {Box} from "@material-ui/core";
 import BlockIcon from "../icons/BlockIcon";
 import JSONViewer from "../JSONViewer";
 
@@ -20,14 +20,16 @@ const useStyles = makeStyles({
     fontSize: "16px",
     margin: 0,
   },
-  twoColumn: {
-    display: "flex",
-    justifyContent: "space-between",
+  icon: {
+    width: "45px",
   },
   hash: {
     fontWeight: 500,
     color: "#ACB2BF",
   },
+  content: {
+    width: "100%",
+  }
 });
 
 export default ({header, footer, json, hash, icon, children}) => {
@@ -38,20 +40,18 @@ export default ({header, footer, json, hash, icon, children}) => {
   }
 
   return <div className={classes.item}>
-    <Grid container>
-      <Grid item xs={1}>
-        <div className={classes.icon}>{icon}</div>
-      </Grid>
-      <Grid item xs={11}>
-        <div className={classes.twoColumn}>
+    <Box display="flex" justifyContent="flex-start">
+      <div className={classes.icon}>{icon}</div>
+      <div className={classes.content}>
+        <Box display="flex" justifyContent="space-between">
           <h2 className={classes.header}>{header}</h2>
           <div className={classes.hash}>{hash}</div>
-        </div>
+        </Box>
 
         {children}
         <JSONViewer json={json} footer={footer}/>
-      </Grid>
-    </Grid>
+      </div>
+    </Box>
   </div>;
 }
 
