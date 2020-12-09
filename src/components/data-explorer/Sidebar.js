@@ -19,7 +19,11 @@ const useStyles = makeStyles({
     border: "1px solid #CCD0D9",
     textAlign: "center",
     marginBottom: "20px",
+    borderRadius: "5px",
   },
+  divider: {
+    background: "#CCD0D9",
+  }
 });
 
 export default ({opsTypes}) => {
@@ -35,9 +39,9 @@ export default ({opsTypes}) => {
       className={classes.root}
     >
       <MemoQueue/>
-      <Divider/>
+      <Divider className={classes.divider}/>
       <MemoBlocksFilter/>
-      <Divider/>
+      <Divider className={classes.divider}/>
       <MemoObjects opsTypes={opsTypes}/>
     </List>
   );

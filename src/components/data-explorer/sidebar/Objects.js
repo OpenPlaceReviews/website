@@ -71,7 +71,13 @@ export default ({opsTypes}) => {
       const object = listSettings[o.object_id];
       const icon = object.icon || BlockIcon;
 
-      return <SidebarItem key={id} text={object.name} Icon={icon}/>
+      return <SidebarItem
+        key={id}
+        text={object.name}
+        Icon={icon}
+        exact
+        to={"/data"}
+      />
     })
   }
 
