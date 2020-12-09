@@ -1,11 +1,22 @@
 import React from 'react';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ValueSidebarItem from "./ValueSidebarItem";
+import {makeStyles} from "@material-ui/styles";
+
+const useStyles = makeStyles({
+  root: {
+    "& span": {
+      fontWeight: "bold",
+    }
+  },
+});
 
 export default ({text, count}) => {
+  const classes = useStyles();
+
   return <ListItem>
-    <ListItemText primary={text}/>
-    {(count !== undefined) && <ListItemSecondaryAction>{count}</ListItemSecondaryAction>}
+    <ListItemText primary={text} className={classes.root}/>
+    {(count !== undefined) && <ValueSidebarItem value={count}/>}
   </ListItem>;
 };
