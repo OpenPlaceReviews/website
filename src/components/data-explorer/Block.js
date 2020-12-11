@@ -4,7 +4,7 @@ import {usePromiseTracker} from "react-promise-tracker";
 
 import {getBlocks} from "../../api/data";
 import Loader from "../Loader";
-import Item from "./Item";
+import BlockInfo from "./BlockInfo";
 
 const useStyles = makeStyles({
   h1: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 export default ({match}) => {
   const classes = useStyles();
   const {promiseInProgress} = usePromiseTracker();
-  const [block, setBlock] = useState({});
+  const [block, setBlock] = useState(null);
   const {params: { hash }} = match;
 
   useEffect(() => {
@@ -45,9 +45,9 @@ export default ({match}) => {
   }
 
   return <div className={classes.item}>
-    <h1 className={classes.h1}>Block #{block.block_id}</h1>
-    <Item block={block}>
+    <h1 className={classes.h1}>Block #{block.id}</h1>
+    <BlockInfo block={block}>
       <p>Operations count: <span>{block.operations_size}</span></p>
-    </Item>
+    </BlockInfo>
   </div>;
 };

@@ -7,6 +7,7 @@ const FETCH_QUEUE = `${API_BASE}/api/queue`;
 const FETCH_OBJECTS = `${API_BASE}/api/objects`;
 const FETCH_QUEUE_BY_ID = `${API_BASE}/api/ops-by-block-id`;
 const FETCH_QUEUE_BY_HASH = `${API_BASE}/api/ops-by-block-hash`;
+const FETCH_TRANSACTION = `${API_BASE}/api/op-by-hash-in-block`;
 
 const getShortHash = (hash) => {
   const rawHash = hash.split(":").pop();
@@ -14,6 +15,41 @@ const getShortHash = (hash) => {
 }
 
 const getRawHash = (hash) => hash.split(":").pop();
+
+const transformOperation = (op) =>  {
+  let objects = [];
+  let objects_type = '';
+
+  if (op.create) {
+    objects_type = 'create';
+  }
+  if (op.edit) {
+    objects_type = 'edit';
+  }
+  if (op.delete) {
+    objects_type = 'delete';
+  }
+
+  const rawObjects = op[objects_type];
+  if (Array.isArray(rawObjects)){
+    objects = rawObjects.flat();
+  } else {
+    objects.push(rawObjects);
+  }
+
+  if (op.delete) {
+    objects = objects.map((o) => ({ id: o }));
+  }
+
+  return {
+    ...op,
+    objects,
+    objects_type,
+    fullHash: op.hash,
+    hash: getRawHash(op.hash),
+    shortHash: getShortHash(op.hash),
+  };
+};
 
 export const getBlocks = async (reqParams = {}) => {
   const params = {
@@ -65,39 +101,7 @@ export const getQueue = async (reqParams = {}) => {
 
   const responce = await trackPromise(get(url, {params}));
 
-  const ops = responce.data.ops.map((b) => {
-    let objects = [];
-    let objects_type = '';
-
-    if (b.create) {
-      objects_type = 'create';
-    }
-    if (b.edit) {
-      objects_type = 'edit';
-    }
-    if (b.delete) {
-      objects_type = 'delete';
-    }
-
-    const rawObjects = b[objects_type];
-    if (Array.isArray(rawObjects)){
-      objects = rawObjects.flat();
-    } else {
-      objects.push(rawObjects);
-    }
-
-    if (b.delete) {
-      objects = objects.map((o) => ({ id: o }));
-    }
-
-    return {
-      ...b,
-      objects,
-      objects_type,
-      hash: getRawHash(b.hash),
-      shortHash: getShortHash(b.hash),
-    };
-  });
+  const ops = responce.data.ops.map(transformOperation);
 
   return {
     queue: ops,
@@ -124,4 +128,13 @@ export const getOperations = async () => {
     objects,
     count: objects.length,
   };
+};
+
+export const getTransaction = async (hash) => {
+  const params = {
+    hash,
+  };
+
+  const { data } = await get(FETCH_TRANSACTION, { params });
+  return transformOperation(data.ops[0]);
 };
