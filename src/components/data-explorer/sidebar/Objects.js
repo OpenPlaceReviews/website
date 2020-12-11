@@ -61,16 +61,14 @@ export default ({opsTypes}) => {
   let content = [];
   if (opsTypes.count) {
     opsTypes.objects.sort((p, n) => {
-      const pOrder = listSettings[p.object_id].order;
-      const nOrder = listSettings[n.object_id].order;
+      const pOrder = listSettings[p.id].order;
+      const nOrder = listSettings[n.id].order;
       return pOrder - nOrder;
     });
 
     content = opsTypes.objects.map((o) => {
-      const id = o.id[0];
-      const object = listSettings[o.object_id];
+      const object = listSettings[o.id];
       const icon = object.icon || BlockIcon;
-
       return <SidebarItem
         key={id}
         text={object.name}

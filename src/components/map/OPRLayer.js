@@ -199,8 +199,6 @@ export default () => {
     isMapMoving = true;
   });
 
-  console.log(currentLayer);
-
   return <div className="opr-layer">
     <MapSidebar>
       <OPRMarkersFilter placeTypes={placeTypes} onSelect={setFilter}/>
