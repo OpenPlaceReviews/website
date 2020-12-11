@@ -63,7 +63,7 @@ export default () => {
   }
 
   return <>
-    <NavLink to={`/data/blocks`}>
+    <NavLink to={`/data/blocks`} exact>
       <SidebarItem count={blocksCount} text="All blocks" Icon={BlocksIcon}/>
     </NavLink>
     {content}

@@ -29,7 +29,9 @@ export default ({block, children}) => {
     <div className={classes.block}>
       <p>Block id: <span className="selection">#{block.block_id}</span></p>
       <p>Block Hash: <span>{block.hash}</span></p>
+
       {children}
+
       <p>Signed by: <span>#{block.signed_by}</span></p>
     </div>
     <JSONViewer json={block} open={true}/>

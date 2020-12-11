@@ -21,7 +21,7 @@ export default () => {
         const responce = await getOperations();
         setOpsTypes(responce);
       } catch (e) {
-        console.warn('Network request failed');
+        console.warn('Network request failed ops');
       }
     }
 

@@ -1,10 +1,10 @@
 import React from "react";
 import {createUseStyles} from 'react-jss';
-import "../assets/images/loader.png";
+import loaderImg from "../assets/images/loader.png";
 
 const useStyles = createUseStyles({
   loader: {
-    background: "url(../assets/images/loader.png) no-repeat center center",
+    background: `url(${loaderImg}) no-repeat center center`,
     display: "block",
     width: "220px",
     height: "25px",

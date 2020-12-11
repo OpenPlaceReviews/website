@@ -34,7 +34,6 @@ export default () => {
   });
 
   const classes = useStyles();
-
   const { promiseInProgress } = usePromiseTracker();
 
   useEffect(() => {
@@ -60,7 +59,6 @@ export default () => {
         setState(newState);
         setLoad(false);
       } catch (e) {
-        console.log(e);
         console.warn('Network request failed');
       }
     };
@@ -73,7 +71,7 @@ export default () => {
   let content;
   if (state.isLoaded) {
     if (state.blocks.length) {
-      content = state.blocks.map((b) => <BlockItem key={b.block_id} entity={b}/>)
+      content = state.blocks.map((b) => <BlockItem key={b.id} entity={b}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }

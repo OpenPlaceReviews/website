@@ -12,6 +12,9 @@ const useStyles = makeStyles({
     fontSize: "40px",
     letterSpacing: "0.01em",
   },
+  item: {
+    marginBottom: "20px",
+  }
 });
 
 export default ({match}) => {
@@ -41,7 +44,7 @@ export default ({match}) => {
     return <Loader/>;
   }
 
-  return <div>
+  return <div className={classes.item}>
     <h1 className={classes.h1}>Block #{block.block_id}</h1>
     <Item block={block}>
       <p>Operations count: <span>{block.operations_size}</span></p>

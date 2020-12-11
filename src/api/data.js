@@ -8,6 +8,13 @@ const FETCH_OBJECTS = `${API_BASE}/api/objects`;
 const FETCH_QUEUE_BY_ID = `${API_BASE}/api/ops-by-block-id`;
 const FETCH_QUEUE_BY_HASH = `${API_BASE}/api/ops-by-block-hash`;
 
+const getShortHash = (hash) => {
+  const rawHash = hash.split(":").pop();
+  return rawHash.substring(0, 16);
+}
+
+const getRawHash = (hash) => hash.split(":").pop();
+
 export const getBlocks = async (reqParams = {}) => {
   const params = {
     depth: 3,
@@ -26,13 +33,12 @@ export const getBlocks = async (reqParams = {}) => {
   const { data } = await trackPromise(get(FETCH_BLOCKS, { params }));
 
   const blocks = data.blocks.map((b) => {
-    const hash = b.hash.split(":").pop();
-    const shortHash = hash.substring(0, 16);
-
     return {
       ...b,
-      hash,
-      shortHash,
+      id: b.block_id,
+      block_date: b.date,
+      hash: getRawHash(b.hash),
+      shortHash: getShortHash(b.hash),
     };
   });
 
@@ -45,16 +51,54 @@ export const getBlocks = async (reqParams = {}) => {
 export const getQueue = async (reqParams = {}) => {
   const {blockId, blockHash} = reqParams;
 
-  let responce;
+  let url;
+  const params = {};
   if (!!blockId) {
-    responce = await get(FETCH_QUEUE_BY_ID, {params: { blockId }});
+    url = FETCH_QUEUE_BY_ID;
+    params.blockId = blockId;
   } else if (!!blockHash) {
-    responce = await get(FETCH_QUEUE_BY_HASH, {params: { hash: blockHash }});
+    url = FETCH_QUEUE_BY_HASH;
+    params.hash = blockHash;
   } else {
-    responce = await get(FETCH_QUEUE);
+    url = FETCH_QUEUE;
   }
 
-  const { data: { ops } } = responce;
+  const responce = await trackPromise(get(url, {params}));
+
+  const ops = responce.data.ops.map((b) => {
+    let objects = [];
+    let objects_type = '';
+
+    if (b.create) {
+      objects_type = 'create';
+    }
+    if (b.edit) {
+      objects_type = 'edit';
+    }
+    if (b.delete) {
+      objects_type = 'delete';
+    }
+
+    const rawObjects = b[objects_type];
+    if (Array.isArray(rawObjects)){
+      objects = rawObjects.flat();
+    } else {
+      objects.push(rawObjects);
+    }
+
+    if (b.delete) {
+      objects = objects.map((o) => ({ id: o }));
+    }
+
+    return {
+      ...b,
+      objects,
+      objects_type,
+      hash: getRawHash(b.hash),
+      shortHash: getShortHash(b.hash),
+    };
+  });
+
   return {
     queue: ops,
     count: ops.length,
@@ -69,15 +113,15 @@ export const getOperations = async () => {
 
   const { data } = await get(FETCH_OBJECTS, { params });
 
-  const objects = data.objects.map(o => {
+  const objects = data.objects.map(b => {
     return {
-      ...o,
-      object_id: o.id[0],
+      ...b,
+      id: b.id[0],
     }
   });
 
   return {
     objects,
-    count: data.objects.length,
+    count: objects.length,
   };
 };

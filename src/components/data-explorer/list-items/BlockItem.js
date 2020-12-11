@@ -1,8 +1,8 @@
 import React from "react";
 import {createUseStyles} from "react-jss";
 
-import ListItem from "./ListItem";
 import {Link} from "react-router-dom";
+import DataListItem from "./DataListItem";
 
 const useStyles = createUseStyles({
   link: {
@@ -15,20 +15,20 @@ const useStyles = createUseStyles({
 
 export default ({entity}) => {
   const {
-    block_id,
+    id,
     signed_by,
     hash,
     shortHash,
     operations_size,
-    date: block_date
+    block_date
   } = entity;
 
   const classes = useStyles();
-  const header = (<Link to={`/data/blocks/${hash}`} className={classes.link}>Block #{block_id}</Link>);
+  const header = (<Link to={`/data/blocks/${hash}`} className={classes.link}>Block #{id}</Link>);
   const footer = <>Signed by: <span className={classes.value}>{signed_by}</span></>;
 
-  return <ListItem json={entity} header={header} footer={footer} hash={shortHash}>
+  return <DataListItem json={entity} header={header} footer={footer} hash={shortHash}>
     <p>Operations count: <span className={classes.value}>{operations_size}</span></p>
     <p>Date: <span className={classes.value}>{block_date}</span></p>
-  </ListItem>;
+  </DataListItem>;
 }
