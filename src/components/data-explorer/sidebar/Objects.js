@@ -69,8 +69,13 @@ export default ({opsTypes}) => {
     content = opsTypes.objects.map((o) => {
       const object = listSettings[o.id];
       const icon = object.icon || BlockIcon;
-
-      return <SidebarItem key={o.id} text={object.name} Icon={icon}/>
+      return <SidebarItem
+        key={id}
+        text={object.name}
+        Icon={icon}
+        exact
+        to={"/data"}
+      />
     })
   }
 

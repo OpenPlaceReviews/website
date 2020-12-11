@@ -2,10 +2,22 @@ import React, {useEffect, useState} from 'react';
 import SidebarItem from "./SidebarItem";
 import BlocksIcon from "../icons/BlocksIcon";
 import BlockIcon from "../icons/BlockIcon";
-import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import {getBlocks} from "../../../api/data";
-import {NavLink} from "react-router-dom";
+import ListItemSidebar from "./ListItemSidebar";
+import {makeStyles} from "@material-ui/styles";
+
+const useStyles = makeStyles({
+  allBlocks: {
+    "& span": {
+      fontWeight: "bold",
+    }
+  },
+  showMore: {
+    marginLeft: "35px",
+    color: "#2D69E0",
+  }
+});
 
 const BLOCKS_LIMIT = 3;
 
@@ -14,6 +26,8 @@ export default () => {
   const [lastBlock, setlastBlock] = useState('');
   const [hasMore, setHasMore] = useState(false);
   const [blocks, setBlocks] = useState([]);
+
+  const classes = useStyles();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,24 +67,29 @@ export default () => {
 
   let content;
   if (blocks.length) {
-    content = blocks.map((b) => <NavLink to={`/data/blocks/${b.block_id}/transactions`} key={b.block_id}>
-        <SidebarItem
-          count={b.operations_size}
-          text={`Block #${b.block_id}`}
-          Icon={BlockIcon}
-        />
-    </NavLink>)
+    content = blocks.map((b) => <SidebarItem
+      count={b.operations_size}
+      text={`Block #${b.block_id}`}
+      Icon={BlockIcon}
+      to={`/data/blocks/${b.block_id}/transactions`}
+      key={b.block_id}
+    />)
   }
 
   return <>
-    <NavLink to={`/data/blocks`} exact>
-      <SidebarItem count={blocksCount} text="All blocks" Icon={BlocksIcon}/>
-    </NavLink>
+    <SidebarItem
+      exact
+      count={blocksCount}
+      className={classes.allBlocks}
+      text="All blocks"
+      bold Icon={BlocksIcon}
+      to={`/data/blocks`}
+    />
     {content}
     {(hasMore && blocks.length) &&
-      <ListItem button>
+      <ListItemSidebar button>
         <ListItemText onClick={getMore} primary="Show more"/>
-      </ListItem>
+      </ListItemSidebar>
     }
   </>;
 }
