@@ -10,6 +10,7 @@ import Sidebar from "./Sidebar";
 
 import {getOperations} from "../../api/data";
 import Transactions from "./Transactions";
+import Transaction from "./Transaction";
 import Queue from "./Queue";
 
 export default () => {
@@ -39,7 +40,8 @@ export default () => {
 
           <Route path="/data/blocks" exact component={Blocks}/>
           <Route path="/data/blocks/:hash" exact component={Block}/>
-          <Route path="/data/blocks/:id/transactions" component={Transactions}/>
+          <Route path="/data/blocks/:blockId/transactions" exact component={Transactions}/>
+          <Route path="/data/blocks/:blockId/transactions/:hash" component={Transaction}/>
           <Route path="/data/queue" component={Queue}/>
 
           <Route path="*" component={Error404} />

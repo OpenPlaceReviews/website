@@ -25,14 +25,27 @@ const useStyles = makeStyles({
 export default ({block, children}) => {
   const classes = useStyles();
 
+  const {
+    hash,
+    id,
+    signed_by,
+  } = block;
+
+  let signedText;
+  if (Array.isArray(signed_by)){
+    signedText = signed_by.join(', ');
+  } else {
+    signedText = signed_by;
+  }
+
   return <div>
     <div className={classes.block}>
-      <p>Block id: <span className="selection">#{block.block_id}</span></p>
-      <p>Block Hash: <span>{block.hash}</span></p>
+      <p>Block id: <span className="selection">#{id}</span></p>
+      <p>Hash: <span>{hash}</span></p>
 
       {children}
 
-      <p>Signed by: <span>#{block.signed_by}</span></p>
+      <p>Signed by: <span>#{signedText}</span></p>
     </div>
     <JSONViewer json={block} open={true}/>
   </div>;

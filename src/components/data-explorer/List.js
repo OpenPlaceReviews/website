@@ -21,9 +21,9 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({fetchMethod, fetchParams, header, blocks = [], ListItem}) => {
+export default ({fetchMethod, fetchParams, header, ListItem, children}) => {
   const [state, setState] = useState({
-    blocks: blocks,
+    blocks: [],
     isLoaded: false,
   });
 
@@ -40,7 +40,8 @@ export default ({fetchMethod, fetchParams, header, blocks = [], ListItem}) => {
           isLoaded: true,
         });
       } catch (e) {
-        console.warn('Network request failed transactions');
+        console.log(e);
+        console.warn('Network request failed list');
       }
     };
 
@@ -50,7 +51,7 @@ export default ({fetchMethod, fetchParams, header, blocks = [], ListItem}) => {
   let content;
   if (state.isLoaded) {
     if (state.blocks.length) {
-      content = state.blocks.map((b) => <ListItem key={b.shortHash} entity={b}/>)
+      content = state.blocks.map((b) => <ListItem key={b.shortHash} entity={b} params={fetchParams}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }
@@ -58,9 +59,8 @@ export default ({fetchMethod, fetchParams, header, blocks = [], ListItem}) => {
 
   return <div className={classes.list}>
     <h1 className={classes.h1}>{header}</h1>
-
+    {children}
     {content}
-
     {promiseInProgress && <Loader/>}
   </div>;
 };

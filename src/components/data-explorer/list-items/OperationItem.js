@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
   }
 });
 
-export default ({entity}) => {
+export default ({entity, params}) => {
   const {
     type,
     signed_by,
@@ -30,6 +30,8 @@ export default ({entity}) => {
     objects_type,
     objects,
   } = entity;
+
+  const { blockId } = params;
 
   let operationType = "";
   if (objects_type === 'create') {
@@ -57,7 +59,7 @@ export default ({entity}) => {
   }
 
   const classes = useStyles();
-  const header = (<Link to={`/data/transactions/${hash}`} className={classes.link}>Operation type: {type}</Link>);
+  const header = (<Link to={`/data/blocks/${blockId}/transactions/${hash}`} className={classes.link}>Operation type: {type}</Link>);
   const footer = <>Signed by: <span className={classes.value}>{signedText}</span></>;
 
   return <DataListItem json={entity} header={header} footer={footer} hash={shortHash}>
