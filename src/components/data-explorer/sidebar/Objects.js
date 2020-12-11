@@ -70,7 +70,7 @@ export default ({opsTypes}) => {
       const object = listSettings[o.id];
       const icon = object.icon || BlockIcon;
       return <SidebarItem
-        key={id}
+        key={o.id}
         text={object.name}
         Icon={icon}
         exact

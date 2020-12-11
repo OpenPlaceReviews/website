@@ -82,7 +82,7 @@ export default () => {
       count={blocksCount}
       className={classes.allBlocks}
       text="All blocks"
-      bold Icon={BlocksIcon}
+      Icon={BlocksIcon}
       to={`/data/blocks`}
     />
     {content}
