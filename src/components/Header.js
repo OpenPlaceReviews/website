@@ -57,7 +57,7 @@ export default () => {
         <nav className="nav">
           <ul>
             <li><a href="/map">Map</a></li>
-            <li><a href="/api/admin">Blockchain</a></li>
+            <li><a href="/data">Blockchain</a></li>
             {/*
           <li><a href="#">Leaderboard</a></li>
           <li><a href="#">News</a></li>
