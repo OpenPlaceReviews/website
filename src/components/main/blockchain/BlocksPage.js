@@ -5,9 +5,10 @@ import {makeStyles} from "@material-ui/styles";
 import { usePromiseTracker } from "react-promise-tracker";
 
 import { getBlocks } from "../../../api/data";
+import config from "../../../config";
+
 import BlockItem from "./blocks/list-items/BlockItem";
 import Loader from "../blocks/Loader";
-
 const useStyles = makeStyles({
   h1: {
     marginBottom: "20px",
@@ -22,7 +23,9 @@ const useStyles = makeStyles({
   },
 });
 
-const BLOCKS_PER_PAGE = 50;
+const BLOCKS_PER_PAGE = config.blockchain.blocksPageLimit;
+
+console.log(config);
 
 export default () => {
   const [load, setLoad] = useState(true);

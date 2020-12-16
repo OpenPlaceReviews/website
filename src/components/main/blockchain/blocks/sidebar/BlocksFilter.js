@@ -6,6 +6,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {getBlocks} from "../../../../../api/data";
 import ListItemSidebar from "./ListItemSidebar";
 import {makeStyles} from "@material-ui/styles";
+import config from "../../../../../config";
 
 const useStyles = makeStyles({
   allBlocks: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
   }
 });
 
-const BLOCKS_LIMIT = 3;
+const BLOCKS_LIMIT = config.blockchain.blocksSidebarLimit;
 
 export default () => {
   const [blocksCount, setCount] = useState(0);
