@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-const BLOCKS_PER_PAGE = 3;
+const BLOCKS_PER_PAGE = 50;
 
 export default () => {
   const [load, setLoad] = useState(true);
