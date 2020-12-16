@@ -85,10 +85,10 @@ module.exports = {
                 '@babel/preset-env',
                 {
                   targets: "> 0.25%, not dead, chrome 30, android 4.4",
-                  debug: true,
                 },
               ]
             ],
+            plugins: ["@babel/plugin-transform-react-jsx-source"],
           }
         }
       },

@@ -32,39 +32,48 @@ export default () => {
     lastBlock: '',
     blocks: [],
     isLoaded: false,
+    error: '',
   });
+  const [error, setError] = useState(null);
+  if (error) {
+    throw error;
+  }
 
   const classes = useStyles();
   const { promiseInProgress } = usePromiseTracker();
 
   useEffect(() => {
     const fetchData = async () => {
+      let results;
+      const limit = BLOCKS_PER_PAGE + 1;
       try {
-        const limit = BLOCKS_PER_PAGE + 1;
-        const { blocks: newBlocks, count } = await getBlocks({
+        results = await getBlocks({
           limit,
           to: state.lastBlock,
         });
-
-        const newState = { ...state };
-
-        if (newBlocks.length === limit) {
-          const lastBlock = newBlocks.pop();
-          newState.lastBlock = lastBlock.hash;
-        }
-
-        newState.blocks = newState.blocks.concat(newBlocks);
-        newState.hasMore = newState.blocks.length < count;
-        newState.isLoaded = true;
-
-        setState(newState);
-        setLoad(false);
-      } catch (e) {
-        console.warn('Network request failed');
+      } catch (error) {
+        setError(error)
+        return;
       }
+
+      const {blocks: newBlocks, count} = results;
+
+      const newState = { ...state };
+
+      if (newBlocks.length === limit) {
+        const lastBlock = newBlocks.pop();
+        newState.lastBlock = lastBlock.hash;
+      }
+
+      newState.blocks = newState.blocks.concat(newBlocks);
+      newState.hasMore = newState.blocks.length < count;
+      newState.isLoaded = true;
+
+      setState(newState);
+      setLoad(false);
     };
 
-    if (load) {
+    if (load && !error) {
       fetchData();
     }
   }, [load]);

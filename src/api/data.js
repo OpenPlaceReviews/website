@@ -115,7 +115,7 @@ export const getOperations = async () => {
     limit: 50,
   };
 
-  const { data } = await get(FETCH_OBJECTS, { params });
+  const { data } = await trackPromise(get(FETCH_OBJECTS, { params }));
 
   const objects = data.objects.map(b => {
     return {
