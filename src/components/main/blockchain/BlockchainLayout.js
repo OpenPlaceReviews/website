@@ -23,14 +23,12 @@ export default function BlockchainLayout() {
   }, []);
 
 
-  return <div className="container">
-    <Grid container justify="center" spacing={3}>
-      <Grid item xs={9}>
-        <BlockchainRouter/>
-      </Grid>
-      <Grid item xs={3}>
-        <Sidebar opsTypes={opsTypes}/>
-      </Grid>
+  return <Grid container justify="center" spacing={3}>
+    <Grid item xs={9}>
+      <BlockchainRouter/>
     </Grid>
-  </div>;
+    <Grid item xs={3}>
+      <Sidebar opsTypes={opsTypes}/>
+    </Grid>
+  </Grid>;
 };

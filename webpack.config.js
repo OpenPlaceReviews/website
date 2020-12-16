@@ -23,10 +23,6 @@ module.exports = {
         {
           from: "./src/assets/images/icons/",
           to: "./assets/images/icons/[name].[ext]"
-        },
-        {
-          from: "./src/assets/legacy/",
-          to: "./assets/legacy/[name].[ext]"
         }
       ]
     }),

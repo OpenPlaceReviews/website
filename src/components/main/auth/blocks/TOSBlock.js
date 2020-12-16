@@ -1,6 +1,6 @@
 import React from "react";
 import Expand from "../../../blocks/misc/Expand";
-import TOSHtml from "../../../../assets/legacy/terms_of_service.html";
+import TOSHtml from "./terms_of_service.html";
 import PropTypes from "prop-types";
 
 const TOSBlock = ({onChange, isAccept}) => {
@@ -17,7 +17,7 @@ const TOSBlock = ({onChange, isAccept}) => {
         <span className="box"></span>
       </label>
       <div>
-        <div className="signup-input-label">I agree with <a href="../../../../assets/legacy/terms_of_service.html" target="_blank">Terms of Service</a></div>
+        <div className="signup-input-label">I agree with <a href="terms_of_service.html" target="_blank">Terms of Service</a></div>
         <div className="signup-input-description">Please accept Terms of Service before using website.
         </div>
       </div>

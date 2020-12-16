@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 
 import Expand from "../../../blocks/misc/Expand";
-import COSHtml from "../../../../assets/legacy/contributor_terms.html";
+import COSHtml from "./contributor_terms.html";
 
 const COSBlock = ({onChange, isAccept}) => {
   return <div className="form-item-boolean">
@@ -19,7 +19,7 @@ const COSBlock = ({onChange, isAccept}) => {
       </label>
       <div>
         <div className="signup-input-label">
-          I agree with <a href="../../../../assets/legacy/contributor_terms.html" target="_blank">Contribution Terms</a>
+          I agree with <a href="contributor_terms.html" target="_blank">Contribution Terms</a>
         </div>
         <div className="signup-input-description">
           Please read Contribution Terms carefully and accept it before website. Your contributions will be provided under CC-0 License.
