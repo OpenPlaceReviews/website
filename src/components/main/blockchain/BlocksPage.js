@@ -25,8 +25,6 @@ const useStyles = makeStyles({
 
 const BLOCKS_PER_PAGE = config.blockchain.blocksPageLimit;
 
-console.log(config);
-
 export default () => {
   const [load, setLoad] = useState(true);
   const [state, setState] = useState({

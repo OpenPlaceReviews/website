@@ -26,6 +26,10 @@ const useStyles = makeStyles({
   hash: {
     fontWeight: 500,
     color: "#ACB2BF",
+    "& a": {
+      fontWeight: 500,
+      color: "#ACB2BF",
+    },
   },
   content: {
     width: "100%",
