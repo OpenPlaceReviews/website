@@ -9,7 +9,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({children, ...bypass}) => {
+export default function ListItemSidebar({children, ...bypass}) {
   const classes = useStyles();
 
   return <ListItem {...bypass} className={classes.root}>

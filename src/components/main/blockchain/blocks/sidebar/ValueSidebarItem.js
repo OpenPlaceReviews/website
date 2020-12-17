@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default ({value}) => {
+export default function ValueSidebarItem({value}) {
   const classes = useStyles();
 
   return <ListItemSecondaryAction className={classes.root}>{value}</ListItemSecondaryAction>

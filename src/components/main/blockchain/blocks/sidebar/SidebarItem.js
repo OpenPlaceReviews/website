@@ -1,9 +1,10 @@
 import React from 'react';
+import {makeStyles} from "@material-ui/styles";
+
+import {NavLink} from "react-router-dom";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import {makeStyles} from "@material-ui/styles";
 import ListItemSidebar from "./ListItemSidebar";
-import {NavLink} from "react-router-dom";
 import ValueSidebarItem from "./ValueSidebarItem";
 
 const useStyles = makeStyles({
@@ -25,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({text, count, Icon, to, ...pass}) => {
+export default function SidebarItem({text, count, Icon, to, ...pass}) {
   const classes = useStyles();
 
   return <NavLink to={to} activeClassName={classes.activeLink} {...pass}>

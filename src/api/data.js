@@ -110,23 +110,17 @@ export const getQueue = async (reqParams = {}) => {
 };
 
 export const getOperations = async () => {
-  const params = {
-    type: "sys.operation",
-    limit: 50,
-  };
-
+  const params = { type: "sys.operation" };
   const { data } = await trackPromise(get(FETCH_OBJECTS, { params }));
 
-  const objects = data.objects.map(b => {
-    return {
-      ...b,
-      id: b.id[0],
-    }
-  });
+  const operations = data.objects.map(b => ({
+    ...b,
+    id: b.id[0],
+  }));
 
   return {
-    objects,
-    count: objects.length,
+    operations,
+    count: operations.length,
   };
 };
 
