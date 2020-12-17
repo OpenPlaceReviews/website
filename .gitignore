@@ -1,5 +1,8 @@
 .idea
 .DS_Store
+.vscode
 
 html/
 node_modules/
+
+.env

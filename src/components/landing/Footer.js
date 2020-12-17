@@ -1,9 +1,9 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import openPlaceReviewLogo from "../../assets/images/OpenPlaceReview.svg";
 
-export default () => {
+export default function Footer() {
   return <footer>
     <div className="container_flex footer-container">
       <div className="copyright">
@@ -19,7 +19,7 @@ export default () => {
       <div className="about">
         <h2>About</h2>
         <ul>
-          <li><a className="gray" href="/api/admin">Blockchain explorer</a></li>
+          <li><Link className="gray" to={"/data"}>Blockchain explorer</Link></li>
           <li><a href="https://github.com/OpenPlaceReviews/">GitHub</a></li>
         </ul>
       </div>
