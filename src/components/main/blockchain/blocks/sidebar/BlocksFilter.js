@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
+
+import {makeStyles} from "@material-ui/styles";
+import {getBlocks} from "../../../../../api/data";
+
+import ListItemText from "@material-ui/core/ListItemText";
 import SidebarItem from "./SidebarItem";
+import ListItemSidebar from "./ListItemSidebar";
 import BlocksIcon from "../../assets/icons/BlocksIcon";
 import BlockIcon from "../../assets/icons/BlockIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import {getBlocks} from "../../../../../api/data";
-import ListItemSidebar from "./ListItemSidebar";
-import {makeStyles} from "@material-ui/styles";
+
 import config from "../../../../../config";
 
 const useStyles = makeStyles({
@@ -22,7 +25,7 @@ const useStyles = makeStyles({
 
 const BLOCKS_LIMIT = config.blockchain.blocksSidebarLimit;
 
-export default () => {
+export default function BlocksFilter() {
   const [blocksCount, setCount] = useState(0);
   const [lastBlock, setlastBlock] = useState('');
   const [hasMore, setHasMore] = useState(false);

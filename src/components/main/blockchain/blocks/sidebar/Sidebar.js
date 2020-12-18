@@ -9,7 +9,7 @@ import Objects from "./Objects";
 
 const MemoQueue = React.memo(Queue);
 const MemoBlocksFilter = React.memo(BlocksFilter);
-const MemoObjects = React.memo(Objects);
+const MemoSidebarObjects = React.memo(Objects);
 
 const useStyles = makeStyles({
   root: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default ({opsTypes}) => {
+export default function Sidebar() {
   const classes = useStyles();
 
   return (
@@ -42,7 +42,7 @@ export default ({opsTypes}) => {
       <Divider className={classes.divider}/>
       <MemoBlocksFilter/>
       <Divider className={classes.divider}/>
-      <MemoObjects opsTypes={opsTypes}/>
+      <MemoSidebarObjects/>
     </List>
   );
 }

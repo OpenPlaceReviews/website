@@ -4,6 +4,7 @@ import Header from "../blocks/Header";
 import MainRouter from "./MainRouter";
 import {Container} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
+import ErrorBoundary from "./ErrorBoundary";
 
 const useStyle = makeStyles({
   column: {
@@ -19,7 +20,9 @@ export default function MainLayout() {
   return <div className={classes.column}>
     <Header />
     <Container className={classes.column}>
-      <MainRouter/>
+      <ErrorBoundary>
+        <MainRouter/>
+      </ErrorBoundary>
     </Container>
     <Footer />
   </div>;

@@ -32,7 +32,7 @@ export default () => {
     lastBlock: '',
     blocks: [],
     isLoaded: false,
-    error: '',
+    error: null,
   });
   const [error, setError] = useState(null);
   if (error) {

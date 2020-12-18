@@ -1,34 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Grid} from "@material-ui/core";
-
-import {getOperations} from "../../../api/data";
 
 import Sidebar from "./blocks/sidebar/Sidebar";
 import BlockchainRouter from "./BlockchainRouter";
+import OperationsProvider from "./providers/OperationsProvider";
 
 export default function BlockchainLayout() {
-  const [opsTypes, setOpsTypes] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responce = await getOperations();
-        setOpsTypes(responce);
-      } catch (e) {
-        console.warn('Network request failed ops');
-      }
-    }
-
-    fetchData();
-  }, []);
-
-
-  return <Grid container justify="center" spacing={3}>
-    <Grid item xs={9}>
-      <BlockchainRouter/>
+  return <OperationsProvider>
+    <Grid container justify="center" spacing={3}>
+      <Grid item xs={9}>
+        <BlockchainRouter/>
+      </Grid>
+      <Grid item xs={3}>
+        <Sidebar/>
+      </Grid>
     </Grid>
-    <Grid item xs={3}>
-      <Sidebar opsTypes={opsTypes}/>
-    </Grid>
-  </Grid>;
+  </OperationsProvider>;
 };
