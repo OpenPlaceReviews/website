@@ -6,16 +6,9 @@ import {getTransaction} from "../../../api/data";
 import Loader from "../blocks/Loader";
 import BlockInfo from "./blocks/BlockInfo";
 import {List, ListItem, ListItemText} from "@material-ui/core";
+import BlocksHeader from "./blocks/BlocksHeader";
 
 const useStyles = makeStyles({
-  h1: {
-    marginBottom: "20px",
-    fontSize: "40px",
-    letterSpacing: "0.01em",
-  },
-  item: {
-    marginBottom: "20px",
-  },
   listItem: {
     paddingTop: 0,
     paddingBottom: 0,
@@ -74,8 +67,8 @@ export default ({match}) => {
     return o.id;
   });
 
-  return <div className={classes.item}>
-    <h1 className={classes.h1}>Transaction {block.shortHash}</h1>
+  return <div>
+    <BlocksHeader>Transaction {block.shortHash}</BlocksHeader>
     <BlockInfo block={block}>
       <p><strong>{block.objects.length}</strong> objects {operationType}</p>
       <p>Objects:</p>

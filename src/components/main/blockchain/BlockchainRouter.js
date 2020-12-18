@@ -4,7 +4,6 @@ import {Redirect, Route, Switch, useRouteMatch} from "react-router-dom";
 import BlocksPage from "./BlocksPage";
 import BlockPage from "./BlockPage";
 import Transactions from "./TransactionsPage";
-import Transaction from "./TransactionPage";
 import QueuePage from "./QueuePage";
 
 export default () => {
@@ -16,9 +15,8 @@ export default () => {
     </Route>
 
     <Route path={`${path}/blocks`} exact component={BlocksPage}/>
-    <Route path={`${path}/blocks/:hash`} exact component={BlockPage}/>
-    <Route path={`${path}/blocks/:blockId/transactions`} exact component={Transactions}/>
-    <Route path={`${path}/blocks/:blockId/transactions/:hash`} component={Transaction}/>
+    <Route path={`${path}/blocks/:param`} exact component={BlockPage}/>
+    <Route path={`${path}/blocks/:param/transactions`} exact component={Transactions}/>
     <Route path={`${path}/queue`} component={QueuePage}/>
   </Switch>;
 };

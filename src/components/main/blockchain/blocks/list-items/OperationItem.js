@@ -1,17 +1,9 @@
-import React from "react";
-import {createUseStyles} from "react-jss";
-
-import {Link} from "react-router-dom";
-import {List, ListItemText, ListItem} from "@material-ui/core";
+import React from 'react';
+import {makeStyles} from "@material-ui/styles";
+import {List, ListItem, ListItemText} from "@material-ui/core";
 import DataListItem from "./DataListItem";
 
-const useStyles = createUseStyles({
-  link: {
-    color: "#2D69E0",
-  },
-  value: {
-    color: "#000",
-  },
+const useStyless = makeStyles({
   listItem: {
     paddingTop: 0,
     paddingBottom: 0,
@@ -19,19 +11,15 @@ const useStyles = createUseStyles({
       margin: 0,
     }
   }
-});
+})
 
-export default ({entity, params}) => {
+export default function OperationItem({block}) {
+  const classes = useStyless();
   const {
     type,
-    signed_by,
-    hash,
-    shortHash,
     objects_type,
     objects,
-  } = entity;
-
-  const { blockId } = params;
+  } = block;
 
   let operationType = "";
   if (objects_type === 'create') {
@@ -51,18 +39,9 @@ export default ({entity, params}) => {
     return o.id;
   });
 
-  let signedText;
-  if (Array.isArray(signed_by)){
-    signedText = signed_by.join(', ');
-  } else {
-    signedText = signed_by;
-  }
+  const title = `Operation type: ${type}`;
 
-  const classes = useStyles();
-  const header = (<Link to={`/data/blocks/${blockId}/transactions/${hash}`} className={classes.link}>Operation type: {type}</Link>);
-  const footer = <>Signed by: <span className={classes.value}>{signedText}</span></>;
-
-  return <DataListItem json={entity} header={header} footer={footer} hash={shortHash}>
+  return <DataListItem block={block} title={title} link={"/"}>
     <p><strong>{objects.length}</strong> objects {operationType}</p>
     <p>Objects:</p>
     <List>
@@ -71,4 +50,4 @@ export default ({entity, params}) => {
       </ListItem>)}
     </List>
   </DataListItem>;
-}
+};
