@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 
 import {getBlock, getBlockTransactions} from "../../../api/data";
 import {useParams} from "react-router";
+import {usePromiseTracker} from "react-promise-tracker";
+import {makeStyles} from "@material-ui/styles";
 
 import {Box} from "@material-ui/core";
 import Loader from "../blocks/Loader";
@@ -12,8 +14,18 @@ import Value from "./blocks/Value";
 import BlocksList from "./blocks/BlocksList";
 import BlocksHeader from "./blocks/BlocksHeader";
 import Error404 from "../Error404";
+import FilterOperations from "./blocks/FilterOperations";
+
+const useStyles = makeStyles({
+  header: {
+    alignItems: "center",
+    justifyContent: "space-between",
+  }
+});
 
 export default () => {
+  const classes = useStyles()
+  const { promiseInProgress } = usePromiseTracker();
   const {param} = useParams();
   const [state, setState] = useState({
     operations: [],
@@ -22,6 +34,7 @@ export default () => {
     loading: true,
   });
   const [error, setError] = useState(null);
+  const [filter, setFilter] = useState('');
   const {loading, operations, block, count} = state;
 
   useEffect(() => {
@@ -84,10 +97,15 @@ export default () => {
     throw error;
   }
 
+  const selectedOps = operations.filter((op) => {
+    if (!filter) return true;
+    return op.type === filter;
+  });
+
   let content;
-  if (!loading) {
-    if (operations.length) {
-      content = operations.map((op) => <OperationItem key={op.shortHash} block={op}/>)
+  if (!loading && !promiseInProgress) {
+    if (selectedOps.length) {
+      content = selectedOps.map((op) => <OperationItem key={op.shortHash} block={op}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }
@@ -96,7 +114,10 @@ export default () => {
   }
 
   return <BlocksList>
-    <BlocksHeader>{`Transactions Block#${block.id}`}</BlocksHeader>
+    <Box display="flex" className={classes.header}>
+      <BlocksHeader>{`Transactions Block#${block.id}`}</BlocksHeader>
+      <FilterOperations onChange={setFilter} value={filter}/>
+    </Box>
 
     <BlockInfo block={block}/>
     <SummaryBlock>
