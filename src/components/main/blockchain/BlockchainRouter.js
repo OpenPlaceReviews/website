@@ -17,6 +17,7 @@ export default () => {
     <Route path={`${path}/blocks`} exact component={BlocksPage}/>
     <Route path={`${path}/blocks/:param`} exact component={BlockPage}/>
     <Route path={`${path}/blocks/:param/transactions`} exact component={Transactions}/>
+    <Route path={`${path}/blocks/:param/transactions/:hash`} exact component={Transactions}/>
     <Route path={`${path}/queue`} component={QueuePage}/>
   </Switch>;
 };

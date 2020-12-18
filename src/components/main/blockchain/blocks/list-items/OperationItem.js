@@ -1,53 +1,41 @@
-import React from 'react';
-import {makeStyles} from "@material-ui/styles";
-import {List, ListItem, ListItemText} from "@material-ui/core";
+import React, {useContext} from 'react';
+import {useParams} from "react-router";
 import DataListItem from "./DataListItem";
-
-const useStyless = makeStyles({
-  listItem: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    "& div": {
-      margin: 0,
-    }
-  }
-})
+import OperationsContext from "../../providers/OperationsContext";
+import OperationIcon from "../../assets/icons/OperationIcon";
+import BlockIcon from "../../assets/icons/BlockIcon";
 
 export default function OperationItem({block}) {
-  const classes = useStyless();
-  const {
-    type,
-    objects_type,
-    objects,
-  } = block;
+  const {url} = useParams();
+  const {types} = useContext(OperationsContext);
 
-  let operationType = "";
-  if (objects_type === 'create') {
-    operationType = 'added'
+  const OpClass = types[block.type];
+  const icon = OpClass.getIcon();
+  let Icon = OperationIcon[icon];
+  if (!Icon) {
+    Icon = BlockIcon;
   }
-  if (objects_type === 'edit') {
-    operationType = 'edited'
+  const title = OpClass.getOpDescription(block);
+  const link = `${url}/transactions/${block.hash}`;
+
+  let objects;
+  let summary;
+  if (block.action === 'delete') {
+    objects = block.old;
+    summary = 'Objects deleted: ';
+  } else if (block.action === 'create') {
+    objects = block.new;
+    summary = 'Objects created:';
+  } else {
+    objects = block.edit;
+    summary = 'Objects modifed:';
   }
-  if (objects_type === 'delete') {
-    operationType = 'removed'
-  }
-  const objectsList = objects.map((o) => {
-    if (Array.isArray(o.id)) {
-      return o.id.join(', ');
-    }
 
-    return o.id;
-  });
+  const lastObject = objects[0];
 
-  const title = `Operation type: ${type}`;
-
-  return <DataListItem block={block} title={title} link={"/"}>
-    <p><strong>{objects.length}</strong> objects {operationType}</p>
-    <p>Objects:</p>
-    <List>
-      {objectsList.map((o) => <ListItem className={classes.listItem} key={o}>
-        <ListItemText><strong>{o}</strong></ListItemText>
-      </ListItem>)}
-    </List>
+  return <DataListItem block={block} title={title} icon={<Icon/>} link={link}>
+    <p>{OpClass.getObjDescription(lastObject)}</p>
+    <p>Object type: <strong>{OpClass.getObjName(lastObject)}</strong></p>
+    <p>{summary} <strong>{objects.length}</strong></p>
   </DataListItem>;
 };

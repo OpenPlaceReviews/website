@@ -10,34 +10,23 @@ const getShortHash = (hash) => {
 const getRawHash = (hash) => hash.split(":").pop();
 
 const transformOperation = (op) =>  {
-  let objects = [];
-  let objects_type = '';
-
-  if (op.create) {
-    objects_type = 'create';
-  }
+  let action = '';
   if (op.edit) {
-    objects_type = 'edit';
-  }
-  if (op.delete) {
-    objects_type = 'delete';
-  }
-
-  const rawObjects = op[objects_type];
-  if (Array.isArray(rawObjects)){
-    objects = rawObjects.flat();
-  } else {
-    objects.push(rawObjects);
-  }
-
-  if (op.delete) {
-    objects = objects.map((o) => ({ id: o }));
+    //TODO: "edit" type is new or old?
+    action = 'edit';
+  } else if (op.create) {
+    action = 'create';
+    op.new = [ ...op.create ];
+    delete op.create;
+  } else if (op.delete) {
+    action = 'delete';
+    op.old = [ ...op.delete ];
+    delete op.delete;
   }
 
   return {
     ...op,
-    objects,
-    objects_type,
+    action,
     fullHash: op.hash,
     hash: getRawHash(op.hash),
     shortHash: getShortHash(op.hash),
