@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({text, count}) => {
+export default function SidebarHeader({text, count}) {
   const classes = useStyles();
 
   return <ListItem>

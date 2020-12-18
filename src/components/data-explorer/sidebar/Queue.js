@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import SidebarItem from "./SidebarItem";
-import QueueIcon from "../icons/QueueIcon";
-import {getQueue} from "../../../api/data";
 
-export default () => {
+import {getQueue} from "../../../../../api/data";
+
+import SidebarItem from "./SidebarItem";
+import QueueIcon from "../../assets/icons/QueueIcon";
+
+export default function Queue() {
   const [opsCount, setCount] = useState(0);
 
   useEffect(() => {

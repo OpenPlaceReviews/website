@@ -7,6 +7,49 @@ const FETCH_QUEUE = `${API_BASE}/api/queue`;
 const FETCH_OBJECTS = `${API_BASE}/api/objects`;
 const FETCH_QUEUE_BY_ID = `${API_BASE}/api/ops-by-block-id`;
 const FETCH_QUEUE_BY_HASH = `${API_BASE}/api/ops-by-block-hash`;
+const FETCH_TRANSACTION = `${API_BASE}/api/op-by-hash-in-block`;
+
+const getShortHash = (hash) => {
+  const rawHash = hash.split(":").pop();
+  return rawHash.substring(0, 16);
+}
+
+const getRawHash = (hash) => hash.split(":").pop();
+
+const transformOperation = (op) =>  {
+  let objects = [];
+  let objects_type = '';
+
+  if (op.create) {
+    objects_type = 'create';
+  }
+  if (op.edit) {
+    objects_type = 'edit';
+  }
+  if (op.delete) {
+    objects_type = 'delete';
+  }
+
+  const rawObjects = op[objects_type];
+  if (Array.isArray(rawObjects)){
+    objects = rawObjects.flat();
+  } else {
+    objects.push(rawObjects);
+  }
+
+  if (op.delete) {
+    objects = objects.map((o) => ({ id: o }));
+  }
+
+  return {
+    ...op,
+    objects,
+    objects_type,
+    fullHash: op.hash,
+    hash: getRawHash(op.hash),
+    shortHash: getShortHash(op.hash),
+  };
+};
 
 export const getBlocks = async (reqParams = {}) => {
   const params = {
@@ -26,13 +69,12 @@ export const getBlocks = async (reqParams = {}) => {
   const { data } = await trackPromise(get(FETCH_BLOCKS, { params }));
 
   const blocks = data.blocks.map((b) => {
-    const hash = b.hash.split(":").pop();
-    const shortHash = hash.substring(0, 16);
-
     return {
       ...b,
-      hash,
-      shortHash,
+      id: b.block_id,
+      block_date: b.date,
+      hash: getRawHash(b.hash),
+      shortHash: getShortHash(b.hash),
     };
   });
 
@@ -45,16 +87,22 @@ export const getBlocks = async (reqParams = {}) => {
 export const getQueue = async (reqParams = {}) => {
   const {blockId, blockHash} = reqParams;
 
-  let responce;
+  let url;
+  const params = {};
   if (!!blockId) {
-    responce = await get(FETCH_QUEUE_BY_ID, {params: { blockId }});
+    url = FETCH_QUEUE_BY_ID;
+    params.blockId = blockId;
   } else if (!!blockHash) {
-    responce = await get(FETCH_QUEUE_BY_HASH, {params: { hash: blockHash }});
+    url = FETCH_QUEUE_BY_HASH;
+    params.hash = blockHash;
   } else {
-    responce = await get(FETCH_QUEUE);
+    url = FETCH_QUEUE;
   }
 
-  const { data: { ops } } = responce;
+  const responce = await trackPromise(get(url, {params}));
+
+  const ops = responce.data.ops.map(transformOperation);
+
   return {
     queue: ops,
     count: ops.length,
@@ -62,22 +110,25 @@ export const getQueue = async (reqParams = {}) => {
 };
 
 export const getOperations = async () => {
-  const params = {
-    type: "sys.operation",
-    limit: 50,
-  };
+  const params = { type: "sys.operation" };
+  const { data } = await trackPromise(get(FETCH_OBJECTS, { params }));
 
-  const { data } = await get(FETCH_OBJECTS, { params });
-
-  const objects = data.objects.map(o => {
-    return {
-      ...o,
-      object_id: o.id[0],
-    }
-  });
+  const operations = data.objects.map(b => ({
+    ...b,
+    id: b.id[0],
+  }));
 
   return {
-    objects,
-    count: data.objects.length,
+    operations,
+    count: operations.length,
   };
+};
+
+export const getTransaction = async (hash) => {
+  const params = {
+    hash,
+  };
+
+  const { data } = await get(FETCH_TRANSACTION, { params });
+  return transformOperation(data.ops[0]);
 };
