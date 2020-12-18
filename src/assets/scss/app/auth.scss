@@ -1,0 +1,312 @@
+.auth-container {
+  min-width: 280px;
+  max-width: 540px;
+  margin: 0 auto;
+  color: #212121;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 26px;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  min-height: calc(100vh - 217px);
+  margin-bottom: 40px;
+  padding: 0 20px;
+  h1{
+    margin-top: 40px;
+    margin-bottom: 20px;
+    line-height: 48px;
+    font-size: 40px;
+    letter-spacing: 0.01em;
+  }
+  p{
+    margin-top: 13px;
+  }
+  .socialaccount_ballot p{
+    font-weight: 600;
+  }
+  .socialaccount_ballot ul{
+    padding: 0;
+  }
+  .socialaccount_ballot ul li{
+    list-style-type: none;
+    max-width: 540px;
+    border-bottom: 1px solid #E4E7ED;
+  }
+  .socialaccount_ballot ul li:last-child{
+    border-bottom: none;
+  }
+  .method-auth{
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+  }
+  .method-auth img{
+    height: 20px;
+    margin-top: 15px;
+    margin-right: 14px;
+    margin-left: 10px;
+  }
+  .method-auth a{
+    margin-block-start: 15px;
+  }
+  .method-auth-nickname{
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    align-items: center;
+  }
+
+  .method-auth-nickname-active-form{
+    background: #2D69E0;
+    cursor: pointer;
+    color: #FFFFFF;
+    border: 1px solid #2D69E0;
+    box-sizing: border-box;
+    border-radius: 4px;
+  }
+
+
+  .method-auth-nickname img{
+    height: 20px;
+    margin-right: 14px;
+    margin-left: 10px;
+  }
+  .nickname-method{
+    color: #2D69E0;
+    cursor: pointer;
+  }
+  .method-auth-nickname-active-form .nickname-method{
+    color: #FFFFFF;
+  }
+
+  .form-alert {
+    margin-bottom: 20px;
+  }
+  .form-item{
+    margin-bottom: 20px;
+  }
+  .form-hidden{
+    display: none;
+  }
+  .block_hidden{
+    display: none;
+  }
+  .login-form-input{
+    width: 100%;
+    text-indent: 10px;
+    max-width: 540px;
+    min-width: 280px;
+    //height: 40px;
+    background: #F7F7F7;
+    border: 1px solid #CCD0D9;
+    box-sizing: border-box;
+    box-shadow: inset 0 2px 0 rgba(228, 231, 237, 0.3);
+    border-radius: 4px;
+  }
+  .login-form-input:focus{
+    background: #FFFFFF;
+    border: 1px solid #2D69E0;
+    box-shadow: inset 0 4px 2px rgba(0, 0, 0, 0.1), inset 0 0 5px rgba(0, 0, 0, 0.35);
+  }
+  .form-item .input-description{
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: rgba(49, 50, 51, 0.7);
+  }
+
+  button:not(.MuiButtonBase-root){
+    background: #F1F4FC;
+    border: 2px solid #2D69E0;
+    box-sizing: border-box;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    color: #2D69E0;
+    padding: 0 20px;
+    font-weight: bold;
+    line-height: normal;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    height: 40px;
+  }
+
+  .form-error, .form-field-error{
+    display: flex;
+    width: 540px;
+    min-height: 40px;
+    background: #FF595E;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+    margin-top: 5px;
+  }
+  .error-field{
+    border-color: #FF595E;
+    border-width: 1px;
+  }
+
+  .form-error img, .form-field-error img{
+    width: 20px;
+    height: 20px;
+    margin: 10px 6px 10px 10px;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .form-error .erorr-description, .form-field-error .erorr-description{
+    margin-top: 12px;
+    max-width: 500px;
+    right: 0;
+    display: block;
+    margin-bottom: 10px;
+    line-height: 18px;
+  }
+  .signup-checkbox-block{
+    display: flex;
+    flex-direction: row;
+  }
+  .signup-input-label{
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 15px;
+  }
+  .form-item-boolean {
+    border: 1px solid #CCD0D9;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    input[type="checkbox"] {
+      display: none;
+    }
+    input[type="checkbox"]:checked + .box::before {
+      content: "\f14a";
+      color: #2D69E0;
+      animation: checkanimate 200ms;
+    }
+    .box::before {
+      content: "\f096";
+      color: #CCD0D9;
+      font-family: "FontAwesome";
+      font-weight: normal;
+      font-style: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      display: inline-block;
+      font-size: 20px;
+      cursor: pointer;
+      margin: 20px 0 20px 20px;
+      width: 16px
+    }
+    .inject {
+      padding: 0 1.3em 1.3em 1.3em;
+    }
+  }
+  .expand-block{
+    display: block;
+  }
+  .signup-input-description{
+    margin-left: 20px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+    margin-bottom: 20px;
+    margin-right: 20px;
+  }
+  .expand-btn{
+    padding: 9px 0 8px 57px;
+    cursor: pointer;
+    background: #F1F4FC;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    color: #2D69E0;
+  }
+  .expanded_block{
+    display: none;
+  }
+
+  .expand-block-data{
+    margin: 15px 20px;
+  }
+  .optional-fields{
+    margin-bottom: 30px;
+  }
+
+  .optional-fields-grid {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .headline-optional-fields{
+    font-style: normal;
+    font-weight: 800;
+    line-height: 25px;
+    font-size: 20px;
+    letter-spacing: 0.03em;
+    color: #140579;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+
+  .optional-field{
+    line-height: 1.15em;
+    margin-bottom: 15px;
+    width: 250px;
+    .optional_field_lable{
+      line-height: 26px;
+    }
+  }
+  .oauth_avatar {
+    position: absolute;
+    margin-left: -70px;
+    img{
+      width: 50px;
+      height: 50px;
+      border-radius: 50px; /* Радиус скругления */
+      //border: 3px solid green; /* Параметры рамки */
+    }
+  }
+
+  @media (max-width: 500px) {
+    .optional-fields-grid {
+      display: block;
+    }
+    .optional-field {
+      width: 100%;
+    }
+  }
+
+  .help_text {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 0.75rem;
+    text-align: left;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1.66;
+    letter-spacing: 0.03333em;
+  }
+
+  .highlight {
+    border-bottom: 2px solid #FED30A;
+    line-height: 1.3em;
+    .bold {
+      font-weight: bold;
+    }
+  }
+
+  .username {
+    color: #2D69E0;
+  }
+}

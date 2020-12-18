@@ -1,11 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./app.js";
+import App from "./App.js";
 import "./assets/scss/app.scss";
-import {BrowserRouter} from "react-router-dom";
 
-ReactDOM.render((
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-), document.querySelector("#root"));
+ReactDOM.render(<App/>, document.querySelector("#root"));
