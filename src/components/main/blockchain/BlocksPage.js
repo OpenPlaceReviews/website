@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
 import {Box, Button} from "@material-ui/core";
-import {makeStyles} from "@material-ui/styles";
 import { usePromiseTracker } from "react-promise-tracker";
 
 import { getBlocks } from "../../../api/data";
@@ -9,19 +8,8 @@ import config from "../../../config";
 
 import BlockItem from "./blocks/list-items/BlockItem";
 import Loader from "../blocks/Loader";
-const useStyles = makeStyles({
-  h1: {
-    marginBottom: "20px",
-    fontSize: "40px",
-    letterSpacing: "0.01em",
-  },
-  list: {
-    borderTop: "1px solid #E4E8F2",
-    position: "relative",
-    minHeight: "200px",
-    paddingBottom: "20px",
-  },
-});
+import BlocksList from "./blocks/BlocksList";
+import BlocksHeader from "./blocks/BlocksHeader";
 
 const BLOCKS_PER_PAGE = config.blockchain.blocksPageLimit;
 
@@ -35,11 +23,6 @@ export default () => {
     error: null,
   });
   const [error, setError] = useState(null);
-  if (error) {
-    throw error;
-  }
-
-  const classes = useStyles();
   const { promiseInProgress } = usePromiseTracker();
 
   useEffect(() => {
@@ -78,17 +61,21 @@ export default () => {
     }
   }, [load]);
 
+  if (error) {
+    throw error;
+  }
+
   let content;
   if (state.isLoaded) {
     if (state.blocks.length) {
-      content = state.blocks.map((b) => <BlockItem key={b.id} entity={b}/>)
+      content = state.blocks.map((b) => <BlockItem key={b.id} block={b}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }
   }
 
-  return <div className={classes.list}>
-      <h1 className={classes.h1}>Blocks</h1>
+  return <BlocksList>
+      <BlocksHeader>Blocks</BlocksHeader>
 
       {content}
 
@@ -97,5 +84,5 @@ export default () => {
       </Box>}
 
       {promiseInProgress && <Loader/>}
-    </div>;
+    </BlocksList>;
 };

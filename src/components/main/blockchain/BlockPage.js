@@ -1,53 +1,64 @@
 import React, {useEffect, useState} from 'react';
-import {makeStyles} from "@material-ui/styles";
-import {usePromiseTracker} from "react-promise-tracker";
+import {useParams} from "react-router";
 
-import {getBlocks} from "../../../api/data";
+import {getBlock} from "../../../api/data";
+
 import Loader from "../blocks/Loader";
 import BlockInfo from "./blocks/BlockInfo";
+import SummaryViewer from "./blocks/JSONViewer/SumaryViewer";
+import BlocksHeader from "./blocks/BlocksHeader";
+import Error404 from "../Error404";
 
-const useStyles = makeStyles({
-  h1: {
-    marginBottom: "20px",
-    fontSize: "40px",
-    letterSpacing: "0.01em",
-  },
-  item: {
-    marginBottom: "20px",
-  }
-});
+export default () => {
+  const { param } = useParams();
 
-export default ({match}) => {
-  const classes = useStyles();
-  const {promiseInProgress} = usePromiseTracker();
-  const [block, setBlock] = useState(null);
-  const {params: { hash }} = match;
+  const [state, setState] = useState({
+    loading: true,
+    block: null,
+  });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { blocks } = await getBlocks({
-          limit: 1,
-          to: hash,
-        });
+        let blockId = null;
+        let hash = null;
+        if (Number(param) > 0) {
+          blockId = param;
+        } else {
+          hash = param;
+        }
 
-        setBlock(blocks[0]);
-      } catch (e) {
-        console.warn('Network request failed');
+        const block = await getBlock({blockId, hash});
+
+        setState({
+          block,
+          loading: false,
+        });
+      } catch (error) {
+        setError(error);
       }
     };
 
     fetchData();
   }, []);
 
-  if (!block || promiseInProgress) {
+  if (error) {
+    if (error.code === 404) {
+      return <Error404/>;
+    }
+
+    throw error;
+  }
+
+  const {block, loading} = state;
+  if (loading) {
     return <Loader/>;
   }
 
-  return <div className={classes.item}>
-    <h1 className={classes.h1}>Block #{block.id}</h1>
-    <BlockInfo block={block}>
-      <p>Operations count: <span>{block.operations_size}</span></p>
-    </BlockInfo>
+  return <div>
+    <BlocksHeader>Block #{block.id}</BlocksHeader>
+    <BlockInfo block={block}/>
+    <SummaryViewer block={block}/>
   </div>;
 };
