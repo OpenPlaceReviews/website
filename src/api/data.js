@@ -1,13 +1,6 @@
 import {get} from "axios";
 import { trackPromise } from 'react-promise-tracker'
-
-const API_BASE = "";
-const FETCH_BLOCKS = `${API_BASE}/api/blocks`;
-const FETCH_QUEUE = `${API_BASE}/api/queue`;
-const FETCH_OBJECTS = `${API_BASE}/api/objects`;
-const FETCH_QUEUE_BY_ID = `${API_BASE}/api/ops-by-block-id`;
-const FETCH_QUEUE_BY_HASH = `${API_BASE}/api/ops-by-block-hash`;
-const FETCH_TRANSACTION = `${API_BASE}/api/op-by-hash-in-block`;
+import { NotFoundError } from './errors';
 
 const getShortHash = (hash) => {
   const rawHash = hash.split(":").pop();
@@ -17,39 +10,36 @@ const getShortHash = (hash) => {
 const getRawHash = (hash) => hash.split(":").pop();
 
 const transformOperation = (op) =>  {
-  let objects = [];
-  let objects_type = '';
-
-  if (op.create) {
-    objects_type = 'create';
-  }
+  let action = '';
   if (op.edit) {
-    objects_type = 'edit';
-  }
-  if (op.delete) {
-    objects_type = 'delete';
-  }
-
-  const rawObjects = op[objects_type];
-  if (Array.isArray(rawObjects)){
-    objects = rawObjects.flat();
-  } else {
-    objects.push(rawObjects);
-  }
-
-  if (op.delete) {
-    objects = objects.map((o) => ({ id: o }));
+    //TODO: "edit" type is new or old?
+    action = 'edit';
+  } else if (op.create) {
+    action = 'create';
+    op.new = [ ...op.create ];
+    delete op.create;
+  } else if (op.delete) {
+    action = 'delete';
+    op.old = [ ...op.delete ];
+    delete op.delete;
   }
 
   return {
     ...op,
-    objects,
-    objects_type,
+    action,
     fullHash: op.hash,
     hash: getRawHash(op.hash),
     shortHash: getShortHash(op.hash),
   };
 };
+
+const transformBlock = (block) => ({
+  ...block,
+  id: block.block_id,
+  block_date: block.date,
+  hash: getRawHash(block.hash),
+  shortHash: getShortHash(block.hash),
+});
 
 export const getBlocks = async (reqParams = {}) => {
   const params = {
@@ -66,17 +56,8 @@ export const getBlocks = async (reqParams = {}) => {
     params.to = reqParams.to;
   }
 
-  const { data } = await trackPromise(get(FETCH_BLOCKS, { params }));
-
-  const blocks = data.blocks.map((b) => {
-    return {
-      ...b,
-      id: b.block_id,
-      block_date: b.date,
-      hash: getRawHash(b.hash),
-      shortHash: getShortHash(b.hash),
-    };
-  });
+  const { data } = await trackPromise(get('/api/blocks', { params }));
+  const blocks = data.blocks.map((b) => transformBlock(b));
 
   return {
     blocks: blocks,
@@ -84,34 +65,39 @@ export const getBlocks = async (reqParams = {}) => {
   };
 };
 
-export const getQueue = async (reqParams = {}) => {
-  const {blockId, blockHash} = reqParams;
-
+export const getBlock = async ({blockId, hash}) => {
   let url;
   const params = {};
-  if (!!blockId) {
-    url = FETCH_QUEUE_BY_ID;
+  if (!!hash) {
+    url = '/api/block-by-hash';
+    params.hash = hash;
+  } else if(!!blockId) {
+    url = '/api/block-header-by-id';
     params.blockId = blockId;
-  } else if (!!blockHash) {
-    url = FETCH_QUEUE_BY_HASH;
-    params.hash = blockHash;
-  } else {
-    url = FETCH_QUEUE;
   }
 
-  const responce = await trackPromise(get(url, {params}));
+  const { data: block } = await get(url, { params });
 
-  const ops = responce.data.ops.map(transformOperation);
+  if (Object.keys(block).length === 0) {
+    throw new NotFoundError('Block not found')
+  }
+
+  return transformBlock(block);
+}
+
+export const getQueue = async () => {
+  const { data: { ops }} = await get('/api/queue');
+  const queue = ops.map(transformOperation);
 
   return {
-    queue: ops,
-    count: ops.length,
+    queue,
+    count: queue.length,
   };
 };
 
 export const getOperations = async () => {
   const params = { type: "sys.operation" };
-  const { data } = await trackPromise(get(FETCH_OBJECTS, { params }));
+  const { data } = await trackPromise(get('/api/objects', { params }));
 
   const operations = data.objects.map(b => ({
     ...b,
@@ -124,11 +110,32 @@ export const getOperations = async () => {
   };
 };
 
+export const getBlockTransactions = async ({blockId, hash} = {}) => {
+  let url;
+  const params = {};
+  if (!!blockId) {
+    url = '/api/ops-by-block-id';
+    params.blockId = blockId;
+  } else if (!!hash) {
+    url = '/api/ops-by-block-hash';
+    params.hash = hash;
+  }
+
+  const { data: { ops }} = await trackPromise(get(url, {params}));
+
+  const operations = ops.map(transformOperation);
+
+  return {
+    operations,
+    count: operations.length,
+  };
+}
+
 export const getTransaction = async (hash) => {
   const params = {
     hash,
   };
 
-  const { data } = await get(FETCH_TRANSACTION, { params });
+  const { data } = await get('/api/op-by-hash-in-block', { params });
   return transformOperation(data.ops[0]);
 };
