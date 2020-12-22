@@ -72,7 +72,7 @@ export default () => {
       let operations;
       let count;
       try {
-        const results = await getBlockTransactions({ blockId: block.id });
+        const results = await getBlockTransactions({ blockId: block.block_id });
         operations = results.operations;
         count = results.count;
       } catch (error) {
@@ -110,7 +110,7 @@ export default () => {
   let stat = [];
   if (!loading && !promiseInProgress) {
     if (selectedOps.length) {
-      content = selectedOps.map((op) => <OperationItem key={op.shortHash} block={op} blockId={block.id}/>)
+      content = selectedOps.map((op) => <OperationItem key={op.hash} operation={op} blockId={block.block_id}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }
@@ -142,15 +142,15 @@ export default () => {
 
   return <BlocksList>
     <Box display="flex" className={classes.header}>
-      <BlocksHeader>{`Transactions Block#${block.id}`}</BlocksHeader>
+      <BlocksHeader>{`Transactions Block#${block.block_id}`}</BlocksHeader>
       <FilterOperations onChange={setFilter} value={filter}/>
     </Box>
 
     <BlockInfo block={block}/>
     <SummaryBlock>
       <p>Operaioons in queue: <Value>{count}</Value></p>
-      {oldestOp && (<p>Oldest operation: <Value>{`'${oldestOp.type}' by ${oldestOp.signed_by}`}</Value></p>)}
-      {newestOp && (<p>Newest operation: <Value>{`'${newestOp.type}' by ${newestOp.signed_by}`}</Value></p>)}
+      {oldestOp && (<p>Oldest operation: <Value>{`'${oldestOp.type}' by ${oldestOp.clientData.signedByStr}`}</Value></p>)}
+      {newestOp && (<p>Newest operation: <Value>{`'${newestOp.type}' by ${newestOp.clientData.signedByStr}`}</Value></p>)}
       {stat.length && (<p>Operations description: <Value>{stat.join(', ')}</Value></p>)}
     </SummaryBlock>
 

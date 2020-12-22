@@ -68,7 +68,7 @@ export default () => {
   let content;
   if (state.isLoaded) {
     if (state.blocks.length) {
-      content = state.blocks.map((b) => <BlockItem key={b.id} block={b}/>)
+      content = state.blocks.map((b) => <BlockItem key={b.hash} block={b}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }

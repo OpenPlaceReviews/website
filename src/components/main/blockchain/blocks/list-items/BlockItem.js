@@ -4,13 +4,13 @@ import Value from "../Value";
 
 export default function BlockItem({block}) {
   const {
-    id,
+    block_id,
     operations_size,
-    block_date
+    date
   } = block;
 
-  return <DataListItem block={block} title={`Block #${id}`} link={`/data/block/${id}`}>
+  return <DataListItem block={block} title={`Block #${block_id}`} link={`/data/block/${block_id}`}>
     <p>Operations count: <Value>{operations_size}</Value></p>
-    <p>Date: <Value>{block_date}</Value></p>
+    <p>Date: <Value>{date}</Value></p>
   </DataListItem>;
 }
