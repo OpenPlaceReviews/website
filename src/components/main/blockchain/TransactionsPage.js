@@ -65,7 +65,7 @@ export default () => {
     };
 
     fetchData();
-  }, []);
+  }, [param]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +89,7 @@ export default () => {
     if (!loading) {
       fetchData();
     }
-  }, [loading]);
+  }, [loading, block]);
 
   if (error) {
     if (error.code === 404) {
