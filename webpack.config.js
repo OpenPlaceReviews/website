@@ -16,7 +16,7 @@ module.exports = {
   },
   plugins: [
     new Dotenv({
-      safe: true,
+      safe: false,
       systemvars: true,
       allowEmptyValues: true
     }),
