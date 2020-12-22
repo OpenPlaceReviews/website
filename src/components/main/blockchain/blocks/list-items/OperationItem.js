@@ -1,12 +1,10 @@
 import React, {useContext} from 'react';
-import {useParams} from "react-router";
 import DataListItem from "./DataListItem";
 import OperationsContext from "../../providers/OperationsContext";
 import OperationIcon from "../../assets/icons/OperationIcon";
 import BlockIcon from "../../assets/icons/BlockIcon";
 
-export default function OperationItem({block}) {
-  const {url} = useParams();
+export default function OperationItem({block, blockId}) {
   const {types} = useContext(OperationsContext);
 
   const OpClass = types[block.type];
@@ -16,7 +14,7 @@ export default function OperationItem({block}) {
     Icon = BlockIcon;
   }
   const title = OpClass.getOpDescription(block);
-  const link = `${url}/transactions/${block.hash}`;
+  const link = `/data/block/${blockId}/transaction/${block.hash}`;
 
   let objects;
   let summary;

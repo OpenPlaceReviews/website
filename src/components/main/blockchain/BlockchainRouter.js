@@ -4,7 +4,9 @@ import {Redirect, Route, Switch, useRouteMatch} from "react-router-dom";
 import BlocksPage from "./BlocksPage";
 import BlockPage from "./BlockPage";
 import Transactions from "./TransactionsPage";
+import Transaction from "./TransactionPage";
 import QueuePage from "./QueuePage";
+import Error404 from "../Error404";
 
 export default () => {
   let {path, url} = useRouteMatch();
@@ -15,9 +17,10 @@ export default () => {
     </Route>
 
     <Route path={`${path}/blocks`} exact component={BlocksPage}/>
-    <Route path={`${path}/blocks/:param`} exact component={BlockPage}/>
-    <Route path={`${path}/blocks/:param/transactions`} exact component={Transactions}/>
-    <Route path={`${path}/blocks/:param/transactions/:hash`} exact component={Transactions}/>
+    <Route path={`${path}/block/:param`} exact component={BlockPage}/>
+    <Route path={`${path}/block/:param/transactions`} exact component={Transactions}/>
+    <Route path={`${path}/block/:param/transaction/:hash`} exact component={Transaction}/>
     <Route path={`${path}/queue`} component={QueuePage}/>
+    <Route path={`${path}/*`} component={Error404}/>
   </Switch>;
 };

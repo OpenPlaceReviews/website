@@ -137,5 +137,10 @@ export const getTransaction = async (hash) => {
   };
 
   const { data } = await get('/api/op-by-hash-in-block', { params });
+
+  if (data.ops.length === 0) {
+    throw new NotFoundError('Transaction not found')
+  }
+
   return transformOperation(data.ops[0]);
 };

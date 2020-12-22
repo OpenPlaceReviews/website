@@ -1,82 +1,80 @@
 import React, {useEffect, useState} from 'react';
-import {makeStyles} from "@material-ui/styles";
 import {usePromiseTracker} from "react-promise-tracker";
 
 import {getTransaction} from "../../../api/data";
 import Loader from "../blocks/Loader";
-import BlockInfo from "./blocks/BlockInfo";
-import {List, ListItem, ListItemText} from "@material-ui/core";
 import BlocksHeader from "./blocks/BlocksHeader";
-
-const useStyles = makeStyles({
-  listItem: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    "& div": {
-      margin: 0,
-    }
-  }
-});
+import Error404 from "../Error404";
+import SummaryBlock from "./blocks/SummaryBlock";
+import Value from "./blocks/Value";
 
 export default ({match}) => {
-  const classes = useStyles();
   const {promiseInProgress} = usePromiseTracker();
-  const [block, setBlock] = useState(null);
-  const {params: { hash, blockId }} = match;
+  const [error, setError] = useState(null);
+  const [state, setState] = useState({
+    block: null,
+    loading: true,
+  });
+
+  const {params: { hash }} = match;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const block = await getTransaction(hash);
-        setBlock(block);
-      } catch (e) {
-        console.log(e);
-        console.warn('Network request failed');
+        setState({
+          block,
+          loading: false,
+        });
+      } catch (error) {
+        setError(error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [hash]);
 
-  if (!block || promiseInProgress) {
+  if (error) {
+    if (error.code === 404) {
+      return <Error404/>;
+    }
+
+    throw error;
+  }
+
+  const {loading, block} = state;
+
+  if (loading || promiseInProgress) {
     return <Loader/>;
   }
 
-  const {
-    objects_type,
-    objects,
-  } = block;
-
-  block.id = blockId;
-
-  let operationType = "";
-  if (objects_type === 'create') {
-    operationType = 'added'
+  const {signed_by} = block;
+  let signedText;
+  if (Array.isArray(signed_by)){
+    signedText = signed_by.join(', ');
+  } else {
+    signedText = signed_by;
   }
-  if (objects_type === 'edit') {
-    operationType = 'edited'
-  }
-  if (objects_type === 'delete') {
-    operationType = 'removed'
-  }
-  const objectsList = objects.map((o) => {
-    if (Array.isArray(o.id)) {
-      return o.id.join(', ');
-    }
 
-    return o.id;
-  });
+  let objects;
+  let summary;
+  if (block.action === 'delete') {
+    objects = block.old;
+    summary = 'Objects deleted: ';
+  } else if (block.action === 'create') {
+    objects = block.new;
+    summary = 'Objects created:';
+  } else {
+    objects = block.edit;
+    summary = 'Objects modifed:';
+  }
 
   return <div>
     <BlocksHeader>Transaction {block.shortHash}</BlocksHeader>
-    <BlockInfo block={block}>
-      <p><strong>{block.objects.length}</strong> objects {operationType}</p>
-      <p>Objects:</p>
-      <List>
-        {objectsList.map((o) => <ListItem className={classes.listItem} key={o}>
-          <ListItemText><strong>{o}</strong></ListItemText>
-        </ListItem>)}
-      </List>
-    </BlockInfo>
+    <SummaryBlock>
+      <p>Hash: <Value>{hash}</Value></p>
+      <p>{summary} <Value>{objects.length}</Value></p>
+      <p>Signed by: <Value>#{signedText}</Value></p>
+    </SummaryBlock>
   </div>;
 };

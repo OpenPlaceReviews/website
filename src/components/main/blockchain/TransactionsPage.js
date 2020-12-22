@@ -110,7 +110,7 @@ export default () => {
   let stat = [];
   if (!loading && !promiseInProgress) {
     if (selectedOps.length) {
-      content = selectedOps.map((op) => <OperationItem key={op.shortHash} block={op}/>)
+      content = selectedOps.map((op) => <OperationItem key={op.shortHash} block={op} blockId={block.id}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }

@@ -3,7 +3,7 @@ import SummaryBlock from "./SummaryBlock";
 import Value from "./Value";
 import Selection from "./Selection";
 
-export default function BlockInfo({block, children}) {
+export default function BlockInfo({block}) {
   const {hash, id, signed_by, operations_size} = block;
 
   let signedText;
@@ -17,7 +17,6 @@ export default function BlockInfo({block, children}) {
     <p>Block id: <Selection>#{id}</Selection></p>
     <p>Hash: <Value>{hash}</Value></p>
     <p>Operations count: <Value>{operations_size}</Value></p>
-    {children}
     <p>Signed by: <Value>#{signedText}</Value></p>
   </SummaryBlock>;
 };
