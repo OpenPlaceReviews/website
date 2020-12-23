@@ -13,7 +13,7 @@ import BlocksHeader from "./blocks/BlocksHeader";
 
 const BLOCKS_PER_PAGE = config.blockchain.blocksPageLimit;
 
-export default () => {
+export default function BlocksPage() {
   const [load, setLoad] = useState(true);
   const [state, setState] = useState({
     hasMore: false,

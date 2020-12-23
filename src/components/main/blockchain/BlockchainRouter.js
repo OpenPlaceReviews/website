@@ -8,7 +8,7 @@ import Transaction from "./TransactionPage";
 import QueuePage from "./QueuePage";
 import Error404 from "../Error404";
 
-export default () => {
+export default function BlockChainRouter() {
   let {path, url} = useRouteMatch();
 
   return <Switch>

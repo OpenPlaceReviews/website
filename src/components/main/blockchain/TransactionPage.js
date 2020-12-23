@@ -10,7 +10,7 @@ import Value from "./blocks/Value";
 import JSONViewer from "./blocks/JSONViewer/JSONViewer";
 import ObjectsSummary from "./blocks/ObjectsSummary";
 
-export default ({match}) => {
+export default function TransactionPage({match}) {
   const {promiseInProgress} = usePromiseTracker();
   const [error, setError] = useState(null);
   const [state, setState] = useState({
