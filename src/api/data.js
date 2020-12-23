@@ -17,36 +17,6 @@ const splitSignedBy = (signed_by) => {
   return signed_by;
 }
 
-const transformOperation = (op) =>  {
-  let action = '';
-  let key = '';
-  if (op.edit) {
-    action = 'edit';
-  } else if (op.create) {
-    action = 'create';
-    key = 'new';
-  } else if (op.delete) {
-    action = 'delete';
-    key = 'old';
-  }
-
-  if (action !== 'edit') {
-    op[key] = [ ...op[action] ];
-    delete op[action];
-  }
-
-  return {
-    ...op,
-    clientData: {
-      action,
-      key,
-      rawHash: getRawHash(op.hash),
-      shortHash: getShortHash(op.hash),
-      signedByStr: splitSignedBy(op.signed_by),
-    }
-  };
-};
-
 const transformBlock = (block) => ({
   ...block,
   clientData: {
@@ -55,6 +25,22 @@ const transformBlock = (block) => ({
     signedByStr: splitSignedBy(block.signed_by),
   }
 });
+
+const transformOperation = (op) =>  {
+  if (op.create) {
+    op.new = [ ...op.create ];
+    delete op.create;
+  }
+  if (op.delete) {
+    op.old = [ ...op.delete ];
+    delete op.delete;
+  }
+
+  return {
+    ...op,
+    ...transformBlock(op),
+  };
+};
 
 export const getBlocks = async (reqParams = {}) => {
   const params = {

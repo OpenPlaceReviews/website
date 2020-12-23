@@ -42,7 +42,7 @@ export default () => {
   const {loading, queue} = state;
   if (!loading) {
     if (queue.length) {
-      content = queue.map((op) => <OperationItem key={op.shortHash} block={op}/>)
+      content = queue.map((op) => <OperationItem key={op.hash} operation={op}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }

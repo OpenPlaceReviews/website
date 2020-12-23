@@ -7,8 +7,8 @@ import BlocksHeader from "./blocks/BlocksHeader";
 import Error404 from "../Error404";
 import SummaryBlock from "./blocks/SummaryBlock";
 import Value from "./blocks/Value";
-import useFormatting from "./hooks/useFormatting";
 import JSONViewer from "./blocks/JSONViewer/JSONViewer";
+import ObjectsSummary from "./blocks/ObjectsSummary";
 
 export default ({match}) => {
   const {promiseInProgress} = usePromiseTracker();
@@ -17,7 +17,6 @@ export default ({match}) => {
     block: null,
     loading: true,
   });
-  const formating = useFormatting(state.block);
 
   const {params: { hash }} = match;
 
@@ -51,13 +50,11 @@ export default ({match}) => {
   }
 
   const {signedByStr, shortHash} = block.clientData;
-  const {summary, objects} = formating;
-
   return <div>
     <BlocksHeader>Transaction {shortHash}</BlocksHeader>
     <SummaryBlock>
       <p>Hash: <Value>{block.hash}</Value></p>
-      <p>{summary} <Value>{objects.length}</Value></p>
+      <ObjectsSummary op={block}/>
       <p>Signed by: <Value>#{signedByStr}</Value></p>
     </SummaryBlock>
     <JSONViewer open={true} json={block}/>
