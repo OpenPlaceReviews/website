@@ -3,9 +3,18 @@ import {makeStyles} from "@material-ui/styles";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import OperationsContext from "../providers/OperationsContext";
-import OperationIcon from "../assets/icons/OperationIcon";
-import BlockIcon from "../assets/icons/BlockIcon";
-import AllTypesIcon from "../assets/icons/AllTypesIcon";
+import BlockIcon from "../../../../assets/images/blockchain_icons/blockchain.svg";
+import AllTypesIcon from "../../../../assets/images/blockchain_icons/all_types.svg";
+
+const reqSvgs = require.context("../../../../assets/images/blockchain_icons/operations/", true, /\.svg$/)
+const operationsIcons = reqSvgs
+    .keys()
+    .reduce((images, path) => {
+      const name = path.replace(/^.*[\\\/]/, '').split('.').shift();
+      images[name] = reqSvgs(path).default;
+      return images;
+    }, {});
+
 
 const itemStyle = {
   display: "flex",
@@ -45,14 +54,20 @@ export default function FilterOperations({onChange, value}) {
     options = operations.map((op, i) => {
       const OpClass = types[op.id];
       const baseName = OpClass.getName(0);
-      const icon = OpClass.getIcon();
-      let IconComponent = OperationIcon[icon];
-      if (!IconComponent) {
+      const iconStr = OpClass.getIcon();
+      const [type, ic_name] = iconStr.split(':');
+      let IconComponent;
+      if (type === 'opendb-icons' && ic_name) {
+        IconComponent = operationsIcons[ic_name];
+      } else {
         IconComponent = BlockIcon;
       }
 
+      console.log(operationsIcons);
+      console.log(baseName, ic_name, operationsIcons[ic_name]);
+
       return <MenuItem key={i} value={op.id} className={classes.item}>
-        <IconComponent/>
+        <img src={IconComponent} alt="icon"/>
         <p className={classes.title}>{baseName}</p>
       </MenuItem>;
     });
@@ -68,7 +83,7 @@ export default function FilterOperations({onChange, value}) {
     variant={"outlined"}
   >
     <MenuItem value="" className={classes.item}>
-      <AllTypesIcon/>
+      <img src={AllTypesIcon} alt="icon"/>
       <p className={classes.title}>All types</p>
     </MenuItem>
     {options}

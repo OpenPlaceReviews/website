@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 import {Box} from "@material-ui/core";
-import BlockIcon from "../../assets/icons/BlockIcon";
+import BlockIcon from "../../../../../assets/images/blockchain_icons/blockchain.svg";
 import JSONViewer from "../JSONViewer/JSONViewer";
 import {Link} from "react-router-dom";
 import Value from "../Value";
@@ -64,7 +64,7 @@ export default ({link, block, title, icon, children}) => {
   }
 
   if (!icon) {
-    icon = <BlockIcon/>;
+    icon = BlockIcon;
   }
 
   const onExpandClick = (e) => {
@@ -74,7 +74,9 @@ export default ({link, block, title, icon, children}) => {
 
   return <div className={classes.item}>
     <Box display="flex" justifyContent="flex-start">
-      <div className={classes.icon}>{icon}</div>
+      <div className={classes.icon}>
+        <img src={icon} alt="icon"/>
+      </div>
       <div className={classes.content}>
         <Box display="flex" justifyContent="space-between">
           <h2 className={classes.header}>

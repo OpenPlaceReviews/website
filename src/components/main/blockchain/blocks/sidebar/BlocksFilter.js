@@ -6,8 +6,8 @@ import {getBlocks} from "../../../../../api/data";
 import ListItemText from "@material-ui/core/ListItemText";
 import SidebarItem from "./SidebarItem";
 import ListItemSidebar from "./ListItemSidebar";
-import BlocksIcon from "../../assets/icons/BlocksIcon";
-import BlockIcon from "../../assets/icons/BlockIcon";
+import BlocksIcon from "../../../../../assets/images/blockchain_icons/blocks.svg";
+import BlockIcon from "../../../../../assets/images/blockchain_icons/blockchain.svg";
 
 import config from "../../../../../config";
 
@@ -74,7 +74,7 @@ export default function BlocksFilter() {
     content = blocks.map((b) => <SidebarItem
       count={b.operations_size}
       text={`Block #${b.block_id}`}
-      Icon={BlockIcon}
+      icon={BlockIcon}
       to={`/data/blocks/${b.block_id}/transactions`}
       key={b.block_id}
     />)
@@ -86,7 +86,7 @@ export default function BlocksFilter() {
       count={blocksCount}
       className={classes.allBlocks}
       text="All blocks"
-      Icon={BlocksIcon}
+      icon={BlocksIcon}
       to={`/data/blocks`}
     />
     {content}

@@ -1,41 +1,49 @@
-import React, {useContext} from 'react';
-import {useParams} from "react-router";
+import React from 'react';
 import DataListItem from "./DataListItem";
-import OperationsContext from "../../providers/OperationsContext";
-import OperationIcon from "../../assets/icons/OperationIcon";
-import BlockIcon from "../../assets/icons/BlockIcon";
+import BlockIcon from "../../../../../assets/images/blockchain_icons/blockchain.svg";
+import useFormatting from "../../hooks/useFormatting";
+import ObjectsSummary from "../ObjectsSummary";
 
-export default function OperationItem({block}) {
-  const {url} = useParams();
-  const {types} = useContext(OperationsContext);
+const reqSvgs = require.context("../../../../../assets/images/blockchain_icons/operations/", true, /\.svg$/)
+const operationsIcons = reqSvgs
+    .keys()
+    .reduce((images, path) => {
+      const name = path.replace(/^.*[\\\/]/, '').split('.').shift();
+      images[name] = reqSvgs(path).default;
+      return images;
+    }, {});
 
-  const OpClass = types[block.type];
-  const icon = OpClass.getIcon();
-  let Icon = OperationIcon[icon];
-  if (!Icon) {
+export default function OperationItem({operation, blockId}) {
+  const OpClass = useFormatting(operation);
+
+  const iconStr = OpClass.getIcon();
+  const [type, ic_name] = iconStr.split(':');
+  let Icon;
+  if (type === 'opendb-icons' && ic_name) {
+    Icon = operationsIcons[ic_name];
+  } else {
     Icon = BlockIcon;
   }
-  const title = OpClass.getOpDescription(block);
-  const link = `${url}/transactions/${block.hash}`;
 
-  let objects;
-  let summary;
-  if (block.action === 'delete') {
-    objects = block.old;
-    summary = 'Objects deleted: ';
-  } else if (block.action === 'create') {
-    objects = block.new;
-    summary = 'Objects created:';
-  } else {
-    objects = block.edit;
-    summary = 'Objects modifed:';
+  const title = OpClass.getOpDescription(operation);
+  const link = `/data/block/${blockId}/transaction/${operation.clientData.rawHash}`;
+
+  let content;
+  const objects = {
+    ...operation.new,
+    ...operation.old,
+    ...operation.edit,
+  }
+  if (objects.length === 1) {
+    const object = objects[0];
+    content = <React.Fragment>
+      <p>Object name: <strong>{OpClass.getObjName(object)}</strong></p>
+      <p>{OpClass.getObjDescription(object)}</p>
+    </React.Fragment>;
   }
 
-  const lastObject = objects[0];
-
-  return <DataListItem block={block} title={title} icon={<Icon/>} link={link}>
-    <p>{OpClass.getObjDescription(lastObject)}</p>
-    <p>Object type: <strong>{OpClass.getObjName(lastObject)}</strong></p>
-    <p>{summary} <strong>{objects.length}</strong></p>
+  return <DataListItem block={operation} title={title} icon={Icon} link={link}>
+    {content}
+    <ObjectsSummary op={operation} listItem={true}/>
   </DataListItem>;
 };

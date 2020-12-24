@@ -2,9 +2,17 @@ import React, {useContext} from 'react';
 import SidebarHeader from "./SidebarHeader";
 import SidebarItem from "./SidebarItem";
 
-import BlockIcon from "../../assets/icons/BlockIcon";
-import OperationIcon from "../../assets/icons/OperationIcon"
+import BlockIcon from "../../../../../assets/images/blockchain_icons/blockchain.svg";
 import OperationsContext from "../../providers/OperationsContext";
+
+const reqSvgs = require.context("../../../../../assets/images/blockchain_icons/operations/", true, /\.svg$/)
+const operationsIcons = reqSvgs
+    .keys()
+    .reduce((images, path) => {
+      const name = path.replace(/^.*[\\\/]/, '').split('.').shift();
+      images[name] = reqSvgs(path).default;
+      return images;
+    }, {});
 
 export default function Objects(index) {
   const {operations, count, loading, types} = useContext(OperationsContext);
@@ -15,11 +23,19 @@ export default function Objects(index) {
       const OpClass = types[o.id];
 
       const baseName = OpClass.getName(index);
-      const icon = OpClass.getIcon();
+      const iconStr = OpClass.getIcon();
+      const [type, ic_name] = iconStr.split(':');
+      let Icon;
+      if (type === 'opendb-icons' && ic_name) {
+        Icon = operationsIcons[ic_name];
+      } else {
+        Icon = BlockIcon;
+      }
+
       return <SidebarItem
         key={o.id}
         text={baseName}
-        Icon={OperationIcon[icon] || BlockIcon}
+        icon={Icon}
         exact
         to={"/data"}
       />
