@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import qs from "qs";
 import storage from "../../../storage";
@@ -11,22 +11,11 @@ export default () => {
   const {authData, signUp} = useContext(UserContext);
   const [isFormVisible, setVisibilityForm] = useState(false);
   const [redirectTo, setRedirect] = useState('');
-  const {force_signup, ...reqParams} = qs.parse(location.search.substring(1));
-
-  useEffect(() => {
-    if (redirectTo) {
-      window.location.href = redirectTo;
-    }
-  }, [redirectTo]);
+  const {force_signup} = qs.parse(location.search.substring(1));
 
   const onSignUp = (data) => {
     signUp(data);
-    let callback = '/profile';
-    if (!!reqParams.callback) {
-      callback = `${reqParams.callback}?name=${data.name}`;
-    }
-
-    setRedirect(callback);
+    setRedirect('/profile');
   };
 
   if (force_signup === 'true') {
@@ -37,6 +26,10 @@ export default () => {
 
   if (authData.token) {
     return <Redirect to={"/profile"}/>;
+  }
+
+  if (redirectTo) {
+    return <Redirect to={redirectTo}/>;
   }
 
   return <div className="auth-container" id="opr-app">

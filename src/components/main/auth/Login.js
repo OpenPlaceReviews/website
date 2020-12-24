@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import qs from "qs";
 
@@ -16,22 +16,29 @@ export default () => {
 
   const onLogIn = (data) => {
     logIn(data);
-    let callback = '/profile';
     if (!!reqParams.callback) {
-      callback = `${reqParams.callback}?name=${data.name}&token=${data.token}`;
+      setRedirect(reqParams.callback);
+    } else {
+      setRedirect('/profile');
     }
-
-    setRedirect(callback);
   };
 
-  useEffect(() => {
-    if (redirectTo) {
-      window.location.href = redirectTo;
-    }
-  }, [redirectTo]);
-
   if(authData.token) {
-    return <Redirect to={"/profile"}/>;
+    if (!!reqParams.callback) {
+      window.location.href = reqParams.callback;
+      return null;
+    } else {
+      return <Redirect to={'/profile'}/>;
+    }
+  }
+
+  if (redirectTo) {
+    if (redirectTo === reqParams.callback) {
+      window.location.href = reqParams.callback;
+      return null;
+    } else {
+      return <Redirect to={redirectTo}/>;
+    }
   }
 
   return <div className="auth-container" id="opr-app">
