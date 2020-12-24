@@ -1,5 +1,6 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link, Redirect} from "react-router-dom";
+import qs from "qs";
 
 import {UserContext} from "../../../context";
 
@@ -11,15 +12,23 @@ export default () => {
   const {authData, logIn} = useContext(UserContext);
   const [isFormVisible, setVisibilityForm] = useState(false);
   const [redirectTo, setRedirect] = useState('');
+  const reqParams = qs.parse(location.search.substring(1));
 
   const onLogIn = (data) => {
     logIn(data);
-    setRedirect('/profile');
+    let callback = '/profile';
+    if (!!reqParams.callback) {
+      callback = reqParams.callback;
+    }
+
+    setRedirect(callback);
   };
 
-  if (redirectTo) {
-    return <Redirect to={redirectTo}/>;
-  }
+  useEffect(() => {
+    if (redirectTo) {
+      window.location.href = redirectTo;
+    }
+  }, [redirectTo]);
 
   if(authData.token) {
     return <Redirect to={"/profile"}/>;
@@ -32,6 +41,6 @@ export default () => {
 
     <ChangeAuthType showForm={() => setVisibilityForm(true)}/>
 
-    {isFormVisible && <LoginForm onSuccess={onLogIn}/>}
+    {isFormVisible && <LoginForm onSuccess={onLogIn} reqParams={reqParams}/>}
   </div>;
 };

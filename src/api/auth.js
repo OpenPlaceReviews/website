@@ -1,4 +1,4 @@
-import {post, get} from "axios";
+import axios, {post, get} from "axios";
 import qs from "qs";
 
 const API_BASE = "";
@@ -19,14 +19,23 @@ const POST_CONFIG = {
   ],
 };
 
-const signUp = async ({name, email, pwd, oauthAccessToken = '', userDetails = ''}) => {
-  return await post(SIGNUP_URL, {
-    name,
-    email,
-    pwd,
-    oauthAccessToken,
-    userDetails,
-  }, POST_CONFIG);
+const signUp = ({name, email, pwd, oauthAccessToken = '', userDetails = ''}, {callback, purpose}) => {
+  return axios({
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify({
+      name,
+      email,
+      pwd,
+      oauthAccessToken,
+      userDetails,
+    }),
+    url: SIGNUP_URL,
+    params: {
+      callback,
+      purpose,
+    },
+  });
 };
 
 const signUpConfirm = async ({name, token}) => {
@@ -36,12 +45,23 @@ const signUpConfirm = async ({name, token}) => {
   }, POST_CONFIG);
 };
 
-const logIn = async ({name, pwd, oauthAccessToken = ''}) => {
-  return await post(LOGIN_URL, {
-    name,
-    pwd,
-    oauthAccessToken,
-  }, POST_CONFIG);
+const logIn = ({name, pwd, oauthAccessToken = ''}, {callback, purpose}) => {
+  return axios({
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify({
+      name,
+      pwd,
+      oauthAccessToken,
+      callback,
+      purpose,
+    }),
+    url: LOGIN_URL,
+    params: {
+      callback,
+      purpose,
+    },
+  });
 };
 
 const logOut = async (name) => {
