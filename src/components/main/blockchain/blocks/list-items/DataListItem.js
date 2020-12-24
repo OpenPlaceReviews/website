@@ -54,14 +54,7 @@ const useStyles = makeStyles({
 export default ({link, block, title, icon, children}) => {
   const [jsonOpen, expandJson] = useState(false);
   const classes = useStyles();
-  const {shortHash, signed_by} = block;
-
-  let signedText;
-  if (Array.isArray(signed_by)){
-    signedText = signed_by.join(', ');
-  } else {
-    signedText = signed_by;
-  }
+  const {shortHash, signedByStr} = block.clientData;
 
   const onExpandClick = (e) => {
     e.preventDefault();
@@ -87,7 +80,7 @@ export default ({link, block, title, icon, children}) => {
 
         <Box display="flex" justifyContent="space-between">
           <ExpandBtn onClick={onExpandClick}/>
-          <div>Signed by: <Value>{signedText}</Value></div>
+          <div>Signed by: <Value>{signedByStr}</Value></div>
         </Box>
 
         <JSONViewer open={jsonOpen} json={block}/>

@@ -2,44 +2,45 @@ import {get} from "axios";
 import { trackPromise } from 'react-promise-tracker'
 import { NotFoundError } from './errors';
 
+
+const getRawHash = (hash) => hash.split(":").pop();
 const getShortHash = (hash) => {
-  const rawHash = hash.split(":").pop();
+  const rawHash = getRawHash(hash);
   return rawHash.substring(0, 16);
 }
 
-const getRawHash = (hash) => hash.split(":").pop();
+const splitSignedBy = (signed_by) => {
+  if (Array.isArray(signed_by)){
+    return signed_by.join(', ');
+  }
+
+  return signed_by;
+}
+
+const transformBlock = (block) => ({
+  ...block,
+  clientData: {
+    rawHash: getRawHash(block.hash),
+    shortHash: getShortHash(block.hash),
+    signedByStr: splitSignedBy(block.signed_by),
+  }
+});
 
 const transformOperation = (op) =>  {
-  let action = '';
-  if (op.edit) {
-    //TODO: "edit" type is new or old?
-    action = 'edit';
-  } else if (op.create) {
-    action = 'create';
+  if (op.create) {
     op.new = [ ...op.create ];
     delete op.create;
-  } else if (op.delete) {
-    action = 'delete';
+  }
+  if (op.delete) {
     op.old = [ ...op.delete ];
     delete op.delete;
   }
 
   return {
     ...op,
-    action,
-    fullHash: op.hash,
-    hash: getRawHash(op.hash),
-    shortHash: getShortHash(op.hash),
+    ...transformBlock(op),
   };
 };
-
-const transformBlock = (block) => ({
-  ...block,
-  id: block.block_id,
-  block_date: block.date,
-  hash: getRawHash(block.hash),
-  shortHash: getShortHash(block.hash),
-});
 
 export const getBlocks = async (reqParams = {}) => {
   const params = {
@@ -137,5 +138,10 @@ export const getTransaction = async (hash) => {
   };
 
   const { data } = await get('/api/op-by-hash-in-block', { params });
+
+  if (data.ops.length === 0) {
+    throw new NotFoundError('Transaction not found')
+  }
+
   return transformOperation(data.ops[0]);
 };

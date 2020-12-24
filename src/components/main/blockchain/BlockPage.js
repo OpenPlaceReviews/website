@@ -5,11 +5,11 @@ import {getBlock} from "../../../api/data";
 
 import Loader from "../blocks/Loader";
 import BlockInfo from "./blocks/BlockInfo";
-import SummaryViewer from "./blocks/JSONViewer/SumaryViewer";
 import BlocksHeader from "./blocks/BlocksHeader";
 import Error404 from "../Error404";
+import JSONViewer from "./blocks/JSONViewer/JSONViewer";
 
-export default () => {
+export default function BlockPage() {
   const { param } = useParams();
 
   const [state, setState] = useState({
@@ -57,8 +57,8 @@ export default () => {
   }
 
   return <div>
-    <BlocksHeader>Block #{block.id}</BlocksHeader>
+    <BlocksHeader>Block #{block.block_id}</BlocksHeader>
     <BlockInfo block={block}/>
-    <SummaryViewer block={block}/>
+    <JSONViewer open={true} json={block}/>
   </div>;
 };

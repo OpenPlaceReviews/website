@@ -1,16 +1,16 @@
 import React from 'react';
 import DataListItem from "./DataListItem";
 
+import BlockIcon from "../BlockIcon";
 import useFormatting from "../../hooks/useFormatting";
 import ObjectsSummary from "../ObjectsSummary";
-import BlockIcon from "../BlockIcon";
 
 export default function OperationItem({operation, blockId}) {
   const OpClass = useFormatting(operation);
 
   const title = OpClass.getOpDescription(operation);
   const link = `/data/block/${blockId}/transaction/${operation.clientData.rawHash}`;
-  const icon = <BlockIcon icon={OpClass.getIcon()}/>;
+  const icon = <BlockIcon icon={OpClass.getIcon()}/>
 
   let content;
   const objects = {
@@ -26,7 +26,7 @@ export default function OperationItem({operation, blockId}) {
     </React.Fragment>;
   }
 
-  return <DataListItem block={operation} title={title} Icon={icon} link={link}>
+  return <DataListItem block={operation} title={title} icon={icon} link={link}>
     {content}
     <ObjectsSummary op={operation} listItem={true}/>
   </DataListItem>;
