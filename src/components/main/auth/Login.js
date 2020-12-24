@@ -18,7 +18,7 @@ export default () => {
     logIn(data);
     let callback = '/profile';
     if (!!reqParams.callback) {
-      callback = reqParams.callback;
+      callback = `${reqParams.callback}?name=${data.name}&token=${data.token}`;
     }
 
     setRedirect(callback);
