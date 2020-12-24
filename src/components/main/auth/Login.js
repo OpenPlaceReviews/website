@@ -25,7 +25,7 @@ export default () => {
 
   if(authData.token) {
     if (!!reqParams.callback) {
-      window.location.href = reqParams.callback;
+      window.location.href = `${reqParams.callback}?token=${authData.token}`;
       return null;
     } else {
       return <Redirect to={'/profile'}/>;
@@ -34,7 +34,7 @@ export default () => {
 
   if (redirectTo) {
     if (redirectTo === reqParams.callback) {
-      window.location.href = reqParams.callback;
+      window.location.href = `${reqParams.callback}?token=${authData.token}`;
       return null;
     } else {
       return <Redirect to={redirectTo}/>;
