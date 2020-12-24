@@ -23,7 +23,7 @@ export default () => {
     signUp(data);
     let callback = '/profile';
     if (!!reqParams.callback) {
-      callback = reqParams.callback;
+      callback = `${reqParams.callback}?name=${data.name}`;
     }
 
     setRedirect(callback);
