@@ -57,7 +57,7 @@ export default function Header() {
         <nav className="nav">
           <ul>
             <li><NavLink to={"/map"}>Map</NavLink></li>
-            <li><NavLink to={"/data"}>Blockchain</NavLink></li>
+            <li><NavLink to={"/data/blocks"} exact>Blockchain</NavLink></li>
             {/*
           <li><a href="#">Leaderboard</a></li>
           <li><a href="#">News</a></li>

@@ -75,7 +75,7 @@ export default function BlocksFilter() {
       count={b.operations_size}
       text={`Block #${b.block_id}`}
       Icon={BlockIcon}
-      to={`/data/blocks/${b.block_id}/transactions`}
+      to={`/data/block/${b.block_id}/transactions`}
       key={b.block_id}
     />)
   }

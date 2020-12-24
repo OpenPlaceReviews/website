@@ -13,7 +13,7 @@ import BlocksHeader from "./blocks/BlocksHeader";
 
 const BLOCKS_PER_PAGE = config.blockchain.blocksPageLimit;
 
-export default () => {
+export default function BlocksPage() {
   const [load, setLoad] = useState(true);
   const [state, setState] = useState({
     hasMore: false,
@@ -68,7 +68,7 @@ export default () => {
   let content;
   if (state.isLoaded) {
     if (state.blocks.length) {
-      content = state.blocks.map((b) => <BlockItem key={b.id} block={b}/>)
+      content = state.blocks.map((b) => <BlockItem key={b.hash} block={b}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }
