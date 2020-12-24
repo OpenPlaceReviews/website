@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Redirect} from "react-router-dom";
+import {Redirect, Link} from "react-router-dom";
 
 import {UserContext} from "../../../context";
 import EmailConfirmation from "./EmailConfirmation";
