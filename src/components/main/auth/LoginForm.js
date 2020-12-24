@@ -8,7 +8,7 @@ import SignUpForm from "./SignUpForm";
 import auth from "../../../api/auth";
 import {Link} from "react-router-dom";
 
-const LoginForm = ({ onSuccess }) => {
+const LoginForm = ({ onSuccess, reqParams }) => {
   const [showAlert, setAlert] = useState(null);
   const [isSubmit, setSubmit] = useState(false);
   const [isReady, setReady] = useState(false);
@@ -63,7 +63,7 @@ const LoginForm = ({ onSuccess }) => {
       };
 
       try {
-        const { data } = await auth.logIn(params);
+        const { data } = await auth.logIn(params, reqParams);
         onSuccess({
           name: formData.name.value,
           token: data.eval.privatekey,

@@ -24,12 +24,12 @@ export default () => {
     storage.remove('opr-force-signup');
   }
 
-  if (redirectTo) {
-    return <Redirect to={redirectTo}/>;
-  }
-
   if (authData.token) {
     return <Redirect to={"/profile"}/>;
+  }
+
+  if (redirectTo) {
+    return <Redirect to={redirectTo}/>;
   }
 
   return <div className="auth-container" id="opr-app">
