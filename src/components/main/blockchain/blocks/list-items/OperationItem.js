@@ -1,8 +1,9 @@
 import React from 'react';
 import DataListItem from "./DataListItem";
-import BlockIcon from "../../../../../assets/images/blockchain_icons/blockchain.svg";
+
 import useFormatting from "../../hooks/useFormatting";
 import ObjectsSummary from "../ObjectsSummary";
+import BlockIcon from "../BlockIcon";
 
 export default function OperationItem({operation, blockId}) {
   const OpClass = useFormatting(operation);

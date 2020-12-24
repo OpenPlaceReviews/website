@@ -1,6 +1,7 @@
 import React from 'react';
 
-const reqSvgs = require.context("../../../../../assets/images/blockchain_icons/operations/", true, /\.svg$/)
+import blockIcon from "../../../../assets/images/blockchain_icons/blockchain.svg";
+const reqSvgs = require.context("../../../../assets/images/blockchain_icons/operations/", true, /\.svg$/)
 const operationsIcons = reqSvgs
     .keys()
     .reduce((images, path) => {
@@ -9,15 +10,13 @@ const operationsIcons = reqSvgs
         return images;
     }, {});
 
-export default function BlockIcon({icon}) {
+export default function BlockIcon({icon = ''}) {
     const [type, ic_name] = icon.split(':');
 
-    if (type === 'opendb-icons' && ic_name) {
-        const url = operationsIcons[ic_name];
-        if(url) {
-            return url;
-        }
+    let url = blockIcon;
+    if (type === 'opendb-icons' && ic_name && operationsIcons[ic_name]) {
+        url = operationsIcons[ic_name];
     }
 
-    return BlockIcon;
+    return <img src={url} alt="icon"/>;
 }
