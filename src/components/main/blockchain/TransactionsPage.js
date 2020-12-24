@@ -112,7 +112,7 @@ export default function TransactionsPage() {
 
   return <BlocksList>
     <Box display="flex" className={classes.header}>
-      <BlocksHeader>{`Transactions Block#${block.block_id}`}</BlocksHeader>
+      <BlocksHeader>{`Block#${block.block_id}`}</BlocksHeader>
       <FilterOperations onChange={setFilter} value={filter}/>
     </Box>
     <BlockInfo block={block}/>

@@ -3,8 +3,8 @@ import Value from "./Value";
 
 export default function ObjectsSummary({op, listItem}) {
     return <div>
-        <p>Objects created: <Value listItem={listItem}>{op.new ? op.new.length : 0}</Value></p>
-        <p>Objects deleted: <Value listItem={listItem}>{op.old ? op.old.length : 0}</Value></p>
-        <p>Objects edited: <Value listItem={listItem}>{op.edit ? op.edit.length : 0}</Value></p>
+        {op.new && <p>Objects created: <Value listItem={listItem}>{op.new.length}</Value></p>}
+        {op.old && <p>Objects deleted: <Value listItem={listItem}>{op.old.length}</Value></p>}
+        {op.edit && <p>Objects edited: <Value listItem={listItem}>{op.edit.length}</Value></p>}
     </div>;
 };
