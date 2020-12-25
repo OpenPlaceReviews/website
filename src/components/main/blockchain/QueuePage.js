@@ -54,11 +54,7 @@ export default function QueuePage() {
   if (!loading) {
     if (queue.length) {
       content = queue.map((op) => <OperationItem key={op.hash} operation={op}/>)
-    } else {
-      content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
-    }
 
-    if (queue.length) {
       const sortedByDate = queue.sort((a, b) => a.eval.timestamp - b.eval.timestamp);
       oldestOp = sortedByDate.slice(-1)[0];
       newestOp = sortedByDate[0];
@@ -78,6 +74,8 @@ export default function QueuePage() {
         const OpClass = types[type];
         return `${opsCount[type]} ${OpClass.getPluralName()}`;
       })
+    } else {
+      content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }
   } else {
     return <Loader/>;
@@ -90,7 +88,7 @@ export default function QueuePage() {
       <p>Operations in queue: <Value>{count}</Value></p>
       {oldestOp && (<p>Oldest operation: <Value>{`'${oldestOp.type}' by ${oldestOp.clientData.signedByStr}`}</Value></p>)}
       {newestOp && (<p>Newest operation: <Value>{`'${newestOp.type}' by ${newestOp.clientData.signedByStr}`}</Value></p>)}
-      {stat.length && (<p>Operations description: <Value>{stat.join(', ')}</Value></p>)}
+      {stat.length > 0 && (<p>Operations description: <Value>{stat.join(', ')}</Value></p>)}
     </SummaryBlock>
 
     {content}

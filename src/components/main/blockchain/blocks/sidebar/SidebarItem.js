@@ -32,7 +32,7 @@ export default function SidebarItem({text, count, icon, to, ...pass}) {
   return <NavLink to={to} activeClassName={classes.activeLink} {...pass}>
     <ListItemSidebar button>
       <ListItemIcon className={classes.icon}>
-        <img src={icon} alt="icon"/>
+        {icon}
       </ListItemIcon>
       <ListItemText primary={text}/>
       {(count !== undefined) && <ValueSidebarItem value={count}/>}

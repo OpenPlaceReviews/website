@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Icon from "./Icon";
+
 import blockIcon from "../../../../assets/images/blockchain_icons/blockchain.svg";
 const reqSvgs = require.context("../../../../assets/images/blockchain_icons/operations/", true, /\.svg$/)
 const operationsIcons = reqSvgs
@@ -18,5 +20,5 @@ export default function BlockIcon({icon = ''}) {
         url = operationsIcons[ic_name];
     }
 
-    return <img src={url} alt="icon"/>;
+    return <Icon url={url}/>;
 }
