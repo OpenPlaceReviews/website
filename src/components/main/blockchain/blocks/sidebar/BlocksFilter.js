@@ -6,10 +6,11 @@ import {getBlocks} from "../../../../../api/data";
 import ListItemText from "@material-ui/core/ListItemText";
 import SidebarItem from "./SidebarItem";
 import ListItemSidebar from "./ListItemSidebar";
-import BlocksIcon from "../../assets/icons/BlocksIcon";
-import BlockIcon from "../../assets/icons/BlockIcon";
+import blocksIcon from "../../../../../assets/images/blockchain_icons/blocks.svg";
+import blockchainIcon from "../../../../../assets/images/blockchain_icons/blockchain.svg";
 
 import config from "../../../../../config";
+import Icon from "../Icon";
 
 const useStyles = makeStyles({
   allBlocks: {
@@ -66,15 +67,18 @@ export default function BlocksFilter() {
 
   const getMore = () => {
     const [ last ] = blocks.slice(-1);
-    setlastBlock(last.hash);
+    setlastBlock(last.clientData.rawHash);
   }
+
+  const oneBlockIcon = <Icon url={blockchainIcon}/>;
+  const allBlocksIcon = <Icon url={blocksIcon}/>
 
   let content;
   if (blocks.length) {
     content = blocks.map((b) => <SidebarItem
       count={b.operations_size}
       text={`Block #${b.block_id}`}
-      Icon={BlockIcon}
+      icon={oneBlockIcon}
       to={`/data/block/${b.block_id}/transactions`}
       key={b.block_id}
     />)
@@ -86,7 +90,7 @@ export default function BlocksFilter() {
       count={blocksCount}
       className={classes.allBlocks}
       text="All blocks"
-      Icon={BlocksIcon}
+      icon={allBlocksIcon}
       to={`/data/blocks`}
     />
     {content}

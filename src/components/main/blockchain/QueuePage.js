@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
+import moment from 'moment';
 
 import { getQueue } from "../../../api/data";
 
@@ -10,6 +11,13 @@ import BlocksHeader from "./blocks/BlocksHeader";
 import SummaryBlock from "./blocks/SummaryBlock";
 import Value from "./blocks/Value";
 import OperationsContext from "./providers/OperationsContext";
+
+const OpStat = function OpStat({op, type}) {
+  return <p>
+    {moment(op.timestamp).fromNow()} {type} operation:&nbsp;
+    <Value>{`'${op.type}' by ${op.clientData.signedByStr}`}</Value>
+  </p>;
+};
 
 export default function QueuePage() {
   const {types} = useContext(OperationsContext);
@@ -54,11 +62,7 @@ export default function QueuePage() {
   if (!loading) {
     if (queue.length) {
       content = queue.map((op) => <OperationItem key={op.hash} operation={op}/>)
-    } else {
-      content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
-    }
 
-    if (queue.length) {
       const sortedByDate = queue.sort((a, b) => a.eval.timestamp - b.eval.timestamp);
       oldestOp = sortedByDate.slice(-1)[0];
       newestOp = sortedByDate[0];
@@ -76,8 +80,16 @@ export default function QueuePage() {
       const opsTypes = Object.keys(opsCount);
       stat = opsTypes.map((type) => {
         const OpClass = types[type];
-        return `${opsCount[type]} ${OpClass.getPluralName()}`;
+        const count = opsCount[type];
+        let name = OpClass.getPluralName();
+        if (count === 1) {
+          name = OpClass.getName();
+        }
+
+        return `${count} ${name}`;
       })
+    } else {
+      content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }
   } else {
     return <Loader/>;
@@ -88,9 +100,9 @@ export default function QueuePage() {
 
     <SummaryBlock>
       <p>Operations in queue: <Value>{count}</Value></p>
-      {oldestOp && (<p>Oldest operation: <Value>{`'${oldestOp.type}' by ${oldestOp.clientData.signedByStr}`}</Value></p>)}
-      {newestOp && (<p>Newest operation: <Value>{`'${newestOp.type}' by ${newestOp.clientData.signedByStr}`}</Value></p>)}
-      {stat.length && (<p>Operations description: <Value>{stat.join(', ')}</Value></p>)}
+      {oldestOp && <OpStat op={oldestOp} type="Oldest"/>}
+      {newestOp && <OpStat op={newestOp} type="Newest"/>}
+      {stat.length > 0 && (<p>Operations description: <Value>{stat.join(', ')}</Value></p>)}
     </SummaryBlock>
 
     {content}

@@ -45,7 +45,7 @@ export default function BlocksPage() {
 
       if (newBlocks.length === limit) {
         const lastBlock = newBlocks.pop();
-        newState.lastBlock = lastBlock.hash;
+        newState.lastBlock = lastBlock.clientData.rawHash;
       }
 
       newState.blocks = newState.blocks.concat(newBlocks);

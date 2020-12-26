@@ -4,7 +4,6 @@ import {usePromiseTracker} from "react-promise-tracker";
 import {getTransaction} from "../../../api/data";
 import Loader from "../blocks/Loader";
 import BlocksHeader from "./blocks/BlocksHeader";
-import Error404 from "../Error404";
 import SummaryBlock from "./blocks/SummaryBlock";
 import Value from "./blocks/Value";
 import JSONViewer from "./blocks/JSONViewer/JSONViewer";
@@ -38,7 +37,10 @@ export default function TransactionPage({match}) {
 
   if (error) {
     if (error.code === 404) {
-      return <Error404/>;
+      return <div>
+        <BlocksHeader>Transaction</BlocksHeader>
+        <p>Transaction deprecated or not found</p>
+      </div>;
     }
 
     throw error;

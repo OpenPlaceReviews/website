@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 import {Box} from "@material-ui/core";
-import BlockIcon from "../../assets/icons/BlockIcon";
 import JSONViewer from "../JSONViewer/JSONViewer";
 import {Link} from "react-router-dom";
 import Value from "../Value";
 import ExpandBtn from "../JSONViewer/ExpandBtn";
+import BlockIcon from "../BlockIcon";
 
 const useStyles = makeStyles({
   item: {
@@ -56,10 +56,6 @@ export default ({link, block, title, icon, children}) => {
   const classes = useStyles();
   const {shortHash, signedByStr} = block.clientData;
 
-  if (!icon) {
-    icon = <BlockIcon/>;
-  }
-
   const onExpandClick = (e) => {
     e.preventDefault();
     expandJson(!jsonOpen);
@@ -67,7 +63,9 @@ export default ({link, block, title, icon, children}) => {
 
   return <div className={classes.item}>
     <Box display="flex" justifyContent="flex-start">
-      <div className={classes.icon}>{icon}</div>
+      <div className={classes.icon}>
+        <BlockIcon icon={icon}/>
+      </div>
       <div className={classes.content}>
         <Box display="flex" justifyContent="space-between">
           <h2 className={classes.header}>
