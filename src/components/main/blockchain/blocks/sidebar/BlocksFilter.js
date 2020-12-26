@@ -67,7 +67,7 @@ export default function BlocksFilter() {
 
   const getMore = () => {
     const [ last ] = blocks.slice(-1);
-    setlastBlock(last.hash);
+    setlastBlock(last.clientData.rawHash);
   }
 
   const oneBlockIcon = <Icon url={blockchainIcon}/>;
