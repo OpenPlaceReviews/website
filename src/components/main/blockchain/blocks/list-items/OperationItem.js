@@ -12,15 +12,21 @@ export default function OperationItem({operation, blockId}) {
   const icon = OpClass.getIcon();
 
   let content;
-  const objects = {
-    ...operation.new,
-    ...operation.old,
-    ...operation.edit,
+  let objects = [];
+  if (Array.isArray(operation.new)) {
+    objects = objects.concat(operation.new);
   }
+  if (Array.isArray(operation.old)) {
+    objects = objects.concat(operation.old);
+  }
+  if (Array.isArray(operation.edit)) {
+    objects = objects.concat(operation.edit);
+  }
+
   if (objects.length === 1) {
     const object = objects[0];
     content = <React.Fragment>
-      <p>Object name: <strong>{OpClass.getObjName(object)}</strong></p>
+      <p>Object type: <strong>{OpClass.getName()}</strong></p>
       <p>{OpClass.getObjDescription(object)}</p>
     </React.Fragment>;
   }
