@@ -3,6 +3,7 @@ import DataListItem from "./DataListItem";
 
 import useFormatting from "../../hooks/useFormatting";
 import ObjectsSummary from "../ObjectsSummary";
+import BlockIcon from "../BlockIcon";
 
 export default function OperationItem({operation}) {
   const {
@@ -16,7 +17,7 @@ export default function OperationItem({operation}) {
   const OpClass = useFormatting(operation);
 
   const title = OpClass.getOpDescription(operation);
-  const icon = OpClass.getIcon();
+  const icon = <BlockIcon icon={OpClass.getIcon()}/>;
   const link = `/data/transaction/${rawHash}`;
 
   let content;

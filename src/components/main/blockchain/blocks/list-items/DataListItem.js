@@ -6,7 +6,6 @@ import JSONViewer from "../JSONViewer/JSONViewer";
 import {Link} from "react-router-dom";
 import Value from "../Value";
 import ExpandBtn from "../JSONViewer/ExpandBtn";
-import BlockIcon from "../BlockIcon";
 
 const useStyles = makeStyles({
   item: {
@@ -63,7 +62,7 @@ export default ({link, block, title, icon, signedBy, shortId, children}) => {
   return <div className={classes.item}>
     <Box display="flex" justifyContent="flex-start">
       <div className={classes.icon}>
-        <BlockIcon icon={icon}/>
+        {icon}
       </div>
       <div className={classes.content}>
         <Box display="flex" justifyContent="space-between">
