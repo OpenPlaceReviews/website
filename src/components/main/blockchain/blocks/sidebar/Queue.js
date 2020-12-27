@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 
 import {getQueue} from "../../../../../api/data";
 
+import queueIcon from "../../../../../assets/images/blockchain_icons/queue.svg";
 import SidebarItem from "./SidebarItem";
-import QueueIcon from "../../assets/icons/QueueIcon";
+import Icon from "../Icon";
 
 export default function Queue() {
   const [opsCount, setCount] = useState(0);
@@ -21,5 +22,6 @@ export default function Queue() {
     fetchData();
   }, []);
 
-  return <SidebarItem count={opsCount} text="Queue" Icon={QueueIcon} to="/data/queue"/>;
+  const itemIcon = <Icon url={queueIcon}/>;
+  return <SidebarItem count={opsCount} text="Queue" icon={itemIcon} to="/data/queue"/>;
 }

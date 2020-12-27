@@ -2,9 +2,8 @@ import React, {useContext} from 'react';
 import SidebarHeader from "./SidebarHeader";
 import SidebarItem from "./SidebarItem";
 
-import BlockIcon from "../../assets/icons/BlockIcon";
-import OperationIcon from "../../assets/icons/OperationIcon"
 import OperationsContext from "../../providers/OperationsContext";
+import BlockIcon from "../BlockIcon";
 
 export default function Objects(index) {
   const {operations, loading, types, count} = useContext(OperationsContext);
@@ -13,13 +12,14 @@ export default function Objects(index) {
   if (operations.length && !loading) {
     content = operations.map((o) => {
       const OpClass = types[o.id];
-
       const baseName = OpClass.getName(index);
-      const icon = OpClass.getIcon();
+      const icon = <BlockIcon icon={OpClass.getIcon()}/>;
+
       return <SidebarItem
         key={o.id}
         text={baseName}
-        Icon={OperationIcon[icon] || BlockIcon}
+        icon={icon}
+        exact
         to={`/data/objects/${o.id.replace('.', '_')}`}
       />
     })

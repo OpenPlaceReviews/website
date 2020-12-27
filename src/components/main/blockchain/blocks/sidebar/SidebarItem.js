@@ -26,13 +26,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SidebarItem({text, count, Icon, to, ...pass}) {
+export default function SidebarItem({text, count, icon, to, ...pass}) {
   const classes = useStyles();
 
   return <NavLink to={to} activeClassName={classes.activeLink} {...pass}>
     <ListItemSidebar button>
       <ListItemIcon className={classes.icon}>
-        <Icon/>
+        {icon}
       </ListItemIcon>
       <ListItemText primary={text}/>
       {(count !== undefined) && <ValueSidebarItem value={count}/>}
