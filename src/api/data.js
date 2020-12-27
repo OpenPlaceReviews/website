@@ -31,6 +31,8 @@ const transformObject = (object) => ({
   clientData: {
     id: Array.isArray(object.id) ? object.id.join(',') : object.id,
     type: object.eval.parentType,
+    parentHash: object.eval.parentHash,
+    shortHash: object.eval.parentHash.substring(0, 16),
   }
 });
 
@@ -168,21 +170,6 @@ export const getObjects = async (reqParams = {}) => {
   }
 
   const { data } = await get('/api/objects', { params });
-  const objects = data.objects.map((ob) => transformObject(ob));
-
-  return {
-    objects,
-    count: data.count,
-  };
-};
-
-export const getObject = async (type, id) => {
-  const params = {
-    type,
-    key: id
-  };
-
-  const { data } = await get('/api/objects-by-id', { params });
   const objects = data.objects.map((ob) => transformObject(ob));
 
   return {

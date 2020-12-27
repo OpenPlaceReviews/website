@@ -5,7 +5,7 @@ import BlockIcon from "../../assets/icons/BlockIcon";
 import useFormatting from "../../hooks/useFormatting";
 import ObjectsSummary from "../ObjectsSummary";
 
-export default function OperationItem({operation, blockId}) {
+export default function OperationItem({operation}) {
   const {
     clientData: {
       signedByStr,
@@ -22,7 +22,7 @@ export default function OperationItem({operation, blockId}) {
     Icon = BlockIcon;
   }
   const title = OpClass.getOpDescription(operation);
-  const link = `/data/block/${blockId}/transaction/${rawHash}`;
+  const link = `/data/transaction/${rawHash}`;
 
   let content;
   const objects = {

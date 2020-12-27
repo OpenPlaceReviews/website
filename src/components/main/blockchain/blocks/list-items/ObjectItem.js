@@ -7,7 +7,8 @@ import useFormatting from "../../hooks/useFormatting";
 export default function ObjectItem({object}) {
   const {
     clientData: {
-      id,
+      shortHash,
+      parentHash,
     }
   } = object;
 
@@ -19,14 +20,14 @@ export default function ObjectItem({object}) {
     Icon = BlockIcon;
   }
   const title = OpClass.getObjName(object);
-  const link = `/data/object/${id}`;
+  const link = `/data/transaction/${parentHash}`;
 
   return <DataListItem
       block={object}
       title={title}
       icon={<Icon/>}
       link={link}
-      shortId={id}
+      shortId={shortHash}
   >
     <p>{OpClass.getObjDescription(object)}</p>
     <p>Object type: <strong>{OpClass.getName()}</strong></p>
