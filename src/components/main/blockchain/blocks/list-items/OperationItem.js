@@ -6,6 +6,14 @@ import useFormatting from "../../hooks/useFormatting";
 import ObjectsSummary from "../ObjectsSummary";
 
 export default function OperationItem({operation, blockId}) {
+  const {
+    clientData: {
+      signedByStr,
+      shortHash,
+      rawHash,
+    }
+  } = operation;
+
   const OpClass = useFormatting(operation);
 
   const icon = OpClass.getIcon();
@@ -14,7 +22,7 @@ export default function OperationItem({operation, blockId}) {
     Icon = BlockIcon;
   }
   const title = OpClass.getOpDescription(operation);
-  const link = `/data/block/${blockId}/transaction/${operation.clientData.rawHash}`;
+  const link = `/data/block/${blockId}/transaction/${rawHash}`;
 
   let content;
   const objects = {
@@ -30,7 +38,14 @@ export default function OperationItem({operation, blockId}) {
     </React.Fragment>;
   }
 
-  return <DataListItem block={operation} title={title} icon={<Icon/>} link={link}>
+  return <DataListItem
+      block={operation}
+      title={title}
+      icon={<Icon/>}
+      link={link}
+      signedBy={signedByStr}
+      shortId={shortHash}
+  >
     {content}
     <ObjectsSummary op={operation} listItem={true}/>
   </DataListItem>;

@@ -51,10 +51,9 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({link, block, title, icon, children}) => {
+export default ({link, block, title, icon, signedBy, shortId, children}) => {
   const [jsonOpen, expandJson] = useState(false);
   const classes = useStyles();
-  const {shortHash, signedByStr} = block.clientData;
 
   if (!icon) {
     icon = <BlockIcon/>;
@@ -74,7 +73,7 @@ export default ({link, block, title, icon, children}) => {
             <Link to={link} className={classes.link}>{title}</Link>
           </h2>
           <div className={classes.hash}>
-            <Link to={link} className={classes.link}>{shortHash}</Link>
+            <Link to={link} className={classes.link}>{shortId}</Link>
           </div>
         </Box>
 
@@ -82,7 +81,7 @@ export default ({link, block, title, icon, children}) => {
 
         <Box display="flex" justifyContent="space-between">
           <ExpandBtn onClick={onExpandClick}/>
-          <div>Signed by: <Value>{signedByStr}</Value></div>
+          {signedBy && <div>Signed by: <Value>{signedBy}</Value></div>}
         </Box>
 
         <JSONViewer open={jsonOpen} json={block}/>

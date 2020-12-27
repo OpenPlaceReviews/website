@@ -7,10 +7,10 @@ import OperationIcon from "../../assets/icons/OperationIcon"
 import OperationsContext from "../../providers/OperationsContext";
 
 export default function Objects(index) {
-  const {operations, count, loading, types} = useContext(OperationsContext);
+  const {operations, loading, types, count} = useContext(OperationsContext);
 
   let content = [];
-  if (count && !loading) {
+  if (operations.length && !loading) {
     content = operations.map((o) => {
       const OpClass = types[o.id];
 
@@ -20,8 +20,7 @@ export default function Objects(index) {
         key={o.id}
         text={baseName}
         Icon={OperationIcon[icon] || BlockIcon}
-        exact
-        to={"/data"}
+        to={`/data/objects/${o.id.replace('.', '_')}`}
       />
     })
   }

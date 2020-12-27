@@ -26,47 +26,58 @@ const useStyles = makeStyles({
 const BLOCKS_LIMIT = config.blockchain.blocksSidebarLimit;
 
 export default function BlocksFilter() {
-  const [blocksCount, setCount] = useState(0);
   const [lastBlock, setlastBlock] = useState('');
-  const [hasMore, setHasMore] = useState(false);
-  const [blocks, setBlocks] = useState([]);
+  const [state, setState] = useState({
+    blocks: [],
+    hasMore: false,
+    count: 0,
+  });
+  const [error, setError] = useState(null);
+  const {blocks, hasMore, count} = state;
 
   const classes = useStyles();
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        let limit = BLOCKS_LIMIT;
-        if (lastBlock.length) {
-          limit = limit + 1;
-        }
+      let limit = BLOCKS_LIMIT;
+      if (!!lastBlock) {
+        limit = limit + 1;
+      }
 
-        const { blocks, count } = await getBlocks({
+      let results;
+      try {
+        results = await getBlocks({
           limit,
           to: lastBlock,
         });
-
-        if (!!lastBlock) {
-          blocks.shift();
-        }
-
-        setHasMore(blocks.length > 0);
-        setBlocks((existsBlocks) => [
-          ...existsBlocks,
-          ...blocks,
-        ]);
-        setCount(count);
-      } catch (e) {
-        console.warn('Network request failed');
+      } catch (error) {
+        setError(error);
+        return;
       }
+      const {blocks: newBlocks, count} = results;
+
+      if (!!lastBlock) {
+        newBlocks.shift();
+      }
+
+      const newState = { ...state };
+      newState.blocks = newState.blocks.concat(newBlocks);
+      newState.hasMore = newState.blocks.length < count;
+      newState.count = count;
+
+      setState(newState);
     };
 
     fetchData();
   }, [lastBlock]);
 
+  if (error) {
+    throw error;
+  }
+
   const getMore = () => {
     const [ last ] = blocks.slice(-1);
-    setlastBlock(last.hash);
+    setlastBlock(last.clientData.rawHash);
   }
 
   let content;
@@ -83,7 +94,7 @@ export default function BlocksFilter() {
   return <>
     <SidebarItem
       exact
-      count={blocksCount}
+      count={count}
       className={classes.allBlocks}
       text="All blocks"
       Icon={BlocksIcon}

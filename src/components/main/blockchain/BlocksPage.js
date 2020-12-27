@@ -14,25 +14,28 @@ import BlocksHeader from "./blocks/BlocksHeader";
 const BLOCKS_PER_PAGE = config.blockchain.blocksPageLimit;
 
 export default function BlocksPage() {
-  const [load, setLoad] = useState(true);
+  const [lastBlock, setlastBlock] = useState('');
   const [state, setState] = useState({
     hasMore: false,
-    lastBlock: '',
     blocks: [],
-    isLoaded: false,
-    error: null,
+    loading: true,
   });
   const [error, setError] = useState(null);
   const { promiseInProgress } = usePromiseTracker();
+  const {blocks, loading, hasMore} = state;
 
   useEffect(() => {
     const fetchData = async () => {
+      let limit = BLOCKS_PER_PAGE;
+      if (!!lastBlock.length) {
+        limit = limit + 1;
+      }
+
       let results;
-      const limit = BLOCKS_PER_PAGE + 1;
       try {
         results = await getBlocks({
           limit,
-          to: state.lastBlock,
+          to: lastBlock,
         });
       } catch (error) {
         setError(error)
@@ -41,34 +44,36 @@ export default function BlocksPage() {
 
       const {blocks: newBlocks, count} = results;
 
-      const newState = { ...state };
-
-      if (newBlocks.length === limit) {
-        const lastBlock = newBlocks.pop();
-        newState.lastBlock = lastBlock.hash;
+      if (!!lastBlock) {
+        newBlocks.shift();
       }
 
+      const newState = { ...state };
       newState.blocks = newState.blocks.concat(newBlocks);
       newState.hasMore = newState.blocks.length < count;
-      newState.isLoaded = true;
+      newState.loading = false;
 
       setState(newState);
-      setLoad(false);
     };
 
-    if (load && !error) {
+    if (!error) {
       fetchData();
     }
-  }, [load]);
+  }, [lastBlock]);
 
   if (error) {
     throw error;
   }
 
+  const getMore = () => {
+    const [ last ] = blocks.slice(-1);
+    setlastBlock(last.clientData.rawHash);
+  }
+
   let content;
-  if (state.isLoaded) {
-    if (state.blocks.length) {
-      content = state.blocks.map((b) => <BlockItem key={b.hash} block={b}/>)
+  if (!loading) {
+    if (blocks.length) {
+      content = blocks.map((b) => <BlockItem key={b.hash} block={b}/>)
     } else {
       content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
     }
@@ -79,8 +84,8 @@ export default function BlocksPage() {
 
       {content}
 
-      {state.hasMore && <Box display="flex" justifyContent="center">
-        <Button onClick={() => setLoad(true)}>Show more</Button>
+      {(hasMore && blocks.length) && <Box display="flex" justifyContent="center">
+        <Button onClick={getMore}>Show more</Button>
       </Box>}
 
       {promiseInProgress && <Loader/>}
