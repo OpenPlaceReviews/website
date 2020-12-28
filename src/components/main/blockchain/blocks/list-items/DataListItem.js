@@ -6,7 +6,6 @@ import JSONViewer from "../JSONViewer/JSONViewer";
 import {Link} from "react-router-dom";
 import Value from "../Value";
 import ExpandBtn from "../JSONViewer/ExpandBtn";
-import BlockIcon from "../BlockIcon";
 
 const useStyles = makeStyles({
   item: {
@@ -51,10 +50,9 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({link, block, title, icon, children}) => {
+export default ({link, block, title, icon, signedBy, shortId, children}) => {
   const [jsonOpen, expandJson] = useState(false);
   const classes = useStyles();
-  const {shortHash, signedByStr} = block.clientData;
 
   const onExpandClick = (e) => {
     e.preventDefault();
@@ -64,7 +62,7 @@ export default ({link, block, title, icon, children}) => {
   return <div className={classes.item}>
     <Box display="flex" justifyContent="flex-start">
       <div className={classes.icon}>
-        <BlockIcon icon={icon}/>
+        {icon}
       </div>
       <div className={classes.content}>
         <Box display="flex" justifyContent="space-between">
@@ -72,7 +70,7 @@ export default ({link, block, title, icon, children}) => {
             <Link to={link} className={classes.link}>{title}</Link>
           </h2>
           <div className={classes.hash}>
-            <Link to={link} className={classes.link}>{shortHash}</Link>
+            <Link to={link} className={classes.link}>{shortId}</Link>
           </div>
         </Box>
 
@@ -80,7 +78,7 @@ export default ({link, block, title, icon, children}) => {
 
         <Box display="flex" justifyContent="space-between">
           <ExpandBtn onClick={onExpandClick}/>
-          <div>Signed by: <Value>{signedByStr}</Value></div>
+          {signedBy && <div>Signed by: <Value>{signedBy}</Value></div>}
         </Box>
 
         <JSONViewer open={jsonOpen} json={block}/>

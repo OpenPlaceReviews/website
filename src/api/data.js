@@ -26,6 +26,16 @@ const transformBlock = (block) => ({
   }
 });
 
+const transformObject = (object) => ({
+  ...object,
+  clientData: {
+    id: Array.isArray(object.id) ? object.id.join(',') : object.id,
+    type: object.eval.parentType,
+    parentHash: object.eval.parentHash,
+    shortHash: object.eval.parentHash.substring(0, 16),
+  }
+});
+
 const transformOperation = (op) =>  {
   if (op.create) {
     op.new = [ ...op.create ];
@@ -61,7 +71,7 @@ export const getBlocks = async (reqParams = {}) => {
   const blocks = data.blocks.map((b) => transformBlock(b));
 
   return {
-    blocks: blocks,
+    blocks,
     count: data.blockDepth,
   };
 };
@@ -144,4 +154,26 @@ export const getTransaction = async (hash) => {
   }
 
   return transformOperation(data.ops[0]);
+};
+
+export const getObjects = async (reqParams = {}) => {
+  const params = {
+    limit: 3,
+  };
+
+  if (!!reqParams.limit) {
+    params.limit = reqParams.limit;
+  }
+
+  if (!!reqParams.type) {
+    params.type = reqParams.type;
+  }
+
+  const { data } = await get('/api/objects', { params });
+  const objects = data.objects.map((ob) => transformObject(ob));
+
+  return {
+    objects,
+    count: data.count,
+  };
 };
