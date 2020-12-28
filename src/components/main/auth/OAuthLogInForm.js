@@ -52,6 +52,7 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], onLogIn,
           });
         }
       } catch (error) {
+        console.log(error);
         const {response} = error;
         if (response && response.data && response.data.message){
           onError(response.data.message);
