@@ -23,12 +23,6 @@ export default () => {
     }
   };
 
-  useEffect(() => {
-    if (redirectTo) {
-      window.location.href = redirectTo;
-    }
-  }, [redirectTo]);
-
   if(authData.token) {
     if (!!reqParams.callback) {
       window.location.href = `${reqParams.callback}?token=${authData.token}`;
