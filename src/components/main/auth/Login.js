@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import qs from "qs";
 
@@ -11,26 +11,18 @@ import ChangeAuthType from "./blocks/ChangeAuthType";
 export default () => {
   const {authData, logIn} = useContext(UserContext);
   const [isFormVisible, setVisibilityForm] = useState(false);
-  const [redirectTo, setRedirect] = useState('');
   const reqParams = qs.parse(location.search.substring(1));
 
   const onLogIn = (data) => {
     logIn(data);
-    let callback = '/profile';
-    if (!!reqParams.callback) {
-      callback = `${reqParams.callback}?opr-nickname=${encodeURIComponent(data.name)}&opr-token=${encodeURIComponent(data.token)}`;
-    }
-
-    setRedirect(callback);
   };
 
-  useEffect(() => {
-    if (redirectTo) {
-      window.location.href = redirectTo;
-    }
-  }, [redirectTo]);
-
   if(authData.token) {
+    if (!!reqParams.callback) {
+      window.location.href = `${reqParams.callback}?opr-nickname=${encodeURIComponent(authData.name)}&opr-token=${encodeURIComponent(authData.token)}`;
+      return null;
+    }
+
     return <Redirect to={"/profile"}/>;
   }
 
