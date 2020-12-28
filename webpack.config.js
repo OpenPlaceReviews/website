@@ -3,6 +3,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: "./src/index.js",
@@ -14,6 +15,11 @@ module.exports = {
     path: path.resolve(__dirname, "./html")
   },
   plugins: [
+    new Dotenv({
+      safe: false,
+      systemvars: true,
+      allowEmptyValues: true
+    }),
     new HtmlWebPackPlugin({
       template: "./src/index.html",
       filename: "./index.html"
@@ -23,14 +29,6 @@ module.exports = {
         {
           from: "./src/assets/images/icons/",
           to: "./assets/images/icons/[name].[ext]"
-        },
-        {
-          from: "./src/map-legacy.html",
-          to: "./[name].[ext]"
-        },
-        {
-          from: "./src/assets/legacy/",
-          to: "./assets/legacy/[name].[ext]"
         }
       ]
     }),
@@ -80,7 +78,18 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          options: {
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets: "> 0.25%, not dead, chrome 30, android 4.4",
+                },
+              ]
+            ],
+            plugins: ["@babel/plugin-transform-react-jsx-source", "wildcard"],
+          }
         }
       },
       {
