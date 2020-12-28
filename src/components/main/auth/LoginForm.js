@@ -1,18 +1,19 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Button, TextField} from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-import PropTypes from "prop-types";
-
-import SignUpForm from "./SignUpForm";
-
+import React, {useEffect, useState} from "react";
 import auth from "../../../api/auth";
 import {Link} from "react-router-dom";
+import FormItem from "./blocks/forms/FormItem";
+import FormTextField from "./blocks/forms/FormTextFiels";
+import SubmitButton from "./blocks/forms/SumbitButton";
+import FormAlert from "./blocks/forms/FormAlert";
+import useForm from "./blocks/forms/hooks/useForm";
 
-const LoginForm = ({ onSuccess, reqParams }) => {
-  const [showAlert, setAlert] = useState(null);
-  const [isSubmit, setSubmit] = useState(false);
-  const [isReady, setReady] = useState(false);
-  const [formData, setData] = useState({
+export default function LoginForm({ onSuccess, reqParams }) {
+  const {state, setState} = useState({
+    submitted: false,
+    alert: '',
+  });
+  const [error, setError] = useState(null);
+  const {formData, valid, handler, formRef} = useForm({
     name: {
       value: '',
       error: '',
@@ -23,38 +24,6 @@ const LoginForm = ({ onSuccess, reqParams }) => {
     }
   });
 
-  const defaultAlertMsg = "Error while processing request. Please try again later.";
-
-  const handler = (event) => {
-    const { target } = event;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const { name } = target;
-
-    setData( formData => ({
-      ...formData,
-      [name]: {
-        ...formData[name],
-        value
-      }
-    }));
-  };
-
-  const formRef = useRef();
-  useEffect(() => {
-    const unlockForm = () => {
-      let errors = 0;
-      for (let field in formData) {
-        if (formData[field].error.length) {
-          errors++;
-        }
-      }
-
-      setReady(errors === 0 && formRef.current.checkValidity());
-    };
-
-    unlockForm();
-  }, [formData, isReady]);
-
   useEffect(() => {
     const fetchData = async () => {
       const params = {
@@ -62,79 +31,77 @@ const LoginForm = ({ onSuccess, reqParams }) => {
         pwd: formData.pwd.value,
       };
 
+      let result;
       try {
-        const { data } = await auth.logIn(params, reqParams);
-        onSuccess({
-          name: formData.name.value,
-          token: data.eval.privatekey,
-        });
-        return;
+        result = await auth.logIn(params, reqParams);
       } catch (error) {
-        if (error.response && error.response.data){
-          setAlert(error.response.data.message);
-        } else {
-          setAlert(defaultAlertMsg);
+        if (error.response) {
+          const {
+            data: { message },
+          } = error.response;
+
+          setState({
+            submitted: false,
+            alert: message,
+          });
+          return;
         }
+
+        setError(error);
+        return;
       }
 
-      setSubmit(false);
+      onSuccess({
+        name: formData.name.value,
+        token: result.data.eval.privatekey,
+      });
     };
 
-    if (isSubmit) {
+    if (state.submitted) {
       fetchData();
     }
-  }, [isSubmit]);
+  }, [state.submitted]);
+
+  if (error) {
+    throw error;
+  }
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setSubmit(true);
+    setState({alert: '', submitted: true});
   };
 
-  const forgetPwdText = <>If you forget your password, please follow the <Link to={"/reset-password"}>link</Link> to reset it.</>;
+  const forgetPwdText = <React.Fragment>
+    If you forget your password, please follow the <Link to={"/reset-password"}>link</Link> to reset it.
+  </React.Fragment>;
 
   return <form className="login-form" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
-    {showAlert && <Alert
-      className="form-alert"
-      severity="error"
-      onClose={() => setAlert(null)}>
-      {showAlert}
-    </Alert>}
-
-    <div className="form-item">
-      <TextField
-        name="name"
-        label="Nickname"
-        placeholder="Enter your nickname"
-        required={true}
-        variant="outlined"
-        onChange={handler}
-        value={formData.name.value}
-        error={(formData.name.error.length > 0)}
-        helperText={formData.name.error ? formData.name.error : ''}
-        fullWidth={true}
+    <FormAlert open={!!alert}>{alert}</FormAlert>
+    <FormItem>
+      <FormTextField
+          name="name"
+          label="Nickname"
+          placeholder="Enter your nickname"
+          required={true}
+          onChange={handler}
+          value={formData.name.value}
+          error={formData.name.error}
+          helperText=''
       />
-    </div>
-    <div className="form-item">
-      <TextField
-        name="pwd"
-        label="Password"
-        placeholder="Enter strong password"
-        type="password"
-        required={true}
-        variant="outlined"
-        onChange={handler}
-        value={formData.pwd.value}
-        error={(formData.pwd.error.length > 0)}
-        helperText={formData.pwd.error ? formData.pwd.error : forgetPwdText}
-        fullWidth={true}
+    </FormItem>
+    <FormItem>
+      <FormTextField
+          name="pwd"
+          label="Password"
+          placeholder="Enter strong password"
+          type="password"
+          required={true}
+          onChange={handler}
+          helperText={forgetPwdText}
+          value={formData.pwd.value}
+          error={formData.pwd.error}
       />
-    </div>
-    <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Continue</Button>
+    </FormItem>
+    <SubmitButton disabled={!valid || state.submitted} onClick={onSubmit}>Continue</SubmitButton>
   </form>;
 };
-
-SignUpForm.propTypes = {
-  onSuccess: PropTypes.func.isRequired,
-};
-
-export default LoginForm;

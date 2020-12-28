@@ -10,7 +10,7 @@ import ChangeAuthType from "./blocks/ChangeAuthType";
 
 export default () => {
   const {authData, logIn} = useContext(UserContext);
-  const [isFormVisible, setVisibilityForm] = useState(false);
+  const [showForm, toggleForm] = useState(false);
   const reqParams = qs.parse(location.search.substring(1));
 
   const onLogIn = (data) => {
@@ -26,13 +26,12 @@ export default () => {
     return <Redirect to={"/profile"}/>;
   }
 
-  return <div className="auth-container" id="opr-app">
+  return <div>
     <h1>Login</h1>
-
     <p>Don't have an account? <Link to="/signup">Create account</Link></p>
 
-    <ChangeAuthType showForm={() => setVisibilityForm(true)}/>
+    <ChangeAuthType showForm={() => toggleForm(true)}/>
 
-    {isFormVisible && <LoginForm onSuccess={onLogIn} reqParams={reqParams}/>}
+    {showForm && <LoginForm onSuccess={onLogIn} reqParams={reqParams}/>}
   </div>;
 };
