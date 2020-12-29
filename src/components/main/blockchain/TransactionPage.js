@@ -8,6 +8,13 @@ import SummaryBlock from "./blocks/SummaryBlock";
 import Value from "./blocks/Value";
 import JSONViewer from "./blocks/JSONViewer/JSONViewer";
 import ObjectsSummary from "./blocks/ObjectsSummary";
+import {makeStyles} from "@material-ui/styles";
+
+const useStyles = makeStyles({
+  jsonViewer: {
+    marginBottom: "24px",
+  },
+});
 
 export default function TransactionPage({match}) {
   const {promiseInProgress} = usePromiseTracker();
@@ -16,6 +23,7 @@ export default function TransactionPage({match}) {
     block: null,
     loading: true,
   });
+  const classes = useStyles();
 
   const {params: { hash }} = match;
 
@@ -59,6 +67,6 @@ export default function TransactionPage({match}) {
       <ObjectsSummary op={block}/>
       <p>Signed by: <Value>#{signedByStr}</Value></p>
     </SummaryBlock>
-    <JSONViewer open={true} json={block}/>
+    <JSONViewer open={true} json={block} className={classes.jsonViewer}/>
   </div>;
 };

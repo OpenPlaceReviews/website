@@ -3,11 +3,11 @@ import ReactJson from 'react-json-view'
 
 import Collapse from '@material-ui/core/Collapse';
 
-export default function JSONViewer({json, open = false}) {
+export default function JSONViewer({json, open = false, className}) {
     const src = { ...json };
     delete src.clientData;
 
-    return <Collapse in={open} timeout="auto" unmountOnExit>
+    return <Collapse in={open} timeout="auto" unmountOnExit className={className}>
         <ReactJson
             src={src}
             name={false}

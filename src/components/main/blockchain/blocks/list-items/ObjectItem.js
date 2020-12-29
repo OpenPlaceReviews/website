@@ -26,5 +26,6 @@ export default function ObjectItem({object}) {
   >
     <p>{OpClass.getObjDescription(object)}</p>
     <p>Object type: <strong>{OpClass.getName()}</strong></p>
+    {object.comment && <p>Comment: <strong>{object.comment}</strong></p>}
   </DataListItem>;
 };

@@ -4,6 +4,7 @@ import DataListItem from "./DataListItem";
 import useFormatting from "../../hooks/useFormatting";
 import ObjectsSummary from "../ObjectsSummary";
 import BlockIcon from "../BlockIcon";
+import Value from "../Value";
 
 export default function OperationItem({operation}) {
   const {
@@ -48,6 +49,7 @@ export default function OperationItem({operation}) {
       signedBy={signedByStr}
       shortId={shortHash}
   >
+    {operation.comment && <p>Comment: <Value listItem={true}>{operation.comment}</Value></p>}
     {content}
     <ObjectsSummary op={operation} listItem={true}/>
   </DataListItem>;
