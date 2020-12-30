@@ -4,7 +4,7 @@ import "regenerator-runtime/runtime";
 
 import theme from "./theme";
 
-import AuthProvider from "./providers/AuthProvider";
+import AuthProvider from "./components/main/auth/providers/AuthProvider";
 import {ThemeProvider} from "react-jss";
 import Router from "./Router";
 

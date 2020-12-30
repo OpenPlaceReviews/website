@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {NavLink, useHistory} from "react-router-dom";
-import {UserContext} from "../../context";
+import AuthContext from "../main/auth/providers/AuthContext";
 
 import openPlaceReviewLogo from "../../assets/images/OpenPlaceReview.svg";
 import avatarDefault from "../../assets/images/avatar-default.png";
@@ -34,7 +34,7 @@ const UserMenuFragment = ({isLoggedIn, logOut}) => {
 };
 
 export default function Header() {
-  const {authData, logOut} = useContext(UserContext);
+  const {authData, logOut} = useContext(AuthContext);
   const history = useHistory();
 
   const onLogOut = () => {

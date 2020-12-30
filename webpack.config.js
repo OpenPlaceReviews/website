@@ -29,6 +29,10 @@ module.exports = {
         {
           from: "./src/assets/images/icons/",
           to: "./assets/images/icons/[name].[ext]"
+        },
+        {
+          from: "./src/assets/agreement/",
+          to: "./assets/agreement/[name].[ext]"
         }
       ]
     }),

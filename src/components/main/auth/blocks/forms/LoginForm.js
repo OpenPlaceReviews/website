@@ -1,28 +1,46 @@
 import React, {useEffect, useState} from "react";
-import auth from "../../../api/auth";
-import {Link} from "react-router-dom";
-import FormItem from "./blocks/forms/FormItem";
-import FormTextField from "./blocks/forms/FormTextFiels";
-import SubmitButton from "./blocks/forms/SumbitButton";
-import FormAlert from "./blocks/forms/FormAlert";
-import useForm from "./blocks/forms/hooks/useForm";
 
-export default function LoginForm({ onSuccess, reqParams }) {
-  const {state, setState} = useState({
+import qs from "qs";
+import auth from "../../../../../api/auth";
+
+import useForm from "./hooks/useForm";
+import useValidate from "./hooks/useValidate";
+
+import {Link} from "react-router-dom";
+import FormItem from "./blocks/FormItem";
+import FormTextField from "./blocks/FormTextFiels";
+import SubmitButton from "./blocks/SumbitButton";
+import FormAlert from "./blocks/FormAlert";
+import Form from "./blocks/Form";
+
+export default function LoginForm({ onSuccess }) {
+  const reqParams = qs.parse(location.search.substring(1));
+  const [state, setState] = useState({
     submitted: false,
     alert: '',
   });
   const [error, setError] = useState(null);
-  const {formData, valid, handler, formRef} = useForm({
+  const {formData, valid, setValid, handler} = useForm({
     name: {
       value: '',
+      required: true,
       error: '',
     },
     pwd: {
       value: '',
+      required: true,
       error: '',
     }
   });
+
+  const {submitted, alert} = state;
+
+  const validate = useValidate();
+
+  useEffect(() => {
+    const result = validate(formData);
+    setValid(result);
+  }, [formData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,10 +75,10 @@ export default function LoginForm({ onSuccess, reqParams }) {
       });
     };
 
-    if (state.submitted) {
+    if (submitted) {
       fetchData();
     }
-  }, [state.submitted]);
+  }, [submitted]);
 
   if (error) {
     throw error;
@@ -75,15 +93,16 @@ export default function LoginForm({ onSuccess, reqParams }) {
     If you forget your password, please follow the <Link to={"/reset-password"}>link</Link> to reset it.
   </React.Fragment>;
 
-  return <form className="login-form" autoComplete="off" onSubmit={onSubmit} ref={formRef}>
-    <FormAlert open={!!alert}>{alert}</FormAlert>
-    <FormItem>
+  return <Form submitted={submitted} onSubmit={onSubmit}>
+    <FormAlert open={!!alert} onClose={() => setState((state) => ({...state, alert: ''}))}>{alert}</FormAlert>
+    <FormItem disabled={submitted}>
       <FormTextField
           name="name"
           label="Nickname"
           placeholder="Enter your nickname"
-          required={true}
+          required={formData.name.required}
           onChange={handler}
+          disabled={submitted}
           value={formData.name.value}
           error={formData.name.error}
           helperText=''
@@ -95,13 +114,15 @@ export default function LoginForm({ onSuccess, reqParams }) {
           label="Password"
           placeholder="Enter strong password"
           type="password"
-          required={true}
+          required={formData.pwd.required}
           onChange={handler}
+          disabled={submitted}
           helperText={forgetPwdText}
           value={formData.pwd.value}
           error={formData.pwd.error}
       />
     </FormItem>
-    <SubmitButton disabled={!valid || state.submitted} onClick={onSubmit}>Continue</SubmitButton>
-  </form>;
+
+    <SubmitButton onClick={onSubmit} disabled={!valid || submitted}>Continue</SubmitButton>
+  </Form>;
 };

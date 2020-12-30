@@ -6,9 +6,9 @@ import { Autocomplete } from '@material-ui/lab';
 import storage from "../../../storage";
 
 import auth from "../../../api/auth";
-import COSBlock from "./blocks/COSBlock";
-import TOSBlock from "./blocks/TOSBlock";
-import OptionalUserFields from "./blocks/OptionalUserFields";
+// import COSBlock from "./blocks/COSBlock";
+// import TOSBlock from "./blocks/TOSBlock";
+import OptionalUserFields from "./blocks/forms/blocks/OptionalUserFields";
 
 const TYPING_TIMEOUT = 1000;
 
@@ -237,8 +237,8 @@ export default ({oauthNickname, oauthAccessToken, possibleSignups = [], userDeta
       />
     </div>
 
-    <COSBlock onChange={handler} isAccept={formData.contribution_terms.value}/>
-    <TOSBlock onChange={handler} isAccept={formData.terms_of_service.value}/>
+    {/*<COSBlock onChange={handler} isAccept={formData.contribution_terms.value}/>*/}
+    {/*<TOSBlock onChange={handler} isAccept={formData.terms_of_service.value}/>*/}
 
     <OptionalUserFields
       onChange={handler}

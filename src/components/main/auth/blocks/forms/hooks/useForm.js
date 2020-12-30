@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useState} from "react";
 
 export default function useForm(data) {
     const [formData, setData] = useState(data);
@@ -9,31 +9,30 @@ export default function useForm(data) {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const { name } = target;
 
+        let error = formData[name].error;
+        if (target.required) {
+            if (!value) {
+                error = "This field is required";
+            } else {
+                error = '';
+            }
+        }
+
         setData( state => ({
             ...state,
             [name]: {
                 ...state[name],
+                error,
                 value
             }
         }));
     };
 
-    const formRef = useRef();
-
-    useEffect(() => {
-        let errors = 0;
-        for (let field in formData) {
-            if (formData[field].error.length) {
-                errors++;
-            }
-        }
-
-        setValid(errors === 0 && formRef.current.checkValidity());
-    }, [formData]);
-
     return {
         handler,
-        valid,
         formData,
+        valid,
+        setValid,
+        setData,
     }
 }

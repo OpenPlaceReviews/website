@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {Redirect} from "react-router-dom";
 import qs from "qs";
-import {UserContext} from "../../../context";
+import AuthContext from "./providers/AuthContext";
 
 import EmailConfirmation from "./EmailConfirmation";
 import ResetPwdConfirmation from "./ResetPwdConfirmation";
@@ -9,7 +9,7 @@ import OAuthConfirmation from "./OAuthConfirmation";
 import storage from "../../../storage";
 
 export default ({location}) => {
-  const {authData, logIn, signUp} = useContext(UserContext);
+  const {authData, logIn, signUp} = useContext(AuthContext);
 
   const {op, name, token, oauth_token, oauth_verifier, code} = qs.parse(location.search.substring(1));
   const isConfirmation = (name && token && op);
