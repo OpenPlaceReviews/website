@@ -7,24 +7,27 @@ import useTypingTimeout from "./hooks/useTypingTimeout";
 import useValidateUsername from "./hooks/useValidateUsername";
 import useValidate from "./hooks/useValidate";
 
+import {FormHelperText, TextField} from "@material-ui/core";
+import {Autocomplete} from "@material-ui/lab";
 import OptionalUserFields from "./blocks/OptionalUserFields";
 import FormAlert from "./blocks/FormAlert";
 import FormItem from "./blocks/FormItem";
-import FormTextField from "./blocks/FormTextFiels";
 import SubmitButton from "./blocks/SumbitButton";
 import Form from "./blocks/Form";
 import Agreement from "./blocks/Agreement";
+import FormTextField from "./blocks/FormTextFiels";
 
 import COSHtml from "../../../../../assets/agreement/contributor_terms.html";
 import TOSHtml from "../../../../../assets/agreement/terms_of_service.html";
 
-export default function OAuthSignUpForm({onSignUp, onLogin, onError, preAuthParams}) {
-  const {userDetails, accessToken, oauthNickname, possibleSignups} = preAuthParams;
+
+export default function OAuthSignUpForm({onSignUp, onLogIn, onError, preAuthParams}) {
+  const {details, accessToken, oauthNickname, possibleSignups} = preAuthParams;
 
   let providedEmail = '';
-  if (!!userDetails.email) {
-    providedEmail = userDetails.email;
-    delete userDetails.email;
+  if (!!details.email) {
+    providedEmail = details.email;
+    delete details.email;
   }
 
   const [state, setState] = useState({
@@ -93,15 +96,13 @@ export default function OAuthSignUpForm({onSignUp, onLogin, onError, preAuthPara
 
   useEffect(() => {
     const fetchData = async () => {
-      let result;
-      let callBack;
       const isExistingNickname = possibleSignups.includes(formData.name.value);
       if (!isExistingNickname) {
         const params = {
           name: formData.name.value,
           email: formData.email.value,
           userDetails: {
-            ...userDetails,
+            ...details,
             languages: formData.languages.value,
             country: formData.country.value,
           },
@@ -109,14 +110,15 @@ export default function OAuthSignUpForm({onSignUp, onLogin, onError, preAuthPara
         };
 
         try {
-          result = await auth.signUp(params)
-          callBack = onSignUp;
+          const {data} = await auth.signUp(params)
 
-          if (!result.data || !result.data.create) {
+          if (!data || !data.create) {
             const error = new Error('Wrong server answer. No objects created.');
             setError(error);
             return;
           }
+
+          onSignUp({ name: formData.name.value });
         } catch (error) {
           if (error.response) {
             const {
@@ -127,10 +129,9 @@ export default function OAuthSignUpForm({onSignUp, onLogin, onError, preAuthPara
               submitted: false,
               alert: message,
             });
-            return;
+          } else {
+            setError(error);
           }
-
-          setError(error);
         }
       } else {
         const params = {
@@ -139,8 +140,11 @@ export default function OAuthSignUpForm({onSignUp, onLogin, onError, preAuthPara
         }
 
         try {
-          result = await auth.logIn(params);
-          callBack = onLogin;
+          const { data } = await auth.logIn(params);
+          onLogIn({
+            name: formData.name.value,
+            token: data.eval.privatekey,
+          });
         } catch (error) {
           if (error.response) {
             const {
@@ -148,18 +152,11 @@ export default function OAuthSignUpForm({onSignUp, onLogin, onError, preAuthPara
             } = error.response;
 
             onError(message);
-            return;
+          } else {
+            setError(error);
           }
-
-          setError(error);
         }
       }
-
-      const {data} = result;
-      callBack({
-        name: formData.name.value,
-        token: data.eval.privatekey,
-      });
     };
 
     if (submitted) {
