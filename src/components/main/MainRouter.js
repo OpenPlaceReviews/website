@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Switch, useRouteMatch} from "react-router-dom";
 
-import AuthRouter from "./auth/AuthRouter";
+import AuthLayout from "./auth/AuthLayout";
 import Map from "./map/Map";
 import BlockchainLayout from "./blockchain/BlockchainLayout";
 import Error404 from "./Error404";
@@ -18,7 +18,7 @@ export default function MainRouter() {
   ]
 
   return <Switch>
-    <Route exact path={authRoutes} component={AuthRouter} />
+    <Route exact path={authRoutes} component={AuthLayout} />
     <Route path={`${path}/map`} component={Map} />
     <Route path={`${path}/data`} component={BlockchainLayout} />
 

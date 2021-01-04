@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Redirect, Link} from "react-router-dom";
 
-import {UserContext} from "../../../context";
+import AuthContext from "./providers/AuthContext";
 import EmailConfirmation from "./EmailConfirmation";
 import auth from "../../../api/auth";
 
 export default () => {
-  const {authData, logIn} = useContext(UserContext);
+  const {authData, logIn} = useContext(AuthContext);
   const [status, setStatus] = useState(null);
 
   useEffect(() => {

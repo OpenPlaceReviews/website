@@ -8,7 +8,7 @@ const useStyles = createUseStyles({
     display: "block",
     width: "220px",
     height: "25px",
-    position: "fixed",
+    position: (props) => props.global ? 'fixed' : 'absolute',
     top: "50%",
     left: 0,
     right: 0,
@@ -17,7 +17,7 @@ const useStyles = createUseStyles({
   }
 });
 
-export default () => {
-  const classes = useStyles();
+export default function Loader({global = true}) {
+  const classes = useStyles({global});
   return <i className={classes.loader}/>;
 }

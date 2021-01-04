@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 
-import {UserContext} from "../context";
-import auth from "../api/auth";
-import storage from "../storage";
+import AuthContext from "./AuthContext";
+import auth from "../../../../api/auth";
+import storage from "../../../../storage";
 
 export default (props) => {
   const authName = storage.get('opr-nickname') || "";
@@ -98,14 +98,14 @@ export default (props) => {
     }
   }, [authData.actions.doLogout]);
 
-  const userContextValue = {
+  const contextValues = {
     authData: authData.data,
     signUp,
     logOut,
     logIn,
   };
 
-  return <UserContext.Provider value={userContextValue}>
+  return <AuthContext.Provider value={contextValues}>
     {props.children}
-  </UserContext.Provider>;
+  </AuthContext.Provider>;
 };
