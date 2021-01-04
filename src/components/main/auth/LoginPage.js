@@ -10,7 +10,8 @@ import useAuthCallback from "./hooks/useAuthCallback";
 
 export default function LoginPage() {
   const {authData, logIn} = useContext(AuthContext);
-  const {callback} = qs.parse(location.search.substring(1));
+  const reqParams = qs.parse(location.search.substring(1));
+  const {callback} = reqParams;
 
   const onLogIn = (data) => {
     logIn(data);
@@ -28,6 +29,6 @@ export default function LoginPage() {
   return <div>
     <h1>Login</h1>
     <p>Don't have an account? <Link to="/signup">Create account</Link></p>
-    <AuthSelector Form={LoginForm} onSuccess={onLogIn} header="Select registration method:"/>
+    <AuthSelector Form={LoginForm} onSuccess={onLogIn} reqParams={reqParams} header="Select registration method:"/>
   </div>;
 };

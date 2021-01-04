@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Select, FormHelperText, MenuItem} from "@material-ui/core";
+import storage from "../../../../../storage";
 
 import auth from "../../../../../api/auth";
 import useForm from "./hooks/useForm";
@@ -21,6 +22,7 @@ export default function OAuthLoginForm({onLogIn, onSignUp, onError, preAuthParam
       required: true,
     },
   });
+  const reqParams = storage.get('opr-auth-callback') || {};
 
   const isAutoLogin = possibleSignups.length === 1;
   const {submitted} = state;
@@ -59,7 +61,7 @@ export default function OAuthLoginForm({onLogIn, onSignUp, onError, preAuthParam
           name: formData.name.value,
           oauthAccessToken: accessToken,
         };
-        result = await auth.logIn(params);
+        result = await auth.logIn(params, reqParams);
       } catch (error) {
         if (error.response) {
           const {

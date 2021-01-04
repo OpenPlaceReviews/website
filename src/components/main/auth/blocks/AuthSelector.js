@@ -7,6 +7,7 @@ import iconOSM from "../../../../assets/images/icon-osm.png";
 import iconGithub from "../../../../assets/images/icon-github.png";
 
 import {Box, FormHelperText, Collapse, Link} from "@material-ui/core";
+import storage from "../../../../storage";
 
 const useStyles = makeStyles({
   methodList: {
@@ -38,10 +39,21 @@ const useStyles = makeStyles({
 });
 
 
-export default function AuthSelector({Form, onSuccess, header}) {
+export default function AuthSelector({Form, onSuccess, header, reqParams}) {
+  const classes = useStyles();
   const [showForm, toggleForm] = useState(false);
 
-  const classes = useStyles();
+  const {callback, purpose} = reqParams;
+  const oauthLinksHandler = () => {
+    if (callback) {
+      storage.set('opr-auth-callback', {
+        callback,
+        purpose,
+      });
+    }
+
+    return true;
+  };
 
   return <div>
     {header && <p className={classes.header}>{header}</p>}
@@ -49,19 +61,19 @@ export default function AuthSelector({Form, onSuccess, header}) {
       <li>
         <Box display="flex" alignItems="center">
           <img src={iconGoogle} alt="Google icon"/>
-          <a href="/api/auth/user-oauth-auth?oauthProvider=google">Google</a>
+          <a href="/api/auth/user-oauth-auth?oauthProvider=google" onClick={oauthLinksHandler}>Google</a>
         </Box>
       </li>
       <li>
         <Box display="flex" alignItems="center">
           <img src={iconOSM} alt="OpenStreetMap icon"/>
-          <a href="/api/auth/user-oauth-auth?oauthProvider=osm">OpenStreetMap</a>
+          <a href="/api/auth/user-oauth-auth?oauthProvider=osm" onClick={oauthLinksHandler}>OpenStreetMap</a>
         </Box>
       </li>
       <li>
         <Box display="flex" alignItems="center">
           <img src={iconGithub} alt="Github icon"/>
-          <a href="/api/auth/user-oauth-auth?oauthProvider=github">Github</a>
+          <a href="/api/auth/user-oauth-auth?oauthProvider=github" onClick={oauthLinksHandler}>Github</a>
         </Box>
       </li>
       <li>

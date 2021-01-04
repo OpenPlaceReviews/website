@@ -12,7 +12,8 @@ import AuthSelector from "./blocks/AuthSelector";
 export default function SignUpPage() {
   const {authData, signUp} = useContext(AuthContext);
   const [redirect, setRedirect] = useState(false);
-  const {force_signup, callback} = qs.parse(location.search.substring(1));
+  const reqParams = qs.parse(location.search.substring(1));
+  const {force_signup, callback} = reqParams;
 
   if (force_signup === 'true') {
     storage.set('opr-force-signup', true);
@@ -40,6 +41,6 @@ export default function SignUpPage() {
       OpenPlaceReviews has a public database, so we do not store any private data. <span className="highlight">You can select a nickname and it will be visible to everyone.</span>
     </p>
     <p>Already have an account? Then please <Link to="/login">Login</Link>.</p>
-    <AuthSelector Form={SignUpForm} onSuccess={onSignUp} header="Select registration method:"/>
+    <AuthSelector Form={SignUpForm} onSuccess={onSignUp} reqParams={reqParams} header="Select registration method:"/>
   </div>;
 };

@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import storage from "../../../../../storage";
 
 import auth from "../../../../../api/auth";
 
@@ -20,9 +21,9 @@ import FormTextField from "./blocks/FormTextFiels";
 import COSHtml from "../../../../../assets/agreement/contributor_terms.html";
 import TOSHtml from "../../../../../assets/agreement/terms_of_service.html";
 
-
 export default function OAuthSignUpForm({onSignUp, onLogIn, onError, preAuthParams}) {
   const {details, accessToken, oauthNickname, possibleSignups} = preAuthParams;
+  const reqParams = storage.get('opr-auth-callback') || {};
 
   let providedEmail = '';
   if (!!details.email) {
@@ -110,7 +111,7 @@ export default function OAuthSignUpForm({onSignUp, onLogIn, onError, preAuthPara
         };
 
         try {
-          const {data} = await auth.signUp(params)
+          const {data} = await auth.signUp(params, reqParams)
 
           if (!data || !data.create) {
             const error = new Error('Wrong server answer. No objects created.');
@@ -140,7 +141,7 @@ export default function OAuthSignUpForm({onSignUp, onLogIn, onError, preAuthPara
         }
 
         try {
-          const { data } = await auth.logIn(params);
+          const { data } = await auth.logIn(params, reqParams);
           onLogIn({
             name: formData.name.value,
             token: data.eval.privatekey,
