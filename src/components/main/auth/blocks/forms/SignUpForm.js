@@ -144,8 +144,7 @@ export default function SignUpForm({onSuccess}) {
         return;
       }
 
-      const {create} = result;
-      if (!!create) {
+      if (!result.data || result.data.create) {
         const error = new Error('Wrong server answer. No objects created.');
         setError(error);
         return;
@@ -233,7 +232,7 @@ export default function SignUpForm({onSuccess}) {
         html={COSHtml}
         name="contributor_terms"
         title="Contributor Terms"
-        link="../../../assets/agreement/contributor_terms.html"
+        link="../../../../../assets/agreement/contributor_terms.html"
         onChange={handler}
     />
     <Agreement
@@ -243,7 +242,7 @@ export default function SignUpForm({onSuccess}) {
         html={TOSHtml}
         name="terms_of_service"
         title="Terms of service"
-        link="../../../assets/agreement/terms_of_service.html"
+        link="../../../../../assets/agreement/terms_of_service.html"
         onChange={handler}
     />
 
