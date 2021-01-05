@@ -3,7 +3,7 @@ import Cookie from "js-cookie";
 const set = (name, data, expires = null) => {
   const options = {
     expires,
-    SameSite: "Lax",
+    sameSite: "strict",
     secure: true,
   };
 
