@@ -17,6 +17,7 @@ const OPRMarkersFilter = React.memo(Filter);
 let isMapMoving = false;
 let refreshTimeout = null;
 const REFRESH_TIMEOUT = 500;
+const MIN_MARKERS_ZOOM = 16;
 
 export default () => {
   const [isTileBased, setTileBased] = useState(false);
@@ -52,7 +53,7 @@ export default () => {
       storage.mapView = JSON.stringify(view);
     }
 
-    if (map.getZoom() <= 10) {
+    if (map.getZoom() < MIN_MARKERS_ZOOM) {
       setStatus('zooming to get data');
       setCurrentLayer({});
       return;
