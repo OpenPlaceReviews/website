@@ -16,7 +16,6 @@ export default ({location}) => {
   const reqParams = qs.parse(location.search.substring(1));
   const isConfirmation = (reqParams.name && reqParams.token && reqParams.op);
   const isOAuth = (reqParams.oauth_token || reqParams.oauth_verifier || reqParams.code);
-  console.log(storage.get);
   const {callback} = storage.get('opr-auth-callback') || {};
 
   if (!!authData.token) {
