@@ -45,6 +45,7 @@ export default function AuthSelector({Form, onSuccess, header, reqParams}) {
 
   const {callback, purpose} = reqParams;
   const oauthLinksHandler = () => {
+    console.log(callback, reqParams);
     if (callback) {
       storage.set('opr-auth-callback', {
         callback,
@@ -52,7 +53,7 @@ export default function AuthSelector({Form, onSuccess, header, reqParams}) {
       });
     }
 
-    return true;
+    return false;
   };
 
   return <div>
