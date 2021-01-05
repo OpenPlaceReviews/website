@@ -67,7 +67,7 @@ export default ({params, onLogIn, onSignUp}) => {
   let form;
   const {oauthNickname, possibleSignups} = state.data;
   if (!state.loading) {
-    const force_signup = storage.get('opr-force-signup');
+    const force_signup = storage.get('opr-force-signup') || "false";
 
     if(!possibleSignups.length || force_signup) {
       const onSignUpHandler = (params) => {
