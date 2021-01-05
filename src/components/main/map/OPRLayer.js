@@ -9,6 +9,7 @@ import GeoGSONLayer from "./GeoGSONLayer";
 import MapSidebar from "./MapSidebar";
 import StatusBar from "./StatusBar";
 import Filter from "./Filter";
+import OPRMessageOverlay from "./OPRMessageOverlay";
 
 const OPRStatusBar = React.memo(StatusBar);
 const OPRMarkersLayer = React.memo(GeoGSONLayer);
@@ -54,7 +55,7 @@ export default () => {
     }
 
     if (map.getZoom() < MIN_MARKERS_ZOOM) {
-      setStatus('zooming to get data');
+      setStatus('');
       setCurrentLayer({});
       return;
     }
@@ -205,6 +206,7 @@ export default () => {
       <OPRMarkersFilter placeTypes={placeTypes} onSelect={setFilter}/>
       <OPRStatusBar status={status}/>
     </MapSidebar>
+    {(map.getZoom() < MIN_MARKERS_ZOOM) && <OPRMessageOverlay>Zoom in to view details</OPRMessageOverlay>}
     <OPRMarkersLayer features={currentLayer}/>
   </div>;
 };
