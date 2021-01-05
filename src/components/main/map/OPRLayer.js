@@ -20,7 +20,7 @@ let refreshTimeout = null;
 const REFRESH_TIMEOUT = 500;
 const MIN_MARKERS_ZOOM = 16;
 
-export default () => {
+export default ({initialZoom}) => {
   const [isTileBased, setTileBased] = useState(false);
   const [placesCache, setPlacesCache] = useState({});
   const [placeTypes, setPlaceTypes] = useState({});
@@ -28,6 +28,7 @@ export default () => {
   const [filterVal, setFilter] = useState('all');
   const [currentLayer, setCurrentLayer] = useState([]);
   const [currentBounds, setCurrentBounds] = useState({});
+  const [currentZoom, setCurrentZoom] = useState(initialZoom);
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
@@ -54,7 +55,12 @@ export default () => {
       storage.mapView = JSON.stringify(view);
     }
 
-    if (map.getZoom() < MIN_MARKERS_ZOOM) {
+    const zoom = map.getZoom();
+    if (zoom !== currentZoom) {
+      setCurrentZoom(zoom);
+    }
+
+    if (zoom < MIN_MARKERS_ZOOM) {
       setStatus('');
       setCurrentLayer({});
       return;
@@ -139,7 +145,7 @@ export default () => {
     if (isTileBased) {
       updateCache();
     }
-  },[currentBounds]);
+  },[currentBounds, currentZoom]);
 
   useEffect(() => {
     const updateLayer = () => {
@@ -166,10 +172,10 @@ export default () => {
       }
     };
 
-    if (isTileBased) {
+    if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
       updateLayer();
     }
-  }, [placesCache, filterVal]);
+  }, [placesCache, filterVal, currentZoom]);
 
   useEffect(() => {
     if(Object.keys(placesCache).length >= 150) {
