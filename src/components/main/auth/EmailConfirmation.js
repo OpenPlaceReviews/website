@@ -2,11 +2,12 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Redirect} from "react-router-dom";
 import {Button, TextField} from "@material-ui/core";
 import auth from "../../../api/auth";
-import {UserContext} from "../../../context";
+import AuthContext from "./providers/AuthContext";
 import Alert from "@material-ui/lab/Alert";
+import FormItem from "./blocks/forms/blocks/FormItem";
 
 export default ({params = {}, onSuccess}) => {
-  const {logOut} = useContext(UserContext);
+  const {logOut} = useContext(AuthContext);
 
   const [isError, setError] = useState(false);
   const [authToken, setAuthToken] = useState('');
@@ -97,18 +98,18 @@ export default ({params = {}, onSuccess}) => {
           {showAlert}
         </Alert>}
 
-        <div className="form-item">
+        <FormItem>
           <TextField
-            name="token"
-            label="Email activation code"
-            placeholder="Paste activation code"
-            required={true}
-            variant="outlined"
-            onChange={handler}
-            value={confirmData.token}
-            fullWidth={true}
+              name="token"
+              label="Email activation code"
+              placeholder="Paste activation code"
+              required={true}
+              variant="outlined"
+              onChange={handler}
+              value={confirmData.token}
+              fullWidth={true}
           />
-        </div>
+        </FormItem>
 
         <Button
           variant="outlined"

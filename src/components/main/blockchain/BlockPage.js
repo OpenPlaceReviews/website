@@ -8,6 +8,13 @@ import BlockInfo from "./blocks/BlockInfo";
 import BlocksHeader from "./blocks/BlocksHeader";
 import Error404 from "../Error404";
 import JSONViewer from "./blocks/JSONViewer/JSONViewer";
+import {makeStyles} from "@material-ui/styles";
+
+const useStyles = makeStyles({
+  jsonViewer: {
+    marginBottom: "24px",
+  },
+});
 
 export default function BlockPage() {
   const { param } = useParams();
@@ -17,6 +24,7 @@ export default function BlockPage() {
     block: null,
   });
   const [error, setError] = useState(null);
+  const classes = useStyles();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,6 +67,6 @@ export default function BlockPage() {
   return <div>
     <BlocksHeader>Block #{block.block_id}</BlocksHeader>
     <BlockInfo block={block}/>
-    <JSONViewer open={true} json={block}/>
+    <JSONViewer open={true} json={block} className={classes.jsonViewer}/>
   </div>;
 };

@@ -19,7 +19,7 @@ const POST_CONFIG = {
   ],
 };
 
-const signUp = ({name, email, pwd, oauthAccessToken = '', userDetails = ''}, {callback, purpose}) => {
+const signUp = ({name, email, pwd, oauthAccessToken = '', userDetails = ''}, {callback, purpose} = {}) => {
   return axios({
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
@@ -45,7 +45,7 @@ const signUpConfirm = async ({name, token}) => {
   }, POST_CONFIG);
 };
 
-const logIn = ({name, pwd, oauthAccessToken = ''}, {callback, purpose}) => {
+const logIn = ({name, pwd, oauthAccessToken = ''}, {callback, purpose} = {}) => {
   return axios({
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
@@ -53,8 +53,6 @@ const logIn = ({name, pwd, oauthAccessToken = ''}, {callback, purpose}) => {
       name,
       pwd,
       oauthAccessToken,
-      callback,
-      purpose,
     }),
     url: LOGIN_URL,
     params: {
