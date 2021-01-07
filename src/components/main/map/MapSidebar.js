@@ -11,8 +11,6 @@ export default ({ position, children }) => {
   const positionClass =
     (position && POSITION_CLASSES[position]) || POSITION_CLASSES.topleft
   return <div className={`${positionClass} `}>
-    <div className="leaflet-bar leaflet-control map-sidebar">
-      {children}
-    </div>
+    {children}
   </div>;
 }

@@ -2,56 +2,26 @@ import React, {useEffect, useState} from 'react';
 import {useMap, useMapEvent} from "react-leaflet";
 import {OpenLocationCode} from "open-location-code";
 import {isEqual, has, get} from "lodash";
-import L from "leaflet";
 
 import {fetchData} from "../../../api/geo";
-import GeoGSONLayer from "./GeoGSONLayer";
-import MapSidebar from "./MapSidebar";
-import StatusBar from "./StatusBar";
-import Filter from "./Filter";
-
-const OPRStatusBar = React.memo(StatusBar);
-const OPRMarkersLayer = React.memo(GeoGSONLayer);
-const OPRMarkersFilter = React.memo(Filter);
+import MarkerEntity from "./MarkerEntity";
+import MarkerClusterGroup from "./MarkerClusterGroup";
 
 let isMapMoving = false;
 let refreshTimeout = null;
 const REFRESH_TIMEOUT = 500;
 
-export default () => {
-  const [isTileBased, setTileBased] = useState(false);
+export default function OPRLayer({setStatus, filterVal, isTileBased}) {
+
   const [placesCache, setPlacesCache] = useState({});
-  const [placeTypes, setPlaceTypes] = useState({});
-  const [status, setStatus] = useState('Loading data...');
-  const [filterVal, setFilter] = useState('all');
+
   const [currentLayer, setCurrentLayer] = useState([]);
   const [currentBounds, setCurrentBounds] = useState({});
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
-  let storage = window.localStorage;
-
-  try {
-    const x = '__storage_test__';
-    storage.setItem(x, x);
-    storage.removeItem(x);
-  }
-  catch(e) {
-    console.warn("Your browser blocks access to localStorage");
-    storage = null;
-  }
 
   const onMapChange = async () => {
-    if (!!storage) {
-      const view = {
-        lat: map.getCenter().lat,
-        lng: map.getCenter().lng,
-        zoom: map.getZoom()
-      };
-
-      storage.mapView = JSON.stringify(view);
-    }
-
     if (map.getZoom() <= 10) {
       setStatus('zooming to get data');
       setCurrentLayer({});
@@ -79,27 +49,6 @@ export default () => {
       setCurrentBounds(lcodes);
     }
   };
-
-  useEffect(() => {
-    const request = async () => {
-      const {tileBased, placeTypes} = await fetchData();
-      setTileBased(tileBased);
-      setPlaceTypes(placeTypes);
-
-      onMapChange();
-    };
-
-    try {
-      const view = JSON.parse(storage.mapView || '');
-      if (!!view) {
-        map.setView(L.latLng(view.lat, view.lng), view.zoom);
-      }
-    } catch (e) {
-       console.warn('Error while decoding saved view');
-    }
-
-    request();
-  }, []);
 
   useEffect(() => {
     const updateCache = async () => {
@@ -199,11 +148,7 @@ export default () => {
     isMapMoving = true;
   });
 
-  return <div className="opr-layer">
-    <MapSidebar>
-      <OPRMarkersFilter placeTypes={placeTypes} onSelect={setFilter}/>
-      <OPRStatusBar status={status}/>
-    </MapSidebar>
-    <OPRMarkersLayer features={currentLayer}/>
-  </div>;
+  return <MarkerClusterGroup>
+    {currentLayer.length && currentLayer.map((feature) => <MarkerEntity feature={feature} key={feature.properties.opr_id}/>)}
+  </MarkerClusterGroup>;
 };

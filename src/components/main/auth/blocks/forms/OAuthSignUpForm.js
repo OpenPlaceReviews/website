@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import storage from "../../../../../storage";
+import storage from "../../../../../libs/cookies";
 
 import auth from "../../../../../api/auth";
 
