@@ -11,7 +11,7 @@ let isMapMoving = false;
 let refreshTimeout = null;
 const REFRESH_TIMEOUT = 500;
 
-export default function OPRLayer({setStatus, filterVal, isTileBased}) {
+export default function OPRLayer({setStatus, filterVal, isTileBased, onSelect}) {
 
   const [placesCache, setPlacesCache] = useState({});
 
@@ -149,6 +149,6 @@ export default function OPRLayer({setStatus, filterVal, isTileBased}) {
   });
 
   return <MarkerClusterGroup>
-    {currentLayer.length && currentLayer.map((feature) => <MarkerEntity feature={feature} key={feature.properties.opr_id}/>)}
+    {currentLayer.length && currentLayer.map((feature) => <MarkerEntity feature={feature} key={feature.properties.opr_id} onSelect={onSelect}/>)}
   </MarkerClusterGroup>;
 };

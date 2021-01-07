@@ -10,6 +10,8 @@ import MapSidebar from "./MapSidebar";
 import StatusBar from "./StatusBar";
 import Filter from "./Filter";
 import ViewTracker from "./ViewTracker";
+import OPRAttributesBar from "./OPRAttributesBar";
+
 const OPRStatusBar = React.memo(StatusBar);
 const OPRMarkersFilter = React.memo(Filter);
 
@@ -18,6 +20,7 @@ export default () => {
   const [status, setStatus] = useState('Loading data...');
   const [filterVal, setFilter] = useState('all');
   const [isTileBased, setTileBased] = useState(false);
+  const [marker, setMarker] = useState(null);
 
   useEffect(() => {
     const request = async () => {
@@ -43,10 +46,10 @@ export default () => {
       </div>
 
       <div className="leaflet-bar leaflet-control map-sidebar">
-        Select point to view details
+        {marker ? <OPRAttributesBar feature={marker} setMarker={setMarker}/> : "Select point to view details"}
       </div>
     </MapSidebar>
 
-    <OPRLayer setStatus={setStatus} filterVal={filterVal} isTileBased={isTileBased}/>
+    <OPRLayer setStatus={setStatus} filterVal={filterVal} isTileBased={isTileBased} onSelect={setMarker}/>
   </MapContainer>;
 }
