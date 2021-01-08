@@ -5,15 +5,15 @@ import {isEqual, has, get} from "lodash";
 
 import {fetchData} from "../../api/geo";
 import MarkerEntity from "./MarkerEntity";
+import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import MarkerClusterGroup from "./MarkerClusterGroup";
 
 let isMapMoving = false;
 let refreshTimeout = null;
-const REFRESH_TIMEOUT = 500;
+const REFRESH_TIMEOUT = 300;
 const MIN_MARKERS_ZOOM = 16;
 
-export default function OPRLayer({setStatus, InitialZoom, filterVal, isTileBased, onSelect}) {
-
+export default function OPRLayer({setStatus, initialZoom, filterVal, isTileBased, onSelect}) {
   const [placesCache, setPlacesCache] = useState({});
 
   const [currentLayer, setCurrentLayer] = useState([]);
@@ -58,6 +58,10 @@ export default function OPRLayer({setStatus, InitialZoom, filterVal, isTileBased
   };
 
   useEffect(() => {
+    onMapChange();
+  }, []);
+
+  useEffect(() => {
     const updateCache = async () => {
       let missing = 0;
       let tiles = 0;
@@ -90,10 +94,10 @@ export default function OPRLayer({setStatus, InitialZoom, filterVal, isTileBased
       setPlacesCache(newCache);
     };
 
-    if (isTileBased) {
+    if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
       updateCache();
     }
-  },[currentBounds, currentZoom]);
+  },[currentBounds, currentZoom, isTileBased]);
 
   useEffect(() => {
     const updateLayer = () => {
@@ -123,7 +127,7 @@ export default function OPRLayer({setStatus, InitialZoom, filterVal, isTileBased
     if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
       updateLayer();
     }
-  }, [placesCache, filterVal, currentZoom]);
+  }, [placesCache, filterVal, currentZoom, isTileBased]);
 
   useEffect(() => {
     if(Object.keys(placesCache).length >= 150) {
