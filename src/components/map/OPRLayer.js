@@ -10,20 +10,27 @@ import MarkerClusterGroup from "./MarkerClusterGroup";
 let isMapMoving = false;
 let refreshTimeout = null;
 const REFRESH_TIMEOUT = 500;
+const MIN_MARKERS_ZOOM = 16;
 
-export default function OPRLayer({setStatus, filterVal, isTileBased, onSelect}) {
+export default function OPRLayer({setStatus, InitialZoom, filterVal, isTileBased, onSelect}) {
 
   const [placesCache, setPlacesCache] = useState({});
 
   const [currentLayer, setCurrentLayer] = useState([]);
   const [currentBounds, setCurrentBounds] = useState({});
+  const [currentZoom, setCurrentZoom] = useState(initialZoom);
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
 
   const onMapChange = async () => {
-    if (map.getZoom() <= 10) {
-      setStatus('zooming to get data');
+    const zoom = map.getZoom();
+    if (zoom !== currentZoom) {
+      setCurrentZoom(zoom);
+    }
+
+    if (zoom < MIN_MARKERS_ZOOM) {
+      setStatus('');
       setCurrentLayer({});
       return;
     }
@@ -86,7 +93,7 @@ export default function OPRLayer({setStatus, filterVal, isTileBased, onSelect}) 
     if (isTileBased) {
       updateCache();
     }
-  },[currentBounds]);
+  },[currentBounds, currentZoom]);
 
   useEffect(() => {
     const updateLayer = () => {
@@ -113,10 +120,10 @@ export default function OPRLayer({setStatus, filterVal, isTileBased, onSelect}) 
       }
     };
 
-    if (isTileBased) {
+    if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
       updateLayer();
     }
-  }, [placesCache, filterVal]);
+  }, [placesCache, filterVal, currentZoom]);
 
   useEffect(() => {
     if(Object.keys(placesCache).length >= 150) {
@@ -148,7 +155,10 @@ export default function OPRLayer({setStatus, filterVal, isTileBased, onSelect}) 
     isMapMoving = true;
   });
 
-  return <MarkerClusterGroup>
-    {currentLayer.length && currentLayer.map((feature) => <MarkerEntity feature={feature} key={feature.properties.opr_id} onSelect={onSelect}/>)}
-  </MarkerClusterGroup>;
+  return <div className="opr-layer">
+    {(map.getZoom() < MIN_MARKERS_ZOOM) && <OPRMessageOverlay>Zoom in to view details</OPRMessageOverlay>}
+    <MarkerClusterGroup>
+      {currentLayer.length && currentLayer.map((feature) => <MarkerEntity feature={feature} key={feature.properties.opr_id} onSelect={onSelect}/>)}
+    </MarkerClusterGroup>
+  </div>;
 };
