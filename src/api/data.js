@@ -177,3 +177,18 @@ export const getObjects = async (reqParams = {}) => {
     count: data.count,
   };
 };
+
+export const getObjectsById = async (objectId) => {
+  const params = {
+    type: 'opr.place',
+    key: objectId,
+  };
+
+  const { data } = await get('/api/objects-by-id', { params });
+  const objects = data.objects.map((ob) => transformObject(ob));
+
+  return {
+    objects,
+    count: data.count,
+  };
+};

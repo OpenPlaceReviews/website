@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {useMap, useMapEvent} from "react-leaflet";
 import L from "leaflet";
 
-import storage from "../../../libs/storage";
+import storage from "../../libs/storage";
 
 export default function ViewTracker() {
     const map = useMap();

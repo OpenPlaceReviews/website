@@ -1,14 +1,17 @@
 import React from 'react';
+
+import {useMap} from "react-leaflet";
+import {makeStyles} from "@material-ui/styles";
+
 import {Box, IconButton} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
-import {useMap} from "react-leaflet";
-import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
     attributes: {
         "& p": { margin: "0" },
         width: "100%",
+        overflowY: "auto",
     },
     header: {
         display: "inline !important",
@@ -39,6 +42,7 @@ const useStyles = makeStyles({
 export default function OPRAttributesBar({feature, setMarker}) {
     const lngLat = feature.geometry.coordinates;
     const {title, opr_id, tags, osm_id, osm_type} = feature.properties;
+
     const latLng = [lngLat[1], lngLat[0]];
     const popupTags = [];
     for (let t in tags) {

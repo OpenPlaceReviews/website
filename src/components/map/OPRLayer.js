@@ -3,7 +3,7 @@ import {useMap, useMapEvent} from "react-leaflet";
 import {OpenLocationCode} from "open-location-code";
 import {isEqual, has, get} from "lodash";
 
-import {fetchData} from "../../../api/geo";
+import {fetchData} from "../../api/geo";
 import MarkerEntity from "./MarkerEntity";
 import MarkerClusterGroup from "./MarkerClusterGroup";
 
