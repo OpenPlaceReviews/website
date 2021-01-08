@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Select, FormHelperText, MenuItem} from "@material-ui/core";
-import storage from "../../../../../storage";
+import storage from "../../../../../libs/cookies";
 
 import auth from "../../../../../api/auth";
 import useForm from "./hooks/useForm";

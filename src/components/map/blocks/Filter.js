@@ -12,7 +12,6 @@ export default ({placeTypes, onSelect}) => {
   }
 
   return <div className="map-filter">
-    <p className="map-filter-header">Filter places</p>
     <Select
       className="map-filter-select"
       onChange={changeHandler}

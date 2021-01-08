@@ -7,30 +7,6 @@
   width: 100%;
 }
 
-.leaflet-popup dl {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  border: 1px solid #ddd;
-}
-.leaflet-popup p {
-  margin: 0;
-}
-.tags-item {
-  padding: 0.3rem;
-  margin: 0;
-}
-.tags-grid dt {
-  background-color: #F6F6F6;
-  border-top: 1px solid #ddd;
-}
-.tags-grid dd {
-  border-left: 1px solid #ddd;
-  border-top: 1px solid #ddd;
-}
-.tags-grid dt:first-child {
-  border-top: none;
-}
-
 .marker-cluster {
   width: 40px;
   height: 40px;
@@ -52,11 +28,12 @@
 .marker-cluster-large div,
 .marker-cluster-medium div,
 .marker-cluster-small div {
-  background: #FFFFFF;
   font-weight: bold;
   font-size: 16px;
   line-height: 21px;
   color: #2D69E0;
+  margin-top: 10px;
+  text-align: center;
 }
 
 .map-sidebar {

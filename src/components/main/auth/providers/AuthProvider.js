@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 
 import AuthContext from "./AuthContext";
 import auth from "../../../../api/auth";
-import storage from "../../../../storage";
+import storage from "../../../../libs/cookies";
 
 export default (props) => {
   const authName = storage.get('opr-nickname') || "";

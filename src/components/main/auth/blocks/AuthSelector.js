@@ -7,7 +7,7 @@ import iconOSM from "../../../../assets/images/icon-osm.png";
 import iconGithub from "../../../../assets/images/icon-github.png";
 
 import {Box, FormHelperText, Collapse, Link} from "@material-ui/core";
-import storage from "../../../../storage";
+import storage from "../../../../libs/cookies";
 
 const useStyles = makeStyles({
   methodList: {

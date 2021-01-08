@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import {Redirect} from "react-router-dom";
 import qs from "qs";
 
-import storage from "../../../storage";
+import storage from "../../../libs/cookies";
 
 import AuthContext from "./providers/AuthContext";
 

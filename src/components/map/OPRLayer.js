@@ -2,59 +2,28 @@ import React, {useEffect, useState} from 'react';
 import {useMap, useMapEvent} from "react-leaflet";
 import {OpenLocationCode} from "open-location-code";
 import {isEqual, has, get} from "lodash";
-import L from "leaflet";
 
-import {fetchData} from "../../../api/geo";
-import GeoGSONLayer from "./GeoGSONLayer";
-import MapSidebar from "./MapSidebar";
-import StatusBar from "./StatusBar";
-import Filter from "./Filter";
-import OPRMessageOverlay from "./OPRMessageOverlay";
-
-const OPRStatusBar = React.memo(StatusBar);
-const OPRMarkersLayer = React.memo(GeoGSONLayer);
-const OPRMarkersFilter = React.memo(Filter);
+import {fetchData} from "../../api/geo";
+import MarkerEntity from "./MarkerEntity";
+import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
+import MarkerClusterGroup from "./MarkerClusterGroup";
 
 let isMapMoving = false;
 let refreshTimeout = null;
-const REFRESH_TIMEOUT = 500;
+const REFRESH_TIMEOUT = 300;
 const MIN_MARKERS_ZOOM = 16;
 
-export default ({initialZoom}) => {
-  const [isTileBased, setTileBased] = useState(false);
+export default function OPRLayer({setStatus, initialZoom, filterVal, isTileBased, onSelect}) {
   const [placesCache, setPlacesCache] = useState({});
-  const [placeTypes, setPlaceTypes] = useState({});
-  const [status, setStatus] = useState('Loading data...');
-  const [filterVal, setFilter] = useState('all');
+
   const [currentLayer, setCurrentLayer] = useState([]);
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(initialZoom);
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
-  let storage = window.localStorage;
-
-  try {
-    const x = '__storage_test__';
-    storage.setItem(x, x);
-    storage.removeItem(x);
-  }
-  catch(e) {
-    console.warn("Your browser blocks access to localStorage");
-    storage = null;
-  }
 
   const onMapChange = async () => {
-    if (!!storage) {
-      const view = {
-        lat: map.getCenter().lat,
-        lng: map.getCenter().lng,
-        zoom: map.getZoom()
-      };
-
-      storage.mapView = JSON.stringify(view);
-    }
-
     const zoom = map.getZoom();
     if (zoom !== currentZoom) {
       setCurrentZoom(zoom);
@@ -89,24 +58,7 @@ export default ({initialZoom}) => {
   };
 
   useEffect(() => {
-    const request = async () => {
-      const {tileBased, placeTypes} = await fetchData();
-      setTileBased(tileBased);
-      setPlaceTypes(placeTypes);
-
-      onMapChange();
-    };
-
-    try {
-      const view = JSON.parse(storage.mapView || '');
-      if (!!view) {
-        map.setView(L.latLng(view.lat, view.lng), view.zoom);
-      }
-    } catch (e) {
-       console.warn('Error while decoding saved view');
-    }
-
-    request();
+    onMapChange();
   }, []);
 
   useEffect(() => {
@@ -142,10 +94,10 @@ export default ({initialZoom}) => {
       setPlacesCache(newCache);
     };
 
-    if (isTileBased) {
+    if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
       updateCache();
     }
-  },[currentBounds, currentZoom]);
+  },[currentBounds, currentZoom, isTileBased]);
 
   useEffect(() => {
     const updateLayer = () => {
@@ -175,7 +127,7 @@ export default ({initialZoom}) => {
     if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
       updateLayer();
     }
-  }, [placesCache, filterVal, currentZoom]);
+  }, [placesCache, filterVal, currentZoom, isTileBased]);
 
   useEffect(() => {
     if(Object.keys(placesCache).length >= 150) {
@@ -208,11 +160,9 @@ export default ({initialZoom}) => {
   });
 
   return <div className="opr-layer">
-    <MapSidebar>
-      <OPRMarkersFilter placeTypes={placeTypes} onSelect={setFilter}/>
-      <OPRStatusBar status={status}/>
-    </MapSidebar>
     {(map.getZoom() < MIN_MARKERS_ZOOM) && <OPRMessageOverlay>Zoom in to view details</OPRMessageOverlay>}
-    <OPRMarkersLayer features={currentLayer}/>
+    <MarkerClusterGroup>
+      {currentLayer.length && currentLayer.map((feature) => <MarkerEntity feature={feature} key={feature.properties.opr_id} onSelect={onSelect}/>)}
+    </MarkerClusterGroup>
   </div>;
 };

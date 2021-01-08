@@ -16,6 +16,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.11.1",
     "axios": "^0.20.0",
+    "babel-plugin-wildcard": "^6.0.0",
     "js-cookie": "^2.2.1",
     "jss-plugin-compose": "^10.5.0",
     "leaflet": "^1.7.1",
@@ -30,10 +31,10 @@
     "react-json-view": "^1.19.1",
     "react-jss": "^10.5.0",
     "react-leaflet": "^3.0.2",
+    "react-material-ui-carousel": "^2.1.1",
     "react-promise-tracker": "^2.1.0",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "babel-plugin-wildcard": "^6.0.0"
+    "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
