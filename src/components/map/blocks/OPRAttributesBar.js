@@ -57,7 +57,7 @@ export default function OPRAttributesBar({feature, setMarker}) {
 
     return <div className={classes.attributes}>
         <Box display="flex" flexDirection="row" style={{marginBottom: "10px"}} alignItems="center" justifyContent="space-between">
-            <a href={`/api/admin?view=objects&browse=type&type=opr.place&subtype=id&key=${opr_id}`} className={classes.header}>ID: {opr_id}</a>
+            <a href={`/data/objects/opr_place?key=${opr_id}`} className={classes.header}>ID: {opr_id}</a>
             <div>
                 <IconButton onClick={() => map.panTo(latLng)}>
                     <CenterFocusWeakIcon fontSize="small"/>

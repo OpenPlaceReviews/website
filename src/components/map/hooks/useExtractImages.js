@@ -11,7 +11,7 @@ export default function useExtractImages(marker) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await getObjectsById(marker.properties.opr_id);
+                const data = await getObjectsById('opr.place', marker.properties.opr_id);
                 const object = data.objects.shift();
                 setImages(object.images || {});
             } catch (e) {

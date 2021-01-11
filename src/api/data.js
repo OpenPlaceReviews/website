@@ -178,9 +178,9 @@ export const getObjects = async (reqParams = {}) => {
   };
 };
 
-export const getObjectsById = async (objectId) => {
+export const getObjectsById = async (type, objectId) => {
   const params = {
-    type: 'opr.place',
+    type,
     key: objectId,
   };
 
