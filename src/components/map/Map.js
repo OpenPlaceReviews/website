@@ -18,6 +18,7 @@ import OPRAttributesBar from "./blocks/OPRAttributesBar";
 import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
 import ImagesCarousel from "./blocks/ImagesCarousel";
 import Loader from "../main/blocks/Loader";
+import ReviewImagesBlock from "./blocks/ReviewImagesBlock";
 
 const OPRStatusBar = React.memo(StatusBar);
 const OPRMarkersFilter = React.memo(Filter);
@@ -77,7 +78,7 @@ export default function Map() {
   } else {
     imagesSidebar = <React.Fragment>
       {images.review && <MapSidebarBlock header={`Photos - To review (${images.review.length})`} expanded={expanded} onChange={handleChange} name="review">
-        <ImagesCarousel items={images.review}/>
+        <ReviewImagesBlock items={images.review}/>
       </MapSidebarBlock>}
 
       {images.outdoor && <MapSidebarBlock header={`Photos - Outdoor (${images.outdoor.length})`} expanded={expanded} onChange={handleChange} name="outdoor">
