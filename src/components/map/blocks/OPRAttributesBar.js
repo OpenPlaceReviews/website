@@ -37,6 +37,10 @@ const useStyles = makeStyles({
         },
         "& dt:first-child": { borderTop: "none" }
     },
+    tagsItem: {
+        padding: "0.3rem",
+        margin: "0",
+    }
 })
 
 export default function OPRAttributesBar({feature, setMarker}) {
@@ -77,8 +81,8 @@ export default function OPRAttributesBar({feature, setMarker}) {
             <dl className={classes.tags}>
                 {popupTags.map((tag, i) => {
                     return <React.Fragment key={i}>
-                        <dt className="tags-item">{tag.name}</dt>
-                        <dd className="tags-item">{tag.value}</dd>
+                        <dt className={classes.tagsItem}>{tag.name}</dt>
+                        <dd className={classes.tagsItem}>{tag.value}</dd>
                     </React.Fragment>;
                 })}
             </dl>

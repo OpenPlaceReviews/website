@@ -5,7 +5,7 @@ export default function useExtractImages(marker) {
     const [images, setImages] = useState(null);
     const [error, setError] = useState(null);
 
-    const IMAGE_CATEGORIES = ['indoor', 'outdoor'];
+    const IMAGE_CATEGORIES = ['indoor', 'outdoor', 'review'];
     const IMAGE_URL = '/api/ipfs/image?hash=';
 
     useEffect(() => {

@@ -184,7 +184,7 @@ export const getObjectsById = async (type, objectId) => {
     key: objectId,
   };
 
-  const { data } = await get('/api/objects-by-id', { params });
+  const { data } = await trackPromise(get('/api/objects-by-id', { params }));
   const objects = data.objects.map((ob) => transformObject(ob));
 
   return {

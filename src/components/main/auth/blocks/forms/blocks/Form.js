@@ -19,7 +19,7 @@ export default function Form({onSubmit, submitted, children}){
     return <form className={classes.form} autoComplete="off" onSubmit={onSubmit}>
         {children}
         <Backdrop open={submitted} className={classes.fade}>
-            <Loader global={false}/>
+            <Loader position="absolute"/>
         </Backdrop>
     </form>
 };
