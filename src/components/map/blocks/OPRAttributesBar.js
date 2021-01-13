@@ -37,6 +37,10 @@ const useStyles = makeStyles({
         },
         "& dt:first-child": { borderTop: "none" }
     },
+    tagsItem: {
+        padding: "0.3rem",
+        margin: "0",
+    }
 })
 
 export default function OPRAttributesBar({feature, setMarker}) {
@@ -57,7 +61,7 @@ export default function OPRAttributesBar({feature, setMarker}) {
 
     return <div className={classes.attributes}>
         <Box display="flex" flexDirection="row" style={{marginBottom: "10px"}} alignItems="center" justifyContent="space-between">
-            <a href={`/api/admin?view=objects&browse=type&type=opr.place&subtype=id&key=${opr_id}`} className={classes.header}>ID: {opr_id}</a>
+            <a href={`/data/objects/opr_place?key=${opr_id}`} className={classes.header}>ID: {opr_id}</a>
             <div>
                 <IconButton onClick={() => map.panTo(latLng)}>
                     <CenterFocusWeakIcon fontSize="small"/>
@@ -77,8 +81,8 @@ export default function OPRAttributesBar({feature, setMarker}) {
             <dl className={classes.tags}>
                 {popupTags.map((tag, i) => {
                     return <React.Fragment key={i}>
-                        <dt className="tags-item">{tag.name}</dt>
-                        <dd className="tags-item">{tag.value}</dd>
+                        <dt className={classes.tagsItem}>{tag.name}</dt>
+                        <dd className={classes.tagsItem}>{tag.value}</dd>
                     </React.Fragment>;
                 })}
             </dl>

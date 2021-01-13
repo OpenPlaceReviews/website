@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 
 import config from "../../../config";
-import {getObjects} from "../../../api/data";
+import {getObjects, getObjectsById} from "../../../api/data";
 import OperationsContext from "./providers/OperationsContext";
 
 import {Box} from "@material-ui/core";
@@ -10,6 +10,7 @@ import BlocksList from "./blocks/BlocksList";
 import BlocksHeader from "./blocks/BlocksHeader";
 import ObjectItem from "./blocks/list-items/ObjectItem";
 import Error404 from "../Error404";
+import qs from "qs";
 
 const BLOCKS_PER_PAGE = config.blockchain.blocksPageLimit;
 
@@ -22,6 +23,7 @@ export default function ObjectsPage({match}) {
   const {loading, objects} = state;
   const {params} = match;
   const type = params.type.replace('_', '.');
+  const {key} = qs.parse(location.search.substring(1));
   const {types, loading: opsLoading} = useContext(OperationsContext);
   const typenames = Object.keys(types);
 
@@ -29,10 +31,14 @@ export default function ObjectsPage({match}) {
     const fetchData = async () => {
       let results;
       try {
-        results = await getObjects({
-          limit: BLOCKS_PER_PAGE,
-          type,
-        });
+        if (key) {
+          results = await getObjectsById(type, key);
+        } else {
+          results = await getObjects({
+            limit: BLOCKS_PER_PAGE,
+            type,
+          });
+        }
       } catch (error) {
         setError(error)
         return;
@@ -50,7 +56,7 @@ export default function ObjectsPage({match}) {
     if (!error) {
         fetchData();
     }
-  }, [type]);
+  }, [type, key]);
 
   if (error) {
     throw error;
@@ -63,14 +69,14 @@ export default function ObjectsPage({match}) {
     } else if (objects.length) {
       content = objects.map((ob) => <ObjectItem key={ob.id} object={ob}/>)
     } else {
-      content = (<Box display="flex" justifyContent="center"><p>No blocks available</p></Box>);
+      content = (<Box display="flex" justifyContent="center"><p>No objects available</p></Box>);
     }
   } else {
     return <Loader/>;
   }
 
   return <BlocksList>
-    <BlocksHeader>Objects</BlocksHeader>
+    <BlocksHeader>Objects {key && key.split(',').join(', ')}</BlocksHeader>
     {content}
   </BlocksList>;
 };

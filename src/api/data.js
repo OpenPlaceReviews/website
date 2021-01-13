@@ -1,7 +1,6 @@
-import {get} from "axios";
+import axios, {get} from "axios";
 import { trackPromise } from 'react-promise-tracker'
 import { NotFoundError } from './errors';
-
 
 const getRawHash = (hash) => hash.split(":").pop();
 const getShortHash = (hash) => {
@@ -178,13 +177,13 @@ export const getObjects = async (reqParams = {}) => {
   };
 };
 
-export const getObjectsById = async (objectId) => {
+export const getObjectsById = async (type, objectId) => {
   const params = {
-    type: 'opr.place',
+    type,
     key: objectId,
   };
 
-  const { data } = await get('/api/objects-by-id', { params });
+  const { data } = await trackPromise(get('/api/objects-by-id', { params }));
   const objects = data.objects.map((ob) => transformObject(ob));
 
   return {
@@ -192,3 +191,18 @@ export const getObjectsById = async (objectId) => {
     count: data.count,
   };
 };
+
+export const commitObject = async (data) => {
+  const sendRequest = axios({
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data,
+    url: '/api/auth/process-operation',
+    params: {
+      addToQueue : true,
+      dontSignByServer: false
+    },
+  });
+
+  return await trackPromise(sendRequest);
+}
