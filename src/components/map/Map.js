@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {MapContainer, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import { fetchData } from "../../api/geo";
 import storage from "../../libs/storage";
+import AuthContext from "../main/auth/providers/AuthContext";
 
 import useExtractImages from "./hooks/useExtractImages";
 import {usePromiseTracker} from "react-promise-tracker";
@@ -19,6 +20,7 @@ import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
 import ImagesCarousel from "./blocks/ImagesCarousel";
 import Loader from "../main/blocks/Loader";
 import ReviewImagesBlock from "./blocks/ReviewImagesBlock";
+import OPRLink from "../main/blocks/OPRLink";
 
 const OPRStatusBar = React.memo(StatusBar);
 const OPRMarkersFilter = React.memo(Filter);
@@ -36,6 +38,8 @@ export default function Map() {
   } catch (e) {
     console.warn('Error while decoding saved view');
   }
+
+  const {authData} = useContext(AuthContext);
 
   const [placeTypes, setPlaceTypes] = useState({});
   const [status, setStatus] = useState('');
@@ -60,7 +64,7 @@ export default function Map() {
   };
 
   const { promiseInProgress } = usePromiseTracker();
-  const images = useExtractImages(marker);
+  const {images, setImages} = useExtractImages(marker);
 
   useEffect(() => {
     const request = async () => {
@@ -78,7 +82,7 @@ export default function Map() {
   } else {
     imagesSidebar = <React.Fragment>
       {images.review && <MapSidebarBlock header={`Photos - To review (${images.review.length})`} expanded={expanded} onChange={handleChange} name="review">
-        <ReviewImagesBlock items={images.review}/>
+        {authData.token ? <ReviewImagesBlock images={images} setImages={setImages}/> : <p><OPRLink to="/login">Log in</OPRLink> to review photos</p>}
       </MapSidebarBlock>}
 
       {images.outdoor && <MapSidebarBlock header={`Photos - Outdoor (${images.outdoor.length})`} expanded={expanded} onChange={handleChange} name="outdoor">

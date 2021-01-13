@@ -1,7 +1,6 @@
-import {get} from "axios";
+import axios, {get} from "axios";
 import { trackPromise } from 'react-promise-tracker'
 import { NotFoundError } from './errors';
-
 
 const getRawHash = (hash) => hash.split(":").pop();
 const getShortHash = (hash) => {
@@ -192,3 +191,18 @@ export const getObjectsById = async (type, objectId) => {
     count: data.count,
   };
 };
+
+export const commitObject = async (data) => {
+  const sendRequest = axios({
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data,
+    url: '/api/auth/process-operation',
+    params: {
+      addToQueue : true,
+      dontSignByServer: false
+    },
+  });
+
+  return await trackPromise(sendRequest);
+}
