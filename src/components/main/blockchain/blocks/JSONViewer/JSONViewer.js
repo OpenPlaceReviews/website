@@ -48,7 +48,9 @@ export default function JSONViewer({json, open = false, className}) {
                 borderRadius: "5px",
                 padding: "15px",
                 marginTop: "10px",
-                lineHeight: "1.2em"
+                lineHeight: "1.4em",
+                fontSize: "14px",
+                fontFamily: "Menlo,Monaco,Consolas,Courier New,monospace",
             }}
         />
     </Collapse>;
