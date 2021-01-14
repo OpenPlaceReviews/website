@@ -5,6 +5,7 @@ const useStyles = makeStyles({
   value: {
     fontWeight: props => props.fontWeight,
     color: "#000",
+    fontSize: "15px",
   }
 });
 
