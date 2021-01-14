@@ -9,11 +9,14 @@ import ValueSidebarItem from "./ValueSidebarItem";
 
 const useStyles = makeStyles({
   icon: {
-    minWidth: "35px",
+    minWidth: "20px",
+    width: "20px",
+    marginRight: "20px",
   },
   activeLink: {
+    color: "#140579",
+    textDecorationColor: "#140579 !important",
     "& li, & > div": {
-
       background: "#FFC93A",
       color: "#140579",
     },
