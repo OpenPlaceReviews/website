@@ -71,6 +71,7 @@ export default function LoginForm({ onSuccess }) {
 
       onSuccess({
         name: formData.name.value,
+        provider: result.data.create[0].id[1],
         token: result.data.eval.privatekey,
       });
     };

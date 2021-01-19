@@ -79,6 +79,7 @@ export default function OAuthLoginForm({onLogIn, onSignUp, onError, preAuthParam
       const { data } = result;
       onLogIn({
         name: formData.name.value,
+        provider: data.create[0].id[1],
         token: data.eval.privatekey,
       });
     };

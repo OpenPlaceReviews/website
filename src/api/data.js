@@ -192,15 +192,18 @@ export const getObjectsById = async (type, objectId) => {
   };
 };
 
-export const commitObject = async (data) => {
+export const commitObject = async (data, name, token) => {
   const sendRequest = axios({
     method: 'POST',
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    headers: { 'content-type': 'application/json; charset=utf-8' },
     data,
     url: '/api/auth/process-operation',
     params: {
       addToQueue : true,
-      dontSignByServer: false
+      dontSignByServer: false,
+      name: name,
+      privateKey: token,
+      validate: false,
     },
   });
 

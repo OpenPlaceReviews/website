@@ -144,6 +144,7 @@ export default function OAuthSignUpForm({onSignUp, onLogIn, onError, preAuthPara
           const { data } = await auth.logIn(params, reqParams);
           onLogIn({
             name: formData.name.value,
+            provider: data.create[0].id[1],
             token: data.eval.privatekey,
           });
         } catch (error) {

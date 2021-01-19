@@ -1,8 +1,7 @@
 import {useEffect, useState} from "react";
 import {getObjectsById} from "../../../api/data";
 
-export default function useExtractImages(marker) {
-    const [images, setImages] = useState({});
+export default function useExtractObject(marker, version, onLoad) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -10,7 +9,12 @@ export default function useExtractImages(marker) {
             try {
                 const data = await getObjectsById('opr.place', marker.properties.opr_id);
                 const object = data.objects.shift();
-                setImages(object.images || {});
+
+                if (object.clientData) {
+                    delete object.clientData;
+                }
+
+                onLoad(object);
             } catch (e) {
                 setError(error);
             }
@@ -18,14 +22,12 @@ export default function useExtractImages(marker) {
 
         if (marker && marker.properties.opr_id) {
             fetchData();
-        } else if (images) {
-            setImages({});
+        } else {
+            onLoad(null);
         }
-    }, [marker]);
+    }, [marker, version]);
 
     if (error) {
         throw error;
     }
-
-    return {images, setImages};
 };
