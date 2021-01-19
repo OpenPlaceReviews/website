@@ -9,6 +9,7 @@ export default (props) => {
   const initialAuthData = {
     data: {
       token: storage.get('opr-token') || "",
+      provider: storage.get('opr-provider') || "",
       name: authName,
     },
     actions: {
@@ -30,8 +31,9 @@ export default (props) => {
     });
   };
 
-  const logIn = ({name, token = ""}) => {
+  const logIn = ({name, provider = "", token = ""}) => {
     storage.set('opr-nickname', name);
+    storage.set('opr-provider', provider);
     storage.set('opr-token', token);
 
     setAuthData((state) => {
@@ -39,6 +41,7 @@ export default (props) => {
         ...state,
         data: {
           name,
+          provider,
           token,
         }
       }

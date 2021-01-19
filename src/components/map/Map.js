@@ -6,12 +6,13 @@ import { fetchData } from "../../api/geo";
 import storage from "../../libs/storage";
 import AuthContext from "../main/auth/providers/AuthContext";
 
-import useExtractImages from "./hooks/useExtractImages";
 import {usePromiseTracker} from "react-promise-tracker";
+import useExtractObject from "./hooks/useExtractObject";
+import useDiff from "./hooks/useDiff";
+import useCommitOp from "./hooks/useCommitOp";
 
 import OPRLayer from "./OPRLayer";
 import MapSidebar from "./blocks/sidebar/MapSidebar";
-
 import StatusBar from "./blocks/StatusBar";
 import Filter from "./blocks/Filter";
 import ViewTracker from "./ViewTracker";
@@ -21,6 +22,7 @@ import ImagesCarousel from "./blocks/ImagesCarousel";
 import Loader from "../main/blocks/Loader";
 import ReviewImagesBlock from "./blocks/ReviewImagesBlock";
 import OPRLink from "../main/blocks/OPRLink";
+
 
 const OPRStatusBar = React.memo(StatusBar);
 const OPRMarkersFilter = React.memo(Filter);
@@ -48,6 +50,12 @@ export default function Map() {
   const [marker, setMarker] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [op, setOp] = useState(null);
+  const [places, setPlaces] = useState([]);
+  const [version, setVersion] = useState(0);
+
+  const [place] = places;
+
   const [expanded, setExpanded] = useState('filter');
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -63,8 +71,18 @@ export default function Map() {
     }
   };
 
+  const handleExtractPlace = (object) => {
+    setPlaces([object, object]);
+  }
+
+  const handleUpdatePlace = () => {
+    setVersion(place.version + 1);
+  }
+
   const { promiseInProgress } = usePromiseTracker();
-  const {images, setImages} = useExtractImages(marker);
+  useExtractObject(marker, version, handleExtractPlace);
+  useDiff(places[0], places[1], setOp);
+  useCommitOp(op, authData, handleUpdatePlace);
 
   useEffect(() => {
     const request = async () => {
@@ -79,19 +97,20 @@ export default function Map() {
   let imagesSidebar;
   if (promiseInProgress) {
     imagesSidebar = <Loader position="relative"/>;
-  } else {
+  } else if(place && place.images) {
+    const {images} = place;
     imagesSidebar = <React.Fragment>
-      {images.review && <MapSidebarBlock header={`Photos - To review (${images.review.length})`} expanded={expanded} onChange={handleChange} name="review">
-        {authData.token ? <ReviewImagesBlock images={images} setImages={setImages}/> : <p><OPRLink to="/login">Log in</OPRLink> to review photos</p>}
-      </MapSidebarBlock>}
+      {images.review.length > 0 ? <MapSidebarBlock header={`Photos - To review (${images.review.length})`} expanded={expanded} onChange={handleChange} name="review">
+        {authData.token ? <ReviewImagesBlock place={place} onSubmit={setPlaces}/> : <p><OPRLink to="/login">Log in</OPRLink> to review photos</p>}
+      </MapSidebarBlock> : ''}
 
-      {images.outdoor && <MapSidebarBlock header={`Photos - Outdoor (${images.outdoor.length})`} expanded={expanded} onChange={handleChange} name="outdoor">
+      {images.outdoor.length > 0 ? <MapSidebarBlock header={`Photos - Outdoor (${images.outdoor.length})`} expanded={expanded} onChange={handleChange} name="outdoor">
         <ImagesCarousel items={images.outdoor}/>
-      </MapSidebarBlock>}
+      </MapSidebarBlock> : ''}
 
-      {images.indoor && <MapSidebarBlock header={`Photos - Indoor (${images.indoor.length})`} expanded={expanded} onChange={handleChange} name="indoor">
+      {images.indoor.length > 0 ? <MapSidebarBlock header={`Photos - Indoor (${images.indoor.length})`} expanded={expanded} onChange={handleChange} name="indoor">
         <ImagesCarousel items={images.indoor}/>
-      </MapSidebarBlock>}
+      </MapSidebarBlock> : ''}
     </React.Fragment>;
   }
 
