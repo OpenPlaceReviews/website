@@ -10,7 +10,7 @@ import MapSidebar from "./blocks/sidebar/MapSidebar";
 import ViewTracker from "./ViewTracker";
 
 import MarkerBlock from "./blocks/sidebar/MarkerBlock";
-import FilterBlock from "./blocks/sidebar/FilterBlock";
+import Filter from "./blocks/Filter";
 
 export default function Map() {
   let initialLatLng = [40, -35];
@@ -27,7 +27,6 @@ export default function Map() {
   }
 
   const [placeTypes, setPlaceTypes] = useState({});
-  const [status, setStatus] = useState('');
   const [filterVal, setFilter] = useState('all');
   const [isTileBased, setTileBased] = useState(false);
   const [marker, setMarker] = useState(null);
@@ -53,9 +52,9 @@ export default function Map() {
     {marker && <MarkerBlock marker={marker}/>}
 
     <MapSidebar position="topright">
-      <FilterBlock status={status} placeTypes={placeTypes} setFilter={setFilter}/>
+      <Filter placeTypes={placeTypes} onSelect={setFilter}/>
     </MapSidebar>
 
-    {!loading && <OPRLayer initialZoom={initialZoom} setStatus={setStatus} filterVal={filterVal} isTileBased={isTileBased} onSelect={setMarker}/>}
+    {!loading && <OPRLayer initialZoom={initialZoom} filterVal={filterVal} isTileBased={isTileBased} onSelect={setMarker}/>}
   </MapContainer>;
 }

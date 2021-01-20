@@ -7,18 +7,20 @@ import {fetchData} from "../../api/geo";
 import MarkerEntity from "./MarkerEntity";
 import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import MarkerClusterGroup from "./MarkerClusterGroup";
+import Loader from "../main/blocks/Loader";
 
 let isMapMoving = false;
 let refreshTimeout = null;
 const REFRESH_TIMEOUT = 300;
 const MIN_MARKERS_ZOOM = 16;
 
-export default function OPRLayer({setStatus, initialZoom, filterVal, isTileBased, onSelect}) {
+export default function OPRLayer({initialZoom, filterVal, isTileBased, onSelect}) {
   const [placesCache, setPlacesCache] = useState({});
 
   const [currentLayer, setCurrentLayer] = useState([]);
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(initialZoom);
+  const [loading, setLoading] = useState(false);
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
@@ -30,7 +32,6 @@ export default function OPRLayer({setStatus, initialZoom, filterVal, isTileBased
     }
 
     if (zoom < MIN_MARKERS_ZOOM) {
-      setStatus('');
       setCurrentLayer({});
       return;
     }
@@ -62,20 +63,17 @@ export default function OPRLayer({setStatus, initialZoom, filterVal, isTileBased
   }, []);
 
   useEffect(() => {
+    let loadingTimout = null;
+
     const updateCache = async () => {
       let missing = 0;
-      let tiles = 0;
       for (let tileId in currentBounds) {
         if (!placesCache[tileId]) {
           missing++;
-        } else {
-          tiles++;
         }
       }
 
-      if (missing > 0) {
-        setStatus(`${tiles} tiles displayed (${missing} tiles loading...) `);
-      }
+      setLoading(missing > 0);
 
       const newCache = { ...placesCache };
 
@@ -91,6 +89,10 @@ export default function OPRLayer({setStatus, initialZoom, filterVal, isTileBased
         }
       }
 
+      clearTimeout(loadingTimout);
+      loadingTimout = setTimeout(() => {
+        setLoading(false);
+      }, 500);
       setPlacesCache(newCache);
     };
 
@@ -102,7 +104,6 @@ export default function OPRLayer({setStatus, initialZoom, filterVal, isTileBased
   useEffect(() => {
     const updateLayer = () => {
       let newLayer = [];
-      let tiles = 0;
 
       for (let tileId in currentBounds) {
         if (has(placesCache, `${tileId}.data.features`)) {
@@ -112,12 +113,8 @@ export default function OPRLayer({setStatus, initialZoom, filterVal, isTileBased
           } else {
             newLayer = newLayer.concat(features.filter((f) => f.properties.place_type === filterVal));
           }
-
-          tiles++;
         }
       }
-
-      setStatus(`${tiles} tiles have ${newLayer.length} places `);
 
       if (!isMapMoving) {
         setCurrentLayer(newLayer);
@@ -160,6 +157,7 @@ export default function OPRLayer({setStatus, initialZoom, filterVal, isTileBased
   });
 
   return <div className="opr-layer">
+    {(loading) && <OPRMessageOverlay><Loader position="relative"/></OPRMessageOverlay>}
     {(map.getZoom() < MIN_MARKERS_ZOOM) && <OPRMessageOverlay>Zoom in to view details</OPRMessageOverlay>}
     <MarkerClusterGroup>
       {currentLayer.length && currentLayer.map((feature) => <MarkerEntity feature={feature} key={feature.properties.opr_id} onSelect={onSelect}/>)}
