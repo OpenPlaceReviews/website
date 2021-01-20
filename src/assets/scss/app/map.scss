@@ -36,22 +36,6 @@
   text-align: center;
 }
 
-.map-sidebar {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 15px;
-
-  background: #FFFFFF;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 12px;
-  width: 384px;
-}
-
-.map-sidebar p {
-  margin: 0;
-}
-
 .map-filter {
   width: 100%;
 }

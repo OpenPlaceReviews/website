@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Accordion, AccordionSummary, AccordionDetails} from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {makeStyles} from "@material-ui/styles";
@@ -16,9 +16,15 @@ const useStyles = makeStyles({
     },
 });
 
-export default function MapSidebarBlock({name, onChange, expanded, header, children}) {
+export default function MapSidebarBlock({header, children, open = false}) {
+    const [expanded, setExpanded] = useState(open);
     const classes = useStyles();
-    return <Accordion square expanded={expanded === name} onChange={onChange(name)} className={classes.accordion}>
+
+    const handleChange = () => {
+        setExpanded(!expanded);
+    };
+
+    return <Accordion square expanded={expanded} onChange={handleChange} className={classes.accordion}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} className={classes.summary}>
             {header}
         </AccordionSummary>
