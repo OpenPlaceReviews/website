@@ -1,35 +1,23 @@
-import React, {useState} from 'react';
-import {Accordion, AccordionSummary, AccordionDetails} from "@material-ui/core";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import React from 'react';
 import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
-    accordion: {
-        width: "100%",
-    },
-    details: {
-        display: "block",
-    },
-    summary: {
-      fontSize: "1rem",
-      fontWeight: 600,
+    root: {
+        fontFamily: "IBM Plex Sans",
+        padding: "10px 15px",
+        background: "#FFFFFF",
+        boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
+        borderRadius: "12px",
+        marginBottom: "20px",
+        width: (props) => props.width ? props.width : "300px",
     },
 });
 
-export default function MapSidebarBlock({header, children, open = false}) {
-    const [expanded, setExpanded] = useState(open);
-    const classes = useStyles();
+export default function MapSidebarBlock({children, width}) {
+    console.log(width);
+    const classes = useStyles({width});
 
-    const handleChange = () => {
-        setExpanded(!expanded);
-    };
-
-    return <Accordion square expanded={expanded} onChange={handleChange} className={classes.accordion}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} className={classes.summary}>
-            {header}
-        </AccordionSummary>
-        <AccordionDetails className={classes.details}>
-            {children}
-        </AccordionDetails>
-    </Accordion>
+    return <div className={classes.root}>
+        {children}
+    </div>;
 };

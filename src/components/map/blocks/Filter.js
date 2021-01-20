@@ -5,14 +5,15 @@ import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
   filter: {
-    width: "100%",
     display: "flex",
-    fontFamily: "IBM Plex Sans",
     flexDirection: "row",
     alignItems: "center",
     "& :focus": {
       background: "none",
-    }
+    },
+    "& p": {
+      margin: 0,
+    },
   },
   icon: {
     width: "15px",

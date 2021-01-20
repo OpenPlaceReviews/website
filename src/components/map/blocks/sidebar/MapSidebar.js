@@ -10,22 +10,22 @@ const POSITION_CLASSES = {
 
 const useStyles = makeStyles({
   sidebar: {
-    padding: "10px 15px",
-    background: "#FFFFFF",
-    boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
-    borderRadius: "12px",
+    border: "none !important",
     display: "flex",
     flexDirection: "column",
-    alignItems: "flex-start",
-    width: "384px",
-    "& p": {
-      margin: 0,
-    },
+    alignItems: (props) => {props.alignItems},
   }
 });
 
 export default ({ position, children }) => {
-  const classes = useStyles();
+  let alignItems;
+  if (position === 'topright' || position === 'bottomright') {
+    alignItems = 'flex-end';
+  } else {
+    alignItems = 'flex-start';
+  }
+
+  const classes = useStyles({alignItems});
   const positionClass =
     (position && POSITION_CLASSES[position]) || POSITION_CLASSES.topleft
   return <div className={`${positionClass} `}>

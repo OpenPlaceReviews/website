@@ -11,6 +11,8 @@ import ViewTracker from "./ViewTracker";
 
 import MarkerBlock from "./blocks/sidebar/MarkerBlock";
 import Filter from "./blocks/Filter";
+import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
+import ReviewPlaces from "./blocks/ReviewPlaces";
 
 export default function Map() {
   let initialLatLng = [40, -35];
@@ -52,7 +54,12 @@ export default function Map() {
     {marker && <MarkerBlock marker={marker}/>}
 
     <MapSidebar position="topright">
-      <Filter placeTypes={placeTypes} onSelect={setFilter}/>
+      <MapSidebarBlock>
+        <Filter placeTypes={placeTypes} onSelect={setFilter}/>
+      </MapSidebarBlock>
+      <MapSidebarBlock>
+        <ReviewPlaces/>
+      </MapSidebarBlock>
     </MapSidebar>
 
     {!loading && <OPRLayer initialZoom={initialZoom} filterVal={filterVal} isTileBased={isTileBased} onSelect={setMarker}/>}

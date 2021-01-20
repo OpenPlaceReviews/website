@@ -5,7 +5,7 @@ import useExtractObject from "../../hooks/useExtractObject";
 import useDiff from "../../hooks/useDiff";
 import useCommitOp from "../../hooks/useCommitOp";
 
-import MapSidebarBlock from "./MapSidebarBlock";
+import MapSidebarBlockExpandable from "./MapSidebarBlockExpandable";
 import OPRAttributesBar from "../OPRAttributesBar";
 import MapSidebar from "./MapSidebar";
 import Loader from "../../../main/blocks/Loader";
@@ -41,24 +41,24 @@ export default function MarkerBlock({marker, setMarker}) {
     if(place && place.images) {
         const {images} = place;
         imagesSidebar = <React.Fragment>
-            {images.review.length > 0 ? <MapSidebarBlock header={`Photos - To review (${images.review.length})`}>
+            {images.review.length > 0 ? <MapSidebarBlockExpandable header={`Photos - To review (${images.review.length})`}>
                 {authData.token ? <ReviewImagesBlock place={place} onSubmit={setPlaces}/> : <p><OPRLink to="/login">Log in</OPRLink> to review photos</p>}
-            </MapSidebarBlock> : ''}
+            </MapSidebarBlockExpandable> : ''}
 
-            {images.outdoor.length > 0 ? <MapSidebarBlock header={`Photos - Outdoor (${images.outdoor.length})`}>
+            {images.outdoor.length > 0 ? <MapSidebarBlockExpandable header={`Photos - Outdoor (${images.outdoor.length})`}>
                 <ImagesCarousel items={images.outdoor}/>
-            </MapSidebarBlock> : ''}
+            </MapSidebarBlockExpandable> : ''}
 
-            {images.indoor.length > 0 ? <MapSidebarBlock header={`Photos - Indoor (${images.indoor.length})`}>
+            {images.indoor.length > 0 ? <MapSidebarBlockExpandable header={`Photos - Indoor (${images.indoor.length})`}>
                 <ImagesCarousel items={images.indoor}/>
-            </MapSidebarBlock> : ''}
+            </MapSidebarBlockExpandable> : ''}
         </React.Fragment>;
     }
 
     return <MapSidebar position="topleft">
-        <MapSidebarBlock header="Attributes" open={true}>
+        <MapSidebarBlockExpandable header="Attributes" open={true}>
             <OPRAttributesBar feature={marker} setMarker={setMarker}/>
-        </MapSidebarBlock>
+        </MapSidebarBlockExpandable>
 
         {promiseInProgress && <Loader position="relative"/>}
 
