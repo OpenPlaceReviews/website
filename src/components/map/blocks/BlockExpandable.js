@@ -11,12 +11,12 @@ const useStyles = makeStyles({
         display: "block",
     },
     summary: {
-      fontSize: "1rem",
-      fontWeight: 600,
-    },
+        fontSize: "1rem",
+        fontWeight: 600,
+    }
 });
 
-export default function MapSidebarBlockExpandable({header, children, open = false}) {
+export default function BlockExpandable({header, children, open = false}) {
     const [expanded, setExpanded] = useState(open);
     const classes = useStyles();
 

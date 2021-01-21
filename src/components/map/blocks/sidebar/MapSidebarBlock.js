@@ -14,7 +14,6 @@ const useStyles = makeStyles({
 });
 
 export default function MapSidebarBlock({children, width}) {
-    console.log(width);
     const classes = useStyles({width});
 
     return <div className={classes.root}>

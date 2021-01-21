@@ -7,20 +7,19 @@ import {fetchData} from "../../api/geo";
 import MarkerEntity from "./MarkerEntity";
 import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import MarkerClusterGroup from "./MarkerClusterGroup";
-import Loader from "../main/blocks/Loader";
 
 let isMapMoving = false;
 let refreshTimeout = null;
 const REFRESH_TIMEOUT = 300;
 const MIN_MARKERS_ZOOM = 16;
 
-export default function OPRLayer({initialZoom, filterVal, isTileBased, onSelect}) {
+export default function OPRLayer({initialZoom, filterVal, isTileBased, onSelect, setLoading}) {
   const [placesCache, setPlacesCache] = useState({});
 
   const [currentLayer, setCurrentLayer] = useState([]);
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(initialZoom);
-  const [loading, setLoading] = useState(false);
+
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
@@ -157,7 +156,6 @@ export default function OPRLayer({initialZoom, filterVal, isTileBased, onSelect}
   });
 
   return <div className="opr-layer">
-    {(loading) && <OPRMessageOverlay><Loader position="relative"/></OPRMessageOverlay>}
     {(map.getZoom() < MIN_MARKERS_ZOOM) && <OPRMessageOverlay>Zoom in to view details</OPRMessageOverlay>}
     <MarkerClusterGroup>
       {currentLayer.length && currentLayer.map((feature) => <MarkerEntity feature={feature} key={feature.properties.opr_id} onSelect={onSelect}/>)}

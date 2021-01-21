@@ -1,14 +1,12 @@
 import React, {useContext, useState} from 'react';
 
-import {usePromiseTracker} from "react-promise-tracker";
 import useExtractObject from "../../hooks/useExtractObject";
 import useDiff from "../../hooks/useDiff";
 import useCommitOp from "../../hooks/useCommitOp";
 
-import MapSidebarBlockExpandable from "./MapSidebarBlockExpandable";
+import BlockExpandable from "../BlockExpandable";
 import OPRAttributesBar from "../OPRAttributesBar";
 import MapSidebar from "./MapSidebar";
-import Loader from "../../../main/blocks/Loader";
 import ReviewImagesBlock from "../ReviewImagesBlock";
 import OPRLink from "../../../main/blocks/OPRLink";
 import ImagesCarousel from "../ImagesCarousel";
@@ -32,7 +30,6 @@ export default function MarkerBlock({marker, setMarker}) {
         setVersion(place.version + 1);
     }
 
-    const { promiseInProgress } = usePromiseTracker();
     useExtractObject(marker, version, handleExtractPlace);
     useDiff(places[0], places[1], setOp);
     useCommitOp(op, authData, handleUpdatePlace);
@@ -41,26 +38,24 @@ export default function MarkerBlock({marker, setMarker}) {
     if(place && place.images) {
         const {images} = place;
         imagesSidebar = <React.Fragment>
-            {images.review.length > 0 ? <MapSidebarBlockExpandable header={`Photos - To review (${images.review.length})`}>
+            {images.review.length > 0 ? <BlockExpandable header={`Photos - To review (${images.review.length})`}>
                 {authData.token ? <ReviewImagesBlock place={place} onSubmit={setPlaces}/> : <p><OPRLink to="/login">Log in</OPRLink> to review photos</p>}
-            </MapSidebarBlockExpandable> : ''}
+            </BlockExpandable> : ''}
 
-            {images.outdoor.length > 0 ? <MapSidebarBlockExpandable header={`Photos - Outdoor (${images.outdoor.length})`}>
+            {images.outdoor.length > 0 ? <BlockExpandable header={`Photos - Outdoor (${images.outdoor.length})`}>
                 <ImagesCarousel items={images.outdoor}/>
-            </MapSidebarBlockExpandable> : ''}
+            </BlockExpandable> : ''}
 
-            {images.indoor.length > 0 ? <MapSidebarBlockExpandable header={`Photos - Indoor (${images.indoor.length})`}>
+            {images.indoor.length > 0 ? <BlockExpandable header={`Photos - Indoor (${images.indoor.length})`}>
                 <ImagesCarousel items={images.indoor}/>
-            </MapSidebarBlockExpandable> : ''}
+            </BlockExpandable> : ''}
         </React.Fragment>;
     }
 
     return <MapSidebar position="topleft">
-        <MapSidebarBlockExpandable header="Attributes" open={true}>
+        <BlockExpandable header="Attributes" open={true}>
             <OPRAttributesBar feature={marker} setMarker={setMarker}/>
-        </MapSidebarBlockExpandable>
-
-        {promiseInProgress && <Loader position="relative"/>}
+        </BlockExpandable>
 
         {imagesSidebar}
     </MapSidebar>;

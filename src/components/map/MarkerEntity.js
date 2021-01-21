@@ -13,5 +13,5 @@ export default function ({feature, onSelect}) {
     onSelect(feature);
   };
 
-  return <Marker icon={icon} position={latLng} eventHandlers={{ click: onClickHandler}} />
+  return <Marker icon={icon} position={latLng} eventHandlers={{ click: onClickHandler}} properties={feature.properties} />
 };
