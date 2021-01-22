@@ -12,6 +12,7 @@ import OPRLink from "../../../main/blocks/OPRLink";
 import ImagesCarousel from "../ImagesCarousel";
 
 import AuthContext from "../../../main/auth/providers/AuthContext";
+import MapSidebarBlock from "./MapSidebarBlock";
 
 export default function MarkerBlock({marker, setMarker}) {
     const [op, setOp] = useState(null);
@@ -53,10 +54,12 @@ export default function MarkerBlock({marker, setMarker}) {
     }
 
     return <MapSidebar position="topleft">
-        <BlockExpandable header="Attributes" open={true}>
-            <OPRAttributesBar feature={marker} setMarker={setMarker}/>
-        </BlockExpandable>
+        <MapSidebarBlock>
+            <BlockExpandable header="Attributes" open={true}>
+                <OPRAttributesBar feature={marker} setMarker={setMarker}/>
+            </BlockExpandable>
 
-        {imagesSidebar}
+            {imagesSidebar}
+        </MapSidebarBlock>
     </MapSidebar>;
 };
