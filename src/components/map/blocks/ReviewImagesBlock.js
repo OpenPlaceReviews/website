@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 });
 
 export default function ReviewImagesBlock({place, onSubmit}) {
-    const [current, setCurrent] = useState(place.images.review[0].hash);
+    const [current, setCurrent] = useState(0);
     const [categorized, setCategorized] = useState({});
     const classes = useStyles();
 
@@ -26,8 +26,8 @@ export default function ReviewImagesBlock({place, onSubmit}) {
 
     useEffect(() => {
         const categories = {};
-        images.review.forEach((image) => {
-            categories[image.hash] = 'review';
+        images.review.forEach((image, index) => {
+            categories[index] = 'review';
         });
 
         setCategorized(categories);
@@ -36,8 +36,9 @@ export default function ReviewImagesBlock({place, onSubmit}) {
     const onSubmitHandler = () => {
         const newPlace = JSON.parse(JSON.stringify(place));
 
+        let deletedCount = 0;
         images.review.forEach((image, index) => {
-            const category = categorized[image.hash];
+            const category = categorized[index];
             if (category === 'review') {
                 return;
             }
@@ -50,7 +51,8 @@ export default function ReviewImagesBlock({place, onSubmit}) {
                 newPlace.images[category].push(image);
             }
 
-            newPlace.images.review.splice(index, 1);
+            newPlace.images.review.splice(index - deletedCount, 1);
+            deletedCount++;
         });
 
         onSubmit([place, newPlace]);

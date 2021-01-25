@@ -1,18 +1,18 @@
 import React, {useContext, useState} from 'react';
 
-import useExtractObject from "../../hooks/useExtractObject";
-import useDiff from "../../hooks/useDiff";
-import useCommitOp from "../../hooks/useCommitOp";
+import useExtractObject from "../hooks/useExtractObject";
+import useDiff from "../hooks/useDiff";
+import useCommitOp from "../hooks/useCommitOp";
 
-import BlockExpandable from "../BlockExpandable";
-import OPRAttributesBar from "../OPRAttributesBar";
-import MapSidebar from "./MapSidebar";
-import ReviewImagesBlock from "../ReviewImagesBlock";
-import OPRLink from "../../../main/blocks/OPRLink";
-import ImagesCarousel from "../ImagesCarousel";
+import BlockExpandable from "./BlockExpandable";
+import OPRAttributesBar from "./OPRAttributesBar";
+import MapSidebar from "./sidebar/MapSidebar";
+import ReviewImagesBlock from "./ReviewImagesBlock";
+import OPRLink from "../../main/blocks/OPRLink";
+import ImagesCarousel from "./ImagesCarousel";
 
-import AuthContext from "../../../main/auth/providers/AuthContext";
-import MapSidebarBlock from "./MapSidebarBlock";
+import AuthContext from "../../main/auth/providers/AuthContext";
+import MapSidebarBlock from "./sidebar/MapSidebarBlock";
 
 export default function MarkerBlock({marker, setMarker}) {
     const [op, setOp] = useState(null);

@@ -18,12 +18,7 @@ const IMAGE_URL = '/api/ipfs/image?hash=';
 
 export default function ImagesCarousel({items, onChange = () => {}}) {
     const classes = useStyles();
-    const changeHandler = (index) => {
-        const {hash} = items[index];
-        onChange(hash);
-    };
-
-    return <Carousel autoPlay={false} indicators={true} animation="slide" onChange={changeHandler}>
+    return <Carousel autoPlay={false} indicators={true} animation="slide" onChange={onChange}>
         {
             items.map( (item, i) => <div key={i} className={classes.item}><img src={`${IMAGE_URL}${item.hash}`} alt="photo" /></div> )
         }
