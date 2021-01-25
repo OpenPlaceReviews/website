@@ -12,15 +12,30 @@ import OPRLink from "../../../main/blocks/OPRLink";
 import ImagesCarousel from "../ImagesCarousel";
 
 import AuthContext from "../../../main/auth/providers/AuthContext";
-import MapSidebarBlock from "./MapSidebarBlock";
+import {makeStyles} from "@material-ui/styles";
+
+const useStyles = makeStyles({
+    sidebar: {
+        height: "100%",
+        margin: "0 0 0 10px !important",
+    },
+    container: {
+        fontFamily: "IBM Plex Sans",
+        padding: "10px 15px",
+        background: "#FFFFFF",
+        height: "100%",
+        width: "300px",
+        overflow: "auto",
+    }
+});
 
 export default function MarkerBlock({marker, setMarker}) {
     const [op, setOp] = useState(null);
     const [places, setPlaces] = useState([]);
     const [version, setVersion] = useState(0);
+    const classes = useStyles();
 
     const [place] = places;
-
     const {authData} = useContext(AuthContext);
 
     const handleExtractPlace = (object) => {
@@ -53,13 +68,13 @@ export default function MarkerBlock({marker, setMarker}) {
         </React.Fragment>;
     }
 
-    return <MapSidebar position="topleft">
-        <MapSidebarBlock>
+    return <MapSidebar position="left" className={classes.sidebar}>
+        <div className={classes.container}>
             <BlockExpandable header="Attributes" open={true}>
                 <OPRAttributesBar feature={marker} setMarker={setMarker}/>
             </BlockExpandable>
 
             {imagesSidebar}
-        </MapSidebarBlock>
+        </div>
     </MapSidebar>;
 };
