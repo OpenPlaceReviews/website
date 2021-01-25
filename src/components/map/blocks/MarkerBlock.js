@@ -9,7 +9,7 @@ import OPRAttributesBar from "./OPRAttributesBar";
 import MapSidebar from "./sidebar/MapSidebar";
 import ReviewImagesBlock from "./ReviewImagesBlock";
 
-import AuthContext from "../../../main/auth/providers/AuthContext";
+import AuthContext from "../../main/auth/providers/AuthContext";
 import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({

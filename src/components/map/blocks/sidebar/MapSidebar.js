@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/styles";
+import L from "leaflet";
 
 const POSITION_CLASSES = {
   bottomleft: 'leaflet-bottom leaflet-left',
@@ -20,6 +21,18 @@ const useStyles = makeStyles({
 });
 
 export default ({ position, className, children }) => {
+  const sidebarRef = useRef();
+  useEffect(() => {
+    L.DomEvent.disableScrollPropagation(sidebarRef.current);
+    L.DomEvent.addListener(sidebarRef.current, 'mousedown touchstart dblclick', (e) => {
+      const className = e.target.className || e.target.class || '';
+
+      if(!className || !className.includes('MuiSelect-root')) {
+        L.DomEvent.stopPropagation(e);
+      }
+    });
+  }, []);
+
   let alignItems;
   if (position === 'topright' || position === 'bottomright' || position ==='right') {
     alignItems = 'flex-end';
@@ -31,7 +44,7 @@ export default ({ position, className, children }) => {
   const positionClass =
     (position && POSITION_CLASSES[position]) || POSITION_CLASSES.topleft
 
-  return <div className={`${positionClass}`}>
+  return <div className={`${positionClass}`} ref={sidebarRef}>
     <div className={`leaflet-bar leaflet-control ${classes.sidebar} ${className ? className : ''}`}>
       {children}
     </div>
