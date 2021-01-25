@@ -1,15 +1,13 @@
 import React, {useContext, useState} from 'react';
 
-import useExtractObject from "../../hooks/useExtractObject";
-import useDiff from "../../hooks/useDiff";
-import useCommitOp from "../../hooks/useCommitOp";
+import useExtractObject from "../hooks/useExtractObject";
+import useDiff from "../hooks/useDiff";
+import useCommitOp from "../hooks/useCommitOp";
 
-import BlockExpandable from "../BlockExpandable";
-import OPRAttributesBar from "../OPRAttributesBar";
-import MapSidebar from "./MapSidebar";
-import ReviewImagesBlock from "../ReviewImagesBlock";
-import OPRLink from "../../../main/blocks/OPRLink";
-import ImagesCarousel from "../ImagesCarousel";
+import BlockExpandable from "./BlockExpandable";
+import OPRAttributesBar from "./OPRAttributesBar";
+import MapSidebar from "./sidebar/MapSidebar";
+import ReviewImagesBlock from "./ReviewImagesBlock";
 
 import AuthContext from "../../../main/auth/providers/AuthContext";
 import {makeStyles} from "@material-ui/styles";
@@ -53,17 +51,18 @@ export default function MarkerBlock({marker, setMarker}) {
     let imagesSidebar;
     if(place && place.images) {
         const {images} = place;
+        const isLoggedIn = !!authData.token;
         imagesSidebar = <React.Fragment>
             {images.review.length > 0 ? <BlockExpandable header={`Photos - To review (${images.review.length})`}>
-                {authData.token ? <ReviewImagesBlock place={place} onSubmit={setPlaces}/> : <p><OPRLink to="/login">Log in</OPRLink> to review photos</p>}
+                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="review"/>
             </BlockExpandable> : ''}
 
             {images.outdoor.length > 0 ? <BlockExpandable header={`Photos - Outdoor (${images.outdoor.length})`}>
-                <ImagesCarousel items={images.outdoor}/>
+                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="outdoor"/>
             </BlockExpandable> : ''}
 
             {images.indoor.length > 0 ? <BlockExpandable header={`Photos - Indoor (${images.indoor.length})`}>
-                <ImagesCarousel items={images.indoor}/>
+                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="indoor"/>
             </BlockExpandable> : ''}
         </React.Fragment>;
     }
