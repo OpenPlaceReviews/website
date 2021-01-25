@@ -2,23 +2,16 @@ import React, {useEffect, useState} from 'react';
 import ImagesCarousel from "./ImagesCarousel";
 import {makeStyles} from "@material-ui/styles";
 
-import {Button, Box, MenuItem, Select} from "@material-ui/core";
+import CategorySelector from "./CategorySelector";
 
 const useStyles = makeStyles({
     reviewContainer: {
         position: 'relative',
     },
-    selector: {
-        height: "35px",
-        background: "#FFF",
-    },
-    button: {
-        height: "35px",
-    },
 });
 
-export default function ReviewImagesBlock({place, onSubmit}) {
-    const [current, setCurrent] = useState(place.images.review[0].hash);
+export default function ReviewImagesBlock({place, onSubmit, initialCategory, isLoggedIn}) {
+    const [current, setCurrent] = useState(0);
     const [categorized, setCategorized] = useState({});
     const classes = useStyles();
 
@@ -26,19 +19,20 @@ export default function ReviewImagesBlock({place, onSubmit}) {
 
     useEffect(() => {
         const categories = {};
-        images.review.forEach((image) => {
-            categories[image.hash] = 'review';
+        images[initialCategory].forEach((image, index) => {
+            categories[index] = initialCategory;
         });
 
         setCategorized(categories);
-    }, []);
+    }, [place]);
 
     const onSubmitHandler = () => {
         const newPlace = JSON.parse(JSON.stringify(place));
 
-        images.review.forEach((image, index) => {
-            const category = categorized[image.hash];
-            if (category === 'review') {
+        let deletedCount = 0;
+        images[initialCategory].forEach((image, index) => {
+            const category = categorized[index];
+            if (category === initialCategory) {
                 return;
             }
 
@@ -50,7 +44,8 @@ export default function ReviewImagesBlock({place, onSubmit}) {
                 newPlace.images[category].push(image);
             }
 
-            newPlace.images.review.splice(index, 1);
+            newPlace.images[initialCategory].splice(index - deletedCount, 1);
+            deletedCount++;
         });
 
         onSubmit([place, newPlace]);
@@ -63,25 +58,16 @@ export default function ReviewImagesBlock({place, onSubmit}) {
         }));
     };
 
-    const isDiasableSubmit = Object.values(categorized).every((value) => value === 'review');
+    const isDiasableSubmit = Object.values(categorized).every((value) => value === initialCategory);
 
     return <div className={classes.reviewContainer}>
-        <ImagesCarousel items={images.review} onChange={setCurrent}/>
-        <Box display="flex" flexDirection="row" justifyContent="space-around">
-            <Select className={classes.selector} value={categorized[current] || "review"} variant="outlined" onChange={onChangeCategory}>
-                <MenuItem value="review">Review</MenuItem>
-                <MenuItem value="outdoor">Outdoor</MenuItem>
-                <MenuItem value="indoor">Indoor</MenuItem>
-                <MenuItem value="delete">Delete</MenuItem>
-            </Select>
-            <Button
-                type="submit"
-                className={classes.button}
-                color="primary"
-                variant="contained"
-                disabled={isDiasableSubmit}
-                onClick={onSubmitHandler}
-            >Submit</Button>
-        </Box>
+        <ImagesCarousel items={images[initialCategory]} onChange={setCurrent}/>
+
+        {isLoggedIn && <CategorySelector
+            value={(categorized[current] || initialCategory)}
+            disabled={isDiasableSubmit}
+            onChange={onChangeCategory}
+            onSubmit={onSubmitHandler}
+        />}
     </div>;
 };

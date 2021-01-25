@@ -11,7 +11,7 @@ import OPRLayer from "./OPRLayer";
 import MapSidebar from "./blocks/sidebar/MapSidebar";
 import ViewTracker from "./ViewTracker";
 import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
-import MarkerBlock from "./blocks/sidebar/MarkerBlock";
+import MarkerBlock from "./blocks/MarkerBlock";
 import Filter from "./blocks/Filter";
 import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
 import ReviewPlaces from "./blocks/ReviewPlaces";
