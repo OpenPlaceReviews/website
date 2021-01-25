@@ -62,9 +62,7 @@ export default function Map() {
       <MapSidebarBlock>
         <Filter placeTypes={placeTypes} onSelect={setFilter}/>
       </MapSidebarBlock>
-      <MapSidebarBlock>
-        <ReviewPlaces setMarker={setMarker} reload={reload}/>
-      </MapSidebarBlock>
+      <ReviewPlaces setMarker={setMarker} reload={reload}/>
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative"/></OPRMessageOverlay>}
