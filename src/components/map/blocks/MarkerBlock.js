@@ -11,6 +11,8 @@ import ReviewImagesBlock from "./ReviewImagesBlock";
 
 import AuthContext from "../../main/auth/providers/AuthContext";
 import {makeStyles} from "@material-ui/styles";
+import {Box, IconButton} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles({
     sidebar: {
@@ -67,8 +69,27 @@ export default function MarkerBlock({marker, setMarker}) {
         </React.Fragment>;
     }
 
+    const lngLat = marker.geometry.coordinates;
+    const {title, subtitle, opr_id} = marker.properties;
+
     return <MapSidebar position="left" className={classes.sidebar}>
         <div className={classes.container}>
+            <Box display="flex" flexDirection="row" style={{marginBottom: "10px"}} alignItems="center" justifyContent="space-between">
+                <div>
+                    <p className={classes.header}>{title}</p>
+                    <p>{subtitle}</p>
+                </div>
+                <IconButton onClick={() => setMarker(null)}>
+                    <CloseIcon fontSize="small"/>
+                </IconButton>
+            </Box>
+
+            <div>
+                <p>ID: <a href={`/data/objects/opr_place?key=${opr_id}`}>{opr_id}</a></p>
+                <p>
+                    <strong>Location: </strong> {lngLat[1].toFixed(7)}, {lngLat[0].toFixed(7)}
+                </p>
+            </div>
             <BlockExpandable header="Attributes" open={true}>
                 <OPRAttributesBar feature={marker} setMarker={setMarker}/>
             </BlockExpandable>

@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {useMap} from "react-leaflet";
 import {makeStyles} from "@material-ui/styles";
-
-import {Box, IconButton} from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
-import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
 
 const useStyles = makeStyles({
     attributes: {
@@ -43,11 +38,9 @@ const useStyles = makeStyles({
     }
 })
 
-export default function OPRAttributesBar({feature, setMarker}) {
-    const lngLat = feature.geometry.coordinates;
-    const {title, opr_id, tags, osm_id, osm_type} = feature.properties;
+export default function OPRAttributesBar({feature}) {
+    const {tags, osm_id, osm_type} = feature.properties;
 
-    const latLng = [lngLat[1], lngLat[0]];
     const popupTags = [];
     for (let t in tags) {
         popupTags.push({
@@ -56,28 +49,10 @@ export default function OPRAttributesBar({feature, setMarker}) {
         });
     }
 
-    const map = useMap();
     const classes = useStyles();
 
     return <div className={classes.attributes}>
-        <Box display="flex" flexDirection="row" style={{marginBottom: "10px"}} alignItems="center" justifyContent="space-between">
-            <a href={`/data/objects/opr_place?key=${opr_id}`} className={classes.header}>ID: {opr_id}</a>
-            <div>
-                <IconButton onClick={() => map.panTo(latLng)}>
-                    <CenterFocusWeakIcon fontSize="small"/>
-                </IconButton>
-                <IconButton onClick={() => setMarker(null)}>
-                    <CloseIcon fontSize="small"/>
-                </IconButton>
-            </div>
-        </Box>
-
         <div>
-            <p><strong>{title}</strong></p>
-            <p>
-                <strong>Location: </strong>
-                {latLng[0]}, {latLng[1]}
-            </p>
             <dl className={classes.tags}>
                 {popupTags.map((tag, i) => {
                     return <React.Fragment key={i}>

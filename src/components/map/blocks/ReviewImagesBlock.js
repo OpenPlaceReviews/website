@@ -3,6 +3,7 @@ import ImagesCarousel from "./ImagesCarousel";
 import {makeStyles} from "@material-ui/styles";
 
 import CategorySelector from "./CategorySelector";
+import ModalLightbox from "./ModalLightbox";
 
 const useStyles = makeStyles({
     reviewContainer: {
@@ -13,6 +14,7 @@ const useStyles = makeStyles({
 export default function ReviewImagesBlock({place, onSubmit, initialCategory, isLoggedIn}) {
     const [current, setCurrent] = useState(0);
     const [categorized, setCategorized] = useState({});
+    const [preview, setPreview] = useState(null);
     const classes = useStyles();
 
     const {images} = place;
@@ -61,7 +63,9 @@ export default function ReviewImagesBlock({place, onSubmit, initialCategory, isL
     const isDiasableSubmit = Object.values(categorized).every((value) => value === initialCategory);
 
     return <div className={classes.reviewContainer}>
-        <ImagesCarousel items={images[initialCategory]} onChange={setCurrent}/>
+        <ImagesCarousel items={images[initialCategory]} onChange={setCurrent} onClick={setPreview}/>
+
+        <ModalLightbox image={preview} onClose={() => setPreview(null)}/>
 
         {isLoggedIn && <CategorySelector
             value={(categorized[current] || initialCategory)}

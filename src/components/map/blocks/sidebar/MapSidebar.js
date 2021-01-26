@@ -25,9 +25,14 @@ export default ({ position, className, children }) => {
   useEffect(() => {
     L.DomEvent.disableScrollPropagation(sidebarRef.current);
     L.DomEvent.addListener(sidebarRef.current, 'mousedown touchstart dblclick', (e) => {
-      const className = e.target.className || e.target.class || '';
+      let className = '';
+      if (_.isString(e.target.className)) {
+        className = e.target.className;
+      } else if (_.isString(e.target.class)) {
+        className = e.target.class;
+      }
 
-      if(!className || !className.includes('MuiSelect-root')) {
+      if(!className.includes('MuiSelect-root')) {
         L.DomEvent.stopPropagation(e);
       }
     });

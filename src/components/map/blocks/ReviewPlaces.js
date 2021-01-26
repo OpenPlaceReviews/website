@@ -79,9 +79,10 @@ export default function ReviewPlaces({setMarker, reload}) {
                         const {objects} = blocks[index];
                         const [block] = objects;
                         if (block && block.images && block.images.review) {
+                            const {lng, lat} = layer.getLatLng();
                             const feature = {
                                 geometry: {
-                                    coordinates: layer.getLatLng(),
+                                    coordinates: [lng, lat],
                                 },
                                 properties: {
                                     ...properties,
