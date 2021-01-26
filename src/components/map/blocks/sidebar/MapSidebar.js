@@ -32,7 +32,7 @@ export default ({ position, className, children }) => {
         className = e.target.class;
       }
 
-      if(!className.includes('MuiSelect-root')) {
+      if(!className.includes('MuiSelect-root') && !className.includes('MuiLink-root')) {
         L.DomEvent.stopPropagation(e);
       }
     });
@@ -50,7 +50,7 @@ export default ({ position, className, children }) => {
     (position && POSITION_CLASSES[position]) || POSITION_CLASSES.topleft
 
   return <div className={`${positionClass}`} ref={sidebarRef}>
-    <div className={`leaflet-bar leaflet-control ${classes.sidebar} ${className ? className : ''}`}>
+    <div className={`leaflet-control ${classes.sidebar} ${className ? className : ''}`}>
       {children}
     </div>
   </div>;

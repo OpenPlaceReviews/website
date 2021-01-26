@@ -4,7 +4,7 @@ import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
     attributes: {
-        "& p": { margin: "0" },
+
         width: "100%",
         overflowY: "auto",
     },
