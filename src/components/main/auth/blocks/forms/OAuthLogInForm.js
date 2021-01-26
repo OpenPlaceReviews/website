@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Select, FormHelperText, MenuItem} from "@material-ui/core";
-import storage from "../../../../../storage";
+import storage from "../../../../../libs/cookies";
 
 import auth from "../../../../../api/auth";
 import useForm from "./hooks/useForm";
@@ -79,6 +79,7 @@ export default function OAuthLoginForm({onLogIn, onSignUp, onError, preAuthParam
       const { data } = result;
       onLogIn({
         name: formData.name.value,
+        provider: data.create[0].id[1],
         token: data.eval.privatekey,
       });
     };

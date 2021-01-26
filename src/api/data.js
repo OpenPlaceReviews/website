@@ -1,7 +1,6 @@
-import {get} from "axios";
+import axios, {get} from "axios";
 import { trackPromise } from 'react-promise-tracker'
 import { NotFoundError } from './errors';
-
 
 const getRawHash = (hash) => hash.split(":").pop();
 const getShortHash = (hash) => {
@@ -177,3 +176,36 @@ export const getObjects = async (reqParams = {}) => {
     count: data.count,
   };
 };
+
+export const getObjectsById = async (type, objectId) => {
+  const params = {
+    type,
+    key: objectId,
+  };
+
+  const { data } = await trackPromise(get('/api/objects-by-id', { params }));
+  const objects = data.objects.map((ob) => transformObject(ob));
+
+  return {
+    objects,
+    count: data.count,
+  };
+};
+
+export const commitObject = async (data, name, token) => {
+  const sendRequest = axios({
+    method: 'POST',
+    headers: { 'content-type': 'application/json; charset=utf-8' },
+    data,
+    url: '/api/auth/process-operation',
+    params: {
+      addToQueue : true,
+      dontSignByServer: false,
+      name: name,
+      privateKey: token,
+      validate: false,
+    },
+  });
+
+  return await trackPromise(sendRequest);
+}

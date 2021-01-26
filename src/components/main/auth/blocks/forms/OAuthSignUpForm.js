@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import storage from "../../../../../storage";
+import storage from "../../../../../libs/cookies";
 
 import auth from "../../../../../api/auth";
 
@@ -144,6 +144,7 @@ export default function OAuthSignUpForm({onSignUp, onLogIn, onError, preAuthPara
           const { data } = await auth.logIn(params, reqParams);
           onLogIn({
             name: formData.name.value,
+            provider: data.create[0].id[1],
             token: data.eval.privatekey,
           });
         } catch (error) {

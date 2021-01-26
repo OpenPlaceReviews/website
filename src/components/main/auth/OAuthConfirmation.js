@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import auth from "../../../api/auth";
-import storage from "../../../storage";
+import storage from "../../../libs/cookies";
 
 import OAuthSignUpForm from "./blocks/forms/OAuthSignUpForm";
 import OAuthLogInForm from "./blocks/forms/OAuthLogInForm";

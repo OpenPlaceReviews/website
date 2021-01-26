@@ -2,58 +2,35 @@ import React, {useEffect, useState} from 'react';
 import {useMap, useMapEvent} from "react-leaflet";
 import {OpenLocationCode} from "open-location-code";
 import {isEqual, has, get} from "lodash";
-import L from "leaflet";
 
-import {fetchData} from "../../../api/geo";
-import GeoGSONLayer from "./GeoGSONLayer";
-import MapSidebar from "./MapSidebar";
-import StatusBar from "./StatusBar";
-import Filter from "./Filter";
-
-const OPRStatusBar = React.memo(StatusBar);
-const OPRMarkersLayer = React.memo(GeoGSONLayer);
-const OPRMarkersFilter = React.memo(Filter);
+import {fetchData} from "../../api/geo";
+import MarkerEntity from "./MarkerEntity";
+import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
+import MarkerClusterGroup from "./MarkerClusterGroup";
 
 let isMapMoving = false;
 let refreshTimeout = null;
-const REFRESH_TIMEOUT = 500;
+const REFRESH_TIMEOUT = 300;
+const MIN_MARKERS_ZOOM = 16;
 
-export default () => {
-  const [isTileBased, setTileBased] = useState(false);
+export default function OPRLayer({initialZoom, filterVal, isTileBased, onSelect, setLoading}) {
   const [placesCache, setPlacesCache] = useState({});
-  const [placeTypes, setPlaceTypes] = useState({});
-  const [status, setStatus] = useState('Loading data...');
-  const [filterVal, setFilter] = useState('all');
+
   const [currentLayer, setCurrentLayer] = useState([]);
   const [currentBounds, setCurrentBounds] = useState({});
+  const [currentZoom, setCurrentZoom] = useState(initialZoom);
+
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
-  let storage = window.localStorage;
-
-  try {
-    const x = '__storage_test__';
-    storage.setItem(x, x);
-    storage.removeItem(x);
-  }
-  catch(e) {
-    console.warn("Your browser blocks access to localStorage");
-    storage = null;
-  }
 
   const onMapChange = async () => {
-    if (!!storage) {
-      const view = {
-        lat: map.getCenter().lat,
-        lng: map.getCenter().lng,
-        zoom: map.getZoom()
-      };
-
-      storage.mapView = JSON.stringify(view);
+    const zoom = map.getZoom();
+    if (zoom !== currentZoom) {
+      setCurrentZoom(zoom);
     }
 
-    if (map.getZoom() <= 10) {
-      setStatus('zooming to get data');
+    if (zoom < MIN_MARKERS_ZOOM) {
       setCurrentLayer({});
       return;
     }
@@ -81,41 +58,21 @@ export default () => {
   };
 
   useEffect(() => {
-    const request = async () => {
-      const {tileBased, placeTypes} = await fetchData();
-      setTileBased(tileBased);
-      setPlaceTypes(placeTypes);
-
-      onMapChange();
-    };
-
-    try {
-      const view = JSON.parse(storage.mapView || '');
-      if (!!view) {
-        map.setView(L.latLng(view.lat, view.lng), view.zoom);
-      }
-    } catch (e) {
-       console.warn('Error while decoding saved view');
-    }
-
-    request();
+    onMapChange();
   }, []);
 
   useEffect(() => {
+    let loadingTimout = null;
+
     const updateCache = async () => {
       let missing = 0;
-      let tiles = 0;
       for (let tileId in currentBounds) {
         if (!placesCache[tileId]) {
           missing++;
-        } else {
-          tiles++;
         }
       }
 
-      if (missing > 0) {
-        setStatus(`${tiles} tiles displayed (${missing} tiles loading...) `);
-      }
+      setLoading(missing > 0);
 
       const newCache = { ...placesCache };
 
@@ -131,18 +88,21 @@ export default () => {
         }
       }
 
+      clearTimeout(loadingTimout);
+      loadingTimout = setTimeout(() => {
+        setLoading(false);
+      }, 500);
       setPlacesCache(newCache);
     };
 
-    if (isTileBased) {
+    if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
       updateCache();
     }
-  },[currentBounds]);
+  },[currentBounds, currentZoom, isTileBased]);
 
   useEffect(() => {
     const updateLayer = () => {
       let newLayer = [];
-      let tiles = 0;
 
       for (let tileId in currentBounds) {
         if (has(placesCache, `${tileId}.data.features`)) {
@@ -152,22 +112,18 @@ export default () => {
           } else {
             newLayer = newLayer.concat(features.filter((f) => f.properties.place_type === filterVal));
           }
-
-          tiles++;
         }
       }
-
-      setStatus(`${tiles} tiles have ${newLayer.length} places `);
 
       if (!isMapMoving) {
         setCurrentLayer(newLayer);
       }
     };
 
-    if (isTileBased) {
+    if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
       updateLayer();
     }
-  }, [placesCache, filterVal]);
+  }, [placesCache, filterVal, currentZoom, isTileBased]);
 
   useEffect(() => {
     if(Object.keys(placesCache).length >= 150) {
@@ -200,10 +156,9 @@ export default () => {
   });
 
   return <div className="opr-layer">
-    <MapSidebar>
-      <OPRMarkersFilter placeTypes={placeTypes} onSelect={setFilter}/>
-      <OPRStatusBar status={status}/>
-    </MapSidebar>
-    <OPRMarkersLayer features={currentLayer}/>
+    {(map.getZoom() < MIN_MARKERS_ZOOM) && <OPRMessageOverlay>Zoom in to view details</OPRMessageOverlay>}
+    <MarkerClusterGroup>
+      {currentLayer.length && currentLayer.map((feature) => <MarkerEntity feature={feature} key={feature.properties.opr_id} onSelect={onSelect}/>)}
+    </MarkerClusterGroup>
   </div>;
 };

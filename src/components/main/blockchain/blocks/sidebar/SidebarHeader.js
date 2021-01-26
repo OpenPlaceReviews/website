@@ -6,6 +6,9 @@ import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
   root: {
+    font: "IBM Ples Sans",
+    fontWeight: 600,
+    color: "#56627A",
     "& span": {
       fontWeight: "bold",
     }

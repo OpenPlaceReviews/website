@@ -4,8 +4,7 @@ import ListItem from "@material-ui/core/ListItem";
 
 const useStyles = makeStyles({
   root: {
-    paddingTop: "5px",
-    paddingBottom: "5px",
+    padding: "5px 10px 5px 10px",
   },
 });
 

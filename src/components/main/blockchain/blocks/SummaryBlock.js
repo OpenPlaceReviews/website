@@ -3,12 +3,14 @@ import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
   block: {
-    background: "#F2F2F2",
+    background: "#F0F1F4",
     border: "1px solid #F0F1F4",
     borderRadius: "5px",
     padding: "15px",
     margin: "10px 0 25px 0",
     color: "#6A7181",
+    fontSize: "15px",
+    lineHeight: "1.5em",
     "& p": {
       margin: "5px",
     },

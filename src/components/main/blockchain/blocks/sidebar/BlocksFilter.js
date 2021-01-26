@@ -19,7 +19,8 @@ const useStyles = makeStyles({
     }
   },
   showMore: {
-    marginLeft: "35px",
+    fontFamily: "IBM Plex Sans",
+    fontWeight: "normal",
     color: "#2D69E0",
   }
 });
@@ -107,7 +108,7 @@ export default function BlocksFilter() {
     {content}
     {(hasMore && blocks.length) &&
       <ListItemSidebar button>
-        <ListItemText onClick={getMore} primary="Show more"/>
+        <ListItemText onClick={getMore} className={classes.showMore} primary="Show more"/>
       </ListItemSidebar>
     }
   </>;

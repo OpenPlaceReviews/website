@@ -12,7 +12,9 @@ const useStyles = makeStyles({
     color: "#6A7181",
     borderBottom: "1px solid #E4E8F2",
     padding: "15px",
+    fontSize: "15px",
     "& p": {
+      fontWeight: "normal",
       margin: "5px 0",
     },
   },
@@ -28,18 +30,22 @@ const useStyles = makeStyles({
   },
   hash: {
     fontWeight: 500,
+    fontSize: "15px",
     color: "#ACB2BF",
     "& a": {
+      fontSize: "15px",
       fontWeight: 500,
       color: "#ACB2BF",
     },
   },
   content: {
     width: "100%",
-    marginLeft: "24px",
+    marginLeft: "35px",
   },
   link: {
-    fontSize: "15px",
+    fontFamily: "IBM Plex Sans",
+    fontWeight: 600,
+    fontSize: "16px",
     color: "#2D69E0",
     textDecoration: "none",
     verticalAlign: "middle",
