@@ -3,17 +3,13 @@ import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
   value: {
-    fontWeight: props => props.fontWeight,
-    color: "#000",
+    fontWeight: props => props.listItem ? "bold" : "normal",
+    color: props => props.color ? props.color : "#000",
     fontSize: "15px",
   }
 });
 
-export default function Value({children, listItem}) {
-  const props = {
-    fontWeight: listItem ? "bold" : "normal",
-  }
-
-  const classes = useStyles(props);
+export default function Value({children, listItem, color}) {
+  const classes = useStyles({listItem, color});
   return <span className={classes.value}>{children}</span>
 };

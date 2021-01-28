@@ -1,67 +1,74 @@
 import React from 'react';
 
 import {makeStyles} from "@material-ui/styles";
+
+import {Box} from "@material-ui/core";
 import BlockExpandable from "./BlockExpandable";
+import TagsTable from "./TagsTable";
+import Value from "../../main/blockchain/blocks/Value";
+import SpecChar from "../../main/blockchain/blocks/SpecChar";
+
+import openStreetMapIcon from '../../../assets/images/map_sources/openStreetMap.png';
+import tripAdvisorIcon from '../../../assets/images/map_sources/trip-advisor.png';
 
 const useStyles = makeStyles({
-    attributes: {
-        width: "100%",
-        overflowY: "auto",
-    },
     header: {
-        display: "inline !important",
-        width: "auto !important",
-        height: "auto !important",
-        color: "#2D69E0 !important",
-        textDecoration: "none !important",
-        border: "none !important",
-        fontWeight: "bold !important",
-        fontSize: "20px !important",
-        lineHeight: "31px !important",
-        letterSpacing: "0.02em !important"
+        fontWeight: "600",
+        fontSize: "18px",
     },
-    tags: {
-        display: "grid",
-        gridTemplateColumns: "1fr 2fr",
-        border: "1px solid #ddd",
-        "& dd, &dt": { padding: "0.3rem", margin: "0" },
-        "& dt": { backgroundColor: "#F6F6F6", borderTop: "1px solid #ddd" },
-        "& dd": {
-            borderLeft: "1px solid #ddd",
-            borderTop: "1px solid #ddd"
-        },
-        "& dt:first-child": { borderTop: "none" }
+    icon: {
+        width: "24px",
+        height: "24px",
+        margin: "5px 12px 0 0",
     },
-    tagsItem: {
-        padding: "0.3rem",
-        margin: "0",
+    subheader: {
+        fontWeight: "normal",
+        fontSize: "14px",
     }
 })
 
-export default function AttributesBar({feature}) {
-    const {tags, osm_id, osm_type} = feature.properties;
+export default function AttributesBar({source}) {
+    const {tags, version, id, changeset, timestamp, lat, lon, source_type} = source;
 
-    const popupTags = [];
-    for (let t in tags) {
-        popupTags.push({
-            name: t,
-            value: tags[t].value,
-        });
+    let title;
+    let icon;
+    if (source_type === 'osm') {
+        title = 'OpenSteetMap';
+        icon = openStreetMapIcon;
+    } else if (source_type === 'tripadvisor') {
+        title = 'Trip Adwisior';
+        icon = tripAdvisorIcon;
+    } else if (source_type === 'old-osm-ids') {
+        title = 'Deleted OpenStreetMap Place';
+        icon = openStreetMapIcon;
+    } else {
+        title = 'Attributes';
     }
 
     const classes = useStyles();
 
-    return <BlockExpandable header="Attributes" open={true}>
+    let tagsKeys = [];
+    if (_.isObject(tags)) {
+        tagsKeys = Object.keys(tags);
+    }
+
+    const top = <Box display="flex" flexDirection="row" style={{marginBottom: "10px"}}>
+        {icon && <img src={icon} alt="icon" className={classes.icon}/>}
         <div>
-            <dl className={classes.tags}>
-                {popupTags.map((tag, i) => {
-                    return <React.Fragment key={i}>
-                        <dt className={classes.tagsItem}>{tag.name}</dt>
-                        <dd className={classes.tagsItem}>{tag.value}</dd>
-                    </React.Fragment>;
-                })}
-            </dl>
-            {!!osm_id && <p><a href={`https://www.openstreetmap.org/${osm_type}/${osm_id}`}>OpenStreetMap</a></p>}
+            <p className={classes.header}>{title}</p>
+            <p className={classes.subheader}>
+                {id && <Value color={"#2D69E0"}>{id}</Value>}<SpecChar code={'\u2022'}/>
+                {tagsKeys && <span>{tagsKeys.length} {tagsKeys.length > 1 ? 'tags' : 'tag'}</span>}
+            </p>
         </div>
+    </Box>;
+
+    return <BlockExpandable header={top} open={true}>
+
+
+        {version && <p>Version #{version} <SpecChar code={'\u2014'}/> Changeset <Value color={"#2D69E0"}>#{changeset}</Value></p>}
+        {(lat && lon) ? <p>Location: <Value>{lat.toFixed(7)}, {lon.toFixed(7)}</Value></p> : null}
+        {timestamp && <p>Timestamp: {timestamp}</p>}
+        {tags && <TagsTable tags={tags}/>}
     </BlockExpandable>
 }

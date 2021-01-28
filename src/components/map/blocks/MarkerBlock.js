@@ -137,7 +137,7 @@ export default function MarkerBlock({marker, setMarker}) {
                 <p>Location: <Value>{lngLat[1].toFixed(7)}, {lngLat[0].toFixed(7)}</Value></p>
             </div>
 
-            <AttributesBar feature={marker}/>
+            {sources.map((source, index) => <AttributesBar source={source} key={index}/>)}
 
             {imagesSidebar}
         </div>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Accordion, AccordionSummary, AccordionDetails, Divider} from "@material-ui/core";
+import {Accordion, AccordionSummary, AccordionDetails} from "@material-ui/core";
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import {makeStyles} from "@material-ui/styles";
 
@@ -27,14 +27,8 @@ const useStyles = makeStyles({
     details: {
         position: "relative",
         display: "block",
-        padding: "12px 0 0 0",
-    },
-    divider: {
-        position: "absolute",
-        top: 0,
-        left: "-15px",
-        color: "#CCC",
-        width: "calc(100% + 30px)",
+        padding: 0,
+        fontSize: "14px",
     },
 });
 
@@ -51,7 +45,6 @@ export default function BlockExpandable({header, children, open = false, marginT
             {header}
         </AccordionSummary>
         <AccordionDetails className={classes.details}>
-            <Divider className={classes.divider} />
             {children}
         </AccordionDetails>
     </Accordion>
