@@ -49,6 +49,7 @@ const useStyles = makeStyles({
         color: "#2D69E0",
     },
     attributes: {
+        marginBottom: "10px",
         "& p": {
             color: "#6A7181",
             fontSize: "15px"

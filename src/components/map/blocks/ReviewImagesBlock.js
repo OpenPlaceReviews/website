@@ -58,12 +58,20 @@ export default function ReviewImagesBlock({place, onSubmit, initialCategory, isL
             ...state,
             [current]: e.target.value,
         }));
+
+        let newIndex;
+        if (current < images[initialCategory].length - 1) {
+            newIndex = current + 1;
+        } else {
+            newIndex = 0
+        }
+        setCurrent(newIndex);
     };
 
     const isDiasableSubmit = Object.values(categorized).every((value) => value === initialCategory);
 
     return <div className={classes.reviewContainer}>
-        <ImagesCarousel items={images[initialCategory]} onChange={setCurrent} onClick={setPreview}/>
+        <ImagesCarousel items={images[initialCategory]} index={current} onChange={setCurrent} onClick={setPreview}/>
 
         <ModalLightbox image={preview} onClose={() => setPreview(null)}/>
 
