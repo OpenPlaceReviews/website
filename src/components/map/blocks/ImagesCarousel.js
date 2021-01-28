@@ -16,11 +16,16 @@ const useStyles = makeStyles({
 
 const IMAGE_URL = '/api/ipfs/image?hash=';
 
-export default function ImagesCarousel({items, onChange = () => {}}) {
+export default function ImagesCarousel({items, index, onChange = () => {}, onClick = () => {}}) {
     const classes = useStyles();
-    return <Carousel autoPlay={false} indicators={true} animation="slide" onChange={onChange}>
+
+    return <Carousel autoPlay={false} indicators={true} navButtonsAlwaysVisible={true} index={index} animation="slide" onChange={onChange}>
         {
-            items.map( (item, i) => <div key={i} className={classes.item}><img src={`${IMAGE_URL}${item.hash}`} alt="photo" /></div> )
+            items.map( (item, i) => <div key={i} className={classes.item}><img
+                src={`${IMAGE_URL}${item.hash}`}
+                alt="photo"
+                onClick={() => onClick(`${IMAGE_URL}${item.hash}`)}
+            /></div> )
         }
     </Carousel>;
 }

@@ -33,7 +33,6 @@ export default function Map() {
 
   const [placeTypes, setPlaceTypes] = useState({});
   const [filterVal, setFilter] = useState('all');
-  const [isTileBased, setTileBased] = useState(false);
   const [marker, setMarker] = useState(null);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
@@ -41,9 +40,8 @@ export default function Map() {
 
   useEffect(() => {
     const request = async () => {
-      const {tileBased, placeTypes} = await fetchData();
-      setTileBased(tileBased);
-      setPlaceTypes(placeTypes);
+      const { parameters } = await fetchData();
+      setPlaceTypes(parameters.placeTypes);
     };
 
     request();
@@ -62,12 +60,10 @@ export default function Map() {
       <MapSidebarBlock>
         <Filter placeTypes={placeTypes} onSelect={setFilter}/>
       </MapSidebarBlock>
-      <MapSidebarBlock>
-        <ReviewPlaces setMarker={setMarker} reload={reload}/>
-      </MapSidebarBlock>
+      {/*<ReviewPlaces setMarker={setMarker} reload={reload}/>*/}
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative"/></OPRMessageOverlay>}
-    {!loading && <OPRLayer initialZoom={initialZoom} filterVal={filterVal} isTileBased={isTileBased} onSelect={setMarker} setLoading={setReload}/>}
+    {!loading && <OPRLayer initialZoom={initialZoom} filterVal={filterVal} onSelect={setMarker} setLoading={setReload}/>}
   </MapContainer>;
 }

@@ -7,6 +7,7 @@ import BlockExpandable from "./BlockExpandable";
 import {Button, Link, List, ListItem, ListItemText, ListItemIcon} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import RoomIcon from '@material-ui/icons/Room';
+import MapSidebarBlock from "./sidebar/MapSidebarBlock";
 
 let refreshTimeout = null;
 let isMapMoving = false;
@@ -78,9 +79,10 @@ export default function ReviewPlaces({setMarker, reload}) {
                         const {objects} = blocks[index];
                         const [block] = objects;
                         if (block && block.images && block.images.review) {
+                            const {lng, lat} = layer.getLatLng();
                             const feature = {
                                 geometry: {
-                                    coordinates: layer.getLatLng(),
+                                    coordinates: [lng, lat],
                                 },
                                 properties: {
                                     ...properties,
@@ -120,19 +122,25 @@ export default function ReviewPlaces({setMarker, reload}) {
         setMarker(marker);
     };
 
-    return <BlockExpandable open={true} header={`Places to review (${markers.length})`}>
-        <List dense={true} disablePadding={true}>
-            {markers.map((marker, index) => {
-                const {title} = marker.properties;
-                return <ListItem key={index} dense={true} disableGutters={true} className={classes.listItem}>
-                    <Link component={Button} onClick={() => handleListClick(marker)}>
-                        <ListItemIcon className={classes.listIcon}>
-                            <RoomIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={title} className={classes.listText} />
-                    </Link>
-                </ListItem>
-            })}
-        </List>
-    </BlockExpandable>;
+    if (!markers.length) {
+        return null;
+    }
+
+    return <MapSidebarBlock>
+        <BlockExpandable open={true} header={`Places to review (${markers.length})`} marginTop="-5px">
+            <List dense={true} disablePadding={true}>
+                {markers.map((marker, index) => {
+                    const {title} = marker.properties;
+                    return <ListItem key={index} dense={true} disableGutters={true} className={classes.listItem}>
+                        <Link component={Button} onClick={() => handleListClick(marker)}>
+                            <ListItemIcon className={classes.listIcon}>
+                                <RoomIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={title} className={classes.listText} />
+                        </Link>
+                    </ListItem>
+                })}
+            </List>
+        </BlockExpandable>
+    </MapSidebarBlock>;
 };

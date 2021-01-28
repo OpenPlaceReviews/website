@@ -13,7 +13,7 @@ let refreshTimeout = null;
 const REFRESH_TIMEOUT = 300;
 const MIN_MARKERS_ZOOM = 16;
 
-export default function OPRLayer({initialZoom, filterVal, isTileBased, onSelect, setLoading}) {
+export default function OPRLayer({initialZoom, filterVal, onSelect, setLoading}) {
   const [placesCache, setPlacesCache] = useState({});
 
   const [currentLayer, setCurrentLayer] = useState([]);
@@ -95,10 +95,10 @@ export default function OPRLayer({initialZoom, filterVal, isTileBased, onSelect,
       setPlacesCache(newCache);
     };
 
-    if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
+    if (currentZoom >= MIN_MARKERS_ZOOM) {
       updateCache();
     }
-  },[currentBounds, currentZoom, isTileBased]);
+  },[currentBounds, currentZoom]);
 
   useEffect(() => {
     const updateLayer = () => {
@@ -120,10 +120,10 @@ export default function OPRLayer({initialZoom, filterVal, isTileBased, onSelect,
       }
     };
 
-    if (isTileBased && currentZoom >= MIN_MARKERS_ZOOM) {
+    if (currentZoom >= MIN_MARKERS_ZOOM) {
       updateLayer();
     }
-  }, [placesCache, filterVal, currentZoom, isTileBased]);
+  }, [placesCache, filterVal, currentZoom]);
 
   useEffect(() => {
     if(Object.keys(placesCache).length >= 150) {

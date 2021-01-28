@@ -3,6 +3,9 @@ import {Box, Button, MenuItem, Select} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
+    root: {
+        margin: "10px 0",
+    },
     selector: {
         height: "35px",
         background: "#FFF",
@@ -15,7 +18,7 @@ const useStyles = makeStyles({
 export default function CategorySelector({value, onChange, onSubmit, disabled}) {
     const classes = useStyles();
 
-    return <Box display="flex" flexDirection="row" justifyContent="space-around">
+    return <Box display="flex" flexDirection="row" justifyContent="space-around" className={classes.root}>
         <Select className={classes.selector} value={value} variant="outlined" onChange={onChange}>
             <MenuItem value="review">Review</MenuItem>
             <MenuItem value="outdoor">Outdoor</MenuItem>
