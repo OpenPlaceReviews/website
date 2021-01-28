@@ -7,7 +7,7 @@ const useStyles = makeStyles({
     root: {
         width: "100%",
         boxShadow: "none",
-        margin: "-5px auto !important",
+        margin: (props) => `${props.marginTop ? props.marginTop : 0} auto 0 auto !important`,
     },
     summary: {
         fontWeight: 600,
@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     details: {
         position: "relative",
         display: "block",
-        padding: 0,
+        padding: "12px 0 0 0",
     },
     divider: {
         position: "absolute",
@@ -38,9 +38,9 @@ const useStyles = makeStyles({
     },
 });
 
-export default function BlockExpandable({header, children, open = false, extClasses = {}}) {
+export default function BlockExpandable({header, children, open = false, marginTop}) {
     const [expanded, setExpanded] = useState(open);
-    const classes = useStyles(extClasses);
+    const classes = useStyles({marginTop});
 
     const handleChange = () => {
         setExpanded(!expanded);

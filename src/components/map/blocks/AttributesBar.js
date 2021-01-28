@@ -1,10 +1,10 @@
 import React from 'react';
 
 import {makeStyles} from "@material-ui/styles";
+import BlockExpandable from "./BlockExpandable";
 
 const useStyles = makeStyles({
     attributes: {
-
         width: "100%",
         overflowY: "auto",
     },
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
     }
 })
 
-export default function OPRAttributesBar({feature}) {
+export default function AttributesBar({feature}) {
     const {tags, osm_id, osm_type} = feature.properties;
 
     const popupTags = [];
@@ -51,7 +51,7 @@ export default function OPRAttributesBar({feature}) {
 
     const classes = useStyles();
 
-    return <div className={classes.attributes}>
+    return <BlockExpandable header="Attributes" open={true}>
         <div>
             <dl className={classes.tags}>
                 {popupTags.map((tag, i) => {
@@ -63,5 +63,5 @@ export default function OPRAttributesBar({feature}) {
             </dl>
             {!!osm_id && <p><a href={`https://www.openstreetmap.org/${osm_type}/${osm_id}`}>OpenStreetMap</a></p>}
         </div>
-    </div>;
+    </BlockExpandable>
 }

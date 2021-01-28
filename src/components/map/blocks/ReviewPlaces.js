@@ -127,7 +127,7 @@ export default function ReviewPlaces({setMarker, reload}) {
     }
 
     return <MapSidebarBlock>
-        <BlockExpandable open={true} header={`Places to review (${markers.length})`}>
+        <BlockExpandable open={true} header={`Places to review (${markers.length})`} marginTop="-5px">
             <List dense={true} disablePadding={true}>
                 {markers.map((marker, index) => {
                     const {title} = marker.properties;

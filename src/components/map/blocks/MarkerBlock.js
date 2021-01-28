@@ -5,7 +5,7 @@ import useDiff from "../hooks/useDiff";
 import useCommitOp from "../hooks/useCommitOp";
 
 import BlockExpandable from "./BlockExpandable";
-import OPRAttributesBar from "./OPRAttributesBar";
+import AttributesBar from "./AttributesBar";
 import MapSidebar from "./sidebar/MapSidebar";
 import ReviewImagesBlock from "./ReviewImagesBlock";
 
@@ -137,9 +137,7 @@ export default function MarkerBlock({marker, setMarker}) {
                 <p>Location: <Value>{lngLat[1].toFixed(7)}, {lngLat[0].toFixed(7)}</Value></p>
             </div>
 
-            <BlockExpandable header="Attributes" open={true}>
-                <OPRAttributesBar feature={marker} setMarker={setMarker}/>
-            </BlockExpandable>
+            <AttributesBar feature={marker}/>
 
             {imagesSidebar}
         </div>
