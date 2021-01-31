@@ -5,41 +5,22 @@ function compareImages(path, oldImages, newImages) {
     const change = {};
     const current = {};
 
-    const deleted = [];
     oldImages.forEach((image, index) => {
         const {cid} = image;
-        const isDeleted = !newImages.some((image, newIndex) => (image.cid === cid && index === newIndex));
+        const isDeleted = !newImages.some(image => image.cid === cid);
         if (isDeleted) {
             change[`${path}[${index}]`] = VALUE_DELETED;
             current[`${path}[${index}]`] = image;
-            deleted.push(index);
         }
     });
 
-    let newIndex = 0;
     newImages.forEach((image, index) => {
         const {cid} = image;
-        const isAppended = !oldImages.some((image, oldIndex) => (image.cid === cid && index === oldIndex));
+        const isAppended = !oldImages.some(image => image.cid === cid);
         if (isAppended) {
-            if (index === 0 && oldImages.length === 0) {
-                change[path] = {
-                    append: image,
-                };
-            } else {
-                if (deleted.length > 0) {
-                    newIndex = deleted.shift();
-                } else {
-                    if ((newIndex >= oldImages.length && newIndex > 0) || oldImages.length === 0) {
-                        newIndex = newIndex + 1;
-                    } else {
-                        newIndex = oldImages.length;
-                    }
-                }
-
-                change[`${path}[${newIndex}]`] = {
-                    set: image,
-                };
-            }
+            change[path] = {
+                append: image,
+            };
         }
     });
 
