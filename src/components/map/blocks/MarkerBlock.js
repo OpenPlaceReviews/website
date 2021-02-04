@@ -83,15 +83,15 @@ export default function MarkerBlock({marker, setMarker}) {
         const {images} = place;
         const isLoggedIn = !!authData.token;
         imagesSidebar = <React.Fragment>
-            {images.review.length > 0 ? <BlockExpandable header={`Photos - To review (${images.review.length})`}>
+            {images.review && images.review.length > 0 ? <BlockExpandable header={`Photos - To review (${images.review.length})`}>
                 <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="review"/>
             </BlockExpandable> : ''}
 
-            {images.outdoor.length > 0 ? <BlockExpandable header={`Photos - Outdoor (${images.outdoor.length})`}>
+            {images.outdoor && images.outdoor.length > 0 ? <BlockExpandable header={`Photos - Outdoor (${images.outdoor.length})`}>
                 <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="outdoor"/>
             </BlockExpandable> : ''}
 
-            {images.indoor.length > 0 ? <BlockExpandable header={`Photos - Indoor (${images.indoor.length})`}>
+            {images.indoor && images.indoor.length > 0 ? <BlockExpandable header={`Photos - Indoor (${images.indoor.length})`}>
                 <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="indoor"/>
             </BlockExpandable> : ''}
         </React.Fragment>;
