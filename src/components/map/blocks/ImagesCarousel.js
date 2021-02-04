@@ -22,9 +22,9 @@ export default function ImagesCarousel({items, index, onChange = () => {}, onCli
     return <Carousel autoPlay={false} indicators={true} navButtonsAlwaysVisible={true} index={index} animation="slide" onChange={onChange}>
         {
             items.map( (item, i) => <div key={i} className={classes.item}><img
-                src={`${IMAGE_URL}${item.hash}&cid=${item.cid}`}
+                src={`${IMAGE_URL}${item.hash}&cid=${item.cid}&ext=${item.extension}`}
                 alt="photo"
-                onClick={() => onClick(`${IMAGE_URL}${item.hash}&cid=${item.cid}`)}
+                onClick={() => onClick(`${IMAGE_URL}${item.hash}&cid=${item.cid}&ext=${item.extension}`)}
             /></div> )
         }
     </Carousel>;
