@@ -103,7 +103,7 @@ export default function MarkerBlock({marker, setMarker}) {
     let title = oprTitle;
     let subtitle = oprSubtitle;
 
-    if (!title) {
+    if (!title && !marker.initial) {
         const {tags: { name }} = sources.find((source) => _.isObject(source.tags) && source.tags.name);
         if (name) {
             title = name;
@@ -112,7 +112,7 @@ export default function MarkerBlock({marker, setMarker}) {
         }
     }
 
-    if (!subtitle) {
+    if (!subtitle && !marker.initial) {
         const {tags: { amenity }} = sources.find((source) => _.isObject(source.tags) && source.tags.amenity);
         if (amenity) {
             subtitle = amenity;
@@ -135,7 +135,7 @@ export default function MarkerBlock({marker, setMarker}) {
 
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${opr_id}`}>{opr_id}</Link></p>
-                <p>Location: <Value>{lngLat[1].toFixed(7)}, {lngLat[0].toFixed(7)}</Value></p>
+                <p>Location: <Value>{lngLat[1].toFixed(5)}, {lngLat[0].toFixed(5)}</Value></p>
             </div>
 
             {sources.map((source, index) => <AttributesBar source={source} key={index}/>)}

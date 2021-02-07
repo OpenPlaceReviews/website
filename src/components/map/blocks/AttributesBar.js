@@ -67,7 +67,7 @@ export default function AttributesBar({source}) {
 
 
         {version && <p>Version #{version} <SpecChar code={'\u2014'}/> Changeset <Value color={"#2D69E0"}>#{changeset}</Value></p>}
-        {(lat && lon) ? <p>Location: <Value>{lat.toFixed(7)}, {lon.toFixed(7)}</Value></p> : null}
+        {(lat && lon) ? <p>Location: <Value>{lat.toFixed(5)}, {lon.toFixed(5)}</Value></p> : null}
         {timestamp && <p>Timestamp: {timestamp}</p>}
         {tags && <TagsTable tags={tags}/>}
     </BlockExpandable>
