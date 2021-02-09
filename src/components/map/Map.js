@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, setMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import qs from "qs";
 
@@ -19,11 +19,15 @@ import ReviewPlaces from "./blocks/ReviewPlaces";
 import Loader from "../main/blocks/Loader";
 
 const OPR_PLACE_URL_PREFIX = '/map/opr.place/';
+const INIT_LAT = 40.0;
+const INIT_LON = -35.0;
+const INIT_ZOOM = 4;
+const PLACE_MENU_ZOOM = 17;
 
 export default function Map() {
 
-  let mapLatLon = [40, -35];
-  let mapZoom = 4;
+  let mapLatLon = [INIT_LAT, INIT_LON];
+  let mapZoom = INIT_ZOOM;
 
   let hasParams = false;
   const reqParams = qs.parse(location.search.substring(1));
@@ -59,17 +63,16 @@ export default function Map() {
   }
 
   const reqPath = location.pathname;
-  let oprPlaceId = null;
   let initialMarker = null;
   if (reqPath.startsWith(OPR_PLACE_URL_PREFIX)) {
-    oprPlaceId = reqPath.substring(OPR_PLACE_URL_PREFIX.length)
+    let oprPlaceId = reqPath.substring(OPR_PLACE_URL_PREFIX.length)
     initialMarker = {
       initial: true,
-      properties: { opr_id: `${oprPlaceId}`, title: `${oprPlaceId}`, subtitle: "", sources: [{}] },
-      geometry: { coordinates: [mapLatLon[1], mapLatLon[0]] }
+      properties: { opr_id: `${oprPlaceId}` },
     };
   }
 
+  const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});
   const [filterVal, setFilter] = useState('all');
   const [marker, setMarker] = useState(initialMarker);
@@ -87,7 +90,9 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-    onMapStateChanged(mapZoom, mapLatLon[0], mapLatLon[1]);
+    if (!marker || !marker.initial) {
+      onMapStateChanged(mapZoom, mapLatLon[0], mapLatLon[1]);
+    }
   }, [marker]);
 
   const onMapStateChanged = (zoom, lat, lng) => {
@@ -96,22 +101,27 @@ export default function Map() {
     let coords = `q=${zoom}/${lat.toFixed(5)}/${lng.toFixed(5)}`;
     if (marker) {
       const { opr_id } = marker.properties;
-      history.pushState(null, null, `/map/opr.place/${opr_id}?${coords}`);
+      history.replaceState(null, null, `/map/opr.place/${opr_id}?${coords}`);
     } else {
-      history.pushState(null, null, `/map?${coords}`);
+      history.replaceState(null, null, `/map?${coords}`);
     }
   }
 
-  return <MapContainer center={mapLatLon} zoom={mapZoom} zoomControl={false} whenReady={() => setLoading(false)}>
+  return <MapContainer center={mapLatLon} zoom={mapZoom} zoomControl={false} whenCreated={setMap} whenReady={() => setLoading(false)}>
     <TileLayer
       attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, '
       url="https://tile.osmand.net/{z}/{x}/{y}.png"
       id="tiles"
     />
-    <ViewTracker whenMoved={(map) => {
+    <ViewTracker whenMoved={() => {
       onMapStateChanged(map.getZoom(), map.getCenter().lat, map.getCenter().lng);
     }} />
-    {marker && <MarkerBlock marker={marker} setMarker={setMarker} />}
+
+    {marker && <MarkerBlock marker={marker} setMarker={setMarker} whenReady={(markerPlace) => {
+      if (!hasParams) {
+        map.setView(markerPlace.latLon, PLACE_MENU_ZOOM);
+      }
+    }} />}
 
     <MapSidebar position="topright">
       <MapSidebarBlock>
@@ -121,6 +131,7 @@ export default function Map() {
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
-    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} placeId={oprPlaceId} onSelect={setMarker} setLoading={setReload} />}
+    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} onSelect={setMarker} setLoading={setReload} />}
+
   </MapContainer>;
 }

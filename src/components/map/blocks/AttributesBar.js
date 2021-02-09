@@ -36,7 +36,7 @@ export default function AttributesBar({source}) {
         title = 'OpenSteetMap';
         icon = openStreetMapIcon;
     } else if (source_type === 'tripadvisor') {
-        title = 'Trip Adwisior';
+        title = 'Trip Advisior';
         icon = tripAdvisorIcon;
     } else if (source_type === 'old-osm-ids') {
         title = 'Deleted OpenStreetMap Place';

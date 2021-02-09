@@ -2,9 +2,7 @@ import React from 'react';
 import {useMap, useMapEvent} from "react-leaflet";
 import storage from "../../libs/storage";
 
-export default function ViewTracker({
-  whenMoved
-}) {
+export default function ViewTracker({ whenMoved }) {
     const map = useMap();
 
     useMapEvent('moveend', () => {
@@ -16,7 +14,7 @@ export default function ViewTracker({
             };
             storage.mapView = JSON.stringify(view);
         }
-        whenMoved(map);
+        whenMoved();
     });
 
     return null;

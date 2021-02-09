@@ -13,7 +13,7 @@ let refreshTimeout = null;
 const REFRESH_TIMEOUT = 300;
 const MIN_MARKERS_ZOOM = 16;
 
-export default function OPRLayer({mapZoom, filterVal, placeId, onSelect, setLoading}) {
+export default function OPRLayer({mapZoom, filterVal, onSelect, setLoading}) {
   const [placesCache, setPlacesCache] = useState({});
 
   const [currentLayer, setCurrentLayer] = useState([]);
@@ -103,17 +103,10 @@ export default function OPRLayer({mapZoom, filterVal, placeId, onSelect, setLoad
   useEffect(() => {
     const updateLayer = () => {
       let newLayer = [];
-      let place = null;
 
       for (let tileId in currentBounds) {
         if (has(placesCache, `${tileId}.data.features`)) {
           const features = get(placesCache, `${tileId}.data.features`);
-          if (placeId) {
-            let places = features.filter((f) => f.properties.opr_id === placeId);
-            if (places.length > 0) {
-              place = places[0];
-            }
-          }
           if (filterVal === "all") {
             newLayer = newLayer.concat(features);
           } else {
@@ -124,9 +117,6 @@ export default function OPRLayer({mapZoom, filterVal, placeId, onSelect, setLoad
 
       if (!isMapMoving) {
         setCurrentLayer(newLayer);
-        if (place) {
-          onSelect(place);
-        }
       }
     };
 
