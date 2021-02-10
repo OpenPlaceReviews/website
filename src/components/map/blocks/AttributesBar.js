@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {makeStyles} from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 
-import {Box} from "@material-ui/core";
+import { Box, Link } from "@material-ui/core";
 import BlockExpandable from "./BlockExpandable";
 import TagsTable from "./TagsTable";
 import Value from "../../main/blockchain/blocks/Value";
@@ -27,20 +27,25 @@ const useStyles = makeStyles({
     }
 })
 
-export default function AttributesBar({source}) {
-    const {tags, version, id, changeset, timestamp, lat, lon, source_type} = source;
+export default function AttributesBar({ sourceType, sources }) {
+
+    const { tags, version, id, changeset, timestamp, type, deletedTimestamp, lat, lon } = sources[0];
 
     let title;
     let icon;
-    if (source_type === 'osm') {
-        title = 'OpenSteetMap';
+    let idTxt = id;
+    let idLink;
+    let changesetLink = '#';
+    if (sourceType === 'osm') {
+        title = deletedTimestamp ? 'OpenStreetMap - Deleted' : 'OpenSteetMap';
         icon = openStreetMapIcon;
-    } else if (source_type === 'tripadvisor') {
+        idLink = 'https://www.openstreetmap.org/' + type + '/' + id;
+        changesetLink = changeset ? 'https://www.openstreetmap.org/changeset/' + changeset : idLink;
+    } else if (sourceType === 'tripadvisor') {
         title = 'Trip Advisior';
         icon = tripAdvisorIcon;
-    } else if (source_type === 'old-osm-ids') {
-        title = 'Deleted OpenStreetMap Place';
-        icon = openStreetMapIcon;
+        idTxt = (id.length === 2 ? id[0] + '-' + id[1] : id);
+        idLink = 'https://www.tripadvisor.com/' + idTxt;
     } else {
         title = 'Attributes';
     }
@@ -52,23 +57,23 @@ export default function AttributesBar({source}) {
         tagsKeys = Object.keys(tags);
     }
 
-    const top = <Box display="flex" flexDirection="row" style={{marginBottom: "10px"}}>
-        {icon && <img src={icon} alt="icon" className={classes.icon}/>}
+    const top = <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }}>
+        {icon && <img src={icon} alt="icon" className={classes.icon} />}
         <div>
             <p className={classes.header}>{title}</p>
             <p className={classes.subheader}>
-                {id && <Value color={"#2D69E0"}>{id}</Value>}<SpecChar code={'\u2022'}/>
+                {id && idLink ? <Link href={`${idLink}`}>{idTxt}</Link> : <Value color={"#2D69E0"}>{idTxt}</Value>}
+                <SpecChar code={'\u2022'} />
                 {tagsKeys && <span>{tagsKeys.length} {tagsKeys.length > 1 ? 'tags' : 'tag'}</span>}
             </p>
         </div>
     </Box>;
 
     return <BlockExpandable header={top} open={true}>
-
-
-        {version && <p>Version #{version} <SpecChar code={'\u2014'}/> Changeset <Value color={"#2D69E0"}>#{changeset}</Value></p>}
+        {version && <p>Version #{version} <SpecChar code={'\u2014'}/> Changeset #<Link href={`${changesetLink}`}>{changeset}</Link></p>}
         {(lat && lon) ? <p>Location: <Value>{lat.toFixed(5)}, {lon.toFixed(5)}</Value></p> : null}
         {timestamp && <p>Timestamp: {timestamp}</p>}
-        {tags && <TagsTable tags={tags}/>}
+        {deletedTimestamp && <p>Deleted timestamp: {deletedTimestamp}</p>}
+        {tags && <TagsTable tags={tags} />}
     </BlockExpandable>
 }

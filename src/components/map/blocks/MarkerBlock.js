@@ -204,7 +204,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                 <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value></p>
             </div>
 
-            {markerPlace && markerPlace.sources && markerPlace.sources.osm && markerPlace.sources.osm.map((sources, index) => <AttributesBar source={sources} key={index} />)}
+            {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => <AttributesBar sources={source} sourceType={type} key={index} />)}
 
             {imagesSidebar}
         </div>
