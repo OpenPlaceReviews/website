@@ -9,15 +9,21 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        outline: 'none',
     },
     image: {
-        maxHeight: "95%",
         maxWidth: "95%",
-        border: "3px solid #000",
+        maxHeight: "95%",
+        minWidth: "95%",
+        minHeight: "95%",
+        width: "auto",
+        height: "auto",
+        objectFit: "contain",
+        outline: 'none',
     },
 });
 
-export default function ModalLightbox({image, onClose}) {
+export default function ModalLightbox({ image, onClose }) {
     const classes = useStyles();
     const open = !!image;
 
@@ -32,7 +38,7 @@ export default function ModalLightbox({image, onClose}) {
         }}
     >
         <Fade in={open}>
-            <img src={image} alt="Image preview" onClick={onClose} className={classes.image}/>
+            <img src={image} onClick={onClose} className={classes.image} />
         </Fade>
     </Modal>;
 }
