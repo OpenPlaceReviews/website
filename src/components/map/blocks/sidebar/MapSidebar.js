@@ -1,5 +1,6 @@
-import React, {useEffect, useRef} from 'react';
-import {makeStyles} from "@material-ui/styles";
+import React, { useEffect, useRef } from 'react';
+import { makeStyles } from "@material-ui/styles";
+import { useMap } from "react-leaflet";
 import L from "leaflet";
 
 const POSITION_CLASSES = {
@@ -16,36 +17,32 @@ const useStyles = makeStyles({
     border: "none !important",
     display: "flex",
     flexDirection: "column",
-    alignItems: (props) => {props.alignItems},
+    alignItems: (props) => { props.alignItems },
   }
 });
 
 export default ({ position, className, children }) => {
   const sidebarRef = useRef();
-  useEffect(() => {
-    L.DomEvent.disableScrollPropagation(sidebarRef.current);
-    L.DomEvent.addListener(sidebarRef.current, 'mousedown touchstart dblclick', (e) => {
-      let className = '';
-      if (_.isString(e.target.className)) {
-        className = e.target.className;
-      } else if (_.isString(e.target.class)) {
-        className = e.target.class;
-      }
+  const map = useMap();
 
-      if(!className.includes('MuiSelect-root') && !className.includes('MuiLink-root')) {
-        L.DomEvent.stopPropagation(e);
-      }
+  useEffect(() => {
+    // Disable dragging when user's cursor enters the element
+    L.DomEvent.addListener(sidebarRef.current, 'mouseover', () => {
+      map._handlers.forEach(handler => handler.disable());
+    });
+    L.DomEvent.addListener(sidebarRef.current, 'mouseout', () => {
+      map._handlers.forEach(handler => handler.enable());
     });
   }, []);
 
   let alignItems;
-  if (position === 'topright' || position === 'bottomright' || position ==='right') {
+  if (position === 'topright' || position === 'bottomright' || position === 'right') {
     alignItems = 'flex-end';
   } else {
     alignItems = 'flex-start';
   }
 
-  const classes = useStyles({alignItems});
+  const classes = useStyles({ alignItems });
   const positionClass =
     (position && POSITION_CLASSES[position]) || POSITION_CLASSES.topleft
 
