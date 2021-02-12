@@ -58,6 +58,12 @@ export default function ObjectsPage({match}) {
     }
   }, [type, key]);
 
+  useEffect(() => {
+    if (key) {
+      window.scrollTo(0, 0);
+    }
+  }, [key]);
+
   if (error) {
     throw error;
   }

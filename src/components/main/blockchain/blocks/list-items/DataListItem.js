@@ -56,7 +56,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({link, block, title, icon, signedBy, shortId, children}) => {
+export default ({objLink, transLink, block, title, icon, signedBy, shortId, children}) => {
   const [jsonOpen, expandJson] = useState(false);
   const classes = useStyles();
 
@@ -73,10 +73,10 @@ export default ({link, block, title, icon, signedBy, shortId, children}) => {
       <div className={classes.content}>
         <Box display="flex" justifyContent="space-between">
           <h2 className={classes.header}>
-            <Link to={link} className={classes.link}>{title}</Link>
+            <Link to={objLink} className={classes.link}>{title}</Link>
           </h2>
           <div className={classes.hash}>
-            <Link to={link} className={classes.link}>{shortId}</Link>
+            <Link to={transLink} className={classes.link}>{shortId}</Link>
           </div>
         </Box>
 

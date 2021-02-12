@@ -15,16 +15,18 @@ export default function ObjectItem({object}) {
 
   const icon = <BlockIcon icon={OpClass.getIcon()}/>;
   const title = OpClass.getObjName(object);
-  const link = `/data/transaction/${parentHash}`;
+  const type = object.clientData.type.replace('.', '_');
+  const objLink = `/data/objects/${type}?key=${object.clientData.id}`;
+  const transLink = `/data/transaction/${parentHash}`;
 
   return <DataListItem
       block={object}
       title={title}
       icon={icon}
-      link={link}
+      objLink={objLink}
+      transLink={transLink}
       shortId={shortHash}
   >
-    <p>{OpClass.getObjDescription(object)}</p>
     <p>Object type: <strong>{OpClass.getName()}</strong></p>
     {object.comment && <p>Comment: <strong>{object.comment}</strong></p>}
   </DataListItem>;
