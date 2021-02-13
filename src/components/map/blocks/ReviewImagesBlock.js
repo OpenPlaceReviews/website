@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function ReviewImagesBlock({place, onSubmit, initialCategory, isLoggedIn}) {
+export default function ReviewImagesBlock({place, onSubmit, initialCategory, categories, isLoggedIn}) {
     const [current, setCurrent] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [categorized, setCategorized] = useState({});
@@ -79,6 +79,7 @@ export default function ReviewImagesBlock({place, onSubmit, initialCategory, isL
 
         {isLoggedIn && <CategorySelector
             value={(categorized[current] || initialCategory)}
+            categories={categories}
             disabled={isDiasableSubmit}
             onChange={onChangeCategory}
             onSubmit={onSubmitHandler}

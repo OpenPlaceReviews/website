@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, Button, MenuItem, Select} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
+import Capitalize from "../../util/Utils";
 
 const useStyles = makeStyles({
     root: {
@@ -15,14 +16,13 @@ const useStyles = makeStyles({
     },
 });
 
-export default function CategorySelector({value, onChange, onSubmit, disabled}) {
+export default function CategorySelector({value, categories, onChange, onSubmit, disabled}) {
     const classes = useStyles();
 
     return <Box display="flex" flexDirection="row" justifyContent="space-around" className={classes.root}>
         <Select className={classes.selector} value={value} variant="outlined" onChange={onChange}>
-            <MenuItem value="review">Review</MenuItem>
-            <MenuItem value="outdoor">Outdoor</MenuItem>
-            <MenuItem value="indoor">Indoor</MenuItem>
+            <MenuItem value="review">Review</MenuItem>            
+            {categories && Object.keys(categories).map((category, index) => <MenuItem key={index} value={category}>{Capitalize(category)}</MenuItem>)}
             <MenuItem value="delete">Delete</MenuItem>
         </Select>
         <Button

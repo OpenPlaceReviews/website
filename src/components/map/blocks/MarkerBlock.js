@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import useExtractObject from "../hooks/useExtractObject";
 import useDiff from "../hooks/useDiff";
 import useCommitOp from "../hooks/useCommitOp";
+import { getObjectsById } from "../../../api/data";
 
 import BlockExpandable from "./BlockExpandable";
 import AttributesBar from "./AttributesBar";
@@ -14,6 +15,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Box, IconButton, Link } from "@material-ui/core";
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
+import Capitalize from "../../util/Utils";
 
 const useStyles = makeStyles({
     container: {
@@ -79,6 +81,7 @@ const findObject = (obj = {}, key) => {
 export default function MarkerBlock({ marker, setMarker, whenReady }) {
     const [op, setOp] = useState(null);
     const [places, setPlaces] = useState([]);
+    const [categories, setCategories] = useState(null);
     const [version, setVersion] = useState(0);
     const [markerPlace, setMarkerPlace] = useState(null);
     const classes = useStyles();
@@ -99,23 +102,29 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
     useCommitOp(op, authData, handleUpdatePlace);
 
     let imagesSidebar;
-    if (place && place.images) {
+    if (place && place.images && categories) {
         const { images } = place;
         const isLoggedIn = !!authData.token;
         imagesSidebar = <React.Fragment>
-            {images.review && images.review.length > 0 ? <BlockExpandable header={`Photos - To review (${images.review.length})`}>
-                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="review" />
+            {images.review && images.review.length > 0 ? <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
+                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="review" categories={categories}/>
             </BlockExpandable> : ''}
 
-            {images.outdoor && images.outdoor.length > 0 ? <BlockExpandable header={`Photos - Outdoor (${images.outdoor.length})`}>
-                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="outdoor" />
-            </BlockExpandable> : ''}
-
-            {images.indoor && images.indoor.length > 0 ? <BlockExpandable header={`Photos - Indoor (${images.indoor.length})`}>
-                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="indoor" />
-            </BlockExpandable> : ''}
+            {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ? <BlockExpandable key={index} header={`Photos - ${Capitalize(category)} (${images[category].length})`}>
+                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory={category} categories={categories}/>
+            </BlockExpandable> : '')}
         </React.Fragment>;
     }
+
+    useEffect(() => {
+        const requestCategories = async () => {
+            const data = await getObjectsById('sys.operation', 'opr.place');
+            const object = data.objects.shift();
+            setCategories(object && object.interface && object.interface.images ? object.interface.images.values : null);
+        };
+
+        requestCategories();
+    }, []);
 
     let oprId = marker.properties.opr_id;
     useEffect(() => {
