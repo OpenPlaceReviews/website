@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import { useEffect } from "react";
 const VALUE_DELETED = 'delete';
 
 function compareImages(path, oldImages, newImages) {
@@ -6,7 +6,7 @@ function compareImages(path, oldImages, newImages) {
     const current = {};
 
     oldImages.forEach((image, index) => {
-        const {cid} = image;
+        const { cid } = image;
         const isDeleted = !newImages.some(image => image.cid === cid);
         if (isDeleted) {
             change[`${path}[${index}]`] = VALUE_DELETED;
@@ -15,7 +15,7 @@ function compareImages(path, oldImages, newImages) {
     });
 
     newImages.forEach((image, index) => {
-        const {cid} = image;
+        const { cid } = image;
         const isAppended = !oldImages.some(image => image.cid === cid);
         if (isAppended) {
             change[path] = {
@@ -30,7 +30,7 @@ function compareImages(path, oldImages, newImages) {
     };
 }
 
-function compareObjects(oldObject, newObject) {
+function compareObjects(oldObject, newObject, categories) {
     const diff = {
         change: {
             version: 'increment',
@@ -38,14 +38,12 @@ function compareObjects(oldObject, newObject) {
         current: {},
     };
 
-    const categories = ['review', 'outdoor', 'indoor'];
-    categories.forEach((category) => {
+    ['review', ...Object.keys(categories)].forEach((category) => {
         let categoryDiff;
         const path = `images.${category}`;
         const oldImages = oldObject.images[category];
         const newImages = newObject.images[category];
-
-        categoryDiff = compareImages(path, oldImages, newImages);
+        categoryDiff = compareImages(path, oldImages ? oldImages : [], newImages ? newImages : []);
         diff.change = {
             ...diff.change,
             ...categoryDiff.change,
@@ -60,12 +58,11 @@ function compareObjects(oldObject, newObject) {
 }
 
 
-export default function useDiff(current, newObject, onDiff) {
+export default function useDiff(current, newObject, categories, onDiff) {
     useEffect(() => {
         const isEqual = JSON.stringify(current) === JSON.stringify(newObject);
-        if (!isEqual) {
-            const diff = compareObjects(current, newObject);
-
+        if (!isEqual && categories) {
+            const diff = compareObjects(current, newObject, categories);
             const op = {
                 edit: [
                     {
@@ -78,5 +75,5 @@ export default function useDiff(current, newObject, onDiff) {
 
             onDiff(op);
         }
-    }, [current, newObject]);
+    }, [current, newObject, categories]);
 }

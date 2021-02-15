@@ -14,7 +14,7 @@ let refreshTimout = null;
 let lastRefreshTime = 0;
 let currentLayer = null;
 const REFRESH_TIMEOUT = 500;
-const MIN_MARKERS_ZOOM = 12;
+const MIN_MARKERS_ZOOM = 14;
 
 export default function OPRLayer({ mapZoom, filterVal, onSelect, setLoading }) {
   const [placesCache, setPlacesCache] = useState({});

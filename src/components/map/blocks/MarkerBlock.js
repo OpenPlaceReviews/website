@@ -98,7 +98,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
     }
 
     useExtractObject(marker, version, handleExtractPlace);
-    useDiff(places[0], places[1], setOp);
+    useDiff(places[0], places[1], categories, setOp);
     useCommitOp(op, authData, handleUpdatePlace);
 
     let imagesSidebar;
@@ -107,11 +107,11 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         const isLoggedIn = !!authData.token;
         imagesSidebar = <React.Fragment>
             {images.review && images.review.length > 0 ? <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
-                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="review" categories={categories}/>
+                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="review" categories={categories} />
             </BlockExpandable> : ''}
 
             {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ? <BlockExpandable key={index} header={`Photos - ${Capitalize(category)} (${images[category].length})`}>
-                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory={category} categories={categories}/>
+                <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory={category} categories={categories} />
             </BlockExpandable> : '')}
         </React.Fragment>;
     }
