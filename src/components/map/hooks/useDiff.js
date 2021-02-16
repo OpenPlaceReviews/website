@@ -14,15 +14,23 @@ function compareImages(path, oldImages, newImages) {
         }
     });
 
-    newImages.forEach((image, index) => {
+    let appendedImages = [];
+    newImages.forEach((image, _) => {
         const { cid } = image;
         const isAppended = !oldImages.some(image => image.cid === cid);
         if (isAppended) {
-            change[path] = {
-                append: image,
-            };
+            appendedImages.push(image);
         }
     });
+    if (appendedImages.length == 1) {
+        change[path] = {
+            append: appendedImages[0],
+        };
+    } else if (appendedImages.length > 1) {
+        change[path] = {
+            appendmany: appendedImages,
+        };
+    }
 
     return {
         change,
