@@ -15,7 +15,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Box, IconButton, Link } from "@material-ui/core";
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
-import Capitalize from "../../util/Utils";
+import Utils from "../../util/Utils";
 
 const useStyles = makeStyles({
     container: {
@@ -110,7 +110,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                 <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory="review" categories={categories} />
             </BlockExpandable> : ''}
 
-            {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ? <BlockExpandable key={index} header={`Photos - ${Capitalize(category)} (${images[category].length})`}>
+            {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ? <BlockExpandable key={index} header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
                 <ReviewImagesBlock place={place} onSubmit={setPlaces} isLoggedIn={isLoggedIn} initialCategory={category} categories={categories} />
             </BlockExpandable> : '')}
         </React.Fragment>;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { MapContainer, TileLayer, setMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import qs from "qs";
@@ -14,9 +14,11 @@ import ViewTracker from "./ViewTracker";
 import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import MarkerBlock from "./blocks/MarkerBlock";
 import Filter from "./blocks/Filter";
+import TaskSelector from "./blocks/TaskSelector";
 import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
 import ReviewPlaces from "./blocks/ReviewPlaces";
 import Loader from "../main/blocks/Loader";
+import AuthContext from "../main/auth/providers/AuthContext";
 
 const OPR_PLACE_URL_PREFIX = '/map/opr.place/';
 const INIT_LAT = 40.0;
@@ -25,6 +27,9 @@ const INIT_ZOOM = 4;
 const PLACE_MENU_ZOOM = 17;
 
 export default function Map() {
+
+  const { authData } = useContext(AuthContext);
+  const isLoggedIn = authData.name && authData.name.length;
 
   let mapLatLon = [INIT_LAT, INIT_LON];
   let mapZoom = INIT_ZOOM;
@@ -75,6 +80,12 @@ export default function Map() {
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});
   const [filterVal, setFilter] = useState('all');
+  const [taskSelection, setTaskSelection] = useState({
+    taskId: 'none',
+    startDate: new Date(),
+    endDate: new Date()
+  });
+
   const [marker, setMarker] = useState(initialMarker);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
@@ -125,13 +136,14 @@ export default function Map() {
 
     <MapSidebar position="topright">
       <MapSidebarBlock>
-        <Filter placeTypes={placeTypes} onSelect={setFilter} />
+        {isLoggedIn && <TaskSelector taskSelection={taskSelection} onSelect={setTaskSelection} />}
+        {!isLoggedIn && <Filter placeTypes={placeTypes} onSelect={setFilter} />}
       </MapSidebarBlock>
       {/*<ReviewPlaces setMarker={setMarker} reload={reload}/>*/}
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
-    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} onSelect={setMarker} setLoading={setReload} />}
+    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarker} setLoading={setReload} />}
 
   </MapContainer>;
 }
