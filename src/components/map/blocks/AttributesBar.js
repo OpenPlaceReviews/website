@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 export default function AttributesBar({ sourceType, sources }) {
 
-    const { tags, version, id, changeset, timestamp, type, deletedTimestamp, lat, lon } = sources[0];
+    const { tags, version, id, changeset, timestamp, type, deleted, lat, lon } = sources[0];
 
     let title;
     let icon;
@@ -37,7 +37,7 @@ export default function AttributesBar({ sourceType, sources }) {
     let idLink;
     let changesetLink = '#';
     if (sourceType === 'osm') {
-        title = deletedTimestamp ? 'OpenStreetMap - Deleted' : 'OpenSteetMap';
+        title = deleted ? 'OpenStreetMap - Deleted' : 'OpenSteetMap';
         icon = openStreetMapIcon;
         idLink = 'https://www.openstreetmap.org/' + type + '/' + id;
         changesetLink = changeset ? 'https://www.openstreetmap.org/changeset/' + changeset : idLink;
@@ -73,7 +73,7 @@ export default function AttributesBar({ sourceType, sources }) {
         {version && <p>Version #{version} <SpecChar code={'\u2014'}/> Changeset #<Link href={`${changesetLink}`}>{changeset}</Link></p>}
         {(lat && lon) ? <p>Location: <Value>{lat.toFixed(5)}, {lon.toFixed(5)}</Value></p> : null}
         {timestamp && <p>Timestamp: {timestamp}</p>}
-        {deletedTimestamp && <p>Deleted timestamp: {deletedTimestamp}</p>}
+        {deleted && <p>Deleted timestamp: {deleted}</p>}
         {tags && <TagsTable tags={tags} />}
     </BlockExpandable>
 }

@@ -14,7 +14,6 @@ import ViewTracker from "./ViewTracker";
 import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import MarkerBlock from "./blocks/MarkerBlock";
 import Filter from "./blocks/Filter";
-import TaskSelector from "./blocks/TaskSelector";
 import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
 import ReviewPlaces from "./blocks/ReviewPlaces";
 import Loader from "../main/blocks/Loader";
@@ -77,13 +76,14 @@ export default function Map() {
     };
   }
 
+  const date = new Date();
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});
   const [filterVal, setFilter] = useState('all');
   const [taskSelection, setTaskSelection] = useState({
     taskId: 'none',
-    startDate: new Date(),
-    endDate: new Date()
+    startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
   });
 
   const [marker, setMarker] = useState(initialMarker);
@@ -136,8 +136,7 @@ export default function Map() {
 
     <MapSidebar position="topright">
       <MapSidebarBlock>
-        {isLoggedIn && <TaskSelector taskSelection={taskSelection} onSelect={setTaskSelection} />}
-        {!isLoggedIn && <Filter placeTypes={placeTypes} onSelect={setFilter} />}
+        <Filter isLoggedIn={isLoggedIn} taskSelection={taskSelection} onTaskSelect={setTaskSelection} placeTypes={placeTypes} onCategorySelect={setFilter} />
       </MapSidebarBlock>
       {/*<ReviewPlaces setMarker={setMarker} reload={reload}/>*/}
     </MapSidebar>
