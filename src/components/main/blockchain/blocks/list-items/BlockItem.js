@@ -21,7 +21,8 @@ export default function BlockItem({block}) {
   return <DataListItem
       block={block}
       title={`Block #${block_id}`}
-      link={`/data/block/${block_id}`}
+      objLink={`/data/block/${block_id}/transactions`}
+      transLink = {`/data/block/${block_id}/transactions`}
       signedBy={signedByStr}
       icon={IconComponent}
       shortId={shortHash}
