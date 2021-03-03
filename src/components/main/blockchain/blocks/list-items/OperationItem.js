@@ -45,7 +45,8 @@ export default function OperationItem({operation}) {
       block={operation}
       title={title}
       icon={icon}
-      link={link}
+      objLink={link}
+      transLink={link}
       signedBy={signedByStr}
       shortId={shortHash}
   >
