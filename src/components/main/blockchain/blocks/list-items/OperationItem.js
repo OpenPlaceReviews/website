@@ -36,16 +36,10 @@ export default function OperationItem({operation}) {
   if (objects.length === 1) {
     const object = objects[0];
     let desc = OpClass.getObjDescription(object);
-    if (desc.indexOf("undefined") !== -1) {
-      content = <React.Fragment>
-        <p>Object type: <strong>{OpClass.getName()}</strong></p>
-      </React.Fragment>;
-    } else {
-      content = <React.Fragment>
-        <p>Object type: <strong>{OpClass.getName()}</strong></p>
-        <p>{OpClass.getObjDescription(object)}</p>
-      </React.Fragment>;
-    }
+    content = <React.Fragment>
+      <p>Object type: <strong>{OpClass.getName()}</strong></p>
+      {(desc.indexOf("undefined") === -1) && <p>{desc}</p>}
+    </React.Fragment>;
   }
 
   return <DataListItem
