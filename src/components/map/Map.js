@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { MapContainer, TileLayer, setMap } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import qs from "qs";
 
@@ -18,6 +18,7 @@ import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
 import ReviewPlaces from "./blocks/ReviewPlaces";
 import Loader from "../main/blocks/Loader";
 import AuthContext from "../main/auth/providers/AuthContext";
+import Utils from "../util/Utils";
 
 const OPR_PLACE_URL_PREFIX = '/map/opr.place/';
 const INIT_LAT = 40.0;
@@ -118,6 +119,33 @@ export default function Map() {
     }
   }
 
+  function setMarkerWithGroup(marker, markerGroup) {
+    if (isLoggedIn && markerGroup.length > 0) {
+      const {coordinates} = marker.geometry;
+      const [lat, lon] = coordinates;
+
+      let similarMarkerDistance = 150;
+      let similarMarker = null;
+      for (const i in markerGroup) {
+        const groupMarker = markerGroup[i];
+        if (marker === groupMarker.feature) {
+          continue;
+        }
+        const {coordinates} = groupMarker.feature.geometry;
+        const [gLat, gLon] = coordinates;
+        const distance = Utils.getDistance(lat, lon, gLat, gLon);
+        if (distance < similarMarkerDistance) {
+          similarMarkerDistance = distance;
+          similarMarker = groupMarker;
+        }
+      }
+      if (similarMarker) {
+        marker.properties.similar_opr_id = similarMarker.feature.properties.opr_id;
+      }
+    }
+    setMarker(marker);
+  }
+
   return <MapContainer center={mapLatLon} zoom={mapZoom} zoomControl={false} whenCreated={setMap} whenReady={() => setLoading(false)}>
     <TileLayer
       attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, '
@@ -142,7 +170,7 @@ export default function Map() {
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
-    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarker} setLoading={setReload} />}
+    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup} setLoading={setReload} />}
 
   </MapContainer>;
 }

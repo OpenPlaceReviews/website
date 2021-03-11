@@ -22,7 +22,7 @@ function compareImages(path, oldImages, newImages) {
             appendedImages.push(image);
         }
     });
-    if (appendedImages.length == 1) {
+    if (appendedImages.length === 1) {
         change[path] = {
             append: appendedImages[0],
         };
@@ -38,7 +38,7 @@ function compareImages(path, oldImages, newImages) {
     };
 }
 
-function compareObjects(oldObject, newObject, categories) {
+function compareObjects(oldObject, newObject, categories, isMerge) {
     const diff = {
         change: {
             version: 'increment',
@@ -46,11 +46,11 @@ function compareObjects(oldObject, newObject, categories) {
         current: {},
     };
 
-    ['review', ...Object.keys(categories)].forEach((category) => {
+    ['review', ...Object.keys(categories)].forEach(category => {
         let categoryDiff;
         const path = `images.${category}`;
-        const oldImages = oldObject.images[category];
-        const newImages = newObject.images[category];
+        const oldImages = oldObject.images ? oldObject.images[category] : null;
+        const newImages = newObject.images ? newObject.images[category] : null;
         categoryDiff = compareImages(path, oldImages ? oldImages : [], newImages ? newImages : []);
         diff.change = {
             ...diff.change,
@@ -62,6 +62,34 @@ function compareObjects(oldObject, newObject, categories) {
         }
     });
 
+    if (isMerge) {
+        Object.entries(newObject.source).map(([type, source]) => {
+            const change = {};
+            const current = {};
+            if (source.length === 1) {
+                change[`source.${type}`] = {
+                    append: source[0],
+                };
+            } else if (source.length > 1) {
+                change[`source.${type}`] = {
+                    appendmany: source,
+                };
+            }
+            diff.change = {
+                ...diff.change,
+                ...change,
+            }
+            let oldSource = oldObject.source[type];
+            if (oldSource) {
+                current[`source.${type}`] = oldSource;
+            }
+            diff.current = {
+                ...diff.current,
+                ...current,
+            }
+        });
+    }
+
     return diff;
 }
 
@@ -69,8 +97,9 @@ function compareObjects(oldObject, newObject, categories) {
 export default function useDiff(current, newObject, categories, onDiff) {
     useEffect(() => {
         const isEqual = JSON.stringify(current) === JSON.stringify(newObject);
+        const isMerge = current && newObject && JSON.stringify(current.id) !== JSON.stringify(newObject.id);
         if (!isEqual && categories) {
-            const diff = compareObjects(current, newObject, categories);
+            const diff = compareObjects(current, newObject, categories, isMerge);
             const op = {
                 edit: [
                     {
@@ -80,6 +109,11 @@ export default function useDiff(current, newObject, categories, onDiff) {
                 ],
                 type: 'opr.place',
             };
+            if (isMerge) {
+                op.delete = [
+                    newObject.id,
+                ];
+            }
 
             onDiff(op);
         }

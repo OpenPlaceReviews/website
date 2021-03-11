@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 
 export default function AttributesBar({ sourceType, sources }) {
 
-    const { tags, version, id, changeset, timestamp, type, deleted, lat, lon } = sources[0];
+    const { tags, version, id, changeset, timestamp, type, deleted, lat, lon } = sources[sources.length - 1];
 
     let title;
     let icon;
@@ -37,7 +37,7 @@ export default function AttributesBar({ sourceType, sources }) {
     let idLink;
     let changesetLink = '#';
     if (sourceType === 'osm') {
-        title = deleted ? 'OpenStreetMap - Deleted' : 'OpenSteetMap';
+        title = deleted ? 'OpenStreetMap - Deleted' : 'OpenStreetMap';
         icon = openStreetMapIcon;
         idLink = 'https://www.openstreetmap.org/' + type + '/' + id;
         changesetLink = changeset ? 'https://www.openstreetmap.org/changeset/' + changeset : idLink;

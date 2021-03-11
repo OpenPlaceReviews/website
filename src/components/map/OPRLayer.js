@@ -16,11 +16,13 @@ let lastRefreshTime = 0;
 let currentLayer = null;
 const REFRESH_TIMEOUT = 500;
 const MIN_MARKERS_ZOOM = 14;
+var selectedMarkerGroup = [];
 
 export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading }) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
+  //const [selectedMarkerGroup, setSelectedMarkerGroup] = useState([]);
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
@@ -250,12 +252,20 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       pointToLayer: (feature, latlng) => {
         const icon = MarkerIcon(feature.properties.place_type);
         const marker = L.marker(latlng, { icon: icon });
-        return marker.on('click', () => onSelect(feature));
+        return marker.on('click', () => onMarkerClick(feature));
       }
+    });
+
+    currentLayer.on('clusterclick', function (a) {
+      selectedMarkerGroup = a.layer.getAllChildMarkers();
     });
     currentLayer.addLayer(currentLayerPoints);
     map.addLayer(currentLayer);
   }
+
+  const onMarkerClick = (feature) => {
+    onSelect(feature, selectedMarkerGroup);
+  };
 
   return <div className="opr-layer">
     {(map.getZoom() < minMarkersZoom) && <OPRMessageOverlay>Zoom in to view details</OPRMessageOverlay>}
