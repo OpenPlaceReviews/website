@@ -105,6 +105,9 @@ export default function Map() {
     if (!marker || !marker.initial) {
       onMapStateChanged(mapZoom, mapLatLon[0], mapLatLon[1]);
     }
+    if (!marker && map) {
+      map._handlers.forEach(handler => handler.enable());
+    }
   }, [marker]);
 
   const onMapStateChanged = (zoom, lat, lng) => {
