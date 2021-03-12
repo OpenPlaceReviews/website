@@ -105,10 +105,13 @@ export default function Map() {
     if (!marker || !marker.initial) {
       onMapStateChanged(mapZoom, mapLatLon[0], mapLatLon[1]);
     }
+  }, [marker]);
+
+  useEffect(() => {
     if (!marker && map) {
       map._handlers.forEach(handler => handler.enable());
     }
-  }, [marker]);
+  }, [marker, map]);
 
   const onMapStateChanged = (zoom, lat, lng) => {
     mapLatLon = [lat, lng];
