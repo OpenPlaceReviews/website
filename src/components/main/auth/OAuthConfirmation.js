@@ -75,6 +75,7 @@ export default ({params, onLogIn, onSignUp}) => {
   console.log(state.loading);
   console.log(state.data);
   console.log(storage.get('opr-force-signup'));
+  console.log(storage.get('opr-force-signup') === "true");
   if (!state.loading) {
     const force_signup = storage.get('opr-force-signup') || "false";
 
