@@ -15,20 +15,16 @@ export default ({params, onLogIn, onSignUp}) => {
   const [alert, setAlert] = useState('');
   const {oauth_token, oauth_verifier, code} = params;
 
-  console.log(params);
-
   useEffect(() => {
     const fetchData = async () => {
       let result;
       try {
-        console.log('fetchData');
         result = await auth.oauthConfirm({
           token: oauth_token,
           oauthVerifier: oauth_verifier,
           code,
         });
       } catch (error) {
-        console.log(error);
         if (error.response) {
           const {
             data: { message },
@@ -43,12 +39,10 @@ export default ({params, onLogIn, onSignUp}) => {
       }
 
       if (!result.data) {
-        console.log('Server responce is empty');
         setError(new Error('Server responce is empty'));
         return;
       }
 
-      console.log('fetchData OK');
       setState({
         loading: false,
         data: result.data,
@@ -72,14 +66,10 @@ export default ({params, onLogIn, onSignUp}) => {
   let description;
   let form;
   const {oauthNickname, possibleSignups} = state.data;
-  console.log(state.loading);
-  console.log(state.data);
-  console.log(storage.get('opr-force-signup'));
   if (!state.loading) {
     const force_signup = storage.get('opr-force-signup') || false;
     if(!possibleSignups.length || force_signup === true) {
       const onSignUpHandler = (params) => {
-        console.log('remove opr-force-signup');
         storage.remove('opr-force-signup');
         onSignUp(params);
       };

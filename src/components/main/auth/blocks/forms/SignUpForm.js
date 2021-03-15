@@ -126,18 +126,12 @@ export default function SignUpForm({onSuccess}) {
 
       let result;
       try {
-        console.log('fetchData');
-        console.log(params);
-        console.log(reqParams);
         result = await auth.signUp(params, reqParams);
       } catch (error) {
         if (error.response) {
           const {
             data: { message },
           } = error.response;
-
-          console.log('error');
-          console.log(error.response);
 
           setState({
             submitted: false,
@@ -150,10 +144,7 @@ export default function SignUpForm({onSuccess}) {
         return;
       }
 
-      console.log('result.data');
-      console.log(result.data);
-      if (!result.data || result.data.create) {
-        console.log('Wrong server answer. No objects created.');
+      if (!result.data || !result.data.create) {
         const error = new Error('Wrong server answer. No objects created.');
         setError(error);
         return;
