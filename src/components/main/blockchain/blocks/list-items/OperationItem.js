@@ -38,7 +38,7 @@ export default function OperationItem({operation}) {
     let desc = OpClass.getObjDescription(object);
     content = <React.Fragment>
       <p>Object type: <strong>{OpClass.getName()}</strong></p>
-      {(desc.indexOf("undefined") === -1) && <p>{desc}</p>}
+      {desc && <p>{desc}</p>}
     </React.Fragment>;
   }
 
