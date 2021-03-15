@@ -80,6 +80,7 @@ export default ({params, onLogIn, onSignUp}) => {
 
     if(!possibleSignups.length || force_signup === "true") {
       const onSignUpHandler = (params) => {
+        console.log('remove opr-force-signup');
         storage.remove('opr-force-signup');
         onSignUp(params);
       };
