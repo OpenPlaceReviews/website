@@ -111,9 +111,11 @@ export default function OAuthSignUpForm({onSignUp, onLogIn, onError, preAuthPara
         };
 
         try {
+          console.log('fetchData');
           const {data} = await auth.signUp(params, reqParams)
-
+          console.log(data);
           if (!data || !data.create) {
+            console.log('Wrong server answer. No objects created.');
             const error = new Error('Wrong server answer. No objects created.');
             setError(error);
             return;
