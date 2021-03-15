@@ -17,7 +17,7 @@ export default function SignUpPage() {
 
   if (force_signup === 'true') {
     console.log('set opr-force-signup');
-    storage.set('opr-force-signup', true);
+    storage.setNonStrict('opr-force-signup', true);
   } else {
     console.log('remove opr-force-signup');
     storage.remove('opr-force-signup');

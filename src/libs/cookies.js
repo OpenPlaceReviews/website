@@ -10,6 +10,16 @@ const set = (name, data, expires = null) => {
   Cookie.set(name, data, options);
 };
 
+const setNonStrict = (name, data, expires = null) => {
+  const options = {
+    expires,
+    sameSite: "Lax",
+    secure: true,
+  };
+
+  Cookie.set(name, data, options);
+};
+
 const get = (name) => {
   try {
     return Cookie.getJSON(name);
@@ -34,6 +44,7 @@ const clear = () => {
 
 export default {
   set,
+  setNonStrict,
   get,
   has,
   remove,
