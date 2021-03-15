@@ -4,7 +4,7 @@ const set = (name, data, expires = null) => {
   const options = {
     expires,
     sameSite: "strict",
-    //secure: true,
+    secure: true,
   };
 
   Cookie.set(name, data, options);
