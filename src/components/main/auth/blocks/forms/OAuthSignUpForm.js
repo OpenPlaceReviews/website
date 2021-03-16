@@ -111,27 +111,20 @@ export default function OAuthSignUpForm({onSignUp, onLogIn, onError, preAuthPara
         };
 
         try {
-          const {data} = await auth.signUp(params, reqParams)
-          if (!data || !data.create) {
-            const error = new Error('Wrong server answer. No objects created.');
-            setError(error);
-            return;
-          }
-
+          await auth.signUp(params, reqParams);
           onSignUp({ name: formData.name.value });
         } catch (error) {
+          let errorMessage = 'Wrong server answer';
           if (error.response) {
             const {
               data: { message },
             } = error.response;
-
-            setState({
-              submitted: false,
-              alert: message,
-            });
-          } else {
-            setError(error);
+            errorMessage = message;
           }
+          setState({
+            submitted: false,
+            alert: errorMessage,
+          });
         }
       } else {
         const params = {
