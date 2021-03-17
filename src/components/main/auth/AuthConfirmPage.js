@@ -18,8 +18,14 @@ export default ({location}) => {
   const isOAuth = (reqParams.oauth_token || reqParams.oauth_verifier || reqParams.code);
   const {callback} = storage.get('opr-auth-callback') || {};
 
+  console.log("begin");
+  console.log(reqParams);
+  console.log(callback);
+
   if (!!authData.token) {
+    console.log("authData.token 1");
     if (!!callback) {
+      console.log("callback 1");
       useAuthCallback(callback, authData);
       storage.remove('opr-auth-callback');
       return null;
@@ -27,6 +33,7 @@ export default ({location}) => {
 
     return <Redirect to="/profile"/>
   } else if (isConfirmation) {
+    console.log("isConfirmation");
     const {op} = reqParams;
     if (op === 'signup_confirm') {
       return <EmailConfirmation params={reqParams} onSuccess={logIn}/>
@@ -35,7 +42,9 @@ export default ({location}) => {
     }
   } else if (isOAuth) {
     if (!!authData.name) {
+      console.log("authData.token 1");
       if (!!callback) {
+        console.log("callback 1");
         useAuthCallback(callback, authData);
         storage.remove('opr-auth-callback');
         return null;
@@ -43,9 +52,12 @@ export default ({location}) => {
 
       return <Redirect to="/profile"/>;
     }
+    console.log("OAuthConfirmation");
 
     return <OAuthConfirmation params={reqParams} onSignUp={signUp} onLogIn={logIn}/>
   }
+
+  console.log("end");
 
   return <Redirect to={"/"}/>;
 };
