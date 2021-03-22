@@ -16,21 +16,25 @@ let lastRefreshTime = 0;
 let currentLayer = null;
 const REFRESH_TIMEOUT = 500;
 const MIN_MARKERS_ZOOM = 14;
+var selectedMarkerGroup = [];
 
 export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading }) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
+  //const [selectedMarkerGroup, setSelectedMarkerGroup] = useState([]);
 
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
   const prevTaskSelection = usePrevious(taskSelection);
 
   let task = null;
-  let taskDate = null;
+  let taskStartDate = null;
+  let taskEndDate = null;
   if (taskSelection) {
     task = Tasks.getTaskById(taskSelection.taskId);
-    taskDate = taskSelection.startDate;
+    taskStartDate = taskSelection.startDate;
+    taskEndDate = taskSelection.endDate;
   }
   let minMarkersZoom = task ? task.minZoom : MIN_MARKERS_ZOOM;
 
@@ -75,7 +79,10 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
 
   useEffect(() => {
     let loadingTimout = null;
-    const taskChanged = prevTaskSelection && (prevTaskSelection.taskId !== taskSelection.taskId || prevTaskSelection.startDate !== taskSelection.startDate);
+    const taskChanged = prevTaskSelection &&
+      (prevTaskSelection.taskId !== taskSelection.taskId
+        || prevTaskSelection.startDate !== taskSelection.startDate
+        || prevTaskSelection.endDate !== taskSelection.endDate);
     const updateCache = async () => {
       let newCache = {};
       if (task) {
@@ -94,7 +101,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           for (let tileId in currentBounds) {
             if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
               if (taskChanged || !placesCache[tileId]) {
-                const { geo } = await task.fetchData({ tileId, date: taskDate })
+                const { geo } = await task.fetchData({ tileId, startDate: taskStartDate, endDate: taskEndDate })
                 newCache[tileId] = { "access": 1, data: geo, };
               } else {
                 newCache[tileId].access = placesCache[tileId].access + 1;
@@ -103,7 +110,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           }
         } else if (taskChanged) {
           //console.log('get all data');
-          const { geo } = await task.fetchData({ date: taskDate });
+          const { geo } = await task.fetchData({ startDate: taskStartDate, endDate: taskEndDate });
           //console.log('data=' + geo);
           newCache["all"] = { data: geo, };
         } else {
@@ -245,12 +252,20 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       pointToLayer: (feature, latlng) => {
         const icon = MarkerIcon(feature.properties.place_type);
         const marker = L.marker(latlng, { icon: icon });
-        return marker.on('click', () => onSelect(feature));
+        return marker.on('click', () => onMarkerClick(feature));
       }
+    });
+
+    currentLayer.on('clusterclick', function (a) {
+      selectedMarkerGroup = a.layer.getAllChildMarkers();
     });
     currentLayer.addLayer(currentLayerPoints);
     map.addLayer(currentLayer);
   }
+
+  const onMarkerClick = (feature) => {
+    onSelect(feature, selectedMarkerGroup);
+  };
 
   return <div className="opr-layer">
     {(map.getZoom() < minMarkersZoom) && <OPRMessageOverlay>Zoom in to view details</OPRMessageOverlay>}

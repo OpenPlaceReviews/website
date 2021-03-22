@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { MapContainer, TileLayer, setMap } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import qs from "qs";
 
@@ -14,11 +14,11 @@ import ViewTracker from "./ViewTracker";
 import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import MarkerBlock from "./blocks/MarkerBlock";
 import Filter from "./blocks/Filter";
-import TaskSelector from "./blocks/TaskSelector";
 import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
 import ReviewPlaces from "./blocks/ReviewPlaces";
 import Loader from "../main/blocks/Loader";
 import AuthContext from "../main/auth/providers/AuthContext";
+import Utils from "../util/Utils";
 
 const OPR_PLACE_URL_PREFIX = '/map/opr.place/';
 const INIT_LAT = 40.0;
@@ -77,13 +77,14 @@ export default function Map() {
     };
   }
 
+  const date = new Date();
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});
   const [filterVal, setFilter] = useState('all');
   const [taskSelection, setTaskSelection] = useState({
     taskId: 'none',
-    startDate: new Date(),
-    endDate: new Date()
+    startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
   });
 
   const [marker, setMarker] = useState(initialMarker);
@@ -106,6 +107,12 @@ export default function Map() {
     }
   }, [marker]);
 
+  useEffect(() => {
+    if (!marker && map) {
+      map._handlers.forEach(handler => handler.enable());
+    }
+  }, [marker, map]);
+
   const onMapStateChanged = (zoom, lat, lng) => {
     mapLatLon = [lat, lng];
     mapZoom = zoom;
@@ -116,6 +123,33 @@ export default function Map() {
     } else {
       history.replaceState(null, null, `/map?${coords}`);
     }
+  }
+
+  function setMarkerWithGroup(marker, markerGroup) {
+    if (isLoggedIn && markerGroup.length > 0) {
+      const {coordinates} = marker.geometry;
+      const [lat, lon] = coordinates;
+
+      let similarMarkerDistance = 150;
+      let similarMarker = null;
+      for (const i in markerGroup) {
+        const groupMarker = markerGroup[i];
+        if (marker === groupMarker.feature) {
+          continue;
+        }
+        const {coordinates} = groupMarker.feature.geometry;
+        const [gLat, gLon] = coordinates;
+        const distance = Utils.getDistance(lat, lon, gLat, gLon);
+        if (distance < similarMarkerDistance) {
+          similarMarkerDistance = distance;
+          similarMarker = groupMarker;
+        }
+      }
+      if (similarMarker) {
+        marker.properties.similar_opr_id = similarMarker.feature.properties.opr_id;
+      }
+    }
+    setMarker(marker);
   }
 
   return <MapContainer center={mapLatLon} zoom={mapZoom} zoomControl={false} whenCreated={setMap} whenReady={() => setLoading(false)}>
@@ -136,14 +170,13 @@ export default function Map() {
 
     <MapSidebar position="topright">
       <MapSidebarBlock>
-        {isLoggedIn && <TaskSelector taskSelection={taskSelection} onSelect={setTaskSelection} />}
-        {!isLoggedIn && <Filter placeTypes={placeTypes} onSelect={setFilter} />}
+        <Filter isLoggedIn={isLoggedIn} taskSelection={taskSelection} onTaskSelect={setTaskSelection} placeTypes={placeTypes} onCategorySelect={setFilter} />
       </MapSidebarBlock>
       {/*<ReviewPlaces setMarker={setMarker} reload={reload}/>*/}
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
-    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarker} setLoading={setReload} />}
+    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup} setLoading={setReload} />}
 
   </MapContainer>;
 }

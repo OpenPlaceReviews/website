@@ -35,9 +35,10 @@ export default function OperationItem({operation}) {
 
   if (objects.length === 1) {
     const object = objects[0];
+    let desc = OpClass.getObjDescription(object);
     content = <React.Fragment>
       <p>Object type: <strong>{OpClass.getName()}</strong></p>
-      <p>{OpClass.getObjDescription(object)}</p>
+      {desc && <p>{desc}</p>}
     </React.Fragment>;
   }
 
@@ -45,7 +46,8 @@ export default function OperationItem({operation}) {
       block={operation}
       title={title}
       icon={icon}
-      link={link}
+      objLink={link}
+      transLink={link}
       signedBy={signedByStr}
       shortId={shortHash}
   >

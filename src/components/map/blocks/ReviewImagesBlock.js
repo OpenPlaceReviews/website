@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function ReviewImagesBlock({place, onSubmit, initialCategory, categories, isLoggedIn}) {
+export default function ReviewImagesBlock({place, onSubmit, initialCategory, categories, isEditable}) {
     const [current, setCurrent] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [categorized, setCategorized] = useState({});
@@ -77,7 +77,7 @@ export default function ReviewImagesBlock({place, onSubmit, initialCategory, cat
 
         <ModalLightbox image={preview} onClose={() => setPreview(null)}/>
 
-        {isLoggedIn && <CategorySelector
+        {isEditable && <CategorySelector
             value={(categorized[current] || initialCategory)}
             categories={categories}
             disabled={isDiasableSubmit}

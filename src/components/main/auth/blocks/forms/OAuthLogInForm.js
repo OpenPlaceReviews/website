@@ -106,14 +106,12 @@ export default function OAuthLoginForm({onLogIn, onSignUp, onError, preAuthParam
     <FormItem disabled={submitted}>
       <p>We noticed that you already using this OAuth method. Please select one of the accounts below to continue.</p>
       <Select
-        name="oauthNickname"
+        name="name"
         value={formData.name.value}
         onChange={handler}
         fullWidth={true}
         error={formData.name.error.length > 0}
         required={true}
-        label="Username"
-        placeholder="Select a username"
         variant="outlined"
       >
         {possibleSignups.map((name, i) => <MenuItem value={name} key={i}>{name}</MenuItem> )}

@@ -16,7 +16,7 @@ export default function SignUpPage() {
   const {force_signup, callback} = reqParams;
 
   if (force_signup === 'true') {
-    storage.set('opr-force-signup', true);
+    storage.setNonStrict('opr-force-signup', true);
   } else {
     storage.remove('opr-force-signup');
   }

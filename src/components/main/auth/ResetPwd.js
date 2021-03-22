@@ -120,6 +120,7 @@ export default () => {
 
       <div className="form-item">
         <TextField
+          margin="normal"
           name="email"
           required={true}
           label="E-mail"
@@ -133,7 +134,7 @@ export default () => {
         />
       </div>
 
-      <Button variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Send</Button>
+      <Button style={{marginTop: "10px"}} variant="outlined" type="submit" color="primary" disabled={isReady !== true}>Send</Button>
     </form>
   </div>;
 };

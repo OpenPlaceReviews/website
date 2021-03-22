@@ -6,13 +6,7 @@ class ReviewDuplicatePlacesTask extends Task {
         super('POSSIBLE_MERGE', 'Review duplicate places', false, 0);
     }
 
-    fetchData({ date }) {
-        let startDate = new Date();
-        let endDate = new Date();
-        if (date) {
-            startDate = new Date(date.getFullYear(), date.getMonth(), 1);
-            endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        }
+    fetchData({ startDate, endDate }) {
         return fetchHistoryData({ requestFilter: this.id, startDate, endDate });
     }
 }

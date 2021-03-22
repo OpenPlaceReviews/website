@@ -124,35 +124,22 @@ export default function SignUpForm({onSuccess}) {
         },
       };
 
-      let result;
       try {
-        result = await auth.signUp(params, reqParams);
+        await auth.signUp(params, reqParams);
+        onSuccess({ name: formData.name.value });
       } catch (error) {
+        let errorMessage = 'Wrong server answer';
         if (error.response) {
           const {
             data: { message },
           } = error.response;
-
-          setState({
-            submitted: false,
-            alert: message,
-          });
-          return;
+          errorMessage = message;
         }
-
-        setError(error);
-        return;
+        setState({
+          submitted: false,
+          alert: errorMessage,
+        });
       }
-
-      if (!result.data || result.data.create) {
-        const error = new Error('Wrong server answer. No objects created.');
-        setError(error);
-        return;
-      }
-
-      onSuccess({
-        name: formData.name.value,
-      });
     };
 
     if (submitted) {
