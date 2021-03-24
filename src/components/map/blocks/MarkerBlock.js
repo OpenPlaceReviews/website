@@ -79,6 +79,8 @@ const useStyles = makeStyles({
     switch: {
         position: "relative",
         display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
         alignItems: "center",
         padding: "10px",
         fontSize: "14px",
