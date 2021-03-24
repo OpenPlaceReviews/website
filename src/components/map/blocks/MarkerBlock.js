@@ -16,8 +16,6 @@ import {Box, Button, IconButton, Link, Switch} from "@material-ui/core";
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
 import Utils from "../../util/Utils";
-import CategorySelector from "./CategorySelector";
-import {ScannerOutlined} from "@material-ui/icons";
 
 const useStyles = makeStyles({
     container: {
