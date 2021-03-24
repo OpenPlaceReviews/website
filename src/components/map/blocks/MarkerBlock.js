@@ -12,11 +12,10 @@ import ReviewImagesBlock from "./ReviewImagesBlock";
 
 import AuthContext from "../../main/auth/providers/AuthContext";
 import { makeStyles } from "@material-ui/styles";
-import {Box, Button, IconButton, Link} from "@material-ui/core";
+import {Box, Button, IconButton, Link, Switch} from "@material-ui/core";
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
 import Utils from "../../util/Utils";
-import CategorySelector from "./CategorySelector";
 
 const useStyles = makeStyles({
     container: {
@@ -62,6 +61,32 @@ const useStyles = makeStyles({
         height: "35px",
         marginBottom: "10px"
     },
+    switchBase: {
+        color: "#2D69E0",
+        '&$checked': {
+            color: "#2D69E0",
+        },
+        '&$checked + $track': {
+            backgroundColor: "#2D69E0",
+        },
+    },
+    track: {},
+    checked: {},
+    position: {
+        position: "absolute",
+        left:"80%"
+    },
+    switch: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "10px",
+        fontSize: "14px",
+        color:"#212121",
+        background:"#F5F5F5",
+        borderRadius:"6px"
+    },
 });
 
 const findObject = (obj = {}, key) => {
@@ -92,6 +117,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
     const [markerPlace, setMarkerPlace] = useState(null);
     const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
     const classes = useStyles();
+    const [inactiveLinksVisible, setInactiveLinksVisible] = useState(false);
 
     const [place] = places;
     const { authData } = useContext(AuthContext);
@@ -273,6 +299,25 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         }
     }
 
+    const toggleInactiveLinksVisibility = () => {
+        setInactiveLinksVisible((prev) => !prev);
+    };
+
+    function getInactiveLinksCount() {
+        let inactiveLinksCount = 0;
+        markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => {
+            if (source.length > 0 && source[0].deleted) {
+                inactiveLinksCount++;
+            }
+        });
+        similarMarkerPlace && similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => {
+            if (source.length > 0 && source[0].deleted) {
+                inactiveLinksCount++;
+            }
+        });
+        return inactiveLinksCount;
+    }
+
     return <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
@@ -286,9 +331,22 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
             </Box>
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
-                <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value></p>
+                <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
+                </p>
+                <div className={classes.switch}>
+                    <span>Show inactive links ({getInactiveLinksCount()})</span>
+                    <Switch
+                        className={classes.position}
+                        classes={{
+                            switchBase: classes.switchBase,
+                            track: classes.track,
+                            checked: classes.checked
+                        }}
+                        value={inactiveLinksVisible} onClick={toggleInactiveLinksVisibility}/>
+                </div>
             </div>
-            {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 ? <AttributesBar sources={source} sourceType={type} key={index} /> : '')}
+            {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
+                <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
             {imagesSidebar}
 
             {similarMarkerPlace && <>
@@ -304,7 +362,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                     <p>Location: <Value>{similarMarkerPlace.latLon && similarMarkerPlace.latLon[0].toFixed(5)}, {similarMarkerPlace.latLon && similarMarkerPlace.latLon[1].toFixed(5)}</Value>
                     </p>
                 </div>
-                {similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 ? <AttributesBar sources={source} sourceType={type} key={index} /> : '')}
+                {similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ? <AttributesBar sources={source} sourceType={type} key={index} /> : '')}
                 {similarImagesSidebar}
                 <Button
                   type="submit"
