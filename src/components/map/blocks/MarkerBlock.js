@@ -73,14 +73,19 @@ const useStyles = makeStyles({
     track: {},
     checked: {},
     position: {
-        position: "relative",
-        left:"55%"
+        position: "absolute",
+        left:"80%"
     },
     switch: {
-        color:"#697281",
-        background:"#f0f0f0",
-        paddingLeft:"5px",
-        borderRadius:"5px"
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "10px",
+        fontSize: "14px",
+        color:"#212121",
+        background:"#F5F5F5",
+        borderRadius:"6px"
     },
 });
 
@@ -294,11 +299,11 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         }
     }
 
-    const toggleChecked = () => {
+    const toggleInactiveLinksVisibility = () => {
         setInactiveLinksVisible((prev) => !prev);
     };
 
-    function inactiveLinksCounting() {
+    function getInactiveLinksCount() {
         let inactiveLinksCount = 0;
         markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => {
             if (source.length > 0 && source[0].deleted) {
@@ -329,7 +334,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                 <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
                 </p>
                 <div className={classes.switch}>
-                    <span>Show inactive links ({inactiveLinksCounting()})</span>
+                    <span>Show inactive links ({getInactiveLinksCount()})</span>
                     <Switch
                         className={classes.position}
                         classes={{
@@ -337,7 +342,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                             track: classes.track,
                             checked: classes.checked
                         }}
-                        value={inactiveLinksVisible} onClick={toggleChecked}/>
+                        value={inactiveLinksVisible} onClick={toggleInactiveLinksVisibility}/>
                 </div>
             </div>
             {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
