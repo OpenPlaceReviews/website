@@ -74,16 +74,15 @@ const useStyles = makeStyles({
     checked: {},
     position: {
         position: "absolute",
-        left:"80%"
+        left:"85%"
     },
     switch: {
+        position: "relative",
         display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
         padding: "10px",
         fontSize: "14px",
-        color:"#212121",
+        color:"#697281",
         background:"#F5F5F5",
         borderRadius:"6px"
     },
