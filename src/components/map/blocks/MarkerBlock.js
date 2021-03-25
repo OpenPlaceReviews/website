@@ -292,6 +292,14 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         };
     };
 
+    function getTitle(object) {
+        if (Array.isArray(object.title)) {
+            return object.title.join(", ")
+        } else {
+            return object.title
+        }
+    }
+
     function onMerge() {
         if (isPlaceDeleted(place)) {
             setPlaces([place, similarPlace]);
@@ -323,7 +331,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         <div className={classes.sidebar}>
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                 <div>
-                    <p className={classes.header}>{markerPlace && markerPlace.title}</p>
+                    <p className={classes.header}>{markerPlace && getTitle(markerPlace)}</p>
                     <p className={classes.subheader}>{markerPlace && markerPlace.subtitle}</p>
                 </div>
                 <IconButton onClick={() => setMarker(null)}>
@@ -354,7 +362,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                 <div className={classes.attributes}><p>Similar object</p></div>
                 <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                     <div>
-                        <p className={classes.header}>{similarMarkerPlace.title}</p>
+                        <p className={classes.header}>{getTitle(similarMarkerPlace)}</p>
                         <p className={classes.subheader}>{similarMarkerPlace.subtitle}</p>
                     </div>
                 </Box>
