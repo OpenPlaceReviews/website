@@ -22,6 +22,9 @@ const useStyles = makeStyles({
         },
         "& .MuiSvgIcon-root": {
             color: "#2D69E0",
+        },
+        "& .MuiAccordion-root.Mui-expanded:before": {
+            opacity: "1 !important",
         }
     },
     details: {

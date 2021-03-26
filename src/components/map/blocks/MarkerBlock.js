@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect, useRef} from 'react';
 
 import useExtractObject from "../hooks/useExtractObject";
 import useDiff from "../hooks/useDiff";
@@ -7,6 +7,7 @@ import { getObjectsById } from "../../../api/data";
 
 import BlockExpandable from "./BlockExpandable";
 import AttributesBar from "./AttributesBar";
+import Actions from "./Actions";
 import MapSidebar from "./sidebar/MapSidebar";
 import ReviewImagesBlock from "./ReviewImagesBlock";
 
@@ -119,6 +120,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
     const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
     const classes = useStyles();
     const [inactiveLinksVisible, setInactiveLinksVisible] = useState(false);
+    const [tripAdv, setTripAdv] = useState(false);
 
     const [place] = places;
     const { authData } = useContext(AuthContext);
@@ -247,7 +249,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         if (sourceName) {
             return sourceName;
         } else {
-            return place.id;
+            return place.id.join(", ");
         }
     };
 
@@ -291,15 +293,12 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
             sources: source,
         };
     };
-
-    function getTitle(object) {
-        if (Array.isArray(object.title)) {
-            return object.title.join(", ")
-        } else {
-            return object.title
+    function isTripAdvisor(type){
+        if (type === 'tripadvisor'){
+            setTripAdv(true);
         }
+        return tripAdv;
     }
-
     function onMerge() {
         if (isPlaceDeleted(place)) {
             setPlaces([place, similarPlace]);
@@ -311,7 +310,6 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
     const toggleInactiveLinksVisibility = () => {
         setInactiveLinksVisible((prev) => !prev);
     };
-
     function getInactiveLinksCount() {
         let inactiveLinksCount = 0;
         markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => {
@@ -327,11 +325,16 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         return inactiveLinksCount;
     }
 
+    const titleRef = useRef()
+    function handleBackClick(){
+        titleRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+
     return <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                 <div>
-                    <p className={classes.header}>{markerPlace && getTitle(markerPlace)}</p>
+                    <p className={classes.header}>{markerPlace && markerPlace.title}</p>
                     <p className={classes.subheader}>{markerPlace && markerPlace.subtitle}</p>
                 </div>
                 <IconButton onClick={() => setMarker(null)}>
@@ -355,14 +358,24 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                 </div>
             </div>
             {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
-                <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
-            {imagesSidebar}
+                <div>
+                    {isTripAdvisor(type)}
+                    <Actions trip={tripAdv}
+                             duplicate={similarMarkerPlace && similarMarkerPlace.title}
+                             images={markerPlace.images && markerPlace.images.review}
+                             onClick={() => handleBackClick()}
+                    />
+                    <AttributesBar sources={source} sourceType={type} key={index}/>
+                    <div ref={titleRef}>
+                        {imagesSidebar}
+                    </div>
+                </div> : '')}
 
             {similarMarkerPlace && <>
                 <div className={classes.attributes}><p>Similar object</p></div>
                 <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                     <div>
-                        <p className={classes.header}>{getTitle(similarMarkerPlace)}</p>
+                        <p className={classes.header}>{similarMarkerPlace && similarMarkerPlace.title}</p>
                         <p className={classes.subheader}>{similarMarkerPlace.subtitle}</p>
                     </div>
                 </Box>
