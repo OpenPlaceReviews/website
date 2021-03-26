@@ -325,10 +325,14 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         return inactiveLinksCount;
     }
 
-    const titleRef = useRef()
-    function handleBackClick(){
-        titleRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
+    const imagesSidebarRef = useRef(null);
+    const handleActionClick = (action) => {
+        if (action === "reviewImages") {
+            if (imagesSidebarRef) {
+                imagesSidebarRef.current.scrollIntoView();
+            }
+        }
+    };
 
     return <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
@@ -363,10 +367,10 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                     <Actions trip={tripAdv}
                              duplicate={similarMarkerPlace && similarMarkerPlace.title}
                              images={markerPlace.images && markerPlace.images.review}
-                             onClick={() => handleBackClick()}
+                             onActionClick={handleActionClick}
                     />
                     <AttributesBar sources={source} sourceType={type} key={index}/>
-                    <div ref={titleRef}>
+                    <div ref={imagesSidebarRef}>
                         {imagesSidebar}
                     </div>
                 </div> : '')}

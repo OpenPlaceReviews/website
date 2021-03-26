@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     }
 })
 
-export default function Actions({ trip, duplicate, images, onClick}) {
+export default function Actions({ trip, duplicate, images, onActionClick}) {
 
     const classes = useStyles();
     const [openTripAdvisorDialog, setOpenTripAdvisorDialog] = useState(false);
@@ -108,7 +108,7 @@ export default function Actions({ trip, duplicate, images, onClick}) {
     function checkReviewImages() {
         if (images) {
             return (
-                <ListItem button onClick={onClick} className={classes.list}>
+                <ListItem button onClick={() => onActionClick("reviewImages")} className={classes.list}>
                     <ListItemIcon>
                         <img src={openStreetMapIcon} alt="openStreetMapIcon" className={classes.icon}/>
                     </ListItemIcon>
