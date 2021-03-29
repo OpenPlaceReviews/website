@@ -120,7 +120,6 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
     const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
     const classes = useStyles();
     const [inactiveLinksVisible, setInactiveLinksVisible] = useState(false);
-    const [tripAdv, setTripAdv] = useState(false);
 
     const [place] = places;
     const { authData } = useContext(AuthContext);
@@ -174,7 +173,6 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
             {images.review && images.review.length > 0 ? <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
                 <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable} initialCategory="review" categories={categories} />
             </BlockExpandable> : ''}
-
             {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ? <BlockExpandable key={index} header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
                 <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable} initialCategory={category} categories={categories} />
             </BlockExpandable> : '')}
@@ -359,18 +357,16 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                      similarMarkerPlace={similarMarkerPlace}
                      oprId={oprId}
                      similarOprId={similarOprId}
-                     images={markerPlace && markerPlace.images ? markerPlace.images.review : false}
+                     images={markerPlace && markerPlace.images && markerPlace.images.review.length > 0? markerPlace.images.review : false}
                      onActionClick={handleActionClick}
                      onMerge={onMerge}
+                     categories={categories}
             />
             {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
-                <div>
-                    <AttributesBar sources={source} sourceType={type} key={index}/>
-                </div> : '')}
+                <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
             <div ref={imagesSidebarRef}>
                 {imagesSidebar}
             </div>
-
 
             {similarMarkerPlace && <>
                 <div className={classes.attributes}><p>Similar object</p></div>

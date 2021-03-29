@@ -21,7 +21,6 @@ import {
     Button,
     GridList,
     CardContent,
-    Typography,
     GridListTile,
     Link
 } from "@material-ui/core";
@@ -60,9 +59,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "-5%"
     },
     secondary: {
-        "& .MuiTypography-displayBlock": {
-            marginTop: "-5%"
-        },
+
         borderBottom: "1px solid #ececec"
     },
     root: {
@@ -91,7 +88,8 @@ export default function Actions({
                                     similarOprId,
                                     images,
                                     onActionClick,
-                                    onMerge
+                                    onMerge,
+                                    categories
                                 }) {
 
     const classes = useStyles();
@@ -106,14 +104,14 @@ export default function Actions({
     let osmIdMarkerPlace;
     let idTripAdLinkMarkerPlace;
     let tripAdIdMarkerPlace;
+    let tripMarkerPlace;
 
     let idOsmLinkSimilarMarkerPlace;
     let deletedOsmSimilarMarkerPlace;
     let osmIdSimilarMarkerPlace;
     let idTripAdLinkSimilarMarkerPlace;
     let tripAdIdSimilarMarkerPlace;
-
-    let trip;
+    let tripSimilarMarkerPlace;
 
     {
         markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([sourceType, source], index) => source.length > 0 ?
@@ -159,6 +157,7 @@ export default function Actions({
 
         let idTripAdLink;
         let idTripAdTxt;
+        let trip;
 
         if (sourceType === 'osm') {
             idOsmLink = 'https://www.openstreetmap.org/' + type + '/' + id;
@@ -171,19 +170,21 @@ export default function Actions({
         }
 
         if (place === markerPlace) {
-            idOsmLinkMarkerPlace = idOsmLink;
+            {idOsmLink ? idOsmLinkMarkerPlace = idOsmLink : idOsmLinkMarkerPlace}
             deletedOsmMarkerPlace = deletedOsm;
-            osmIdMarkerPlace = osmId;
-            idTripAdLinkMarkerPlace = idTripAdLink;
-            tripAdIdMarkerPlace = idTripAdTxt;
+            {osmId ? osmIdMarkerPlace = osmId : osmIdMarkerPlace}
+            {idTripAdLink ? idTripAdLinkMarkerPlace = idTripAdLink : idTripAdLinkMarkerPlace}
+            {idTripAdTxt ?  tripAdIdMarkerPlace = idTripAdTxt : tripAdIdMarkerPlace}
+            tripMarkerPlace = trip;
         }
 
         if (place === similarMarkerPlace) {
-            idOsmLinkSimilarMarkerPlace = idOsmLink;
+            {idOsmLink ? idOsmLinkSimilarMarkerPlace = idOsmLink : idOsmLinkSimilarMarkerPlace}
             deletedOsmSimilarMarkerPlace = deletedOsm;
-            osmIdSimilarMarkerPlace = osmId;
-            idTripAdLinkSimilarMarkerPlace = idTripAdLink;
-            tripAdIdSimilarMarkerPlace = idTripAdTxt;
+            {osmId ? osmIdSimilarMarkerPlace = osmId : osmIdSimilarMarkerPlace}
+            {idTripAdLink ? idTripAdLinkSimilarMarkerPlace = idTripAdLink : idTripAdLinkSimilarMarkerPlace}
+            {idTripAdTxt ?  tripAdIdSimilarMarkerPlace = idTripAdTxt : tripAdIdSimilarMarkerPlace}
+            tripSimilarMarkerPlace = trip;
         }
     }
 
@@ -220,59 +221,56 @@ export default function Actions({
             deleted = deletedOsmSimilarMarkerPlace;
         }
 
-        if (deleted) {
-            return <div>
-                <p> Deleted: {idTxt && idLink ? <Link href={`${idLink}`}>{idTxt}</Link> :
-                    <Value color={"#2D69E0"}>{idTxt}</Value>} {showIconAvailability(false)}</p>
-            </div>
-        } else
-            return <div>
-                <p>id: {idTxt && idLink ? <Link href={`${idLink}`}>{idTxt}</Link> :
-                    <Value color={"#2D69E0"}>{idTxt}</Value>} {showIconAvailability(true)}</p>
-            </div>
+            if (deleted) {
+                return <span> Deleted: {idTxt && idLink ? <Link href={`${idLink}`}>{idTxt}</Link> :
+                        <Value color={"#2D69E0"}>{idTxt}</Value>} {showIconAvailability(false)}</span>
+            } else {
+                return <span>id: {idTxt && idLink ? <Link href={`${idLink}`}>{idTxt}</Link> :
+                        <Value color={"#2D69E0"}>{idTxt}</Value>} {showIconAvailability(true)}</span>
+            }
+
     }
 
     function checkPhoto(place) {
-        if (place.images && place.images.length > 0) {
-            return <div>
-                <p>{place.images.length} {showIconAvailability(true)}</p>
-            </div>
+        let countPhotos = 0;
+        if (place.images) {
+            {Object.keys(categories).map((category, index) => place.images[category] && place.images[category].length > 0 ? countPhotos += place.images[category].length: countPhotos)}
+            return <span>{place.images.length} {showIconAvailability(true)}</span>
         } else
-            return <div>
-                <p>0 {showIconAvailability(false)}</p>
-            </div>
+            return <span>0 {showIconAvailability(false)}</span>
     }
 
     function checkTripAd(place) {
 
         let idLink;
         let idTxt;
+        let trip;
 
         if (place === markerPlace) {
             idLink = idTripAdLinkMarkerPlace;
             idTxt = tripAdIdMarkerPlace;
+            trip = tripMarkerPlace;
         }
         if (place === similarMarkerPlace) {
             idLink = idTripAdLinkSimilarMarkerPlace;
             idTxt = tripAdIdSimilarMarkerPlace;
+            trip = tripSimilarMarkerPlace;
         }
 
         if (trip) {
             return <div>
-                <p>{id && idLink ? <Link href={`${idLink}`}>{idTxt}</Link> :
-                    <Value color={"#2D69E0"}>{idTxt}</Value>} {showIconAvailability(true)}</p>
+                <span>{idTxt && idLink ? <Link href={`${idLink}`}>{idTxt}</Link> :
+                    <Value color={"#2D69E0"}>{idTxt}</Value>} {showIconAvailability(true)}</span>
             </div>
         } else
-            return <div>
-                <p>link not added {showIconAvailability(false)}</p>
-            </div>
+            return <span>link not added {showIconAvailability(false)}</span>
     }
 
     function saveTripAdvisorLink() {
     }
 
     function checkTripAdvisor() {
-        if (!trip) {
+        if (!tripMarkerPlace) {
             return (
                 <div><ListItem button onClick={handleClickOpenTripAdvisorDialog} className={classes.list}>
                     <ListItemIcon>
@@ -329,7 +327,7 @@ export default function Actions({
                     <ListItemText className={classes.link} primary="Possible duplicate:"
                                   secondary={similarMarkerPlace.title}/>
                 </ListItem>
-                    <Dialog maxWidth={800} open={openMergeDialog} onClose={handleClickCloseMergeDialog}
+                    <Dialog maxWidth="xl" open={openMergeDialog} onClose={handleClickCloseMergeDialog}
                             aria-labelledby="form-dialog-title">
                         <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
                         <DialogContent>
@@ -337,7 +335,6 @@ export default function Actions({
                                 <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
                                     <GridListTile style={{height: "auto"}} className={classes.card}>
                                         <CardContent>
-                                            <Typography>
                                                 <p style={{textAlign: "center", fontSize: "16px"}}
                                                    className={classes.header}>{markerPlace && markerPlace.title}</p>
                                                 <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
@@ -345,7 +342,6 @@ export default function Actions({
                                                 <p className={classes.mergeLatLon}>
                                                     <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
                                                 </p>
-                                            </Typography>
                                             <List>
                                                 <ListItem>
                                                     <ListItemText className={classes.secondary} primary="OpenStreetMap"
@@ -364,7 +360,6 @@ export default function Actions({
                                     </GridListTile>
                                     <GridListTile style={{height: "auto"}} className={classes.card}>
                                         <CardContent>
-                                            <Typography>
                                                 <p style={{textAlign: "center", fontSize: "16px"}}
                                                    className={classes.header}>{similarMarkerPlace && similarMarkerPlace.title}</p>
                                                 <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
@@ -374,7 +369,6 @@ export default function Actions({
                                                 <p className={classes.mergeLatLon}>
                                                     <Value>{similarMarkerPlace.latLon && similarMarkerPlace.latLon[0].toFixed(5)}, {similarMarkerPlace.latLon && similarMarkerPlace.latLon[1].toFixed(5)}</Value>
                                                 </p>
-                                            </Typography>
                                             <List>
                                                 <ListItem>
                                                     <ListItemText className={classes.secondary} primary="OpenStreetMap"
