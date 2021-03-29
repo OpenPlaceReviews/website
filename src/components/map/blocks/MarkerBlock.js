@@ -293,12 +293,6 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
             sources: source,
         };
     };
-    function isTripAdvisor(type){
-        if (type === 'tripadvisor'){
-            setTripAdv(true);
-        }
-        return tripAdv;
-    }
     function onMerge() {
         if (isPlaceDeleted(place)) {
             setPlaces([place, similarPlace]);
@@ -361,19 +355,22 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                         value={inactiveLinksVisible} onClick={toggleInactiveLinksVisibility}/>
                 </div>
             </div>
+            <Actions markerPlace={markerPlace}
+                     similarMarkerPlace={similarMarkerPlace}
+                     oprId={oprId}
+                     similarOprId={similarOprId}
+                     images={markerPlace && markerPlace.images ? markerPlace.images.review : false}
+                     onActionClick={handleActionClick}
+                     onMerge={onMerge}
+            />
             {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
                 <div>
-                    {isTripAdvisor(type)}
-                    <Actions trip={tripAdv}
-                             duplicate={similarMarkerPlace && similarMarkerPlace.title}
-                             images={markerPlace.images && markerPlace.images.review}
-                             onActionClick={handleActionClick}
-                    />
                     <AttributesBar sources={source} sourceType={type} key={index}/>
-                    <div ref={imagesSidebarRef}>
-                        {imagesSidebar}
-                    </div>
                 </div> : '')}
+            <div ref={imagesSidebarRef}>
+                {imagesSidebar}
+            </div>
+
 
             {similarMarkerPlace && <>
                 <div className={classes.attributes}><p>Similar object</p></div>
