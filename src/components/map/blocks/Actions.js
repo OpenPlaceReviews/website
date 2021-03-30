@@ -235,9 +235,9 @@ export default function Actions({
         let countPhotos = 0;
         if (place.images) {
             {Object.keys(categories).map((category, index) => place.images[category] && place.images[category].length > 0 ? countPhotos += place.images[category].length: countPhotos)}
-            return <span>{place.images.length} {showIconAvailability(true)}</span>
+            return <span>{countPhotos} {showIconAvailability(true)}</span>
         } else
-            return <span>0 {showIconAvailability(false)}</span>
+            return <span>{countPhotos} {showIconAvailability(false)}</span>
     }
 
     function checkTripAd(place) {

@@ -357,7 +357,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                      similarMarkerPlace={similarMarkerPlace}
                      oprId={oprId}
                      similarOprId={similarOprId}
-                     images={markerPlace && markerPlace.images && markerPlace.images.review.length > 0? markerPlace.images.review : false}
+                     images={markerPlace && markerPlace.images? markerPlace.images.review : false}
                      onActionClick={handleActionClick}
                      onMerge={onMerge}
                      categories={categories}
