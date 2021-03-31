@@ -301,7 +301,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                 <div>
                     <p className={classes.header}>{markerPlace && markerPlace.title}</p>
-                    <p className={classes.subheader}>{markerPlace && markerPlace.subtitle}</p>
+                    <p className={classes.subheader}>{markerPlace && markerPlace.subtitle.replace(/_/g, " ")}</p>
                 </div>
                 <IconButton onClick={() => setMarker(null)}>
                     <CancelRoundedIcon className={classes.closeIcon} />
@@ -344,7 +344,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                 <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                     <div>
                         <p className={classes.header}>{similarMarkerPlace.title}</p>
-                        <p className={classes.subheader}>{similarMarkerPlace.subtitle}</p>
+                        <p className={classes.subheader}>{similarMarkerPlace.subtitle.replace(/_/g, " ")}</p>
                     </div>
                 </Box>
                 <div className={classes.attributes}>

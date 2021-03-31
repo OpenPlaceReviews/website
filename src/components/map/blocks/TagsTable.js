@@ -14,6 +14,10 @@ const useStyles = makeStyles({
         },
         "& dt:first-child": { borderTop: "none" }
     },
+    value: {
+        wordBreak:"break-all"
+    }
+
 });
 
 export default function TagsTable({tags}) {
@@ -27,10 +31,18 @@ export default function TagsTable({tags}) {
 
     const classes = useStyles();
 
+    function fixTagValueLength(tag) {
+        if (tag.name === "source" && tag.value.length > 34) {
+            return <dd className={classes.value}>{tag.value}</dd>
+        } else {
+            return <dd>{tag.value}</dd>
+        }
+    }
+
     return <dl className={classes.tags}>
         {popupTags.map((tag, i) => <React.Fragment key={i}>
             <dt>{tag.name}</dt>
-            <dd>{tag.value}</dd>
+            {fixTagValueLength(tag)}
         </React.Fragment>)}
     </dl>
 }
