@@ -73,8 +73,8 @@ export default function AttributesBar({ sourceType, sources, open }) {
     return <BlockExpandable header={top} open={open}>
         {version && <p>Version #{version} <SpecChar code={'\u2014'}/> Changeset #<Link href={`${changesetLink}`}>{changeset}</Link></p>}
         {(lat && lon) ? <p>Location: <Value>{lat.toFixed(5)}, {lon.toFixed(5)}</Value></p> : null}
-        {timestamp && <p>Timestamp: {timestamp}</p>}
-        {deleted && <p>Deleted timestamp: {deleted}</p>}
+        {timestamp && <p>Timestamp: {timestamp.replace(/[a-zа-яё]/gi, ' ').trim()}</p>}
+        {deleted && <p>Deleted timestamp: {deleted.replace(/[a-zа-яё]/gi, ' ').split('.')[0]}</p>}
         {tags && <TagsTable tags={tags} />}
     </BlockExpandable>
 }
