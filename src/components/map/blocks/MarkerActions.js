@@ -163,7 +163,7 @@ export default function MarkerActions({
         );
     }
 
-    return <BlockExpandable header='Actions to take' open={false}>
+    return <BlockExpandable header='Actions to take' open={true}>
         <div className={classes.list}>
             <List component="nav" aria-label="main mailbox folders">
                 {getTripAdvisorDesc()}

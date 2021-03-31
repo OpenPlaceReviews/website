@@ -22,9 +22,6 @@ const useStyles = makeStyles({
         },
         "& .MuiSvgIcon-root": {
             color: "#2D69E0",
-        },
-        "& .MuiAccordion-root.Mui-expanded:before": {
-            opacity: "1 !important",
         }
     },
     details: {
@@ -32,7 +29,7 @@ const useStyles = makeStyles({
         display: "block",
         padding: 0,
         fontSize: "14px",
-    },
+    }
 });
 
 export default function BlockExpandable({header, children, open = false, marginTop}) {

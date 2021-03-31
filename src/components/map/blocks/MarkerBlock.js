@@ -340,34 +340,6 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                              reviewBlock={true}
                              setPlaces={setPlaces}/>
             </div>
-
-            {similarMarkerPlace && <>
-                <div className={classes.attributes}><p>Similar object</p></div>
-                <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
-                    <div>
-                        <p className={classes.header}>{similarMarkerPlace.title}</p>
-                        <p className={classes.subheader}>{similarMarkerPlace.subtitle.replace(/_/g, " ")}</p>
-                    </div>
-                </Box>
-                <div className={classes.attributes}>
-                    <p>ID: <Link href={`/data/objects/opr_place?key=${similarOprId}`}>{similarOprId}</Link></p>
-                    <p>Location: <Value>{similarMarkerPlace.latLon && similarMarkerPlace.latLon[0].toFixed(5)}, {similarMarkerPlace.latLon && similarMarkerPlace.latLon[1].toFixed(5)}</Value>
-                    </p>
-                </div>
-                {similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
-                    <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
-                <ImagesBlock similarPlace={similarPlace}
-                             categories={categories}
-                             reviewBlock={true}/>
-                <Button
-                  type="submit"
-                  className={classes.button}
-                  color="primary"
-                  variant="contained"
-                  disabled={similarPlace == null}
-                  onClick={onMerge}
-                >Merge</Button>
-            </>}
         </div>
     </MapSidebar>;
 };
