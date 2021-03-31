@@ -18,12 +18,12 @@ const useStyles = makeStyles({
         minWidth: 340,
         "& .MuiGridListTile-tile": {
             backgroundColor: "#F5F5F5",
-        },
+        }
     },
     header: {
         fontSize: "22px",
         fontWeight: 600,
-        lineHeight: "22px",
+        lineHeight: "22px"
     },
     mergeLatLon: {
         textAlign: "center",
@@ -47,6 +47,11 @@ const useStyles = makeStyles({
         width: "24px",
         height: "24px",
         margin: "5px 12px 0 0",
+    },
+    width: {
+        "& .MuiDialog-paperWidthSm": {
+            maxWidth: "740px !important",
+        }
     }
 })
 
@@ -62,7 +67,7 @@ export default function DialogMergeDuplicate({
 
     const classes = useStyles();
 
-    return <Dialog maxWidth="xl" open={mergeDialog} onClose={closeMergeDialog}
+    return <Dialog className={classes.width} open={mergeDialog} onClose={closeMergeDialog}
                    aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
         <DialogContent>

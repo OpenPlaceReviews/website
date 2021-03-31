@@ -32,7 +32,7 @@ export default function TagsTable({tags}) {
     const classes = useStyles();
 
     function fixTagValueLength(tag) {
-        if (tag.name === "source" && tag.value.length > 34) {
+        if (tag.name === "source") {
             return <dd className={classes.value}>{tag.value}</dd>
         } else {
             return <dd>{tag.value}</dd>
