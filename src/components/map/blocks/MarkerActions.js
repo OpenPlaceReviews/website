@@ -51,6 +51,8 @@ export default function MarkerActions({
                                           onActionClick,
                                           onMerge,
                                           categories,
+                                          place,
+                                          similarPlace,
                                           setPlaces
                                       }) {
 
@@ -124,6 +126,8 @@ export default function MarkerActions({
                                           closeMergeDialog={closeMergeDialog}
                                           onMerge={onMerge}
                                           categories={categories}
+                                          place={place}
+                                          similarPlace={similarPlace}
                                           setPlaces={setPlaces}/>
                 </div>
             );

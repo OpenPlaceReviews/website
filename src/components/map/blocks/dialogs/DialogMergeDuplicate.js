@@ -62,6 +62,8 @@ export default function DialogMergeDuplicate({
                                                  closeMergeDialog,
                                                  onMerge,
                                                  categories,
+                                                 place,
+                                                 similarPlace,
                                                  setPlaces
                                              }) {
 
@@ -86,7 +88,7 @@ export default function DialogMergeDuplicate({
                             </p>
                             {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 ?
                                 <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
-                            <ImagesBlock markerPlace={markerPlace}
+                            <ImagesBlock place={place}
                                          categories={categories}
                                          setPlaces={setPlaces}/>
 
@@ -105,7 +107,7 @@ export default function DialogMergeDuplicate({
                             </p>
                             {similarMarkerPlace && similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 ?
                                 <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
-                            <ImagesBlock similarMarkerPlace={similarMarkerPlace}
+                            <ImagesBlock similarPlace={similarPlace}
                                          categories={categories}/>
                         </CardContent>
                     </GridListTile>

@@ -328,12 +328,14 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                            onActionClick={handleActionClick}
                            onMerge={onMerge}
                            categories={categories}
+                           place={place}
+                           similarPlace={similarPlace}
                            setPlaces={setPlaces}
             />
             {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
                 <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
             <div ref={imagesSidebarRef}>
-                <ImagesBlock markerPlace={markerPlace}
+                <ImagesBlock place={place}
                              categories={categories}
                              reviewBlock={true}
                              setPlaces={setPlaces}/>
@@ -354,7 +356,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                 </div>
                 {similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
                     <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
-                <ImagesBlock similarMarkerPlace={similarMarkerPlace}
+                <ImagesBlock similarPlace={similarPlace}
                              categories={categories}
                              reviewBlock={true}/>
                 <Button

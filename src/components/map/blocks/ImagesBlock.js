@@ -5,8 +5,8 @@ import Utils from "../../util/Utils";
 import AuthContext from "../../main/auth/providers/AuthContext";
 
 export default function ImagesBlock({
-                                        markerPlace,
-                                        similarMarkerPlace,
+                                        place,
+                                        similarPlace,
                                         categories,
                                         reviewBlock,
                                         setPlaces
@@ -14,14 +14,14 @@ export default function ImagesBlock({
 
     const {authData} = useContext(AuthContext);
     const isLoggedIn = () => !!authData.token;
-    const isEditable = isLoggedIn() && !similarMarkerPlace;
+    const isEditable = isLoggedIn() && !similarPlace;
 
-    if (markerPlace && markerPlace.images && categories) {
-        const {images} = markerPlace;
+    if (place && place.images && categories) {
+        const {images} = place;
         if (reviewBlock) {
             reviewBlock = images.review && images.review.length > 0 ?
                 <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
-                    <ReviewImagesBlock place={markerPlace} onSubmit={setPlaces} isEditable={isEditable}
+                    <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable}
                                        initialCategory="review" categories={categories}/>
                 </BlockExpandable> : ''
         }
@@ -31,15 +31,15 @@ export default function ImagesBlock({
             {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ?
                 <BlockExpandable key={index}
                                  header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
-                    <ReviewImagesBlock place={markerPlace} onSubmit={setPlaces} isEditable={isEditable}
+                    <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable}
                                        initialCategory={category} categories={categories}/>
                 </BlockExpandable> : '')}</React.Fragment>
-    } else if (similarMarkerPlace && similarMarkerPlace.images && categories) {
-        const {images} = similarMarkerPlace;
+    } else if (similarPlace && similarPlace.images && categories) {
+        const {images} = similarPlace;
         if (reviewBlock) {
             reviewBlock = images.review && images.review.length > 0 ?
                 <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
-                    <ReviewImagesBlock place={similarMarkerPlace} isEditable={false} initialCategory="review"
+                    <ReviewImagesBlock place={similarPlace} isEditable={false} initialCategory="review"
                                        categories={categories}/>
                 </BlockExpandable> : ''
         }
@@ -49,7 +49,7 @@ export default function ImagesBlock({
             {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ?
                 <BlockExpandable key={index}
                                  header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
-                    <ReviewImagesBlock place={similarMarkerPlace} isEditable={false} initialCategory={category}
+                    <ReviewImagesBlock place={similarPlace} isEditable={false} initialCategory={category}
                                        categories={categories}/>
                 </BlockExpandable> : '')}
         </React.Fragment>
