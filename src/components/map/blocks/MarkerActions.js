@@ -61,6 +61,7 @@ export default function MarkerActions({
     const [tripAdvisorDialog, setTripAdvisorDialog] = useState(false);
     const [permanentlyClosedDialog, setPermanentlyClosedDialog] = useState(false);
     const [mergeDialog, setMergeDialog] = useState(false);
+    let tripAdvisor;
 
     const openTripAdvisorDialog = () => {
         setTripAdvisorDialog(true);
@@ -89,13 +90,13 @@ export default function MarkerActions({
     function isTripAdvisor() {
         markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => {
             if (type === 'tripadvisor') {
-                return true;
+                tripAdvisor = true;
             }
         });
     }
-
     function getTripAdvisorDesc() {
-        if (!isTripAdvisor()) {
+        isTripAdvisor()
+        if (markerPlace && markerPlace.sources && !tripAdvisor) {
             return (
                 <div><ListItem button onClick={openTripAdvisorDialog} className={classes.list}>
                     <ListItemIcon>

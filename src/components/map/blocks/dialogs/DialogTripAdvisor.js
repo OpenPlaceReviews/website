@@ -35,9 +35,12 @@ export default function DialogTripAdvisor({
     const classes = useStyles();
 
     const [errorText, setErrorText] = useState(null);
+    const [url, setUrl] = useState(null);
 
     function onChange(event) {
-        if (event.target.value.match(TRIP_ADVISOR_URL)) {
+        setUrl(event.target.value)
+
+        if (url.match(TRIP_ADVISOR_URL)) {
             setErrorText('')
         } else {
             setErrorText('Link is not valid or doesn\'t contains Trip Advisor ID.')
