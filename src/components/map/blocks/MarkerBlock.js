@@ -5,18 +5,16 @@ import useDiff from "../hooks/useDiff";
 import useCommitOp from "../hooks/useCommitOp";
 import { getObjectsById } from "../../../api/data";
 
-import BlockExpandable from "./BlockExpandable";
 import AttributesBar from "./AttributesBar";
-import Actions from "./Actions";
+import MarkerActions from "./MarkerActions";
 import MapSidebar from "./sidebar/MapSidebar";
-import ReviewImagesBlock from "./ReviewImagesBlock";
 
 import AuthContext from "../../main/auth/providers/AuthContext";
 import { makeStyles } from "@material-ui/styles";
 import {Box, Button, IconButton, Link, Switch} from "@material-ui/core";
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
-import Utils from "../../util/Utils";
+import ImagesBlock from "./ImagesBlock";
 
 const useStyles = makeStyles({
     container: {
@@ -164,34 +162,6 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
     useExtractObject(marker, version, handleExtractPlace);
     useDiff(places[0], places[1], categories, setOp);
     useCommitOp(op, authData, handleUpdatePlace);
-
-    let imagesSidebar;
-    if (place && place.images && categories) {
-        const { images } = place;
-        const isEditable = isLoggedIn() && !similarPlace;
-        imagesSidebar = <React.Fragment>
-            {images.review && images.review.length > 0 ? <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
-                <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable} initialCategory="review" categories={categories} />
-            </BlockExpandable> : ''}
-            {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ? <BlockExpandable key={index} header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
-                <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable} initialCategory={category} categories={categories} />
-            </BlockExpandable> : '')}
-        </React.Fragment>;
-    }
-
-    let similarImagesSidebar;
-    if (similarPlace && similarPlace.images && categories) {
-        const { images } = similarPlace;
-        similarImagesSidebar = <React.Fragment>
-            {images.review && images.review.length > 0 ? <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
-                <ReviewImagesBlock place={similarPlace} isEditable={false} initialCategory="review" categories={categories} />
-            </BlockExpandable> : ''}
-
-            {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ? <BlockExpandable key={index} header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
-                <ReviewImagesBlock place={similarPlace} isEditable={false} initialCategory={category} categories={categories} />
-            </BlockExpandable> : '')}
-        </React.Fragment>;
-    }
 
     useEffect(() => {
         const requestCategories = async () => {
@@ -353,26 +323,27 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                         value={inactiveLinksVisible} onClick={toggleInactiveLinksVisibility}/>
                 </div>
             </div>
-            <Actions markerPlace={markerPlace}
-                     similarMarkerPlace={similarMarkerPlace}
-                     oprId={oprId}
-                     similarOprId={similarOprId}
-                     images={markerPlace && markerPlace.images? markerPlace.images.review : false}
-                     onActionClick={handleActionClick}
-                     onMerge={onMerge}
-                     categories={categories}
+            <MarkerActions markerPlace={markerPlace}
+                           similarMarkerPlace={similarMarkerPlace}
+                           onActionClick={handleActionClick}
+                           onMerge={onMerge}
+                           categories={categories}
+                           setPlaces={setPlaces}
             />
             {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
-                <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
+                <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
             <div ref={imagesSidebarRef}>
-                {imagesSidebar}
+                <ImagesBlock markerPlace={markerPlace}
+                             categories={categories}
+                             reviewBlock={true}
+                             setPlaces={setPlaces}/>
             </div>
 
             {similarMarkerPlace && <>
                 <div className={classes.attributes}><p>Similar object</p></div>
                 <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                     <div>
-                        <p className={classes.header}>{similarMarkerPlace && similarMarkerPlace.title}</p>
+                        <p className={classes.header}>{similarMarkerPlace.title}</p>
                         <p className={classes.subheader}>{similarMarkerPlace.subtitle}</p>
                     </div>
                 </Box>
@@ -381,8 +352,11 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                     <p>Location: <Value>{similarMarkerPlace.latLon && similarMarkerPlace.latLon[0].toFixed(5)}, {similarMarkerPlace.latLon && similarMarkerPlace.latLon[1].toFixed(5)}</Value>
                     </p>
                 </div>
-                {similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ? <AttributesBar sources={source} sourceType={type} key={index} /> : '')}
-                {similarImagesSidebar}
+                {similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
+                    <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
+                <ImagesBlock similarMarkerPlace={similarMarkerPlace}
+                             categories={categories}
+                             reviewBlock={true}/>
                 <Button
                   type="submit"
                   className={classes.button}

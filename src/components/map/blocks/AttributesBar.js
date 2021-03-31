@@ -15,6 +15,7 @@ const useStyles = makeStyles({
     header: {
         fontWeight: "600",
         fontSize: "18px",
+        marginTop:"5px"
     },
     icon: {
         width: "24px",
@@ -23,11 +24,11 @@ const useStyles = makeStyles({
     },
     subheader: {
         fontWeight: "normal",
-        fontSize: "14px",
+        fontSize: "14px"
     }
 })
 
-export default function AttributesBar({ sourceType, sources }) {
+export default function AttributesBar({ sourceType, sources, open }) {
 
     const { tags, version, id, changeset, timestamp, type, deleted, lat, lon } = sources[sources.length - 1];
 
@@ -69,7 +70,7 @@ export default function AttributesBar({ sourceType, sources }) {
         </div>
     </Box>;
 
-    return <BlockExpandable header={top} open={true}>
+    return <BlockExpandable header={top} open={open}>
         {version && <p>Version #{version} <SpecChar code={'\u2014'}/> Changeset #<Link href={`${changesetLink}`}>{changeset}</Link></p>}
         {(lat && lon) ? <p>Location: <Value>{lat.toFixed(5)}, {lon.toFixed(5)}</Value></p> : null}
         {timestamp && <p>Timestamp: {timestamp}</p>}
