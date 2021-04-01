@@ -296,14 +296,23 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     };
 
+    let subtitle = getSubtitle();
     function getSubtitle() {
         if (markerPlace && markerPlace.subtitle) {
-            let subtitle = "";
-            Object.keys(placeTypes).forEach(type => {
-                (type === markerPlace.subtitle) ? (subtitle = placeTypes[type].split("-")[1]) : (subtitle = markerPlace.subtitle);
-            });
-            return subtitle;
+            let sub;
+            let rawType = placeTypes[markerPlace.subtitle];
+            if (rawType) {
+                sub = rawType.replace('Amenity - ', '');
+            }
+            if (!sub) {
+                sub = markerPlace.subtitle.replaceAll('_', ' ');
+                if (sub.length > 0) {
+                    sub = sub[0].toUpperCase() + sub.substring(1);
+                }
+            }
+            return sub;
         }
+        return null;
     }
 
     return <MapSidebar position="left" className={classes.container}>
@@ -311,7 +320,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                 <div>
                     <p className={classes.header}>{markerPlace && markerPlace.title}</p>
-                    <p className={classes.subheader}>{getSubtitle()}</p>
+                    {subtitle && <p className={classes.subheader}>{subtitle}</p>}
                 </div>
                 <IconButton onClick={() => setMarker(null)}>
                     <CancelRoundedIcon className={classes.closeIcon} />
