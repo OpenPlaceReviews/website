@@ -162,7 +162,7 @@ export default function Map() {
       onMapStateChanged(map.getZoom(), map.getCenter().lat, map.getCenter().lng);
     }} />
 
-    {marker && <MarkerBlock marker={marker} setMarker={setMarker} whenReady={(markerPlace) => {
+    {marker && <MarkerBlock marker={marker} setMarker={setMarker} placeTypes={placeTypes} whenReady={(markerPlace) => {
       if (!hasParams) {
         map.setView(markerPlace.latLon, PLACE_MENU_ZOOM);
       }

@@ -11,7 +11,7 @@ import MapSidebar from "./sidebar/MapSidebar";
 
 import AuthContext from "../../main/auth/providers/AuthContext";
 import { makeStyles } from "@material-ui/styles";
-import {Box, Button, IconButton, Link, Switch} from "@material-ui/core";
+import {Box, IconButton, Link, Switch} from "@material-ui/core";
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
 import ImagesBlock from "./ImagesBlock";
@@ -108,7 +108,7 @@ const findObject = (obj = {}, key) => {
     return result;
 };
 
-export default function MarkerBlock({ marker, setMarker, whenReady }) {
+export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }) {
     const [op, setOp] = useState(null);
     const [places, setPlaces] = useState([]);
     const [similarPlace, setSimilarPlace] = useState(null);
@@ -147,8 +147,8 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
             setMarker(null);
         }
         Promise.resolve()
-          .then(() => setSimilarPlace(isMergeAllowed(object, similarObject) ? similarObject : null))
-          .then(() => setPlaces([object, object]));
+            .then(() => setSimilarPlace(isMergeAllowed(object, similarObject) ? similarObject : null))
+            .then(() => setPlaces([object, object]));
     }
 
     const handleUpdatePlace = () => {
@@ -296,12 +296,22 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         }
     };
 
+    function getSubtitle() {
+        if (markerPlace && markerPlace.subtitle) {
+            let subtitle = "";
+            Object.keys(placeTypes).forEach(type => {
+                (type === markerPlace.subtitle) ? (subtitle = placeTypes[type].split("-")[1]) : (subtitle = markerPlace.subtitle);
+            });
+            return subtitle;
+        }
+    }
+
     return <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                 <div>
                     <p className={classes.header}>{markerPlace && markerPlace.title}</p>
-                    <p className={classes.subheader}>{markerPlace && markerPlace.subtitle.replace(/_/g, " ")}</p>
+                    <p className={classes.subheader}>{getSubtitle()}</p>
                 </div>
                 <IconButton onClick={() => setMarker(null)}>
                     <CancelRoundedIcon className={classes.closeIcon} />

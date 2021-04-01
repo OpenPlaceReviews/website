@@ -58,6 +58,11 @@ export default function AttributesBar({ sourceType, sources, open }) {
         tagsKeys = Object.keys(tags);
     }
 
+    function getTime(time) {
+        let newTime = time.replace("T", ' ');
+        return newTime.length > 19 ? newTime.substring(0, 19) : newTime;
+    }
+
     const top = <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }}>
         {icon && <img src={icon} alt="icon" className={classes.icon} />}
         <div>
@@ -73,8 +78,8 @@ export default function AttributesBar({ sourceType, sources, open }) {
     return <BlockExpandable header={top} open={open}>
         {version && <p>Version #{version} <SpecChar code={'\u2014'}/> Changeset #<Link href={`${changesetLink}`}>{changeset}</Link></p>}
         {(lat && lon) ? <p>Location: <Value>{lat.toFixed(5)}, {lon.toFixed(5)}</Value></p> : null}
-        {timestamp && <p>Timestamp: {timestamp.replace(/[a-zа-яё]/gi, ' ').trim()}</p>}
-        {deleted && <p>Deleted timestamp: {deleted.replace(/[a-zа-яё]/gi, ' ').split('.')[0]}</p>}
+        {timestamp && <p>Timestamp: {getTime(timestamp)}</p>}
+        {deleted && <p>Deleted timestamp: {getTime(deleted)}</p>}
         {tags && <TagsTable tags={tags} />}
     </BlockExpandable>
 }
