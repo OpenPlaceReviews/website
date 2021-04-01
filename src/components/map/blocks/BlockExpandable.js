@@ -29,7 +29,7 @@ const useStyles = makeStyles({
         display: "block",
         padding: 0,
         fontSize: "14px",
-    },
+    }
 });
 
 export default function BlockExpandable({header, children, open = false, marginTop}) {
