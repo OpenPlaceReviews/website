@@ -223,19 +223,34 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
 
     const fetchPlaceType = place => {
         const { placetype, source } = place;
+        let type;
         if (placetype) {
-            return placetype;
-        }
-        let sourcePlacetype = findObject(source, 'placetype');
-        if (sourcePlacetype) {
-            return sourcePlacetype;
+            type = placetype;
         } else {
-            let osmValue = findObject(source, 'osm_value');
-            if (osmValue) {
-                return osmValue;
+            let sourcePlacetype = findObject(source, 'placetype');
+            if (sourcePlacetype) {
+                type = sourcePlacetype;
             } else {
-                return '';
+                let osmValue = findObject(source, 'osm_value');
+                if (osmValue) {
+                    type = osmValue;
+                }
             }
+        }
+        if (type) {
+            let placeTypeStr = placeTypes ? placeTypes[type] : null;
+            if (placeTypeStr) {
+                let arr = placeTypeStr.split('-');
+                type = arr.length > 0 ? arr[arr.length - 1].trim() : placeTypeStr;
+            } else {
+                type = type.replaceAll('_', ' ');
+                if (type.length > 1) {
+                    type = type[0].toUpperCase() + type.substring(1);
+                }
+            }
+            return type;
+        } else {
+            return '';
         }
     };
 
@@ -296,31 +311,12 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     };
 
-    let subtitle = getSubtitle();
-    function getSubtitle() {
-        if (markerPlace && markerPlace.subtitle) {
-            let sub;
-            let rawType = placeTypes[markerPlace.subtitle];
-            if (rawType) {
-                sub = rawType.replace('Amenity - ', '');
-            }
-            if (!sub) {
-                sub = markerPlace.subtitle.replaceAll('_', ' ');
-                if (sub.length > 1) {
-                    sub = sub[0].toUpperCase() + sub.substring(1);
-                }
-            }
-            return sub;
-        }
-        return null;
-    }
-
     return <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
                 <div>
                     <p className={classes.header}>{markerPlace && markerPlace.title}</p>
-                    {subtitle && <p className={classes.subheader}>{subtitle}</p>}
+                    <p className={classes.subheader}>{markerPlace && markerPlace.subtitle}</p>
                 </div>
                 <IconButton onClick={() => setMarker(null)}>
                     <CancelRoundedIcon className={classes.closeIcon} />
