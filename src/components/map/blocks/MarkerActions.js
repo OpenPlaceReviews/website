@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import BlockExpandable from "./BlockExpandable";
 import DialogTripAdvisor from "./dialogs/DialogTripAdvisor";
@@ -10,6 +10,7 @@ import {List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 
 import DialogPermanentlyClosed from "./dialogs/DialogPermanentlyClosed";
 import DialogMergeDuplicate from "./dialogs/DialogMergeDuplicate";
+import Utils from "../../util/Utils";
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -61,7 +62,7 @@ export default function MarkerActions({
     const [tripAdvisorDialog, setTripAdvisorDialog] = useState(false);
     const [permanentlyClosedDialog, setPermanentlyClosedDialog] = useState(false);
     const [mergeDialog, setMergeDialog] = useState(false);
-    let tripAdvisor;
+    const [tripAdvisorLinkAvailable, setTripAdvisorLinkAvailable] = useState(false);
 
     const openTripAdvisorDialog = () => {
         setTripAdvisorDialog(true);
@@ -82,45 +83,52 @@ export default function MarkerActions({
         setMergeDialog(false);
     };
 
+    useEffect(() => {
+        if (markerPlace && markerPlace.sources) {
+            Object.entries(markerPlace.sources).map(([type, _]) => {
+                if (type === 'tripadvisor') {
+                    setTripAdvisorLinkAvailable(true);
+                }
+            });
+        }
+    }, [markerPlace]);
+
     function getDistance() {
-        return Math.round(Math.sqrt(Math.pow(similarMarkerPlace.latLon[0].toFixed(5) - markerPlace.latLon[0].toFixed(5), 2) +
-            Math.pow(similarMarkerPlace.latLon[1].toFixed(5) - markerPlace.latLon[1].toFixed(5), 2)));
+        return Math.round(Utils.getDistance(similarMarkerPlace.latLon[0], similarMarkerPlace.latLon[1],
+            markerPlace.latLon[0], markerPlace.latLon[1]));
     }
 
-    function isTripAdvisor() {
-        markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => {
-            if (type === 'tripadvisor') {
-                tripAdvisor = true;
-            }
-        });
-    }
-    function getTripAdvisorDesc() {
-        isTripAdvisor()
-        if (markerPlace && markerPlace.sources && !tripAdvisor) {
-            return (
-                <div><ListItem button onClick={openTripAdvisorDialog} className={classes.list}>
-                    <ListItemIcon>
-                        <img src={tripAdvisorIcon} alt="tripAdvisorIcon" className={classes.icon}/>
-                    </ListItemIcon>
-                    <ListItemText className={classes.link} primary="Link with Trip Advisor"/>
-                </ListItem>
+    return <BlockExpandable header='Actions to take' open={true}>
+        <div className={classes.list}>
+            <List component="nav" aria-label="main mailbox folders">
+                {markerPlace && !tripAdvisorLinkAvailable && <div>
+                    <ListItem button onClick={openTripAdvisorDialog} className={classes.list}>
+                        <ListItemIcon>
+                            <img src={tripAdvisorIcon} alt="tripAdvisorIcon" className={classes.icon}/>
+                        </ListItemIcon>
+                        <ListItemText className={classes.link} primary="Link with Trip Advisor"/>
+                    </ListItem>
                     <DialogTripAdvisor tripAdvisorDialog={tripAdvisorDialog}
                                        closeTripAdvisorDialog={closeTripAdvisorDialog}/>
-                </div>
-            );
-        }
-    }
+                </div>}
 
-    function getDuplicatesDesc() {
-        if (similarMarkerPlace && similarMarkerPlace.title) {
-            return (
-                <div><ListItem button onClick={openMergeDialog} className={classes.list}>
+                {markerPlace && (markerPlace.images ? markerPlace.images.review : false) && <ListItem
+                    button onClick={() => onActionClick("reviewImages")} className={classes.list}>
                     <ListItemIcon>
-                        <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
+                        <img src={openStreetMapIcon} alt="openStreetMapIcon" className={classes.icon}/>
                     </ListItemIcon>
-                    <ListItemText className={classes.link} primary="Possible duplicate:"
-                                  secondary={similarMarkerPlace.title + ' (' + getDistance() + 'm)'}/>
-                </ListItem>
+                    <ListItemText className={classes.link}
+                                  primary={'Review ' + markerPlace.images.review.length + ' photos'}/>
+                </ListItem>}
+
+                {similarMarkerPlace && <div>
+                    <ListItem button onClick={openMergeDialog} className={classes.list}>
+                        <ListItemIcon>
+                            <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
+                        </ListItemIcon>
+                        <ListItemText className={classes.link} primary="Possible duplicate:"
+                                      secondary={similarMarkerPlace.title + ' (' + getDistance() + 'm)'}/>
+                    </ListItem>
                     <DialogMergeDuplicate markerPlace={markerPlace}
                                           similarMarkerPlace={similarMarkerPlace}
                                           mergeDialog={mergeDialog}
@@ -130,47 +138,18 @@ export default function MarkerActions({
                                           place={place}
                                           similarPlace={similarPlace}
                                           setPlaces={setPlaces}/>
+                </div>}
+
+                <div>
+                    <ListItem button onClick={openPermanentlyClosedDialog}>
+                        <ListItemIcon>
+                            <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
+                        </ListItemIcon>
+                        <ListItemText className={classes.link} primary="Mark place as permanently closed"/>
+                    </ListItem>
+                    <DialogPermanentlyClosed permanentlyClosedDialog={permanentlyClosedDialog}
+                                             closePermanentlyClosedDialog={closePermanentlyClosedDialog}/>
                 </div>
-            );
-        }
-    }
-
-    function getPhotosDesc() {
-        if (markerPlace && markerPlace.images ? markerPlace.images.review : false) {
-            return (
-                <ListItem button onClick={() => onActionClick("reviewImages")} className={classes.list}>
-                    <ListItemIcon>
-                        <img src={openStreetMapIcon} alt="openStreetMapIcon" className={classes.icon}/>
-                    </ListItemIcon>
-                    <ListItemText className={classes.link}
-                                  primary={'Review ' + markerPlace.images.review.length + ' photos'}/>
-                </ListItem>
-            );
-        }
-    }
-
-    function getPermanentlyClosedDesc() {
-        return (
-            <div>
-                <ListItem button onClick={openPermanentlyClosedDialog}>
-                    <ListItemIcon>
-                        <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
-                    </ListItemIcon>
-                    <ListItemText className={classes.link} primary="Mark place as permanently closed"/>
-                </ListItem>
-                <DialogPermanentlyClosed permanentlyClosedDialog={permanentlyClosedDialog}
-                                         closePermanentlyClosedDialog={closePermanentlyClosedDialog}/>
-            </div>
-        );
-    }
-
-    return <BlockExpandable header='Actions to take' open={true}>
-        <div className={classes.list}>
-            <List component="nav" aria-label="main mailbox folders">
-                {getTripAdvisorDesc()}
-                {getPhotosDesc()}
-                {getDuplicatesDesc()}
-                {getPermanentlyClosedDesc()}
             </List>
         </div>
     </BlockExpandable>
