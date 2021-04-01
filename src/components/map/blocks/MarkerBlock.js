@@ -306,7 +306,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
             }
             if (!sub) {
                 sub = markerPlace.subtitle.replaceAll('_', ' ');
-                if (sub.length > 0) {
+                if (sub.length > 1) {
                     sub = sub[0].toUpperCase() + sub.substring(1);
                 }
             }
