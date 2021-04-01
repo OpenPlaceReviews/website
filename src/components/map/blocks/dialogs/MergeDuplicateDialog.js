@@ -89,6 +89,7 @@ export default function MergeDuplicateDialog({
                             {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 ?
                                 <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
                             <ImagesBlock place={place}
+                                         isOriginalPlace={true}
                                          categories={categories}
                                          setPlaces={setPlaces}/>
 
@@ -107,7 +108,8 @@ export default function MergeDuplicateDialog({
                             </p>
                             {similarMarkerPlace && similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 ?
                                 <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
-                            <ImagesBlock similarPlace={similarPlace}
+                            <ImagesBlock place={similarPlace}
+                                         isOriginalPlace={false}
                                          categories={categories}/>
                         </CardContent>
                     </GridListTile>

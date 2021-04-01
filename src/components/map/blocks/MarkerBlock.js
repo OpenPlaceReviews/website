@@ -351,6 +351,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
             <div ref={imagesSidebarRef}>
                 <ImagesBlock place={place}
+                             isOriginalPlace={true}
                              categories={categories}
                              showReviewBlock={true}
                              setPlaces={setPlaces}/>
