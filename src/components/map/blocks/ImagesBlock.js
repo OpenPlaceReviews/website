@@ -16,9 +16,10 @@ export default function ImagesBlock({
     const isLoggedIn = () => !!authData.token;
     const isEditable = isLoggedIn() && !similarPlace;
 
+    let reviewImagesBlock;
+
     if (place && place.images && categories) {
         const {images} = place;
-        let reviewImagesBlock;
         if (showReviewBlock) {
             reviewImagesBlock = images.review && images.review.length > 0 ?
                 <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
@@ -38,7 +39,7 @@ export default function ImagesBlock({
     } else if (similarPlace && similarPlace.images && categories) {
         const {images} = similarPlace;
         if (showReviewBlock) {
-            showReviewBlock = images.review && images.review.length > 0 ?
+            reviewImagesBlock = images.review && images.review.length > 0 ?
                 <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
                     <ReviewImagesBlock place={similarPlace} isEditable={false} initialCategory="review"
                                        categories={categories}/>
@@ -46,7 +47,7 @@ export default function ImagesBlock({
         }
 
         return <React.Fragment>
-            {showReviewBlock}
+            {reviewImagesBlock}
             {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ?
                 <BlockExpandable key={index}
                                  header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
