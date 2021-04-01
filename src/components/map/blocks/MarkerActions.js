@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import BlockExpandable from "./BlockExpandable";
-import TripAdvisorDialog from "./dialogs/TripAdvisorDialog";
+import TripAdvisorLinkDialog from "./dialogs/TripAdvisorLinkDialog";
 import tripAdvisorIcon from "../../../assets/images/map_sources/trip-advisor.png";
 import openStreetMapIcon from "../../../assets/images/map_sources/openStreetMap.png";
 import wikiIcon from "../../../assets/images/map_sources/ic_logo_wikipedia.png";
@@ -108,7 +108,7 @@ export default function MarkerActions({
                         </ListItemIcon>
                         <ListItemText className={classes.link} primary="Link with Trip Advisor"/>
                     </ListItem>
-                    <TripAdvisorDialog tripAdvisorDialog={tripAdvisorDialog}
+                    <TripAdvisorLinkDialog tripAdvisorDialog={tripAdvisorDialog}
                                        closeTripAdvisorDialog={closeTripAdvisorDialog}/>
                 </div>}
 

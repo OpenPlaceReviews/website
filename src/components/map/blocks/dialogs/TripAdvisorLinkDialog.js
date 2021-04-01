@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     },
 })
 
-export default function TripAdvisorDialog({
+export default function TripAdvisorLinkDialog({
                                               tripAdvisorDialog,
                                               closeTripAdvisorDialog
                                           }) {
