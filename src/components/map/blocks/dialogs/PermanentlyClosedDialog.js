@@ -26,13 +26,13 @@ const useStyles = makeStyles({
 })
 
 export default function PermanentlyClosedDialog({
-                                                    permanentlyClosedDialog,
-                                                    closePermanentlyClosedDialog
+                                                    open,
+                                                    onClose
                                                 }) {
 
     const classes = useStyles();
 
-    return <Dialog open={permanentlyClosedDialog} onClose={closePermanentlyClosedDialog}
+    return <Dialog open={open} onClose={onClose}
                    aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Mark place as permanently closed</DialogTitle>
         <DialogContent>
@@ -53,13 +53,13 @@ export default function PermanentlyClosedDialog({
                     className={classes.button}
                     variant="contained"
                     color={"primary"}
-                    onClick={closePermanentlyClosedDialog}>
+                    onClick={onClose}>
                 Mark as closed
             </Button>
             <Button type="submit"
                     className={classes.buttonClose}
                     variant="contained"
-                    onClick={closePermanentlyClosedDialog}>
+                    onClick={onClose}>
                 Cancel
             </Button>
         </DialogActions>

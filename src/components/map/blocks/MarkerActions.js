@@ -59,28 +59,28 @@ export default function MarkerActions({
 
     const classes = useStyles();
 
-    const [tripAdvisorDialog, setTripAdvisorDialog] = useState(false);
-    const [permanentlyClosedDialog, setPermanentlyClosedDialog] = useState(false);
-    const [mergeDialog, setMergeDialog] = useState(false);
+    const [tripAdvisorDialogOpen, setTripAdvisorDialogOpen] = useState(false);
+    const [permanentlyClosedDialogOpen, setPermanentlyClosedDialogOpen] = useState(false);
+    const [mergeDialogOpen, setMergeDialogOpen] = useState(false);
     const [tripAdvisorLinkAvailable, setTripAdvisorLinkAvailable] = useState(false);
 
     const openTripAdvisorDialog = () => {
-        setTripAdvisorDialog(true);
+        setTripAdvisorDialogOpen(true);
     };
     const closeTripAdvisorDialog = () => {
-        setTripAdvisorDialog(false);
+        setTripAdvisorDialogOpen(false);
     };
     const openPermanentlyClosedDialog = () => {
-        setPermanentlyClosedDialog(true);
+        setPermanentlyClosedDialogOpen(true);
     };
     const closePermanentlyClosedDialog = () => {
-        setPermanentlyClosedDialog(false);
+        setPermanentlyClosedDialogOpen(false);
     };
     const openMergeDialog = () => {
-        setMergeDialog(true);
+        setMergeDialogOpen(true);
     };
     const closeMergeDialog = () => {
-        setMergeDialog(false);
+        setMergeDialogOpen(false);
     };
 
     useEffect(() => {
@@ -93,7 +93,7 @@ export default function MarkerActions({
         }
     }, [markerPlace]);
 
-    function getDistance() {
+    function getDistanceToSimilarPlace() {
         return Math.round(Utils.getDistance(similarMarkerPlace.latLon[0], similarMarkerPlace.latLon[1],
             markerPlace.latLon[0], markerPlace.latLon[1]));
     }
@@ -108,8 +108,8 @@ export default function MarkerActions({
                         </ListItemIcon>
                         <ListItemText className={classes.link} primary="Link with Trip Advisor"/>
                     </ListItem>
-                    <TripAdvisorLinkDialog tripAdvisorDialog={tripAdvisorDialog}
-                                       closeTripAdvisorDialog={closeTripAdvisorDialog}/>
+                    <TripAdvisorLinkDialog open={tripAdvisorDialogOpen}
+                                       onClose={closeTripAdvisorDialog}/>
                 </div>}
 
                 {markerPlace && (markerPlace.images ? markerPlace.images.review : false) && <ListItem
@@ -127,12 +127,12 @@ export default function MarkerActions({
                             <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
                         </ListItemIcon>
                         <ListItemText className={classes.link} primary="Possible duplicate:"
-                                      secondary={similarMarkerPlace.title + ' (' + getDistance() + 'm)'}/>
+                                      secondary={similarMarkerPlace.title + ' (' + getDistanceToSimilarPlace() + 'm)'}/>
                     </ListItem>
                     <MergeDuplicateDialog markerPlace={markerPlace}
                                           similarMarkerPlace={similarMarkerPlace}
-                                          mergeDialog={mergeDialog}
-                                          closeMergeDialog={closeMergeDialog}
+                                          open={mergeDialogOpen}
+                                          onClose={closeMergeDialog}
                                           onMerge={onMerge}
                                           categories={categories}
                                           place={place}
@@ -147,8 +147,8 @@ export default function MarkerActions({
                         </ListItemIcon>
                         <ListItemText className={classes.link} primary="Mark place as permanently closed"/>
                     </ListItem>
-                    <PermanentlyClosedDialog permanentlyClosedDialog={permanentlyClosedDialog}
-                                             closePermanentlyClosedDialog={closePermanentlyClosedDialog}/>
+                    <PermanentlyClosedDialog open={permanentlyClosedDialogOpen}
+                                             onClose={closePermanentlyClosedDialog}/>
                 </div>
             </List>
         </div>

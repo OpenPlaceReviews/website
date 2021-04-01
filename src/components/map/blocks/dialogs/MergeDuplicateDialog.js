@@ -58,8 +58,8 @@ const useStyles = makeStyles({
 export default function MergeDuplicateDialog({
                                                  markerPlace,
                                                  similarMarkerPlace,
-                                                 mergeDialog,
-                                                 closeMergeDialog,
+                                                 open,
+                                                 onClose,
                                                  onMerge,
                                                  categories,
                                                  place,
@@ -69,7 +69,7 @@ export default function MergeDuplicateDialog({
 
     const classes = useStyles();
 
-    return <Dialog className={classes.width} open={mergeDialog} onClose={closeMergeDialog}
+    return <Dialog className={classes.width} open={open} onClose={onClose}
                    aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
         <DialogContent>
@@ -127,7 +127,7 @@ export default function MergeDuplicateDialog({
             <Button type="submit"
                     className={classes.buttonClose}
                     variant="contained"
-                    onClick={closeMergeDialog}>
+                    onClick={onClose}>
                 Cancel
             </Button>
         </DialogActions>

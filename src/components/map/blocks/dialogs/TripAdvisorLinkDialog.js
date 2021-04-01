@@ -28,8 +28,8 @@ const useStyles = makeStyles({
 })
 
 export default function TripAdvisorLinkDialog({
-                                              tripAdvisorDialog,
-                                              closeTripAdvisorDialog
+                                              open,
+                                              onClose
                                           }) {
 
     const classes = useStyles();
@@ -50,7 +50,7 @@ export default function TripAdvisorLinkDialog({
     function saveTripAdvisorLink() {
     }
 
-    return <Dialog open={tripAdvisorDialog} onClose={closeTripAdvisorDialog}
+    return <Dialog open={open} onClose={onClose}
                    aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Link with Trip Advisor</DialogTitle>
         <DialogContent>
@@ -79,7 +79,7 @@ export default function TripAdvisorLinkDialog({
             <Button type="submit"
                     className={classes.buttonClose}
                     variant="contained"
-                    onClick={closeTripAdvisorDialog}>
+                    onClick={onClose}>
                 Cancel
             </Button>
         </DialogActions>
