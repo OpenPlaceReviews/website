@@ -8,7 +8,7 @@ export default function ImagesBlock({
                                         place,
                                         similarPlace,
                                         categories,
-                                        reviewBlock,
+                                        showReviewBlock,
                                         setPlaces
                                     }) {
 
@@ -18,8 +18,9 @@ export default function ImagesBlock({
 
     if (place && place.images && categories) {
         const {images} = place;
-        if (reviewBlock) {
-            reviewBlock = images.review && images.review.length > 0 ?
+        let reviewImagesBlock;
+        if (showReviewBlock) {
+            reviewImagesBlock = images.review && images.review.length > 0 ?
                 <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
                     <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable}
                                        initialCategory="review" categories={categories}/>
@@ -27,7 +28,7 @@ export default function ImagesBlock({
         }
 
         return <React.Fragment>
-            {reviewBlock}
+            {reviewImagesBlock}
             {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ?
                 <BlockExpandable key={index}
                                  header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
@@ -36,8 +37,8 @@ export default function ImagesBlock({
                 </BlockExpandable> : '')}</React.Fragment>
     } else if (similarPlace && similarPlace.images && categories) {
         const {images} = similarPlace;
-        if (reviewBlock) {
-            reviewBlock = images.review && images.review.length > 0 ?
+        if (showReviewBlock) {
+            showReviewBlock = images.review && images.review.length > 0 ?
                 <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
                     <ReviewImagesBlock place={similarPlace} isEditable={false} initialCategory="review"
                                        categories={categories}/>
@@ -45,7 +46,7 @@ export default function ImagesBlock({
         }
 
         return <React.Fragment>
-            {reviewBlock}
+            {showReviewBlock}
             {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ?
                 <BlockExpandable key={index}
                                  header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>

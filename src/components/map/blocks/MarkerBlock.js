@@ -352,7 +352,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
             <div ref={imagesSidebarRef}>
                 <ImagesBlock place={place}
                              categories={categories}
-                             reviewBlock={true}
+                             showReviewBlock={true}
                              setPlaces={setPlaces}/>
             </div>
         </div>
