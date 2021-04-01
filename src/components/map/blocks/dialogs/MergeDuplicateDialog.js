@@ -55,7 +55,7 @@ const useStyles = makeStyles({
     }
 })
 
-export default function DialogMergeDuplicate({
+export default function MergeDuplicateDialog({
                                                  markerPlace,
                                                  similarMarkerPlace,
                                                  mergeDialog,

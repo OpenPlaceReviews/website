@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     },
 })
 
-export default function DialogPermanentlyClosed({
+export default function PermanentlyClosedDialog({
                                                     permanentlyClosedDialog,
                                                     closePermanentlyClosedDialog
                                                 }) {

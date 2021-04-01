@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 
 import BlockExpandable from "./BlockExpandable";
-import DialogTripAdvisor from "./dialogs/DialogTripAdvisor";
+import TripAdvisorDialog from "./dialogs/TripAdvisorDialog";
 import tripAdvisorIcon from "../../../assets/images/map_sources/trip-advisor.png";
 import openStreetMapIcon from "../../../assets/images/map_sources/openStreetMap.png";
 import wikiIcon from "../../../assets/images/map_sources/ic_logo_wikipedia.png";
 import {makeStyles} from '@material-ui/core/styles';
 import {List, ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 
-import DialogPermanentlyClosed from "./dialogs/DialogPermanentlyClosed";
-import DialogMergeDuplicate from "./dialogs/DialogMergeDuplicate";
+import PermanentlyClosedDialog from "./dialogs/PermanentlyClosedDialog";
+import MergeDuplicateDialog from "./dialogs/MergeDuplicateDialog";
 import Utils from "../../util/Utils";
 
 const useStyles = makeStyles((theme) => ({
@@ -108,7 +108,7 @@ export default function MarkerActions({
                         </ListItemIcon>
                         <ListItemText className={classes.link} primary="Link with Trip Advisor"/>
                     </ListItem>
-                    <DialogTripAdvisor tripAdvisorDialog={tripAdvisorDialog}
+                    <TripAdvisorDialog tripAdvisorDialog={tripAdvisorDialog}
                                        closeTripAdvisorDialog={closeTripAdvisorDialog}/>
                 </div>}
 
@@ -129,7 +129,7 @@ export default function MarkerActions({
                         <ListItemText className={classes.link} primary="Possible duplicate:"
                                       secondary={similarMarkerPlace.title + ' (' + getDistance() + 'm)'}/>
                     </ListItem>
-                    <DialogMergeDuplicate markerPlace={markerPlace}
+                    <MergeDuplicateDialog markerPlace={markerPlace}
                                           similarMarkerPlace={similarMarkerPlace}
                                           mergeDialog={mergeDialog}
                                           closeMergeDialog={closeMergeDialog}
@@ -147,7 +147,7 @@ export default function MarkerActions({
                         </ListItemIcon>
                         <ListItemText className={classes.link} primary="Mark place as permanently closed"/>
                     </ListItem>
-                    <DialogPermanentlyClosed permanentlyClosedDialog={permanentlyClosedDialog}
+                    <PermanentlyClosedDialog permanentlyClosedDialog={permanentlyClosedDialog}
                                              closePermanentlyClosedDialog={closePermanentlyClosedDialog}/>
                 </div>
             </List>
