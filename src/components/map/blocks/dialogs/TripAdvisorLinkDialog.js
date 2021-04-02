@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import warningIcon from "../../../../assets/images/map_sources/ic_warning.png";
 import {
     Button,
     Dialog,
@@ -11,6 +12,7 @@ import {
 import {makeStyles} from '@material-ui/core/styles';
 
 const TRIP_ADVISOR_URL = '^(http(s?):\\/\\/)?([\\w-]+\\.)+(tripadvisor).*?$';
+const TRIP_ADVISOR_ID = '^(http(s?):\\/\\/)?([\\w-]+\\.)+(tripadvisor).*?$';
 
 const useStyles = makeStyles({
     button: {
@@ -29,7 +31,9 @@ const useStyles = makeStyles({
 
 export default function TripAdvisorLinkDialog({
                                               open,
-                                              onClose
+                                              onClose,
+                                              place,
+                                              setPlaces
                                           }) {
 
     const classes = useStyles();
@@ -43,11 +47,21 @@ export default function TripAdvisorLinkDialog({
         if (url.match(TRIP_ADVISOR_URL)) {
             setErrorText('')
         } else {
-            setErrorText('Link is not valid or doesn\'t contains Trip Advisor ID.')
+            setErrorText(<div><img src={warningIcon} alt="warningIcon"/> Link is not valid or doesn't contains Trip Advisor ID.</div>)
         }
     }
 
-    function saveTripAdvisorLink() {
+    const saveTripAdvisorLink = () => {
+
+        if(!place.source["tripadvisor"]){
+            let tripAdvisorId = url.match(TRIP_ADVISOR_ID);
+            let newPlace = JSON.parse(JSON.stringify(place));
+
+            newPlace.source['tripadvisor'] = [{"id": [tripAdvisorId[1], tripAdvisorId[2]]}];
+            setPlaces([place, newPlace])
+
+            onClose()
+        }
     }
 
     return <Dialog open={open} onClose={onClose}

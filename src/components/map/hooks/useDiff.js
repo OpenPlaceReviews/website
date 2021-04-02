@@ -62,6 +62,27 @@ function compareObjects(oldObject, newObject, categories, isMerge) {
         }
     });
 
+    if (oldObject.source !== newObject.source) {
+        const change = {};
+        const current = {};
+
+        Object.entries(newObject.source).map(([type]) => {
+            if (!oldObject.source[type]) {
+                change[`source.${type}`] = {set: newObject.source[type],}
+            }
+        });
+
+        diff.change = {
+            ...diff.change,
+            ...change,
+        }
+
+        diff.current = {
+            ...diff.current,
+            ...current,
+        }
+    }
+
     if (isMerge) {
         Object.entries(newObject.source).map(([type, source]) => {
             const change = {};

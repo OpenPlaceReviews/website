@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 import BlockExpandable from "./BlockExpandable";
 import TripAdvisorLinkDialog from "./dialogs/TripAdvisorLinkDialog";
@@ -62,7 +62,8 @@ export default function MarkerActions({
     const [tripAdvisorDialogOpen, setTripAdvisorDialogOpen] = useState(false);
     const [permanentlyClosedDialogOpen, setPermanentlyClosedDialogOpen] = useState(false);
     const [mergeDialogOpen, setMergeDialogOpen] = useState(false);
-    const [tripAdvisorLinkAvailable, setTripAdvisorLinkAvailable] = useState(false);
+
+    let isTripAdvisorLinkAvailable;
 
     const openTripAdvisorDialog = () => {
         setTripAdvisorDialogOpen(true);
@@ -82,26 +83,26 @@ export default function MarkerActions({
     const closeMergeDialog = () => {
         setMergeDialogOpen(false);
     };
-
-    useEffect(() => {
-        if (markerPlace && markerPlace.sources) {
-            Object.entries(markerPlace.sources).map(([type, _]) => {
-                if (type === 'tripadvisor') {
-                    setTripAdvisorLinkAvailable(true);
-                }
-            });
-        }
-    }, [markerPlace]);
-
     function getDistanceToSimilarPlace() {
         return Math.round(Utils.getDistance(similarMarkerPlace.latLon[0], similarMarkerPlace.latLon[1],
             markerPlace.latLon[0], markerPlace.latLon[1]));
     }
 
+    function getTripAdvisorLinkAvailable() {
+        if (markerPlace && markerPlace.sources) {
+            Object.entries(markerPlace.sources).map(([type, _]) => {
+                if (type === 'tripadvisor') {
+                    isTripAdvisorLinkAvailable = true;
+                }
+            });
+        }
+    }
+
     return <BlockExpandable header='Actions to take' open={true}>
+        {getTripAdvisorLinkAvailable()}
         <div className={classes.list}>
             <List component="nav" aria-label="main mailbox folders">
-                {markerPlace && !tripAdvisorLinkAvailable && <div>
+                {markerPlace && !isTripAdvisorLinkAvailable && <div>
                     <ListItem button onClick={openTripAdvisorDialog} className={classes.list}>
                         <ListItemIcon>
                             <img src={tripAdvisorIcon} alt="tripAdvisorIcon" className={classes.icon}/>
@@ -109,7 +110,9 @@ export default function MarkerActions({
                         <ListItemText className={classes.link} primary="Link with Trip Advisor"/>
                     </ListItem>
                     <TripAdvisorLinkDialog open={tripAdvisorDialogOpen}
-                                       onClose={closeTripAdvisorDialog}/>
+                                           onClose={closeTripAdvisorDialog}
+                                           place={place}
+                                           setPlaces={setPlaces}/>
                 </div>}
 
                 {markerPlace && (markerPlace.images ? markerPlace.images.review : false) && <ListItem
