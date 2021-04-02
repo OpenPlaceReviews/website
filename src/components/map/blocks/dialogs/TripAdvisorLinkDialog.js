@@ -12,7 +12,7 @@ import {
 import {makeStyles} from '@material-ui/core/styles';
 
 const TRIP_ADVISOR_URL = '^(http(s?):\\/\\/)?([\\w-]+\\.)+(tripadvisor).*?$';
-const TRIP_ADVISOR_ID = '^(http(s?):\\/\\/)?([\\w-]+\\.)+(tripadvisor).*?$';
+const TRIP_ADVISOR_ID = '.*\\.tripadvisor\\.ru\\/.*?-(g\\d+)-(d\\d+).*';
 
 const useStyles = makeStyles({
     button: {
