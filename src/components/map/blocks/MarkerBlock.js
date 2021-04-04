@@ -311,6 +311,36 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     };
 
+    function showSwitchInactiveLinks() {
+        if (getInactiveLinksCount()) {
+            return <div className={classes.switch}>
+                <span>Show inactive links ({getInactiveLinksCount()})</span>
+                <Switch
+                    className={classes.position}
+                    classes={{
+                        switchBase: classes.switchBase,
+                        track: classes.track,
+                        checked: classes.checked
+                    }}
+                    value={inactiveLinksVisible} onClick={toggleInactiveLinksVisibility}/>
+            </div>
+        }
+    }
+
+    function showMarkerActions() {
+        if (isLoggedIn()) {
+            return <MarkerActions markerPlace={markerPlace}
+                                  similarMarkerPlace={similarMarkerPlace}
+                                  onActionClick={handleActionClick}
+                                  onMerge={onMerge}
+                                  categories={categories}
+                                  place={place}
+                                  similarPlace={similarPlace}
+                                  setPlaces={setPlaces}
+            />
+        }
+    }
+
     return <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
@@ -326,27 +356,9 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
                 <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
                 </p>
-                <div className={classes.switch}>
-                    <span>Show inactive links ({getInactiveLinksCount()})</span>
-                    <Switch
-                        className={classes.position}
-                        classes={{
-                            switchBase: classes.switchBase,
-                            track: classes.track,
-                            checked: classes.checked
-                        }}
-                        value={inactiveLinksVisible} onClick={toggleInactiveLinksVisibility}/>
-                </div>
+                {showSwitchInactiveLinks()}
             </div>
-            <MarkerActions markerPlace={markerPlace}
-                           similarMarkerPlace={similarMarkerPlace}
-                           onActionClick={handleActionClick}
-                           onMerge={onMerge}
-                           categories={categories}
-                           place={place}
-                           similarPlace={similarPlace}
-                           setPlaces={setPlaces}
-            />
+            {showMarkerActions()}
             {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
                 <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
             <div ref={imagesSidebarRef}>
