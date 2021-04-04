@@ -46,7 +46,7 @@ export default function TripAdvisorLinkDialog({
     const [url, setUrl] = useState(null);
 
     const errorTextNotValidLink = () => {
-        return <><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Link is not valid or doesn't contains Trip Advisor ID.</>
+        return <><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Link is not valid or doesn't contain Trip Advisor ID.</>
     }
 
     const errorTextDuplicateLink = () => {
