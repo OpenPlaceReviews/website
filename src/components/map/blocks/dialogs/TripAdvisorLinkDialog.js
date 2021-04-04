@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import warningIcon from "../../../../assets/images/map_sources/ic_warning.png";
 import {
     Button,
@@ -11,8 +11,7 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
 
-const TRIP_ADVISOR_URL = '^(http(s?):\\/\\/)?([\\w-]+\\.)+(tripadvisor).*?$';
-const TRIP_ADVISOR_ID = '.*\\.tripadvisor\\.ru\\/.*?-(g\\d+)-(d\\d+).*';
+const TRIP_ADVISOR_URL_PATTERN = '^(http(s?):\\/\\/)?(.*\\.tripadvisor\\..*)\\/(.*)(g\\d+)-(d\\d+).*$';
 
 const useStyles = makeStyles({
     button: {
@@ -47,29 +46,33 @@ export default function TripAdvisorLinkDialog({
     const [url, setUrl] = useState(null);
 
     const errorTextNotValidLink = () => {
-        return <div><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Link is not valid
-            or doesn't contains Trip Advisor ID.</div>
+        return <><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Link is not valid or doesn't contains Trip Advisor ID.</>
     }
 
     const errorTextDuplicateLink = () => {
-        return <div><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Such link already exists.
-        </div>
+        return <><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Such link already exists.</>
     }
+
     function onChange(event) {
         setUrl(event.target.value)
-        if (url.match(TRIP_ADVISOR_URL)) {
+    }
+
+    useEffect(() => {
+        setUrl(null);
+    }, [open]);
+
+    useEffect(() => {
+        if (!url || url.match(TRIP_ADVISOR_URL_PATTERN)) {
             setErrorText('')
         } else {
             setErrorText(errorTextNotValidLink)
         }
-    }
+    }, [url]);
 
     let saveTripAdvisorLink = () => {
-
-        let matchResultTripAdvisorLink = url.match(TRIP_ADVISOR_ID);
-
+        let matchResultTripAdvisorLink = url.match(TRIP_ADVISOR_URL_PATTERN);
         if (matchResultTripAdvisorLink) {
-            let newTripAdvisorId = [matchResultTripAdvisorLink[1], matchResultTripAdvisorLink[2]];
+            let newTripAdvisorId = [matchResultTripAdvisorLink[5], matchResultTripAdvisorLink[6]];
             let newPlace = JSON.parse(JSON.stringify(place));
             let newPlaceTripAdvisorSources = newPlace.source['tripadvisor'];
             let newTripAdvisorSource = {"id": newTripAdvisorId};
@@ -106,7 +109,7 @@ export default function TripAdvisorLinkDialog({
                 variant="filled"
                 fullWidth
                 helperText={errorText}
-                onChange={onChange.bind(this)}/>
+                onChange={onChange}/>
         </DialogContent>
         <DialogActions>
             <Button type="submit"
