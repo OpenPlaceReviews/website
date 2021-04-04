@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import BlockExpandable from "./BlockExpandable";
 import TripAdvisorLinkDialog from "./dialogs/TripAdvisorLinkDialog";
@@ -62,8 +62,7 @@ export default function MarkerActions({
     const [tripAdvisorDialogOpen, setTripAdvisorDialogOpen] = useState(false);
     const [permanentlyClosedDialogOpen, setPermanentlyClosedDialogOpen] = useState(false);
     const [mergeDialogOpen, setMergeDialogOpen] = useState(false);
-
-    let isTripAdvisorLinkAvailable;
+    const [tripAdvisorLinkAvailable, setTripAdvisorLinkAvailable] = useState(false);
 
     const openTripAdvisorDialog = () => {
         setTripAdvisorDialogOpen(true);
@@ -88,21 +87,22 @@ export default function MarkerActions({
             markerPlace.latLon[0], markerPlace.latLon[1]));
     }
 
-    function getTripAdvisorLinkAvailable() {
+    useEffect(() => {
+        let linkAvailable = false;
         if (markerPlace && markerPlace.sources) {
             Object.entries(markerPlace.sources).map(([type, _]) => {
                 if (type === 'tripadvisor') {
-                    isTripAdvisorLinkAvailable = true;
+                    linkAvailable = true;
                 }
             });
         }
-    }
+        setTripAdvisorLinkAvailable(linkAvailable);
+    }, [markerPlace]);
 
     return <BlockExpandable header='Actions to take' open={true}>
-        {getTripAdvisorLinkAvailable()}
         <div className={classes.list}>
             <List component="nav" aria-label="main mailbox folders">
-                {markerPlace && !isTripAdvisorLinkAvailable && <div>
+                {markerPlace && !tripAdvisorLinkAvailable && <div>
                     <ListItem button onClick={openTripAdvisorDialog} className={classes.list}>
                         <ListItemIcon>
                             <img src={tripAdvisorIcon} alt="tripAdvisorIcon" className={classes.icon}/>
