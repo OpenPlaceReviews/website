@@ -27,6 +27,11 @@ const useStyles = makeStyles({
         color: "#2D69E0",
         backgroundColor: "#F1F4FC"
     },
+    warning: {
+        width: "24px",
+        height: "24px",
+        margin: "5px 0 -5px 0",
+    },
 })
 
 export default function TripAdvisorLinkDialog({
@@ -41,26 +46,47 @@ export default function TripAdvisorLinkDialog({
     const [errorText, setErrorText] = useState(null);
     const [url, setUrl] = useState(null);
 
+    const errorTextNotValidLink = () => {
+        return <div><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Link is not valid
+            or doesn't contains Trip Advisor ID.</div>
+    }
+
+    const errorTextDuplicateLink = () => {
+        return <div><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Such link already exists.
+        </div>
+    }
     function onChange(event) {
         setUrl(event.target.value)
-
         if (url.match(TRIP_ADVISOR_URL)) {
             setErrorText('')
         } else {
-            setErrorText(<div><img src={warningIcon} alt="warningIcon"/> Link is not valid or doesn't contains Trip Advisor ID.</div>)
+            setErrorText(errorTextNotValidLink)
         }
     }
 
-    const saveTripAdvisorLink = () => {
+    let saveTripAdvisorLink = () => {
 
-        if(!place.source["tripadvisor"]){
-            let tripAdvisorId = url.match(TRIP_ADVISOR_ID);
+        let matchResultTripAdvisorLink = url.match(TRIP_ADVISOR_ID);
+
+        if (matchResultTripAdvisorLink) {
+            let newTripAdvisorId = [matchResultTripAdvisorLink[1], matchResultTripAdvisorLink[2]];
             let newPlace = JSON.parse(JSON.stringify(place));
+            let newPlaceTripAdvisorSources = newPlace.source['tripadvisor'];
+            let newTripAdvisorSource = {"id": newTripAdvisorId};
 
-            newPlace.source['tripadvisor'] = [{"id": [tripAdvisorId[1], tripAdvisorId[2]]}];
-            setPlaces([place, newPlace])
-
-            onClose()
+            if (!newPlaceTripAdvisorSources) {
+                newPlace.source['tripadvisor'] = [newTripAdvisorSource];
+                setPlaces([place, newPlace])
+                onClose()
+            } else if (place.source['tripadvisor'].find(source => JSON.stringify(source.id) === JSON.stringify(newTripAdvisorId))) {
+                setErrorText(errorTextDuplicateLink)
+            } else {
+                newPlaceTripAdvisorSources.push(newTripAdvisorSource)
+                setPlaces([place, newPlace])
+                onClose()
+            }
+        } else {
+            setErrorText(errorTextNotValidLink)
         }
     }
 
