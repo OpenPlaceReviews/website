@@ -31,6 +31,11 @@ const useStyles = makeStyles({
         height: "24px",
         margin: "5px 0 -5px 0",
     },
+    dialog: {
+        "& .MuiDialogActions-root": {
+            padding: "5px 24px 5px 0",
+        },
+    }
 })
 
 export default function TripAdvisorLinkDialog({
@@ -94,7 +99,7 @@ export default function TripAdvisorLinkDialog({
     }
 
     return <Dialog open={open} onClose={onClose}
-                   aria-labelledby="form-dialog-title">
+                   aria-labelledby="form-dialog-title" className={classes.dialog}>
         <DialogTitle id="form-dialog-title">Link with Trip Advisor</DialogTitle>
         <DialogContent>
             <DialogContentText>

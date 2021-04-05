@@ -18,14 +18,11 @@ const useStyles = makeStyles((theme) => ({
         height: "24px",
         margin: "5px 12px 0 0",
     },
-    list: {
-        borderBottom: "1px solid #ececec"
+    listItem: {
+        borderTop:"1px solid #ececec"
     },
     link: {
         color: "#2D69E0"
-    },
-    secondary: {
-        borderBottom: "1px solid #ececec"
     },
     root: {
         position: "absolute",
@@ -63,6 +60,7 @@ export default function MarkerActions({
     const [permanentlyClosedDialogOpen, setPermanentlyClosedDialogOpen] = useState(false);
     const [mergeDialogOpen, setMergeDialogOpen] = useState(false);
     const [tripAdvisorLinkAvailable, setTripAdvisorLinkAvailable] = useState(false);
+    const [permanentlyClosedMarkerAvailable, setPermanentlyClosedMarkerAvailable] = useState(false);
 
     const openTripAdvisorDialog = () => {
         setTripAdvisorDialogOpen(true);
@@ -88,22 +86,27 @@ export default function MarkerActions({
     }
 
     useEffect(() => {
-        let linkAvailable = false;
+        let linkTripAdvisorAvailable = false;
+        let permanentlyClosedMarker = false;
         if (markerPlace && markerPlace.sources) {
             Object.entries(markerPlace.sources).map(([type, _]) => {
                 if (type === 'tripadvisor') {
-                    linkAvailable = true;
+                    linkTripAdvisorAvailable = true;
                 }
             });
+            if (markerPlace.deleted) {
+                permanentlyClosedMarker = true;
+            }
         }
-        setTripAdvisorLinkAvailable(linkAvailable);
+        setTripAdvisorLinkAvailable(linkTripAdvisorAvailable);
+        setPermanentlyClosedMarkerAvailable(permanentlyClosedMarker);
     }, [markerPlace]);
 
     return <BlockExpandable header='Actions to take' open={true}>
-        <div className={classes.list}>
+        <div>
             <List component="nav" aria-label="main mailbox folders">
-                {markerPlace && !tripAdvisorLinkAvailable && <div>
-                    <ListItem button onClick={openTripAdvisorDialog} className={classes.list}>
+                    {markerPlace && !tripAdvisorLinkAvailable && <div>
+                    <ListItem button onClick={openTripAdvisorDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={tripAdvisorIcon} alt="tripAdvisorIcon" className={classes.icon}/>
                         </ListItemIcon>
@@ -116,7 +119,7 @@ export default function MarkerActions({
                 </div>}
 
                 {markerPlace && (markerPlace.images ? markerPlace.images.review : false) && <ListItem
-                    button onClick={() => onActionClick("reviewImages")} className={classes.list}>
+                    button onClick={() => onActionClick("reviewImages")} className={classes.listItem}>
                     <ListItemIcon>
                         <img src={openStreetMapIcon} alt="openStreetMapIcon" className={classes.icon}/>
                     </ListItemIcon>
@@ -125,7 +128,7 @@ export default function MarkerActions({
                 </ListItem>}
 
                 {similarMarkerPlace && <div>
-                    <ListItem button onClick={openMergeDialog} className={classes.list}>
+                    <ListItem button onClick={openMergeDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
                         </ListItemIcon>
@@ -142,17 +145,18 @@ export default function MarkerActions({
                                           similarPlace={similarPlace}
                                           setPlaces={setPlaces}/>
                 </div>}
-
-                <div>
-                    <ListItem button onClick={openPermanentlyClosedDialog}>
+                    {markerPlace && !permanentlyClosedMarkerAvailable && <div>
+                    <ListItem button onClick={openPermanentlyClosedDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
                         </ListItemIcon>
                         <ListItemText className={classes.link} primary="Mark place as permanently closed"/>
                     </ListItem>
                     <PermanentlyClosedDialog open={permanentlyClosedDialogOpen}
-                                             onClose={closePermanentlyClosedDialog}/>
-                </div>
+                                             onClose={closePermanentlyClosedDialog}
+                                             place={place}
+                                             setPlaces={setPlaces}/>
+                </div>}
             </List>
         </div>
     </BlockExpandable>

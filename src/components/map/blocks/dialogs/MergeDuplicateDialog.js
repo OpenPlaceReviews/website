@@ -48,7 +48,10 @@ const useStyles = makeStyles({
         height: "24px",
         margin: "5px 12px 0 0",
     },
-    width: {
+    dialog: {
+        "& .MuiDialogActions-root": {
+            padding: "5px 24px 5px 0",
+        },
         "& .MuiDialog-paperWidthSm": {
             maxWidth: "740px !important",
         }
@@ -69,7 +72,7 @@ export default function MergeDuplicateDialog({
 
     const classes = useStyles();
 
-    return <Dialog className={classes.width} open={open} onClose={onClose}
+    return <Dialog className={classes.dialog} open={open} onClose={onClose}
                    aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
         <DialogContent>

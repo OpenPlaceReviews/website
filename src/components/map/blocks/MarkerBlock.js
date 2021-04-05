@@ -15,6 +15,7 @@ import {Box, IconButton, Link, Switch} from "@material-ui/core";
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
 import ImagesBlock from "./ImagesBlock";
+import warningIcon from "../../../assets/images/map_sources/ic_warning.png";
 
 const useStyles = makeStyles({
     container: {
@@ -86,6 +87,27 @@ const useStyles = makeStyles({
         color:"#697281",
         background:"#F5F5F5",
         borderRadius:"6px"
+    },
+    warning: {
+        width: "24px",
+        height: "24px",
+        margin: "5px 0 -5px 0"
+    },
+    closed: {
+        marginLeft: "10px",
+        position: "relative",
+        marginTop: "-10%"
+    },
+    root: {
+        background: "#ff595e",
+        borderRadius: "7px",
+        border: 0,
+        color: "#FFFFFF",
+        height: 35,
+        width: "260px",
+        fontSize: "14px",
+        marginBottom: "15px",
+        marginTop: "-3%"
     },
 });
 
@@ -185,6 +207,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 latLon: params.latLon,
                 images: params.images,
                 sources: params.sources,
+                deleted: params.deleted
             });
         }
         if (similarPlace) {
@@ -195,7 +218,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 subtitle: params.subtitle,
                 latLon: params.latLon,
                 images: params.images,
-                sources: params.sources,
+                sources: params.sources
             });
         } else {
             setSimilarMarkerPlace(null);
@@ -254,9 +277,15 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     };
 
+    const fetchDeleted = place => {
+        const {deleted} = place;
+        return deleted ? deleted : '';
+    };
+
     const fetchPlaceParams = (place) => {
         let title = fetchPlaceName(place);
         let subtitle = fetchPlaceType(place);
+        let deleted = fetchDeleted(place);
         let latLon = null;
         const { lat, lon, source } = place;
         if (lat && lon) {
@@ -274,6 +303,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
             latLon: latLon,
             images: place.images,
             sources: source,
+            deleted: deleted
         };
     };
     function onMerge() {
@@ -294,11 +324,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 inactiveLinksCount++;
             }
         });
-        similarMarkerPlace && similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => {
-            if (source.length > 0 && source[0].deleted) {
-                inactiveLinksCount++;
-            }
-        });
         return inactiveLinksCount;
     }
 
@@ -312,7 +337,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
     };
 
     function showSwitchInactiveLinks() {
-        if (getInactiveLinksCount()) {
+        if (getInactiveLinksCount() > 0) {
             return <div className={classes.switch}>
                 <span>Show inactive links ({getInactiveLinksCount()})</span>
                 <Switch
@@ -324,6 +349,15 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                     }}
                     value={inactiveLinksVisible} onClick={toggleInactiveLinksVisibility}/>
             </div>
+        }
+    }
+
+    function addPermanentlyClosedMarker() {
+        if (markerPlace && markerPlace.deleted) {
+            return <Box className={classes.root}>
+                <span className={classes.closed}>
+                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>This place is permanently closed</span>
+            </Box>
         }
     }
 
@@ -352,6 +386,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                     <CancelRoundedIcon className={classes.closeIcon} />
                 </IconButton>
             </Box>
+            {addPermanentlyClosedMarker()}
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
                 <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>

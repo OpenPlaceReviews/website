@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button,
     Dialog,
@@ -23,17 +23,50 @@ const useStyles = makeStyles({
         color: "#2D69E0",
         backgroundColor: "#F1F4FC"
     },
+    dialog: {
+        "& .MuiDialogActions-root": {
+            padding: "5px 24px 5px 0",
+        },
+    }
 })
 
 export default function PermanentlyClosedDialog({
                                                     open,
-                                                    onClose
+                                                    onClose,
+                                                    place,
+                                                    setPlaces
                                                 }) {
+    const [deletedComment, setDeletedComment] = useState(null);
 
     const classes = useStyles();
 
+    function onChange(event) {
+        setDeletedComment(event.target.value)
+    }
+
+    useEffect(() => {
+        setDeletedComment(null);
+    }, [open]);
+
+    let savePermanentlyClosedMarker = () => {
+
+        let newPlace = JSON.parse(JSON.stringify(place));
+        let newPlaceDeletedMarker = newPlace.deleted;
+        let newPlaceDeletedComment = newPlace.deletedComment;
+
+        if (newPlaceDeletedMarker === undefined) {
+            newPlace["deleted"] = new Date(Date.now()).toISOString();
+            if (newPlaceDeletedComment === undefined) {
+                newPlace["deletedComment"] = deletedComment;
+            }
+
+            setPlaces([place, newPlace])
+            onClose()
+        }
+    }
+
     return <Dialog open={open} onClose={onClose}
-                   aria-labelledby="form-dialog-title">
+                   aria-labelledby="form-dialog-title" className={classes.dialog}>
         <DialogTitle id="form-dialog-title">Mark place as permanently closed</DialogTitle>
         <DialogContent>
             <DialogContentText>
@@ -46,14 +79,15 @@ export default function PermanentlyClosedDialog({
                 id="filled-required"
                 defaultValue="Optional comment"
                 variant="filled"
-                fullWidth/>
+                fullWidth
+                onChange={onChange}/>
         </DialogContent>
         <DialogActions>
             <Button type="submit"
                     className={classes.button}
                     variant="contained"
                     color={"primary"}
-                    onClick={onClose}>
+                    onClick={savePermanentlyClosedMarker}>
                 Mark as closed
             </Button>
             <Button type="submit"

@@ -73,6 +73,24 @@ function compareSource(oldObject, newObject) {
     };
 }
 
+function compareDeleted(oldObject, newObject){
+    const change = {};
+    const current = {};
+
+    if(newObject.deleted && !oldObject.deleted){
+        change[`deleted`] = {set: newObject.deleted}
+        if(newObject.deletedComment && !oldObject.deletedComment){
+            change[`deletedComment`] = {set: newObject.deletedComment}
+        }
+    }
+
+    return {
+        change,
+        current,
+    };
+
+}
+
 function compareObjects(oldObject, newObject, categories, isMerge) {
     const diff = {
         change: {
@@ -100,6 +118,21 @@ function compareObjects(oldObject, newObject, categories, isMerge) {
     if (JSON.stringify(oldObject.source) !== JSON.stringify(newObject.source)) {
         let sourceDiff;
         sourceDiff = compareSource(oldObject, newObject);
+
+        diff.change = {
+            ...diff.change,
+            ...sourceDiff.change,
+        }
+
+        diff.current = {
+            ...diff.current,
+            ...sourceDiff.current,
+        }
+    }
+
+    if(JSON.stringify(newObject.deleted) !== JSON.stringify(oldObject.deleted)){
+        let sourceDiff;
+        sourceDiff = compareDeleted(oldObject, newObject);
 
         diff.change = {
             ...diff.change,
