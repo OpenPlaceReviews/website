@@ -38,6 +38,54 @@ function compareImages(path, oldImages, newImages) {
     };
 }
 
+function compareSource(oldObject, newObject) {
+    const change = {};
+    const current = {};
+
+    Object.entries(newObject.source).map(([type]) => {
+        if (!oldObject.source[type]) {
+            change[`source.${type}`] = {set: newObject.source[type]}
+        } else {
+            newObject.source[type].forEach(newSource => {
+                if (!oldObject.source[type].find(source => JSON.stringify(source.id) === JSON.stringify(newSource.id))) {
+                    change[`source.${type}`] = {append: newSource}
+                    current[`source.${type}`] = oldObject.source[type]
+                }
+            });
+
+            oldObject.source[type].forEach(oldSource => {
+                if (!newObject.source[type].find(source => JSON.stringify(source.id) === JSON.stringify(oldSource.id))) {
+                    change[`source.${type}`] = {delete: oldSource}
+                    current[`source.${type}`] = oldObject.source[type]
+                }
+            });
+        }
+    });
+
+    return {
+        change,
+        current,
+    };
+}
+
+function compareDeleted(oldObject, newObject){
+    const change = {};
+    const current = {};
+
+    if(newObject.deleted && !oldObject.deleted){
+        change[`deleted`] = {set: newObject.deleted}
+        if(newObject.deletedComment && !oldObject.deletedComment){
+            change[`deletedComment`] = {set: newObject.deletedComment}
+        }
+    }
+
+    return {
+        change,
+        current,
+    };
+
+}
+
 function compareObjects(oldObject, newObject, categories, isMerge) {
     const diff = {
         change: {
@@ -61,6 +109,36 @@ function compareObjects(oldObject, newObject, categories, isMerge) {
             ...categoryDiff.current,
         }
     });
+
+    if (JSON.stringify(oldObject.source) !== JSON.stringify(newObject.source)) {
+        let sourceDiff;
+        sourceDiff = compareSource(oldObject, newObject);
+
+        diff.change = {
+            ...diff.change,
+            ...sourceDiff.change,
+        }
+
+        diff.current = {
+            ...diff.current,
+            ...sourceDiff.current,
+        }
+    }
+
+    if(JSON.stringify(newObject.deleted) !== JSON.stringify(oldObject.deleted)){
+        let sourceDiff;
+        sourceDiff = compareDeleted(oldObject, newObject);
+
+        diff.change = {
+            ...diff.change,
+            ...sourceDiff.change,
+        }
+
+        diff.current = {
+            ...diff.current,
+            ...sourceDiff.current,
+        }
+    }
 
     if (isMerge) {
         Object.entries(newObject.source).map(([type, source]) => {

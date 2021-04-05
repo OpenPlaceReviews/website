@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import warningIcon from "../../../../assets/images/map_sources/ic_warning.png";
 import {
     Button,
     Dialog,
@@ -10,7 +11,7 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
 
-const TRIP_ADVISOR_URL = '^(http(s?):\\/\\/)?([\\w-]+\\.)+(tripadvisor).*?$';
+const TRIP_ADVISOR_URL_PATTERN = '^(http(s?):\\/\\/)?(.*\\.tripadvisor\\..*)\\/(.*)(g\\d+)-(d\\d+).*$';
 
 const useStyles = makeStyles({
     button: {
@@ -25,11 +26,23 @@ const useStyles = makeStyles({
         color: "#2D69E0",
         backgroundColor: "#F1F4FC"
     },
+    warning: {
+        width: "24px",
+        height: "24px",
+        margin: "5px 0 -5px 0",
+    },
+    dialog: {
+        "& .MuiDialogActions-root": {
+            padding: "5px 24px 5px 0",
+        },
+    }
 })
 
 export default function TripAdvisorLinkDialog({
                                               open,
-                                              onClose
+                                              onClose,
+                                              place,
+                                              setPlaces
                                           }) {
 
     const classes = useStyles();
@@ -37,21 +50,56 @@ export default function TripAdvisorLinkDialog({
     const [errorText, setErrorText] = useState(null);
     const [url, setUrl] = useState(null);
 
+    const errorTextNotValidLink = () => {
+        return <><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Link is not valid or doesn't contain Trip Advisor ID.</>
+    }
+
+    const errorTextDuplicateLink = () => {
+        return <><img src={warningIcon} alt="warningIcon" className={classes.warning}/> Such link already exists.</>
+    }
+
     function onChange(event) {
         setUrl(event.target.value)
+    }
 
-        if (url.match(TRIP_ADVISOR_URL)) {
+    useEffect(() => {
+        setUrl(null);
+    }, [open]);
+
+    useEffect(() => {
+        if (!url || url.match(TRIP_ADVISOR_URL_PATTERN)) {
             setErrorText('')
         } else {
-            setErrorText('Link is not valid or doesn\'t contains Trip Advisor ID.')
+            setErrorText(errorTextNotValidLink)
+        }
+    }, [url]);
+
+    let saveTripAdvisorLink = () => {
+        let matchResultTripAdvisorLink = url.match(TRIP_ADVISOR_URL_PATTERN);
+        if (matchResultTripAdvisorLink) {
+            let newTripAdvisorId = [matchResultTripAdvisorLink[5], matchResultTripAdvisorLink[6]];
+            let newPlace = JSON.parse(JSON.stringify(place));
+            let newPlaceTripAdvisorSources = newPlace.source['tripadvisor'];
+            let newTripAdvisorSource = {"id": newTripAdvisorId};
+
+            if (!newPlaceTripAdvisorSources) {
+                newPlace.source['tripadvisor'] = [newTripAdvisorSource];
+                setPlaces([place, newPlace])
+                onClose()
+            } else if (place.source['tripadvisor'].find(source => JSON.stringify(source.id) === JSON.stringify(newTripAdvisorId))) {
+                setErrorText(errorTextDuplicateLink)
+            } else {
+                newPlaceTripAdvisorSources.push(newTripAdvisorSource)
+                setPlaces([place, newPlace])
+                onClose()
+            }
+        } else {
+            setErrorText(errorTextNotValidLink)
         }
     }
 
-    function saveTripAdvisorLink() {
-    }
-
     return <Dialog open={open} onClose={onClose}
-                   aria-labelledby="form-dialog-title">
+                   aria-labelledby="form-dialog-title" className={classes.dialog}>
         <DialogTitle id="form-dialog-title">Link with Trip Advisor</DialogTitle>
         <DialogContent>
             <DialogContentText>
@@ -66,7 +114,7 @@ export default function TripAdvisorLinkDialog({
                 variant="filled"
                 fullWidth
                 helperText={errorText}
-                onChange={onChange.bind(this)}/>
+                onChange={onChange}/>
         </DialogContent>
         <DialogActions>
             <Button type="submit"
