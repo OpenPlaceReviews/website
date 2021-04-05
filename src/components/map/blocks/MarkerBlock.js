@@ -140,6 +140,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
     const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
     const classes = useStyles();
     const [inactiveLinksVisible, setInactiveLinksVisible] = useState(false);
+    const [permanentlyClosedMarker, setPermanentlyClosedMarker] = useState(false);
 
     const [place] = places;
     const { authData } = useContext(AuthContext);
@@ -352,14 +353,13 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     }
 
-    function addPermanentlyClosedMarker() {
-        if (markerPlace && markerPlace.deleted) {
-            return <Box className={classes.root}>
-                <span className={classes.closed}>
-                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>This place is permanently closed</span>
-            </Box>
+    useEffect(() => {
+        let isPermanentlyClosedMarker = false;
+        if (place && place.deleted) {
+            isPermanentlyClosedMarker = true;
         }
-    }
+        setPermanentlyClosedMarker(isPermanentlyClosedMarker)
+    }, [place]);
 
     function showMarkerActions() {
         if (isLoggedIn()) {
@@ -371,6 +371,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                                   place={place}
                                   similarPlace={similarPlace}
                                   setPlaces={setPlaces}
+                                  setPermanentlyClosedMarker={setPermanentlyClosedMarker}
             />
         }
     }
@@ -386,7 +387,10 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                     <CancelRoundedIcon className={classes.closeIcon} />
                 </IconButton>
             </Box>
-            {addPermanentlyClosedMarker()}
+            {permanentlyClosedMarker && <Box className={classes.root}>
+                <span className={classes.closed}>
+                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>This place is permanently closed</span>
+            </Box>}
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
                 <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
