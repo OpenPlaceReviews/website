@@ -140,7 +140,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
     const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
     const classes = useStyles();
     const [inactiveLinksVisible, setInactiveLinksVisible] = useState(false);
-    const [permanentlyClosedMarker, setPermanentlyClosedMarker] = useState(false);
 
     const [place] = places;
     const { authData } = useContext(AuthContext);
@@ -174,11 +173,15 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
             .then(() => setPlaces([object, object]));
     }
 
+    useEffect(() => {
+        setVersion(0);
+    }, [marker]);
+
     const handleUpdatePlace = () => {
         if (JSON.stringify(places[0].id) !== JSON.stringify(places[1].id)) {
             setMarker(null);
         } else {
-            setVersion(place.version + 1);
+            setVersion((place.version ? place.version : 0) + 1);
         }
     }
 
@@ -352,15 +355,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
             </div>
         }
     }
-
-    useEffect(() => {
-        let isPermanentlyClosedMarker = false;
-        if (place && place.deleted) {
-            isPermanentlyClosedMarker = true;
-        }
-        setPermanentlyClosedMarker(isPermanentlyClosedMarker)
-    }, [place]);
-
     function showMarkerActions() {
         if (isLoggedIn()) {
             return <MarkerActions markerPlace={markerPlace}
@@ -371,7 +365,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                                   place={place}
                                   similarPlace={similarPlace}
                                   setPlaces={setPlaces}
-                                  setPermanentlyClosedMarker={setPermanentlyClosedMarker}
             />
         }
     }
@@ -387,7 +380,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                     <CancelRoundedIcon className={classes.closeIcon} />
                 </IconButton>
             </Box>
-            {permanentlyClosedMarker && <Box className={classes.root}>
+            {markerPlace && markerPlace.deleted && <Box className={classes.root}>
                 <span className={classes.closed}>
                     <img src={warningIcon} alt="warningIcon" className={classes.warning}/>This place is permanently closed</span>
             </Box>}

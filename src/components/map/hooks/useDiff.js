@@ -38,23 +38,6 @@ function compareImages(path, oldImages, newImages) {
     };
 }
 
-function compareSourceId(type, oldObject, newObject, change, current) {
-
-    newObject.source[type].forEach(newSource => {
-        if (!oldObject.source[type].find(source => JSON.stringify(source.id) === JSON.stringify(newSource.id))) {
-            change[`source.${type}`] = {append: newSource}
-            current[`source.${type}`] = oldObject.source[type]
-        }
-    });
-
-    oldObject.source[type].forEach(oldSource => {
-        if (!newObject.source[type].find(source => JSON.stringify(source.id) === JSON.stringify(oldSource.id))) {
-            change[`source.${type}`] = {delete: oldSource}
-            current[`source.${type}`] = oldObject.source[type]
-        }
-    });
-}
-
 function compareSource(oldObject, newObject) {
     const change = {};
     const current = {};
@@ -63,7 +46,19 @@ function compareSource(oldObject, newObject) {
         if (!oldObject.source[type]) {
             change[`source.${type}`] = {set: newObject.source[type]}
         } else {
-            compareSourceId(type, oldObject, newObject, change, current)
+            newObject.source[type].forEach(newSource => {
+                if (!oldObject.source[type].find(source => JSON.stringify(source.id) === JSON.stringify(newSource.id))) {
+                    change[`source.${type}`] = {append: newSource}
+                    current[`source.${type}`] = oldObject.source[type]
+                }
+            });
+
+            oldObject.source[type].forEach(oldSource => {
+                if (!newObject.source[type].find(source => JSON.stringify(source.id) === JSON.stringify(oldSource.id))) {
+                    change[`source.${type}`] = {delete: oldSource}
+                    current[`source.${type}`] = oldObject.source[type]
+                }
+            });
         }
     });
 
