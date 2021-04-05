@@ -55,7 +55,7 @@ export default function PermanentlyClosedDialog({
         let newPlaceDeletedComment = newPlace.deletedComment;
 
         if (newPlaceDeletedMarker === undefined) {
-            newPlace["deleted"] = new Date(Date.now()).toISOString();
+            newPlace["deleted"] = new Date().toISOString();
             if (newPlaceDeletedComment === undefined) {
                 newPlace["deletedComment"] = deletedComment;
             }

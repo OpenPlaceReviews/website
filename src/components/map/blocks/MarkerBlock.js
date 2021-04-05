@@ -281,17 +281,11 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     };
 
-    const fetchDeleted = place => {
-        const {deleted} = place;
-        return deleted ? deleted : '';
-    };
-
     const fetchPlaceParams = (place) => {
         let title = fetchPlaceName(place);
         let subtitle = fetchPlaceType(place);
-        let deleted = fetchDeleted(place);
         let latLon = null;
-        const { lat, lon, source } = place;
+        const { lat, lon, source, deleted } = place;
         if (lat && lon) {
             latLon = [lat, lon];
         } else {
