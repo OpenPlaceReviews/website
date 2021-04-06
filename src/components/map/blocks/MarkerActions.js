@@ -102,10 +102,15 @@ export default function MarkerActions({
         setPermanentlyClosedMarkerAvailable(permanentlyClosedMarker);
     }, [markerPlace]);
 
-    return <BlockExpandable header='Actions to take' open={true}>
+    function isActionAvailable() {
+        return !!(!tripAdvisorLinkAvailable || (markerPlace && (markerPlace.images ? markerPlace.images.review : false))
+            || similarMarkerPlace || !permanentlyClosedMarkerAvailable);
+    }
+
+    return (isActionAvailable() && <BlockExpandable header='Actions to take' open={true}>
         <div>
             <List component="nav" aria-label="main mailbox folders">
-                    {markerPlace && !tripAdvisorLinkAvailable && <div>
+                {markerPlace && !tripAdvisorLinkAvailable && <div>
                     <ListItem button onClick={openTripAdvisorDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={tripAdvisorIcon} alt="tripAdvisorIcon" className={classes.icon}/>
@@ -145,7 +150,7 @@ export default function MarkerActions({
                                           similarPlace={similarPlace}
                                           setPlaces={setPlaces}/>
                 </div>}
-                    {markerPlace && !permanentlyClosedMarkerAvailable && <div>
+                {markerPlace && !permanentlyClosedMarkerAvailable && <div>
                     <ListItem button onClick={openPermanentlyClosedDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
@@ -159,5 +164,5 @@ export default function MarkerActions({
                 </div>}
             </List>
         </div>
-    </BlockExpandable>
+    </BlockExpandable>)
 }
