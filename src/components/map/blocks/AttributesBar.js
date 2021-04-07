@@ -28,9 +28,9 @@ const useStyles = makeStyles({
     }
 })
 
-export default function AttributesBar({ sourceType, sources, open }) {
+export default function AttributesBar({ sourceType, source, open }) {
 
-    const { tags, version, id, changeset, timestamp, type, deleted, lat, lon } = sources[sources.length - 1];
+    const { tags, version, id, changeset, timestamp, type, deleted, lat, lon } = source;
 
     let title;
     let icon;

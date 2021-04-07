@@ -5,7 +5,6 @@ import useDiff from "../hooks/useDiff";
 import useCommitOp from "../hooks/useCommitOp";
 import { getObjectsById } from "../../../api/data";
 
-import AttributesBar from "./AttributesBar";
 import MarkerActions from "./MarkerActions";
 import MapSidebar from "./sidebar/MapSidebar";
 
@@ -16,6 +15,7 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
 import ImagesBlock from "./ImagesBlock";
 import warningIcon from "../../../assets/images/map_sources/ic_warning.png";
+import AttributesBarList from "./AttributesBarList";
 
 const useStyles = makeStyles({
     container: {
@@ -91,7 +91,7 @@ const useStyles = makeStyles({
     warning: {
         width: "24px",
         height: "24px",
-        margin: "5px 0 -5px 0"
+        margin: "5px 10px -5px 0"
     },
     closed: {
         marginLeft: "10px",
@@ -104,7 +104,7 @@ const useStyles = makeStyles({
         border: 0,
         color: "#FFFFFF",
         height: 35,
-        width: "260px",
+        width: "auto",
         fontSize: "14px",
         marginBottom: "15px",
         marginTop: "-3%"
@@ -140,6 +140,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
     const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
     const classes = useStyles();
     const [inactiveLinksVisible, setInactiveLinksVisible] = useState(false);
+    const [permanentlyClosedMark, setPermanentlyClosedMark] = useState(null);
 
     const [place] = places;
     const { authData } = useContext(AuthContext);
@@ -363,6 +364,33 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     }
 
+    useEffect(() => {
+        setPermanentlyClosedMark(null)
+        if (markerPlace && markerPlace.sources) {
+            let countActiveOsm = 0;
+
+            Object.entries(markerPlace.sources).map(([type, sources]) => {
+                if (type === 'osm') {
+                    sources.forEach(source => !source.deleted ? countActiveOsm++ : null)
+                }
+            });
+
+            if (countActiveOsm === 0) {
+                setPermanentlyClosedMark(<Box className={classes.root}>
+                <span className={classes.closed}>
+                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>Review if place is permanently closed</span>
+                </Box>)
+            }
+
+            if (markerPlace.deleted) {
+                setPermanentlyClosedMark(<Box className={classes.root}>
+                <span className={classes.closed}>
+                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>This place is permanently closed</span>
+                </Box>)
+            }
+        }
+    }, [markerPlace]);
+
     return <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
@@ -374,10 +402,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                     <CancelRoundedIcon className={classes.closeIcon} />
                 </IconButton>
             </Box>
-            {markerPlace && markerPlace.deleted && <Box className={classes.root}>
-                <span className={classes.closed}>
-                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>This place is permanently closed</span>
-            </Box>}
+            {permanentlyClosedMark}
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
                 <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
@@ -385,8 +410,9 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 {showSwitchInactiveLinks()}
             </div>
             {showMarkerActions()}
-            {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
-                <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
+            {<AttributesBarList place={markerPlace}
+                                inactiveLinksVisible={inactiveLinksVisible}
+                                isOpen={true}/>}
             <div ref={imagesSidebarRef}>
                 <ImagesBlock place={place}
                              isOriginalPlace={true}

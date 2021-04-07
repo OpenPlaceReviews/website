@@ -88,13 +88,20 @@ export default function MarkerActions({
     useEffect(() => {
         let linkTripAdvisorAvailable = false;
         let permanentlyClosedMarker = false;
+        let countActiveOsm = 0;
+
         if (markerPlace && markerPlace.sources) {
-            Object.entries(markerPlace.sources).map(([type, _]) => {
+            Object.entries(markerPlace.sources).map(([type, sources]) => {
                 if (type === 'tripadvisor') {
                     linkTripAdvisorAvailable = true;
                 }
+
+                if (type === 'osm') {
+                    sources.forEach(source => !source.deleted ? countActiveOsm++ : null)
+                }
             });
-            if (markerPlace.deleted) {
+
+            if (countActiveOsm === 0) {
                 permanentlyClosedMarker = true;
             }
         }
@@ -102,15 +109,18 @@ export default function MarkerActions({
         setPermanentlyClosedMarkerAvailable(permanentlyClosedMarker);
     }, [markerPlace]);
 
-    function isActionAvailable() {
-        return !!(!tripAdvisorLinkAvailable || (markerPlace && (markerPlace.images ? markerPlace.images.review : false))
-            || similarMarkerPlace || !permanentlyClosedMarkerAvailable);
+    function hasImagesReview() {
+        return markerPlace.images ? markerPlace.images.review : false;
     }
 
-    return (isActionAvailable() && <BlockExpandable header='Actions to take' open={true}>
+    function isActionsAvailable() {
+        return !!(markerPlace && (!tripAdvisorLinkAvailable || hasImagesReview() || similarMarkerPlace || !permanentlyClosedMarkerAvailable));
+    }
+
+    return (isActionsAvailable() && <BlockExpandable header='Actions to take' open={true}>
         <div>
             <List component="nav" aria-label="main mailbox folders">
-                {markerPlace && !tripAdvisorLinkAvailable && <div>
+                {!tripAdvisorLinkAvailable && <div>
                     <ListItem button onClick={openTripAdvisorDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={tripAdvisorIcon} alt="tripAdvisorIcon" className={classes.icon}/>
@@ -123,7 +133,7 @@ export default function MarkerActions({
                                            setPlaces={setPlaces}/>
                 </div>}
 
-                {markerPlace && (markerPlace.images ? markerPlace.images.review : false) && <ListItem
+                {hasImagesReview() && <ListItem
                     button onClick={() => onActionClick("reviewImages")} className={classes.listItem}>
                     <ListItemIcon>
                         <img src={openStreetMapIcon} alt="openStreetMapIcon" className={classes.icon}/>
@@ -150,7 +160,7 @@ export default function MarkerActions({
                                           similarPlace={similarPlace}
                                           setPlaces={setPlaces}/>
                 </div>}
-                {markerPlace && !permanentlyClosedMarkerAvailable && <div>
+                {permanentlyClosedMarkerAvailable && !markerPlace.deleted && <div>
                     <ListItem button onClick={openPermanentlyClosedDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
