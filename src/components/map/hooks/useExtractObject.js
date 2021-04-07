@@ -18,7 +18,6 @@ export default function useExtractObject(marker, version, onLoad) {
                 if (marker.properties.similar_opr_id) {
                     const data = await getObjectsById('opr.place', marker.properties.similar_opr_id);
                     similarObject = data.objects.shift();
-
                     if (similarObject && similarObject.clientData) {
                         delete similarObject.clientData;
                     }

@@ -9,9 +9,9 @@ import {
     GridListTile, Link
 } from "@material-ui/core";
 import Value from "../../../main/blockchain/blocks/Value";
-import AttributesBar from "../AttributesBar";
 import {makeStyles} from '@material-ui/core/styles';
 import ImagesBlock from "../ImagesBlock";
+import AttributesBarList from "../AttributesBarList";
 
 const useStyles = makeStyles({
     card: {
@@ -89,8 +89,9 @@ export default function MergeDuplicateDialog({
                             <p className={classes.mergeLatLon}>
                                 <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
                             </p>
-                            {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 ?
-                                <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
+                            {<AttributesBarList place={markerPlace}
+                                                inactiveLinksVisible={true}
+                                                isOpen={false}/>}
                             <ImagesBlock place={place}
                                          isOriginalPlace={true}
                                          categories={categories}
@@ -109,8 +110,9 @@ export default function MergeDuplicateDialog({
                             <p className={classes.mergeLatLon}>
                                 <Value>{similarMarkerPlace.latLon && similarMarkerPlace.latLon[0].toFixed(5)}, {similarMarkerPlace.latLon && similarMarkerPlace.latLon[1].toFixed(5)}</Value>
                             </p>
-                            {similarMarkerPlace && similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 ?
-                                <AttributesBar sources={source} sourceType={type} key={index}/> : '')}
+                            {<AttributesBarList place={similarMarkerPlace}
+                                                inactiveLinksVisible={true}
+                                                isOpen={false}/>}
                             <ImagesBlock place={similarPlace}
                                          isOriginalPlace={false}
                                          categories={categories}/>
