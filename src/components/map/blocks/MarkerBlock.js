@@ -290,15 +290,15 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         if (deleted) {
             description = "This place is permanently closed";
         } else if (source) {
-            let isActiveOsm = false;
+            let hasActiveOsm = false;
 
             Object.entries(source).map(([type, sources]) => {
                 if (type === 'osm') {
-                    sources.forEach(source => !source.deleted ? isActiveOsm = true : null)
+                    sources.forEach(source => !source.deleted ? hasActiveOsm = true : null)
                 }
             });
 
-            if (!isActiveOsm) {
+            if (!hasActiveOsm) {
                 description = "Review if place is permanently closed";
             }
         }

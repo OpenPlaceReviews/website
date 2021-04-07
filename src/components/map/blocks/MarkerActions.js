@@ -88,7 +88,7 @@ export default function MarkerActions({
     useEffect(() => {
         let linkTripAdvisorAvailable = false;
         let permanentlyClosedMarker = false;
-        let isActiveOsm = false;
+        let hasActiveOsm = false;
 
         if (markerPlace && markerPlace.sources) {
             Object.entries(markerPlace.sources).map(([type, sources]) => {
@@ -97,10 +97,10 @@ export default function MarkerActions({
                 }
 
                 if (type === 'osm') {
-                    sources.forEach(source => !source.deleted ? isActiveOsm = true : null)
+                    sources.forEach(source => !source.deleted ? hasActiveOsm = true : null)
                 }
             });
-            if (!isActiveOsm) {
+            if (!hasActiveOsm) {
                 permanentlyClosedMarker = true;
             }
         }
