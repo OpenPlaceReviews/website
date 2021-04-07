@@ -88,7 +88,7 @@ export default function MarkerActions({
     useEffect(() => {
         let linkTripAdvisorAvailable = false;
         let permanentlyClosedMarker = false;
-        let countActiveOsm = 0;
+        let isActiveOsm = false;
 
         if (markerPlace && markerPlace.sources) {
             Object.entries(markerPlace.sources).map(([type, sources]) => {
@@ -97,11 +97,11 @@ export default function MarkerActions({
                 }
 
                 if (type === 'osm') {
-                    sources.forEach(source => !source.deleted ? countActiveOsm++ : null)
+                    sources.forEach(source => !source.deleted ? isActiveOsm = true : null)
                 }
             });
 
-            if (countActiveOsm === 0) {
+            if (!isActiveOsm) {
                 permanentlyClosedMarker = true;
             }
         }
@@ -109,12 +109,12 @@ export default function MarkerActions({
         setPermanentlyClosedMarkerAvailable(permanentlyClosedMarker);
     }, [markerPlace]);
 
-    function hasImagesReview() {
+    function hasImagesForReview() {
         return markerPlace.images ? markerPlace.images.review : false;
     }
 
     function isActionsAvailable() {
-        return !!(markerPlace && (!tripAdvisorLinkAvailable || hasImagesReview() || similarMarkerPlace || !permanentlyClosedMarkerAvailable));
+        return !!(markerPlace && (!tripAdvisorLinkAvailable || hasImagesForReview() || similarMarkerPlace || !permanentlyClosedMarkerAvailable));
     }
 
     return (isActionsAvailable() && <BlockExpandable header='Actions to take' open={true}>
@@ -133,7 +133,7 @@ export default function MarkerActions({
                                            setPlaces={setPlaces}/>
                 </div>}
 
-                {hasImagesReview() && <ListItem
+                {hasImagesForReview() && <ListItem
                     button onClick={() => onActionClick("reviewImages")} className={classes.listItem}>
                     <ListItemIcon>
                         <img src={openStreetMapIcon} alt="openStreetMapIcon" className={classes.icon}/>

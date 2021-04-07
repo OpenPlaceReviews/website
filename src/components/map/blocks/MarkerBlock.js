@@ -140,7 +140,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
     const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
     const classes = useStyles();
     const [inactiveLinksVisible, setInactiveLinksVisible] = useState(false);
-    const [permanentlyClosedMark, setPermanentlyClosedMark] = useState(null);
 
     const [place] = places;
     const { authData } = useContext(AuthContext);
@@ -212,7 +211,8 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 latLon: params.latLon,
                 images: params.images,
                 sources: params.sources,
-                deleted: params.deleted
+                deleted: params.deleted,
+                closedDescription: params.closedDescription
             });
         }
         if (similarPlace) {
@@ -282,9 +282,33 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     };
 
+    const fetchCloseDescription = place => {
+        const {deleted, source} = place;
+        let description;
+
+        if (deleted) {
+            description = "This place is permanently closed";
+        } else if (source) {
+            let isActiveOsm = false;
+
+            Object.entries(source).map(([type, sources]) => {
+                if (type === 'osm') {
+                    sources.forEach(source => !source.deleted ? isActiveOsm = true : null)
+                }
+            });
+
+            if (!isActiveOsm) {
+                description = "Review if place is permanently closed";
+            }
+        }
+
+        return description;
+    };
+
     const fetchPlaceParams = (place) => {
         let title = fetchPlaceName(place);
         let subtitle = fetchPlaceType(place);
+        let closedDescription = fetchCloseDescription(place);
         let latLon = null;
         const { lat, lon, source, deleted } = place;
         if (lat && lon) {
@@ -302,7 +326,8 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
             latLon: latLon,
             images: place.images,
             sources: source,
-            deleted: deleted
+            deleted: deleted,
+            closedDescription: closedDescription
         };
     };
     function onMerge() {
@@ -364,33 +389,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     }
 
-    useEffect(() => {
-        setPermanentlyClosedMark(null)
-        if (markerPlace && markerPlace.sources) {
-            let countActiveOsm = 0;
-
-            Object.entries(markerPlace.sources).map(([type, sources]) => {
-                if (type === 'osm') {
-                    sources.forEach(source => !source.deleted ? countActiveOsm++ : null)
-                }
-            });
-
-            if (countActiveOsm === 0) {
-                setPermanentlyClosedMark(<Box className={classes.root}>
-                <span className={classes.closed}>
-                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>Review if place is permanently closed</span>
-                </Box>)
-            }
-
-            if (markerPlace.deleted) {
-                setPermanentlyClosedMark(<Box className={classes.root}>
-                <span className={classes.closed}>
-                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>This place is permanently closed</span>
-                </Box>)
-            }
-        }
-    }, [markerPlace]);
-
     return <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
             <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
@@ -402,7 +400,9 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                     <CancelRoundedIcon className={classes.closeIcon} />
                 </IconButton>
             </Box>
-            {permanentlyClosedMark}
+            {markerPlace && markerPlace.closedDescription &&
+            <Box className={classes.root}><span className={classes.closed}>
+                <img src={warningIcon} alt="warningIcon" className={classes.warning}/>{markerPlace.closedDescription}</span></Box>}
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
                 <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
