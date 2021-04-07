@@ -150,7 +150,11 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         let deleted = false;
         if (place && place.source) {
             deleted = true;
-            Object.entries(place.source).map(([type, source]) => deleted = deleted && type === 'osm' && source[0].deleted != null);
+            Object.entries(place.source).map(([type, sources]) => {
+                if (type === 'osm') {
+                    sources.forEach(source => deleted = deleted && source.deleted != null)
+                }
+            });
         }
         return deleted;
     };

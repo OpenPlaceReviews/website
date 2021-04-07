@@ -9,7 +9,7 @@ export default function AttributesBarList({place, inactiveLinksVisible, isOpen})
         if (type === 'osm') {
             for (const source of sources) {
                 if (inactiveLinksVisible || !source.deleted) {
-                    attributesBarList.push(<AttributesBar source={source} sourceType={type} key={index} open={isOpen}/>)
+                    attributesBarList.push(<AttributesBar source={source} sourceType={type} key={sources.indexOf(source)} open={isOpen}/>)
                 }
             }
         } else {
