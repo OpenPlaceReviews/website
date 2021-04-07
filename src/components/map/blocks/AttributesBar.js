@@ -15,6 +15,7 @@ const useStyles = makeStyles({
     header: {
         fontWeight: "600",
         fontSize: "18px",
+        marginTop:"5px"
     },
     icon: {
         width: "24px",
@@ -23,11 +24,11 @@ const useStyles = makeStyles({
     },
     subheader: {
         fontWeight: "normal",
-        fontSize: "14px",
+        fontSize: "14px"
     }
 })
 
-export default function AttributesBar({ sourceType, sources }) {
+export default function AttributesBar({ sourceType, sources, open }) {
 
     const { tags, version, id, changeset, timestamp, type, deleted, lat, lon } = sources[sources.length - 1];
 
@@ -57,6 +58,11 @@ export default function AttributesBar({ sourceType, sources }) {
         tagsKeys = Object.keys(tags);
     }
 
+    function getTime(time) {
+        let newTime = time.replace("T", ' ');
+        return newTime.length > 19 ? newTime.substring(0, 19) : newTime;
+    }
+
     const top = <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }}>
         {icon && <img src={icon} alt="icon" className={classes.icon} />}
         <div>
@@ -69,11 +75,11 @@ export default function AttributesBar({ sourceType, sources }) {
         </div>
     </Box>;
 
-    return <BlockExpandable header={top} open={true}>
+    return <BlockExpandable header={top} open={open}>
         {version && <p>Version #{version} <SpecChar code={'\u2014'}/> Changeset #<Link href={`${changesetLink}`}>{changeset}</Link></p>}
         {(lat && lon) ? <p>Location: <Value>{lat.toFixed(5)}, {lon.toFixed(5)}</Value></p> : null}
-        {timestamp && <p>Timestamp: {timestamp}</p>}
-        {deleted && <p>Deleted timestamp: {deleted}</p>}
+        {timestamp && <p>Timestamp: {getTime(timestamp)}</p>}
+        {deleted && <p>Deleted timestamp: {getTime(deleted)}</p>}
         {tags && <TagsTable tags={tags} />}
     </BlockExpandable>
 }

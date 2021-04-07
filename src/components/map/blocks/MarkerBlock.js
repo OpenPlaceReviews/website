@@ -1,22 +1,21 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect, useRef} from 'react';
 
 import useExtractObject from "../hooks/useExtractObject";
 import useDiff from "../hooks/useDiff";
 import useCommitOp from "../hooks/useCommitOp";
 import { getObjectsById } from "../../../api/data";
 
-import BlockExpandable from "./BlockExpandable";
 import AttributesBar from "./AttributesBar";
+import MarkerActions from "./MarkerActions";
 import MapSidebar from "./sidebar/MapSidebar";
-import ReviewImagesBlock from "./ReviewImagesBlock";
 
 import AuthContext from "../../main/auth/providers/AuthContext";
 import { makeStyles } from "@material-ui/styles";
-import {Box, Button, IconButton, Link} from "@material-ui/core";
+import {Box, IconButton, Link, Switch} from "@material-ui/core";
 import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
-import Utils from "../../util/Utils";
-import CategorySelector from "./CategorySelector";
+import ImagesBlock from "./ImagesBlock";
+import warningIcon from "../../../assets/images/map_sources/ic_warning.png";
 
 const useStyles = makeStyles({
     container: {
@@ -62,6 +61,54 @@ const useStyles = makeStyles({
         height: "35px",
         marginBottom: "10px"
     },
+    switchBase: {
+        color: "#2D69E0",
+        '&$checked': {
+            color: "#2D69E0",
+        },
+        '&$checked + $track': {
+            backgroundColor: "#2D69E0",
+        },
+    },
+    track: {},
+    checked: {},
+    position: {
+        position: "absolute",
+        left:"85%"
+    },
+    switch: {
+        position: "relative",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "10px",
+        fontSize: "14px",
+        color:"#697281",
+        background:"#F5F5F5",
+        borderRadius:"6px"
+    },
+    warning: {
+        width: "24px",
+        height: "24px",
+        margin: "5px 0 -5px 0"
+    },
+    closed: {
+        marginLeft: "10px",
+        position: "relative",
+        marginTop: "-10%"
+    },
+    root: {
+        background: "#ff595e",
+        borderRadius: "7px",
+        border: 0,
+        color: "#FFFFFF",
+        height: 35,
+        width: "260px",
+        fontSize: "14px",
+        marginBottom: "15px",
+        marginTop: "-3%"
+    },
 });
 
 const findObject = (obj = {}, key) => {
@@ -83,7 +130,7 @@ const findObject = (obj = {}, key) => {
     return result;
 };
 
-export default function MarkerBlock({ marker, setMarker, whenReady }) {
+export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }) {
     const [op, setOp] = useState(null);
     const [places, setPlaces] = useState([]);
     const [similarPlace, setSimilarPlace] = useState(null);
@@ -92,6 +139,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
     const [markerPlace, setMarkerPlace] = useState(null);
     const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
     const classes = useStyles();
+    const [inactiveLinksVisible, setInactiveLinksVisible] = useState(false);
 
     const [place] = places;
     const { authData } = useContext(AuthContext);
@@ -121,50 +169,25 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
             setMarker(null);
         }
         Promise.resolve()
-          .then(() => setSimilarPlace(isMergeAllowed(object, similarObject) ? similarObject : null))
-          .then(() => setPlaces([object, object]));
+            .then(() => setSimilarPlace(isMergeAllowed(object, similarObject) ? similarObject : null))
+            .then(() => setPlaces([object, object]));
     }
+
+    useEffect(() => {
+        setVersion(0);
+    }, [marker]);
 
     const handleUpdatePlace = () => {
         if (JSON.stringify(places[0].id) !== JSON.stringify(places[1].id)) {
             setMarker(null);
         } else {
-            setVersion(place.version + 1);
+            setVersion((place.version ? place.version : 0) + 1);
         }
     }
 
     useExtractObject(marker, version, handleExtractPlace);
     useDiff(places[0], places[1], categories, setOp);
     useCommitOp(op, authData, handleUpdatePlace);
-
-    let imagesSidebar;
-    if (place && place.images && categories) {
-        const { images } = place;
-        const isEditable = isLoggedIn() && !similarPlace;
-        imagesSidebar = <React.Fragment>
-            {images.review && images.review.length > 0 ? <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
-                <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable} initialCategory="review" categories={categories} />
-            </BlockExpandable> : ''}
-
-            {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ? <BlockExpandable key={index} header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
-                <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable} initialCategory={category} categories={categories} />
-            </BlockExpandable> : '')}
-        </React.Fragment>;
-    }
-
-    let similarImagesSidebar;
-    if (similarPlace && similarPlace.images && categories) {
-        const { images } = similarPlace;
-        similarImagesSidebar = <React.Fragment>
-            {images.review && images.review.length > 0 ? <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
-                <ReviewImagesBlock place={similarPlace} isEditable={false} initialCategory="review" categories={categories} />
-            </BlockExpandable> : ''}
-
-            {Object.keys(categories).map((category, index) => images[category] && images[category].length > 0 ? <BlockExpandable key={index} header={`Photos - ${Utils.capitalize(category)} (${images[category].length})`}>
-                <ReviewImagesBlock place={similarPlace} isEditable={false} initialCategory={category} categories={categories} />
-            </BlockExpandable> : '')}
-        </React.Fragment>;
-    }
 
     useEffect(() => {
         const requestCategories = async () => {
@@ -188,6 +211,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                 latLon: params.latLon,
                 images: params.images,
                 sources: params.sources,
+                deleted: params.deleted
             });
         }
         if (similarPlace) {
@@ -198,7 +222,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                 subtitle: params.subtitle,
                 latLon: params.latLon,
                 images: params.images,
-                sources: params.sources,
+                sources: params.sources
             });
         } else {
             setSimilarMarkerPlace(null);
@@ -220,25 +244,40 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         if (sourceName) {
             return sourceName;
         } else {
-            return place.id;
+            return place.id.join(", ");
         }
     };
 
     const fetchPlaceType = place => {
         const { placetype, source } = place;
+        let type;
         if (placetype) {
-            return placetype;
-        }
-        let sourcePlacetype = findObject(source, 'placetype');
-        if (sourcePlacetype) {
-            return sourcePlacetype;
+            type = placetype;
         } else {
-            let osmValue = findObject(source, 'osm_value');
-            if (osmValue) {
-                return osmValue;
+            let sourcePlacetype = findObject(source, 'placetype');
+            if (sourcePlacetype) {
+                type = sourcePlacetype;
             } else {
-                return '';
+                let osmValue = findObject(source, 'osm_value');
+                if (osmValue) {
+                    type = osmValue;
+                }
             }
+        }
+        if (type) {
+            let placeTypeStr = placeTypes ? placeTypes[type] : null;
+            if (placeTypeStr) {
+                let arr = placeTypeStr.split('-');
+                type = arr.length > 0 ? arr[arr.length - 1].trim() : placeTypeStr;
+            } else {
+                type = type.replaceAll('_', ' ');
+                if (type.length > 1) {
+                    type = type[0].toUpperCase() + type.substring(1);
+                }
+            }
+            return type;
+        } else {
+            return '';
         }
     };
 
@@ -246,7 +285,7 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
         let title = fetchPlaceName(place);
         let subtitle = fetchPlaceType(place);
         let latLon = null;
-        const { lat, lon, source } = place;
+        const { lat, lon, source, deleted } = place;
         if (lat && lon) {
             latLon = [lat, lon];
         } else {
@@ -262,14 +301,65 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
             latLon: latLon,
             images: place.images,
             sources: source,
+            deleted: deleted
         };
     };
-
     function onMerge() {
         if (isPlaceDeleted(place)) {
             setPlaces([place, similarPlace]);
         } else {
             setPlaces([similarPlace, place]);
+        }
+    }
+
+    const toggleInactiveLinksVisibility = () => {
+        setInactiveLinksVisible((prev) => !prev);
+    };
+    function getInactiveLinksCount() {
+        let inactiveLinksCount = 0;
+        markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => {
+            if (source.length > 0 && source[0].deleted) {
+                inactiveLinksCount++;
+            }
+        });
+        return inactiveLinksCount;
+    }
+
+    const imagesSidebarRef = useRef(null);
+    const handleActionClick = (action) => {
+        if (action === "reviewImages") {
+            if (imagesSidebarRef) {
+                imagesSidebarRef.current.scrollIntoView();
+            }
+        }
+    };
+
+    function showSwitchInactiveLinks() {
+        if (getInactiveLinksCount() > 0) {
+            return <div className={classes.switch}>
+                <span>Show inactive links ({getInactiveLinksCount()})</span>
+                <Switch
+                    className={classes.position}
+                    classes={{
+                        switchBase: classes.switchBase,
+                        track: classes.track,
+                        checked: classes.checked
+                    }}
+                    value={inactiveLinksVisible} onClick={toggleInactiveLinksVisibility}/>
+            </div>
+        }
+    }
+    function showMarkerActions() {
+        if (isLoggedIn()) {
+            return <MarkerActions markerPlace={markerPlace}
+                                  similarMarkerPlace={similarMarkerPlace}
+                                  onActionClick={handleActionClick}
+                                  onMerge={onMerge}
+                                  categories={categories}
+                                  place={place}
+                                  similarPlace={similarPlace}
+                                  setPlaces={setPlaces}
+            />
         }
     }
 
@@ -284,37 +374,26 @@ export default function MarkerBlock({ marker, setMarker, whenReady }) {
                     <CancelRoundedIcon className={classes.closeIcon} />
                 </IconButton>
             </Box>
+            {markerPlace && markerPlace.deleted && <Box className={classes.root}>
+                <span className={classes.closed}>
+                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>This place is permanently closed</span>
+            </Box>}
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
-                <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value></p>
+                <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
+                </p>
+                {showSwitchInactiveLinks()}
             </div>
-            {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 ? <AttributesBar sources={source} sourceType={type} key={index} /> : '')}
-            {imagesSidebar}
-
-            {similarMarkerPlace && <>
-                <div className={classes.attributes}><p>Similar object</p></div>
-                <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
-                    <div>
-                        <p className={classes.header}>{similarMarkerPlace.title}</p>
-                        <p className={classes.subheader}>{similarMarkerPlace.subtitle}</p>
-                    </div>
-                </Box>
-                <div className={classes.attributes}>
-                    <p>ID: <Link href={`/data/objects/opr_place?key=${similarOprId}`}>{similarOprId}</Link></p>
-                    <p>Location: <Value>{similarMarkerPlace.latLon && similarMarkerPlace.latLon[0].toFixed(5)}, {similarMarkerPlace.latLon && similarMarkerPlace.latLon[1].toFixed(5)}</Value>
-                    </p>
-                </div>
-                {similarMarkerPlace.sources && Object.entries(similarMarkerPlace.sources).map(([type, source], index) => source.length > 0 ? <AttributesBar sources={source} sourceType={type} key={index} /> : '')}
-                {similarImagesSidebar}
-                <Button
-                  type="submit"
-                  className={classes.button}
-                  color="primary"
-                  variant="contained"
-                  disabled={similarPlace == null}
-                  onClick={onMerge}
-                >Merge</Button>
-            </>}
+            {showMarkerActions()}
+            {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
+                <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
+            <div ref={imagesSidebarRef}>
+                <ImagesBlock place={place}
+                             isOriginalPlace={true}
+                             categories={categories}
+                             showReviewBlock={true}
+                             setPlaces={setPlaces}/>
+            </div>
         </div>
     </MapSidebar>;
 };
