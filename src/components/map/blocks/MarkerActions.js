@@ -100,7 +100,6 @@ export default function MarkerActions({
                     sources.forEach(source => !source.deleted ? isActiveOsm = true : null)
                 }
             });
-            console.log("isActiveOsm",isActiveOsm)
             if (!isActiveOsm) {
                 permanentlyClosedMarker = true;
             }
