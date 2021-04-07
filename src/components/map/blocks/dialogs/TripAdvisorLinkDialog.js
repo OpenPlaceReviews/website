@@ -107,10 +107,9 @@ export default function TripAdvisorLinkDialog({
             </DialogContentText>
             <TextField
                 autoFocus
-                required
                 id="filled-required"
-                label="Label"
-                defaultValue="https://"
+                label="Link"
+                placeholder="https://"
                 variant="filled"
                 fullWidth
                 helperText={errorText}

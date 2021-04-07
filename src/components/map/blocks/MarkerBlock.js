@@ -223,7 +223,8 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 subtitle: params.subtitle,
                 latLon: params.latLon,
                 images: params.images,
-                sources: params.sources
+                sources: params.sources,
+                deleted: params.deleted,
             });
         } else {
             setSimilarMarkerPlace(null);

@@ -100,7 +100,7 @@ export default function MarkerActions({
                     sources.forEach(source => !source.deleted ? isActiveOsm = true : null)
                 }
             });
-
+            console.log("isActiveOsm",isActiveOsm)
             if (!isActiveOsm) {
                 permanentlyClosedMarker = true;
             }
@@ -113,8 +113,17 @@ export default function MarkerActions({
         return markerPlace.images ? markerPlace.images.review : false;
     }
 
+    function shouldShowMergeAction() {
+        return similarMarkerPlace && !markerPlace.deleted && !similarMarkerPlace.deleted;
+    }
+
+    function shouldShowPermanentlyClosedAction() {
+        return permanentlyClosedMarkerAvailable && !markerPlace.deleted;
+    }
+
     function isActionsAvailable() {
-        return !!(markerPlace && (!tripAdvisorLinkAvailable || hasImagesForReview() || similarMarkerPlace || !permanentlyClosedMarkerAvailable));
+        return !!(markerPlace && (!tripAdvisorLinkAvailable || hasImagesForReview() || shouldShowMergeAction()
+            || shouldShowPermanentlyClosedAction()));
     }
 
     return (isActionsAvailable() && <BlockExpandable header='Actions to take' open={true}>
@@ -142,7 +151,7 @@ export default function MarkerActions({
                                   primary={'Review ' + markerPlace.images.review.length + ' photos'}/>
                 </ListItem>}
 
-                {similarMarkerPlace && <div>
+                {shouldShowMergeAction() && <div>
                     <ListItem button onClick={openMergeDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
@@ -160,7 +169,7 @@ export default function MarkerActions({
                                           similarPlace={similarPlace}
                                           setPlaces={setPlaces}/>
                 </div>}
-                {permanentlyClosedMarkerAvailable && !markerPlace.deleted && <div>
+                {shouldShowPermanentlyClosedAction() && <div>
                     <ListItem button onClick={openPermanentlyClosedDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={wikiIcon} alt="openStreetMapIcon" className={classes.icon}/>
