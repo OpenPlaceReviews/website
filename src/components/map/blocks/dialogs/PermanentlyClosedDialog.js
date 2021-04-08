@@ -77,7 +77,7 @@ export default function PermanentlyClosedDialog({
                 autoFocus
                 required
                 id="filled-required"
-                defaultValue="Optional comment"
+                placeholder="Optional comment"
                 variant="filled"
                 fullWidth
                 onChange={onChange}/>
