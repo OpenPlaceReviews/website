@@ -14,12 +14,6 @@ import ImagesBlock from "../ImagesBlock";
 import AttributesBarList from "../AttributesBarList";
 
 const useStyles = makeStyles({
-    card: {
-        minWidth: 340,
-        "& .MuiGridListTile-tile": {
-            backgroundColor: "#F5F5F5",
-        }
-    },
     header: {
         fontSize: "22px",
         fontWeight: 600,
@@ -55,6 +49,11 @@ const useStyles = makeStyles({
         "& .MuiDialog-paperWidthSm": {
             maxWidth: "740px !important",
         }
+    },
+    tile: {
+        boxShadow: "0 2px 4px rgba(0, 0, 0, .2)",
+        borderColor:"#2D69E0",
+        backgroundColor: "#FFFFFF"
     }
 })
 
@@ -78,7 +77,7 @@ export default function MergeDuplicateDialog({
         <DialogContent>
             <div>
                 <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
-                    <GridListTile style={{height: "auto"}} className={classes.card}>
+                    <GridListTile style={{height: "auto"}} classes={{tile:classes.tile}}>
                         <CardContent>
                             <p style={{textAlign: "center", fontSize: "16px"}}
                                className={classes.header}>{markerPlace && markerPlace.title}</p>
@@ -99,7 +98,7 @@ export default function MergeDuplicateDialog({
 
                         </CardContent>
                     </GridListTile>
-                    <GridListTile style={{height: "auto"}} className={classes.card}>
+                    <GridListTile style={{height: "auto"}} classes={{tile:classes.tile}}>
                         <CardContent>
                             <p style={{textAlign: "center", fontSize: "16px"}}
                                className={classes.header}>{similarMarkerPlace && similarMarkerPlace.title}</p>
