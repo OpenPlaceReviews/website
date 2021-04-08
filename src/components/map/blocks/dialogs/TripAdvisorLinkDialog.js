@@ -6,7 +6,7 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
+    DialogTitle, Link,
     TextField
 } from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
@@ -42,6 +42,7 @@ export default function TripAdvisorLinkDialog({
                                               open,
                                               onClose,
                                               place,
+                                              markerPlace,
                                               setPlaces
                                           }) {
 
@@ -104,13 +105,14 @@ export default function TripAdvisorLinkDialog({
         <DialogContent>
             <DialogContentText>
                 To connect this place search & paste the web link on this place on TripAdvisor website.
+                <Link href={`https://www.google.com/search?q=tripadvisor+${encodeURIComponent(markerPlace.title)}`}
+                      onClick={window.opener} target="_blank" rel="noopener"> Search on Google</Link>
             </DialogContentText>
             <TextField
                 autoFocus
-                required
                 id="filled-required"
-                label="Label"
-                defaultValue="https://"
+                label="Link"
+                placeholder="https://"
                 variant="filled"
                 fullWidth
                 helperText={errorText}

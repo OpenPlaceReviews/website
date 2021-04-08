@@ -5,7 +5,6 @@ import useDiff from "../hooks/useDiff";
 import useCommitOp from "../hooks/useCommitOp";
 import { getObjectsById } from "../../../api/data";
 
-import AttributesBar from "./AttributesBar";
 import MarkerActions from "./MarkerActions";
 import MapSidebar from "./sidebar/MapSidebar";
 
@@ -16,6 +15,8 @@ import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
 import Value from "../../main/blockchain/blocks/Value";
 import ImagesBlock from "./ImagesBlock";
 import warningIcon from "../../../assets/images/map_sources/ic_warning.png";
+import AttributesBarList from "./AttributesBarList";
+import MapSidebarBlock from "./sidebar/MapSidebarBlock";
 
 const useStyles = makeStyles({
     container: {
@@ -91,7 +92,7 @@ const useStyles = makeStyles({
     warning: {
         width: "24px",
         height: "24px",
-        margin: "5px 0 -5px 0"
+        margin: "5px 10px -5px 0"
     },
     closed: {
         marginLeft: "10px",
@@ -104,10 +105,15 @@ const useStyles = makeStyles({
         border: 0,
         color: "#FFFFFF",
         height: 35,
-        width: "260px",
+        width: "auto",
         fontSize: "14px",
         marginBottom: "15px",
         marginTop: "-3%"
+    },
+    existMark: {
+        fontSize: "16px",
+        fontWeight: 600,
+        lineHeight: "22px",
     },
 });
 
@@ -150,7 +156,11 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         let deleted = false;
         if (place && place.source) {
             deleted = true;
-            Object.entries(place.source).map(([type, source]) => deleted = deleted && type === 'osm' && source[0].deleted != null);
+            Object.entries(place.source).map(([type, sources]) => {
+                if (type === 'osm') {
+                    sources.forEach(source => deleted = deleted && source.deleted != null)
+                }
+            });
         }
         return deleted;
     };
@@ -166,7 +176,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
 
     const handleExtractPlace = (object, similarObject = null) => {
         if (!object) {
-            setMarker(null);
+            setMarkerPlace(null);
         }
         Promise.resolve()
             .then(() => setSimilarPlace(isMergeAllowed(object, similarObject) ? similarObject : null))
@@ -211,7 +221,8 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 latLon: params.latLon,
                 images: params.images,
                 sources: params.sources,
-                deleted: params.deleted
+                deleted: params.deleted,
+                closedDescription: params.closedDescription
             });
         }
         if (similarPlace) {
@@ -222,7 +233,8 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 subtitle: params.subtitle,
                 latLon: params.latLon,
                 images: params.images,
-                sources: params.sources
+                sources: params.sources,
+                deleted: params.deleted,
             });
         } else {
             setSimilarMarkerPlace(null);
@@ -281,9 +293,33 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     };
 
+    const fetchCloseDescription = place => {
+        const {deleted, source} = place;
+        let description;
+
+        if (deleted) {
+            description = "This place is permanently closed";
+        } else if (source) {
+            let hasActiveOsm = false;
+
+            Object.entries(source).map(([type, sources]) => {
+                if (type === 'osm') {
+                    sources.forEach(source => !source.deleted ? hasActiveOsm = true : null)
+                }
+            });
+
+            if (!hasActiveOsm) {
+                description = "Review if place is permanently closed";
+            }
+        }
+
+        return description;
+    };
+
     const fetchPlaceParams = (place) => {
         let title = fetchPlaceName(place);
         let subtitle = fetchPlaceType(place);
+        let closedDescription = fetchCloseDescription(place);
         let latLon = null;
         const { lat, lon, source, deleted } = place;
         if (lat && lon) {
@@ -301,7 +337,8 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
             latLon: latLon,
             images: place.images,
             sources: source,
-            deleted: deleted
+            deleted: deleted,
+            closedDescription: closedDescription
         };
     };
     function onMerge() {
@@ -363,30 +400,32 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     }
 
-    return <MapSidebar position="left" className={classes.container}>
+    return (markerPlace ? <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
-            <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
+            <Box display="flex" flexDirection="row" style={{marginBottom: "10px"}} alignItems="center"
+                 justifyContent="space-between">
                 <div>
-                    <p className={classes.header}>{markerPlace && markerPlace.title}</p>
-                    <p className={classes.subheader}>{markerPlace && markerPlace.subtitle}</p>
+                    <p className={classes.header}>{markerPlace.title}</p>
+                    <p className={classes.subheader}>{markerPlace.subtitle}</p>
                 </div>
                 <IconButton onClick={() => setMarker(null)}>
-                    <CancelRoundedIcon className={classes.closeIcon} />
+                    <CancelRoundedIcon className={classes.closeIcon}/>
                 </IconButton>
             </Box>
-            {markerPlace && markerPlace.deleted && <Box className={classes.root}>
-                <span className={classes.closed}>
-                    <img src={warningIcon} alt="warningIcon" className={classes.warning}/>This place is permanently closed</span>
-            </Box>}
+            {markerPlace.closedDescription &&
+            <Box className={classes.root}><span className={classes.closed}>
+                <img src={warningIcon} alt="warningIcon"
+                     className={classes.warning}/>{markerPlace.closedDescription}</span></Box>}
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
-                <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
+                <p>Location: <Value>{markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
                 </p>
                 {showSwitchInactiveLinks()}
             </div>
             {showMarkerActions()}
-            {markerPlace && markerPlace.sources && Object.entries(markerPlace.sources).map(([type, source], index) => source.length > 0 && (inactiveLinksVisible || !source[0].deleted) ?
-                <AttributesBar sources={source} sourceType={type} key={index} open={true}/> : '')}
+            {<AttributesBarList place={markerPlace}
+                                inactiveLinksVisible={inactiveLinksVisible}
+                                isOpen={true}/>}
             <div ref={imagesSidebarRef}>
                 <ImagesBlock place={place}
                              isOriginalPlace={true}
@@ -395,5 +434,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                              setPlaces={setPlaces}/>
             </div>
         </div>
-    </MapSidebar>;
+    </MapSidebar> : <MapSidebar position="left"><MapSidebarBlock><span className={classes.existMark}>
+                <img src={warningIcon} alt="warningIcon" className={classes.warning}/> This place doesn't exist currently </span></MapSidebarBlock></MapSidebar>);
 };

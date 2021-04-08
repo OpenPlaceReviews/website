@@ -31,18 +31,11 @@ export default function TagsTable({tags}) {
 
     const classes = useStyles();
 
-    function fixTagValueLength(tag) {
-        if (tag.name === "source") {
-            return <dd className={classes.value}>{tag.value}</dd>
-        } else {
-            return <dd>{tag.value}</dd>
-        }
-    }
-
     return <dl className={classes.tags}>
         {popupTags.map((tag, i) => <React.Fragment key={i}>
             <dt>{tag.name}</dt>
-            {fixTagValueLength(tag)}
+            <dd className={(tag.value.indexOf('\s') > -1) || tag.value.split('\s').find(word => word.length > 20)
+                ? classes.value : null}>{tag.value}</dd>
         </React.Fragment>)}
     </dl>
 }
