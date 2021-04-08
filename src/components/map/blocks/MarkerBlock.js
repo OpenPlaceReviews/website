@@ -411,20 +411,20 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
             <Box display="flex" flexDirection="row" style={{marginBottom: "10px"}} alignItems="center"
                  justifyContent="space-between">
                 <div>
-                    <p className={classes.header}>{markerPlace && markerPlace.title}</p>
-                    <p className={classes.subheader}>{markerPlace && markerPlace.subtitle}</p>
+                    <p className={classes.header}>{markerPlace.title}</p>
+                    <p className={classes.subheader}>{markerPlace.subtitle}</p>
                 </div>
                 <IconButton onClick={() => setMarker(null)}>
                     <CancelRoundedIcon className={classes.closeIcon}/>
                 </IconButton>
             </Box>
-            {markerPlace && markerPlace.closedDescription &&
+            {markerPlace.closedDescription &&
             <Box className={classes.root}><span className={classes.closed}>
                 <img src={warningIcon} alt="warningIcon"
                      className={classes.warning}/>{markerPlace.closedDescription}</span></Box>}
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
-                <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
+                <p>Location: <Value>{markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
                 </p>
                 {showSwitchInactiveLinks()}
             </div>
