@@ -108,14 +108,17 @@ export default function TripAdvisorLinkDialog({
                 let postcode = source[index].tags["addr:postcode"];
 
                 if (street) {
+                    console.log(street)
                     address = street;
                 } else if (postcode) {
+                    console.log(postcode)
                     address = postcode;
                 }
             }
         });
-
-        return encodeURIComponent(markerPlace.title) + "+" + encodeURIComponent(address)
+        
+        return address ? (encodeURIComponent(markerPlace.title) + "+" + encodeURIComponent(address))
+            : encodeURIComponent(markerPlace.title);
     }
 
     return <Dialog open={open} onClose={onClose}
