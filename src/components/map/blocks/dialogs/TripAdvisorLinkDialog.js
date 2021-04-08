@@ -99,13 +99,32 @@ export default function TripAdvisorLinkDialog({
         }
     }
 
+    function getUrlParameters() {
+        let address = null;
+
+        markerPlace && Object.entries(markerPlace.sources).map(([type, source], index) => {
+            if (type === 'osm') {
+                let street = source[index].tags["addr:street"];
+                let postcode = source[index].tags["addr:postcode"];
+
+                if (street) {
+                    address = street;
+                } else if (postcode) {
+                    address = postcode;
+                }
+            }
+        });
+
+        return encodeURIComponent(markerPlace.title) + "+" + encodeURIComponent(address)
+    }
+
     return <Dialog open={open} onClose={onClose}
                    aria-labelledby="form-dialog-title" className={classes.dialog}>
         <DialogTitle id="form-dialog-title">Link with Trip Advisor</DialogTitle>
         <DialogContent>
             <DialogContentText>
                 To connect this place search & paste the web link on this place on TripAdvisor website.
-                <Link href={`https://www.google.com/search?q=tripadvisor+${encodeURIComponent(markerPlace.title)}`}
+                <Link href={`https://www.google.com/search?q=tripadvisor+${getUrlParameters()}`}
                       onClick={window.opener} target="_blank" rel="noopener"> Search on Google</Link>
             </DialogContentText>
             <TextField
