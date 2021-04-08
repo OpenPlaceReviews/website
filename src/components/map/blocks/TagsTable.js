@@ -34,8 +34,8 @@ export default function TagsTable({tags}) {
     return <dl className={classes.tags}>
         {popupTags.map((tag, i) => <React.Fragment key={i}>
             <dt>{tag.name}</dt>
-            <dd className={(tag.value.indexOf('\s') > -1)
-            || tag.value.split('\s').forEach(word => word.length > 20) ? classes.value : null}>{tag.value}</dd>
+            <dd className={(tag.value.indexOf('\s') > -1) || tag.value.split('\s').find(word => word.length > 20)
+                ? classes.value : null}>{tag.value}</dd>
         </React.Fragment>)}
     </dl>
 }
