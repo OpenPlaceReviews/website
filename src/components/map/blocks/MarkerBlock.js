@@ -109,17 +109,6 @@ const useStyles = makeStyles({
         fontSize: "14px",
         marginBottom: "15px",
         marginTop: "-3%"
-    },
-    notExist: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        "& :focus": {
-            background: "none",
-        },
-        "& p": {
-            margin: 0,
-        },
     }
 });
 
