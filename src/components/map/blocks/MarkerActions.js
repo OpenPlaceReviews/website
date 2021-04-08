@@ -138,6 +138,7 @@ export default function MarkerActions({
                     <TripAdvisorLinkDialog open={tripAdvisorDialogOpen}
                                            onClose={closeTripAdvisorDialog}
                                            place={place}
+                                           markerPlace={markerPlace}
                                            setPlaces={setPlaces}/>
                 </div>}
 

@@ -16,6 +16,7 @@ import Value from "../../main/blockchain/blocks/Value";
 import ImagesBlock from "./ImagesBlock";
 import warningIcon from "../../../assets/images/map_sources/ic_warning.png";
 import AttributesBarList from "./AttributesBarList";
+import MapSidebarBlock from "./sidebar/MapSidebarBlock";
 
 const useStyles = makeStyles({
     container: {
@@ -109,6 +110,11 @@ const useStyles = makeStyles({
         marginBottom: "15px",
         marginTop: "-3%"
     },
+    existMark: {
+        fontSize: "16px",
+        fontWeight: 600,
+        lineHeight: "22px",
+    },
 });
 
 const findObject = (obj = {}, key) => {
@@ -170,7 +176,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
 
     const handleExtractPlace = (object, similarObject = null) => {
         if (!object) {
-            setMarker(null);
+            setMarkerPlace(null);
         }
         Promise.resolve()
             .then(() => setSimilarPlace(isMergeAllowed(object, similarObject) ? similarObject : null))
@@ -394,23 +400,25 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         }
     }
 
-    return <MapSidebar position="left" className={classes.container}>
+    return (markerPlace ? <MapSidebar position="left" className={classes.container}>
         <div className={classes.sidebar}>
-            <Box display="flex" flexDirection="row" style={{ marginBottom: "10px" }} alignItems="center" justifyContent="space-between">
+            <Box display="flex" flexDirection="row" style={{marginBottom: "10px"}} alignItems="center"
+                 justifyContent="space-between">
                 <div>
-                    <p className={classes.header}>{markerPlace && markerPlace.title}</p>
-                    <p className={classes.subheader}>{markerPlace && markerPlace.subtitle}</p>
+                    <p className={classes.header}>{markerPlace.title}</p>
+                    <p className={classes.subheader}>{markerPlace.subtitle}</p>
                 </div>
                 <IconButton onClick={() => setMarker(null)}>
-                    <CancelRoundedIcon className={classes.closeIcon} />
+                    <CancelRoundedIcon className={classes.closeIcon}/>
                 </IconButton>
             </Box>
-            {markerPlace && markerPlace.closedDescription &&
+            {markerPlace.closedDescription &&
             <Box className={classes.root}><span className={classes.closed}>
-                <img src={warningIcon} alt="warningIcon" className={classes.warning}/>{markerPlace.closedDescription}</span></Box>}
+                <img src={warningIcon} alt="warningIcon"
+                     className={classes.warning}/>{markerPlace.closedDescription}</span></Box>}
             <div className={classes.attributes}>
                 <p>ID: <Link href={`/data/objects/opr_place?key=${oprId}`}>{oprId}</Link></p>
-                <p>Location: <Value>{markerPlace && markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
+                <p>Location: <Value>{markerPlace.latLon && markerPlace.latLon[0].toFixed(5)}, {markerPlace && markerPlace.latLon && markerPlace.latLon[1].toFixed(5)}</Value>
                 </p>
                 {showSwitchInactiveLinks()}
             </div>
@@ -426,5 +434,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                              setPlaces={setPlaces}/>
             </div>
         </div>
-    </MapSidebar>;
+    </MapSidebar> : <MapSidebar position="left"><MapSidebarBlock><span className={classes.existMark}>
+                <img src={warningIcon} alt="warningIcon" className={classes.warning}/> This place doesn't exist currently </span></MapSidebarBlock></MapSidebar>);
 };
