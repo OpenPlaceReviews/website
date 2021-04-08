@@ -109,7 +109,12 @@ const useStyles = makeStyles({
         fontSize: "14px",
         marginBottom: "15px",
         marginTop: "-3%"
-    }
+    },
+    existMark: {
+        fontSize: "16px",
+        fontWeight: 600,
+        lineHeight: "22px",
+    },
 });
 
 const findObject = (obj = {}, key) => {
@@ -429,6 +434,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                              setPlaces={setPlaces}/>
             </div>
         </div>
-    </MapSidebar> : <MapSidebar position="left"><MapSidebarBlock><span className={classes.header}>
-                <img src={warningIcon} alt="warningIcon" className={classes.warning}/> This place doesn't exist </span></MapSidebarBlock></MapSidebar>);
+    </MapSidebar> : <MapSidebar position="left"><MapSidebarBlock><span className={classes.existMark}>
+                <img src={warningIcon} alt="warningIcon" className={classes.warning}/> This place doesn't exist currently </span></MapSidebarBlock></MapSidebar>);
 };

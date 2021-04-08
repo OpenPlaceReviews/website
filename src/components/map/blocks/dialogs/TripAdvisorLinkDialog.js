@@ -105,7 +105,7 @@ export default function TripAdvisorLinkDialog({
         <DialogContent>
             <DialogContentText>
                 To connect this place search & paste the web link on this place on TripAdvisor website.
-                <Link href={`https://www.google.com/search?q=tripadvisor+${markerPlace.title}`}
+                <Link href={`https://www.google.com/search?q=tripadvisor+${encodeURIComponent(markerPlace.title)}`}
                       onClick={window.opener} target="_blank" rel="noopener"> Search on Google</Link>
             </DialogContentText>
             <TextField
