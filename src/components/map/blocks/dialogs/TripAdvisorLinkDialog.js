@@ -104,14 +104,13 @@ export default function TripAdvisorLinkDialog({
 
         markerPlace && Object.entries(markerPlace.sources).map(([type, source], index) => {
             if (type === 'osm') {
+                let city = source[index].tags["addr:city"];
                 let street = source[index].tags["addr:street"];
                 let postcode = source[index].tags["addr:postcode"];
 
-                if (street) {
-                    address = street;
-                } else if (postcode) {
-                    address = postcode;
-                }
+                address = city ? city :
+                    (street ? street :
+                        (postcode ? postcode : null))
             }
         });
 
