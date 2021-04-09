@@ -120,15 +120,19 @@ export default function MarkerActions({
         return permanentlyClosedMarkerAvailable && !markerPlace.deleted;
     }
 
+    function shouldShowTripAdvisorAction() {
+        return !tripAdvisorLinkAvailable && !markerPlace.deleted;
+    }
+
     function isActionsAvailable() {
-        return !!(markerPlace && (!tripAdvisorLinkAvailable || hasImagesForReview() || shouldShowMergeAction()
+        return !!(markerPlace && (shouldShowTripAdvisorAction() || hasImagesForReview() || shouldShowMergeAction()
             || shouldShowPermanentlyClosedAction()));
     }
 
     return (isActionsAvailable() && <BlockExpandable header='Actions to take' open={true}>
         <div>
             <List component="nav" aria-label="main mailbox folders">
-                {!tripAdvisorLinkAvailable && <div>
+                {shouldShowTripAdvisorAction() && <div>
                     <ListItem button onClick={openTripAdvisorDialog} className={classes.listItem}>
                         <ListItemIcon>
                             <img src={tripAdvisorIcon} alt="tripAdvisorIcon" className={classes.icon}/>
