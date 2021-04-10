@@ -113,8 +113,7 @@ export default function TripAdvisorLinkDialog({
             }
         });
 
-        return address ? (encodeURIComponent(markerPlace.title) + "+" + encodeURIComponent(address))
-            : encodeURIComponent(markerPlace.title);
+        return encodeURIComponent(markerPlace.title + (address ? " " + address : ""));
     }
 
     return <Dialog open={open} onClose={onClose}

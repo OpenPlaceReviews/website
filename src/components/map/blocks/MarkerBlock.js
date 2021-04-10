@@ -146,14 +146,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
     const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
     const classes = useStyles();
     const [inactiveLinksVisible, setInactiveLinksVisible] = useState(false);
-    const [switchState, setSwitchState] = useState(false);
-
-    useEffect(() => {
-        if (markerPlace && markerPlace.deleted) {
-            setInactiveLinksVisible(true)
-            setSwitchState(true)
-        }
-    }, [markerPlace]);
 
     const [place] = places;
     const { authData } = useContext(AuthContext);
@@ -252,6 +244,10 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
     useEffect(() => {
         if (markerPlace) {
             whenReady(markerPlace);
+            setInactiveLinksVisible(false)
+            if (markerPlace.deleted) {
+                setInactiveLinksVisible(true)
+            }
         }
     }, [markerPlace]);
 
@@ -359,7 +355,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
 
     const toggleInactiveLinksVisibility = () => {
         setInactiveLinksVisible((prev) => !prev);
-        setSwitchState((prev) => !prev);
     };
     function getInactiveLinksCount() {
         let inactiveLinksCount = 0;
@@ -386,7 +381,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                 <span>Show inactive links ({getInactiveLinksCount()})</span>
                 <Switch
                     className={classes.position}
-                    checked={switchState}
+                    checked={inactiveLinksVisible}
                     classes={{
                         switchBase: classes.switchBase,
                         track: classes.track,
