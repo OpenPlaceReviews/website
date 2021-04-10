@@ -244,10 +244,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
     useEffect(() => {
         if (markerPlace) {
             whenReady(markerPlace);
-            setInactiveLinksVisible(false)
-            if (markerPlace.deleted) {
-                setInactiveLinksVisible(true)
-            }
+            setInactiveLinksVisible(!!markerPlace.deleted)
         }
     }, [markerPlace]);
 
