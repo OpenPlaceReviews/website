@@ -108,14 +108,12 @@ export default function TripAdvisorLinkDialog({
                 let street = source[index].tags["addr:street"];
                 let postcode = source[index].tags["addr:postcode"];
 
-                address = city ? city :
-                    (street ? street :
-                        (postcode ? postcode : null))
+                let localAddress = street ? street : (postcode ? postcode : null);
+                address = city ? (city + " " + localAddress) : localAddress;
             }
         });
 
-        return address ? (encodeURIComponent(markerPlace.title) + "+" + encodeURIComponent(address))
-            : encodeURIComponent(markerPlace.title);
+        return encodeURIComponent(markerPlace.title + (address ? " " + address : ""));
     }
 
     return <Dialog open={open} onClose={onClose}
