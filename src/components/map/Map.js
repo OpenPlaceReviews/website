@@ -91,6 +91,7 @@ export default function Map() {
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
   const { promiseInProgress } = usePromiseTracker();
+  const [isPlaceChanged, setIsPlaceChanged] = useState(false);
 
   useEffect(() => {
     const request = async () => {
@@ -162,7 +163,7 @@ export default function Map() {
       onMapStateChanged(map.getZoom(), map.getCenter().lat, map.getCenter().lng);
     }} />
 
-    {marker && <MarkerBlock marker={marker} setMarker={setMarker} placeTypes={placeTypes} whenReady={(markerPlace) => {
+    {marker && <MarkerBlock marker={marker} setMarker={setMarker} placeTypes={placeTypes} setIsPlaceChanged={setIsPlaceChanged} whenReady={(markerPlace) => {
       if (!hasParams) {
         map.setView(markerPlace.latLon, PLACE_MENU_ZOOM);
       }
@@ -176,7 +177,7 @@ export default function Map() {
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
-    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup} setLoading={setReload} />}
+    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup} setLoading={setReload} isPlaceChanged={isPlaceChanged}/>}
 
   </MapContainer>;
 }

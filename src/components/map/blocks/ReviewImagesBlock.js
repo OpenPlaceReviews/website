@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function ReviewImagesBlock({place, onSubmit, initialCategory, categories, isEditable}) {
+export default function ReviewImagesBlock({place, onSubmit, initialCategory, categories, isEditable, setIsPlaceChanged}) {
     const [current, setCurrent] = useState(0);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [categorized, setCategorized] = useState({});
@@ -52,6 +52,7 @@ export default function ReviewImagesBlock({place, onSubmit, initialCategory, cat
         });
 
         onSubmit([place, newPlace]);
+        setIsPlaceChanged(true);
     }
 
     const onChangeCategory = (e) => {

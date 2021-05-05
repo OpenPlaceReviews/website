@@ -136,7 +136,7 @@ const findObject = (obj = {}, key) => {
     return result;
 };
 
-export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }) {
+export default function MarkerBlock({ marker, setMarker, placeTypes, setIsPlaceChanged, whenReady }) {
     const [op, setOp] = useState(null);
     const [places, setPlaces] = useState([]);
     const [similarPlace, setSimilarPlace] = useState(null);
@@ -348,6 +348,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         } else {
             setPlaces([similarPlace, place]);
         }
+        setIsPlaceChanged(true);
     }
 
     const toggleInactiveLinksVisibility = () => {
@@ -433,7 +434,8 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
                              isOriginalPlace={true}
                              categories={categories}
                              showReviewBlock={true}
-                             setPlaces={setPlaces}/>
+                             setPlaces={setPlaces}
+                             setIsPlaceChanged={setIsPlaceChanged}/>
             </div>
         </div>
     </MapSidebar> : <MapSidebar position="left"><MapSidebarBlock><span className={classes.existMark}>

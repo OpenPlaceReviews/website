@@ -9,7 +9,8 @@ export default function ImagesBlock({
                                         isOriginalPlace,
                                         categories,
                                         showReviewBlock,
-                                        setPlaces
+                                        setPlaces,
+                                        setIsPlaceChanged
                                     }) {
 
     const {authData} = useContext(AuthContext);
@@ -24,7 +25,7 @@ export default function ImagesBlock({
             reviewImagesBlock = images.review && images.review.length > 0 ?
                 <BlockExpandable key={-1} header={`Photos - To review (${images.review.length})`}>
                     <ReviewImagesBlock place={place} onSubmit={setPlaces} isEditable={isEditable}
-                                       initialCategory="review" categories={categories}/>
+                                       initialCategory="review" categories={categories} setIsPlaceChanged={setIsPlaceChanged}/>
                 </BlockExpandable> : ''
         }
 

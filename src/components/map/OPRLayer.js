@@ -10,6 +10,7 @@ import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import L from 'leaflet';
 import 'leaflet.markercluster';
 import Tasks from './tasks/Tasks';
+import {bool} from "prop-types";
 
 let refreshTimout = null;
 let lastRefreshTime = 0;
@@ -18,12 +19,11 @@ const REFRESH_TIMEOUT = 500;
 const MIN_MARKERS_ZOOM = 14;
 var selectedMarkerGroup = [];
 
-export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading }) {
+export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged }) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
   //const [selectedMarkerGroup, setSelectedMarkerGroup] = useState([]);
-
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
   const prevTaskSelection = usePrevious(taskSelection);
@@ -86,7 +86,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     const updateCache = async () => {
       let newCache = {};
       if (task) {
-        if (taskChanged) {
+        if (taskChanged || isPlaceChanged) {
           setLoading(true);
         } else if (task.tileBasedData) {
           for (let tileId in currentBounds) {
@@ -108,7 +108,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
               }
             }
           }
-        } else if (taskChanged) {
+        } else if (taskChanged || isPlaceChanged) {
           //console.log('get all data');
           const { geo } = await task.fetchData({ startDate: taskStartDate, endDate: taskEndDate });
           //console.log('data=' + geo);
@@ -117,7 +117,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           return;
         }
       } else {
-        if (taskChanged) {
+        if (taskChanged || isPlaceChanged) {
           setLoading(true);
         } else {
           for (let tileId in currentBounds) {
