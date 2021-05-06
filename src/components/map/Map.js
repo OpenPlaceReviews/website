@@ -25,6 +25,7 @@ const INIT_LAT = 40.0;
 const INIT_LON = -35.0;
 const INIT_ZOOM = 4;
 const PLACE_MENU_ZOOM = 17;
+const TASK_SELECTION = 'taskSelection';
 
 export default function Map() {
 
@@ -76,17 +77,27 @@ export default function Map() {
       properties: { opr_id: `${oprPlaceId}` },
     };
   }
-
   const date = new Date();
-  const [map, setMap] = useState(null);
-  const [placeTypes, setPlaceTypes] = useState({});
-  const [filterVal, setFilter] = useState('all');
   const [taskSelection, setTaskSelection] = useState({
     taskId: 'none',
     startDate: new Date(date.getFullYear(), date.getMonth(), 1),
     endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
   });
 
+  useEffect(() => {
+    if (storage.getItem(TASK_SELECTION) != null) {
+      let storageTask = JSON.parse(storage.getItem(TASK_SELECTION));
+      setTaskSelection({
+        taskId: storageTask.taskId,
+        startDate: new Date(storageTask.startDate),
+        endDate: new Date(storageTask.endDate)
+      });
+    }
+  }, [setTaskSelection])
+
+  const [map, setMap] = useState(null);
+  const [placeTypes, setPlaceTypes] = useState({});
+  const [filterVal, setFilter] = useState('all');
   const [marker, setMarker] = useState(initialMarker);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);

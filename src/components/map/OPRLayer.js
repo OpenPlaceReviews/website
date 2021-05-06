@@ -6,6 +6,7 @@ import { isEqual, has, get } from "lodash";
 import { fetchData } from "../../api/geo";
 import MarkerIcon from './MrkerIcon';
 import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
+import storage from "../../libs/storage";
 
 import L from 'leaflet';
 import 'leaflet.markercluster';
@@ -35,6 +36,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     task = Tasks.getTaskById(taskSelection.taskId);
     taskStartDate = taskSelection.startDate;
     taskEndDate = taskSelection.endDate;
+    storage.setItem("taskSelection", JSON.stringify(taskSelection))
   }
   let minMarkersZoom = task ? task.minZoom : MIN_MARKERS_ZOOM;
 
