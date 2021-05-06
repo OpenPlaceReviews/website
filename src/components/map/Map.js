@@ -188,7 +188,8 @@ export default function Map() {
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
-    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup} setLoading={setReload} isPlaceChanged={isPlaceChanged}/>}
+    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup}
+                           setLoading={setReload} isPlaceChanged={isPlaceChanged} setIsPlaceChanged={setIsPlaceChanged}/>}
 
   </MapContainer>;
 }

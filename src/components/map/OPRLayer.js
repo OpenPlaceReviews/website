@@ -20,7 +20,7 @@ const REFRESH_TIMEOUT = 500;
 const MIN_MARKERS_ZOOM = 14;
 var selectedMarkerGroup = [];
 
-export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged }) {
+export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged, setIsPlaceChanged }) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
@@ -115,6 +115,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           const { geo } = await task.fetchData({ startDate: taskStartDate, endDate: taskEndDate });
           //console.log('data=' + geo);
           newCache["all"] = { data: geo, };
+          setIsPlaceChanged(false);
         } else {
           return;
         }

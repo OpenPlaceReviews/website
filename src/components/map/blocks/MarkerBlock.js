@@ -193,6 +193,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, setIsPlaceC
         } else {
             setVersion((place.version ? place.version : 0) + 1);
         }
+        setIsPlaceChanged(true);
     }
 
     useExtractObject(marker, version, handleExtractPlace);
@@ -348,7 +349,6 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, setIsPlaceC
         } else {
             setPlaces([similarPlace, place]);
         }
-        setIsPlaceChanged(true);
     }
 
     const toggleInactiveLinksVisibility = () => {
@@ -434,8 +434,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, setIsPlaceC
                              isOriginalPlace={true}
                              categories={categories}
                              showReviewBlock={true}
-                             setPlaces={setPlaces}
-                             setIsPlaceChanged={setIsPlaceChanged}/>
+                             setPlaces={setPlaces}/>
             </div>
         </div>
     </MapSidebar> : <MapSidebar position="left"><MapSidebarBlock><span className={classes.existMark}>
