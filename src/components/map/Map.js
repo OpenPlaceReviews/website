@@ -18,7 +18,7 @@ import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
 import Loader from "../main/blocks/Loader";
 import AuthContext from "../main/auth/providers/AuthContext";
 import Utils from "../util/Utils";
-import usePersistedStateTask from "./hooks/usePersistedStateTask";
+import useTaskSelectionState from "./hooks/useTaskSelectionState";
 
 const OPR_PLACE_URL_PREFIX = '/map/opr.place/';
 const INIT_LAT = 40.0;
@@ -77,7 +77,11 @@ export default function Map() {
     };
   }
 
-  const [taskSelection, setTaskSelection] = (usePersistedStateTask());
+  const [taskSelection, setTaskSelection] = useTaskSelectionState({
+    taskId: 'none',
+    startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+  });
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});
   const [filterVal, setFilter] = useState('all');

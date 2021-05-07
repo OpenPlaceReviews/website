@@ -84,12 +84,12 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       (prevTaskSelection.taskId !== taskSelection.taskId
         || prevTaskSelection.startDate !== taskSelection.startDate
         || prevTaskSelection.endDate !== taskSelection.endDate);
+    const forceReload = taskChanged || isPlaceChanged;
     const updateCache = async () => {
       let newCache = {};
       if (task) {
-        if (taskChanged || isPlaceChanged) {
+        if (forceReload) {
           setLoading(true);
-          setIsPlaceChanged(false);
         } else if (task.tileBasedData) {
           for (let tileId in currentBounds) {
             if (!placesCache[tileId]) {
@@ -98,32 +98,29 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
             }
           }
         }
-        newCache = taskChanged ? {} : { ...placesCache };
+        newCache = forceReload ? {} : { ...placesCache };
         if (task.tileBasedData) {
           for (let tileId in currentBounds) {
             if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
-              if (taskChanged || !placesCache[tileId] || isPlaceChanged) {
+              if (forceReload || !placesCache[tileId]) {
                 const { geo } = await task.fetchData({ tileId, startDate: taskStartDate, endDate: taskEndDate })
                 newCache[tileId] = { "access": 1, data: geo, };
-                setIsPlaceChanged(false);
               } else {
                 newCache[tileId].access = placesCache[tileId].access + 1;
               }
             }
           }
-        } else if (taskChanged || isPlaceChanged) {
+        } else if (forceReload) {
           //console.log('get all data');
           const { geo } = await task.fetchData({ startDate: taskStartDate, endDate: taskEndDate });
           //console.log('data=' + geo);
           newCache["all"] = { data: geo, };
-          setIsPlaceChanged(false);
         } else {
           return;
         }
       } else {
-        if (taskChanged || isPlaceChanged) {
+        if (forceReload) {
           setLoading(true);
-          setIsPlaceChanged(false);
         } else {
           for (let tileId in currentBounds) {
             if (!placesCache[tileId]) {
@@ -132,13 +129,12 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
             }
           }
         }
-        newCache = taskChanged ? {} : { ...placesCache };
+        newCache = forceReload ? {} : { ...placesCache };
         for (let tileId in currentBounds) {
           if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
-            if (taskChanged || !placesCache[tileId] || isPlaceChanged) {
+            if (forceReload || !placesCache[tileId]) {
               const { geo } = await fetchData({ tileId });
               newCache[tileId] = { "access": 1, data: geo, };
-              setIsPlaceChanged(false);
             } else {
               newCache[tileId].access = placesCache[tileId].access + 1;
             }
@@ -153,9 +149,12 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         setLoading(false);
       }, 1000);
       setPlacesCache(newCache);
+      if (forceReload) {
+        setIsPlaceChanged(false);
+      }
     };
 
-    if (currentZoom >= minMarkersZoom || taskChanged) {
+    if (currentZoom >= minMarkersZoom || forceReload) {
       updateCache();
     }
   }, [currentBounds, currentZoom, taskSelection]);

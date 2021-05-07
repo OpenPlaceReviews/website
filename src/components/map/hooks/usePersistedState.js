@@ -3,21 +3,18 @@ import storage from "../../../libs/storage";
 
 export default function usePersistedState(defaultValue, key) {
     const [value, setValue] = [];
-    try {
-        setValue(useState(() => {
-            const stickyValue = storage.getItem(key);
-            return stickyValue !== null
-                ? JSON.parse(stickyValue)
-                : defaultValue;
-        }));
+    setValue(useState(() => {
+        try {
+            const storedValue = storage.getItem(key);
+            return !!storedValue ? JSON.parse(storedValue) : defaultValue;
+        } catch (e) {
+            return defaultValue;
+        }
+    }));
 
     useEffect(() => {
         storage.setItem(key, JSON.stringify(value));
     }, [key, value]);
 
     return [value, setValue];
-
-    } catch (e) {
-        console.warn('Error while decoding saved value');
-    }
 }
