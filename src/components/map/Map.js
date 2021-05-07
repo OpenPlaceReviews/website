@@ -76,7 +76,7 @@ export default function Map() {
       properties: { opr_id: `${oprPlaceId}` },
     };
   }
-
+  const date = new Date();
   const [taskSelection, setTaskSelection] = useTaskSelectionState({
     taskId: 'none',
     startDate: new Date(date.getFullYear(), date.getMonth(), 1),
