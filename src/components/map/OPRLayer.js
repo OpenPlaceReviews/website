@@ -11,7 +11,6 @@ import storage from "../../libs/storage";
 import L from 'leaflet';
 import 'leaflet.markercluster';
 import Tasks from './tasks/Tasks';
-import {bool} from "prop-types";
 
 let refreshTimout = null;
 let lastRefreshTime = 0;
@@ -36,7 +35,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     task = Tasks.getTaskById(taskSelection.taskId);
     taskStartDate = taskSelection.startDate;
     taskEndDate = taskSelection.endDate;
-    storage.setItem("taskSelection", JSON.stringify(taskSelection))
+    storage.setItem('taskSelection', JSON.stringify(taskSelection))
   }
   let minMarkersZoom = task ? task.minZoom : MIN_MARKERS_ZOOM;
 
@@ -90,6 +89,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       if (task) {
         if (taskChanged || isPlaceChanged) {
           setLoading(true);
+          setIsPlaceChanged(false);
         } else if (task.tileBasedData) {
           for (let tileId in currentBounds) {
             if (!placesCache[tileId]) {
@@ -102,9 +102,10 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         if (task.tileBasedData) {
           for (let tileId in currentBounds) {
             if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
-              if (taskChanged || !placesCache[tileId]) {
+              if (taskChanged || !placesCache[tileId] || isPlaceChanged) {
                 const { geo } = await task.fetchData({ tileId, startDate: taskStartDate, endDate: taskEndDate })
                 newCache[tileId] = { "access": 1, data: geo, };
+                setIsPlaceChanged(false);
               } else {
                 newCache[tileId].access = placesCache[tileId].access + 1;
               }
@@ -122,6 +123,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       } else {
         if (taskChanged || isPlaceChanged) {
           setLoading(true);
+          setIsPlaceChanged(false);
         } else {
           for (let tileId in currentBounds) {
             if (!placesCache[tileId]) {
@@ -133,9 +135,10 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         newCache = taskChanged ? {} : { ...placesCache };
         for (let tileId in currentBounds) {
           if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
-            if (taskChanged || !placesCache[tileId]) {
+            if (taskChanged || !placesCache[tileId] || isPlaceChanged) {
               const { geo } = await fetchData({ tileId });
               newCache[tileId] = { "access": 1, data: geo, };
+              setIsPlaceChanged(false);
             } else {
               newCache[tileId].access = placesCache[tileId].access + 1;
             }

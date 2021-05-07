@@ -15,17 +15,16 @@ import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import MarkerBlock from "./blocks/MarkerBlock";
 import Filter from "./blocks/Filter";
 import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
-import ReviewPlaces from "./blocks/ReviewPlaces";
 import Loader from "../main/blocks/Loader";
 import AuthContext from "../main/auth/providers/AuthContext";
 import Utils from "../util/Utils";
+import usePersistedStateTask from "./hooks/usePersistedStateTask";
 
 const OPR_PLACE_URL_PREFIX = '/map/opr.place/';
 const INIT_LAT = 40.0;
 const INIT_LON = -35.0;
 const INIT_ZOOM = 4;
 const PLACE_MENU_ZOOM = 17;
-const TASK_SELECTION = 'taskSelection';
 
 export default function Map() {
 
@@ -77,24 +76,8 @@ export default function Map() {
       properties: { opr_id: `${oprPlaceId}` },
     };
   }
-  const date = new Date();
-  const [taskSelection, setTaskSelection] = useState({
-    taskId: 'none',
-    startDate: new Date(date.getFullYear(), date.getMonth(), 1),
-    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-  });
 
-  useEffect(() => {
-    if (storage.getItem(TASK_SELECTION) != null) {
-      let storageTask = JSON.parse(storage.getItem(TASK_SELECTION));
-      setTaskSelection({
-        taskId: storageTask.taskId,
-        startDate: new Date(storageTask.startDate),
-        endDate: new Date(storageTask.endDate)
-      });
-    }
-  }, [setTaskSelection])
-
+  const [taskSelection, setTaskSelection] = (usePersistedStateTask());
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});
   const [filterVal, setFilter] = useState('all');

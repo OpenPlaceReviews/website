@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
-import { Select, MenuItem } from '@material-ui/core';
+import {Select, MenuItem, Switch} from '@material-ui/core';
 import filter from '../../../assets/images/icons/filter.svg';
 import { makeStyles } from "@material-ui/styles";
 import Tasks from "../tasks/Tasks";
@@ -77,7 +77,35 @@ const useStyles = makeStyles({
     height: "24px",
     fontSize: "15px",
     "& .MuiSelect-root": itemStyle,
-  }
+  },
+  switch: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: "10px",
+    paddingBottom: "10px",
+    fontSize: "14px",
+    color:"#697281",
+    background:"#F5F5F5",
+    borderRadius:"6px"
+  },
+  position: {
+    position: "absolute",
+    left:"80%"
+  },
+  switchBase: {
+    color: "#2D69E0",
+    '&$checked': {
+      color: "#2D69E0",
+    },
+    '&$checked + $track': {
+      backgroundColor: "#2D69E0",
+    },
+  },
+  track: {},
+  checked: {},
 });
 
 export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect }) => {
@@ -87,6 +115,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   const [selectedTaskId, setSelectedTaskId] = useState(taskId);
   const [dateType, setDateType] = useState('month');
   const [selectedDates, setSelectedDates] = useState({ startDate, endDate });
+  const [reviewedPlacesVisible, setReviewedPlacesVisible] = useState(false);
 
   const tasks = Tasks.getTasks();
 
@@ -138,6 +167,25 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
     });
   }, [selectedTaskId, selectedDates]);
 
+  const toggleInactiveLinksVisibility = () => {
+    setReviewedPlacesVisible((prev) => !prev);
+  };
+
+  function showSwitchReviewedPlaces() {
+      return <div className={classes.switch}>
+        <span>Display reviewed places</span>
+        <Switch
+            className={classes.position}
+            checked={reviewedPlacesVisible}
+            classes={{
+              switchBase: classes.switchBase,
+              track: classes.track,
+              checked: classes.checked
+            }}
+            value={reviewedPlacesVisible} onClick={toggleInactiveLinksVisibility}/>
+      </div>
+  }
+
   return <div className={classes.filter}>
     <img src={filter} alt="icon" className={classes.icon} />
     <div className={classes.container}>
@@ -159,6 +207,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           {taskOptions}
         </Select>
       </>}
+      {showSwitchReviewedPlaces()}
       <p className={classes.header}>Filter places</p>
       <Select
         classes={{
