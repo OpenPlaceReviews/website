@@ -88,7 +88,11 @@ export default ({params = {}, onSuccess}) => {
   if (!params.op) {
     return <div className="auth-container" id="opr-app">
       <h1>Email not yet confirmed</h1>
-      <p>Your account registration is not complete yet. You should have received and email with verification link. You can aslo copy and paste activation code from it.</p>
+      <p>
+        Your account registration is not complete yet.
+        You should have received an email with verification link.
+        You can also copy and paste the activation code from it.
+      </p>
 
       <form className="signup" autoComplete="off">
         {showAlert && <Alert
