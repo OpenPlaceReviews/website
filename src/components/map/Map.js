@@ -80,7 +80,8 @@ export default function Map() {
   const [taskSelection, setTaskSelection] = useTaskSelectionState({
     taskId: 'none',
     startDate: new Date(date.getFullYear(), date.getMonth(), 1),
-    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0),
+    placesReviewedVisible: false
   });
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});

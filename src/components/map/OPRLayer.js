@@ -31,10 +31,12 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   let task = null;
   let taskStartDate = null;
   let taskEndDate = null;
+  let placesReviewedVisible = null;
   if (taskSelection) {
     task = Tasks.getTaskById(taskSelection.taskId);
     taskStartDate = taskSelection.startDate;
     taskEndDate = taskSelection.endDate;
+    placesReviewedVisible = taskSelection.placesReviewedVisible;
     storage.setItem('taskSelection', JSON.stringify(taskSelection))
   }
   let minMarkersZoom = task ? task.minZoom : MIN_MARKERS_ZOOM;
@@ -80,10 +82,12 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
 
   useEffect(() => {
     let loadingTimout = null;
+    let features;
     const taskChanged = prevTaskSelection &&
       (prevTaskSelection.taskId !== taskSelection.taskId
         || prevTaskSelection.startDate !== taskSelection.startDate
-        || prevTaskSelection.endDate !== taskSelection.endDate);
+        || prevTaskSelection.endDate !== taskSelection.endDate
+      || prevTaskSelection.placesReviewedVisible !== taskSelection.placesReviewedVisible);
     const forceReload = taskChanged || isPlaceChanged;
     const updateCache = async () => {
       let newCache = {};
@@ -104,7 +108,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
             if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
               if (forceReload || !placesCache[tileId]) {
                 const { geo } = await task.fetchData({ tileId, startDate: taskStartDate, endDate: taskEndDate })
-                newCache[tileId] = { "access": 1, data: geo, };
+                features = getUnreviewedPlaces(geo, taskSelection.taskId);
+                newCache[tileId] = !placesReviewedVisible ? { "access": 1, data: {type: "FeatureCollection",features}} : { "access": 1, data: geo, };
               } else {
                 newCache[tileId].access = placesCache[tileId].access + 1;
               }
@@ -114,7 +119,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           //console.log('get all data');
           const { geo } = await task.fetchData({ startDate: taskStartDate, endDate: taskEndDate });
           //console.log('data=' + geo);
-          newCache["all"] = { data: geo, };
+          features = getUnreviewedPlaces(geo, taskSelection.taskId);
+          newCache["all"] = !placesReviewedVisible ?  { data: {type: "FeatureCollection",features} } : {data: geo,};
         } else {
           return;
         }
@@ -134,7 +140,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
             if (forceReload || !placesCache[tileId]) {
               const { geo } = await fetchData({ tileId });
-              newCache[tileId] = { "access": 1, data: geo, };
+              features = getUnreviewedPlaces(geo, taskSelection.taskId);
+              newCache[tileId] = !placesReviewedVisible ? { "access": 1, data: {type: "FeatureCollection",features}} : { "access": 1, data: geo, };
             } else {
               newCache[tileId].access = placesCache[tileId].access + 1;
             }
@@ -187,6 +194,20 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       lastRefreshTime = Date.now();
       refreshMap();
     }, REFRESH_TIMEOUT);
+  }
+
+  function getUnreviewedPlaces(geo, task) {
+    let features;
+    if(task === 'REVIEW_IMAGES'){
+      features = geo.features.filter(place => place.properties.img_review_size > 0);
+    }
+    if(task === 'POSSIBLE_MERGE'){
+      features = geo.features.filter(place => place.properties.place_deleted === undefined);
+    }
+    if(task === 'none'){
+      features = geo.features.filter(place => (place.properties.place_deleted === undefined || place.properties.img_review_size > 0));
+    }
+    return features;
   }
 
   useEffect(() => {

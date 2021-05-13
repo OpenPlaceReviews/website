@@ -111,11 +111,11 @@ const useStyles = makeStyles({
 export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect }) => {
   const classes = useStyles();
 
-  const { taskId, startDate, endDate } = taskSelection;
+  const { taskId, startDate, endDate, placesReviewedVisible } = taskSelection;
   const [selectedTaskId, setSelectedTaskId] = useState(taskId);
   const [dateType, setDateType] = useState('month');
   const [selectedDates, setSelectedDates] = useState({ startDate, endDate });
-  const [reviewedPlacesVisible, setReviewedPlacesVisible] = useState(false);
+  const [reviewedPlacesVisible, setReviewedPlacesVisible] = useState(placesReviewedVisible);
 
   const tasks = Tasks.getTasks();
 
@@ -163,27 +163,32 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
     onTaskSelect({
       taskId: selectedTaskId,
       startDate: selectedDates.startDate,
-      endDate: selectedDates.endDate
+      endDate: selectedDates.endDate,
+      placesReviewedVisible: reviewedPlacesVisible
     });
-  }, [selectedTaskId, selectedDates]);
+  }, [selectedTaskId, selectedDates, reviewedPlacesVisible]);
 
-  const toggleInactiveLinksVisibility = () => {
+  const toggleReviewedPlacesVisible = () => {
     setReviewedPlacesVisible((prev) => !prev);
   };
 
   function showSwitchReviewedPlaces() {
-      return <div className={classes.switch}>
-        <span>Display reviewed places</span>
-        <Switch
-            className={classes.position}
-            checked={reviewedPlacesVisible}
-            classes={{
-              switchBase: classes.switchBase,
-              track: classes.track,
-              checked: classes.checked
-            }}
-            value={reviewedPlacesVisible} onClick={toggleInactiveLinksVisibility}/>
-      </div>
+    return <div>
+      {isLoggedIn && <>
+        <div className={classes.switch}>
+          <span>Display reviewed places</span>
+          <Switch
+              className={classes.position}
+              checked={reviewedPlacesVisible}
+              classes={{
+                switchBase: classes.switchBase,
+                track: classes.track,
+                checked: classes.checked
+              }}
+              value={reviewedPlacesVisible} onClick={toggleReviewedPlacesVisible}/>
+        </div>
+      </>}
+    </div>
   }
 
   return <div className={classes.filter}>
