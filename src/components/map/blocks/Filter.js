@@ -111,11 +111,11 @@ const useStyles = makeStyles({
 export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect }) => {
   const classes = useStyles();
 
-  const { taskId, startDate, endDate, placesReviewedVisible } = taskSelection;
+  const {taskId, startDate, endDate, reviewedPlacesVisible} = taskSelection;
   const [selectedTaskId, setSelectedTaskId] = useState(taskId);
   const [dateType, setDateType] = useState('month');
-  const [selectedDates, setSelectedDates] = useState({ startDate, endDate });
-  const [reviewedPlacesVisible, setReviewedPlacesVisible] = useState(placesReviewedVisible);
+  const [selectedDates, setSelectedDates] = useState({startDate, endDate});
+  const [selectedReviewedPlacesVisible, setSelectedReviewedPlacesVisible] = useState(reviewedPlacesVisible);
 
   const tasks = Tasks.getTasks();
 
@@ -164,12 +164,12 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
       taskId: selectedTaskId,
       startDate: selectedDates.startDate,
       endDate: selectedDates.endDate,
-      placesReviewedVisible: reviewedPlacesVisible
+      reviewedPlacesVisible: selectedReviewedPlacesVisible
     });
-  }, [selectedTaskId, selectedDates, reviewedPlacesVisible]);
+  }, [selectedTaskId, selectedDates, selectedReviewedPlacesVisible]);
 
   const toggleReviewedPlacesVisible = () => {
-    setReviewedPlacesVisible((prev) => !prev);
+    setSelectedReviewedPlacesVisible((prev) => !prev);
   };
 
   function showSwitchReviewedPlaces() {
@@ -179,13 +179,13 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           <span>Display reviewed places</span>
           <Switch
               className={classes.position}
-              checked={reviewedPlacesVisible}
+              checked={selectedReviewedPlacesVisible}
               classes={{
                 switchBase: classes.switchBase,
                 track: classes.track,
                 checked: classes.checked
               }}
-              value={reviewedPlacesVisible} onClick={toggleReviewedPlacesVisible}/>
+              value={selectedReviewedPlacesVisible} onClick={toggleReviewedPlacesVisible}/>
         </div>
       </>}
     </div>

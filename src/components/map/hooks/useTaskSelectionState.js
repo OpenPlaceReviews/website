@@ -12,7 +12,7 @@ export default function useTaskSelectionState(defaultValue) {
                     taskId: result.taskId,
                     startDate: new Date(result.startDate),
                     endDate: new Date(result.endDate),
-                    placesReviewedVisible: result.placesReviewedVisible
+                    reviewedPlacesVisible: result.reviewedPlacesVisible
                 }
             } catch (e) {
                 return defaultValue
