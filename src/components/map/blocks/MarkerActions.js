@@ -109,7 +109,7 @@ export default function MarkerActions({
     }, [markerPlace]);
 
     function hasImagesForReview() {
-        return markerPlace.images ? markerPlace.images.review : false;
+        return markerPlace.images ? markerPlace.images.review.length > 0 : false;
     }
 
     function shouldShowMergeAction() {

@@ -15,10 +15,10 @@ import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import MarkerBlock from "./blocks/MarkerBlock";
 import Filter from "./blocks/Filter";
 import MapSidebarBlock from "./blocks/sidebar/MapSidebarBlock";
-import ReviewPlaces from "./blocks/ReviewPlaces";
 import Loader from "../main/blocks/Loader";
 import AuthContext from "../main/auth/providers/AuthContext";
 import Utils from "../util/Utils";
+import useTaskSelectionState from "./hooks/useTaskSelectionState";
 
 const OPR_PLACE_URL_PREFIX = '/map/opr.place/';
 const INIT_LAT = 40.0;
@@ -76,21 +76,21 @@ export default function Map() {
       properties: { opr_id: `${oprPlaceId}` },
     };
   }
-
   const date = new Date();
+  const [taskSelection, setTaskSelection] = useTaskSelectionState({
+    taskId: 'none',
+    startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0),
+    reviewedPlacesVisible: false
+  });
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});
   const [filterVal, setFilter] = useState('all');
-  const [taskSelection, setTaskSelection] = useState({
-    taskId: 'none',
-    startDate: new Date(date.getFullYear(), date.getMonth(), 1),
-    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-  });
-
   const [marker, setMarker] = useState(initialMarker);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
   const { promiseInProgress } = usePromiseTracker();
+  const [isPlaceChanged, setIsPlaceChanged] = useState(false);
 
   useEffect(() => {
     const request = async () => {
@@ -162,7 +162,7 @@ export default function Map() {
       onMapStateChanged(map.getZoom(), map.getCenter().lat, map.getCenter().lng);
     }} />
 
-    {marker && <MarkerBlock marker={marker} setMarker={setMarker} placeTypes={placeTypes} whenReady={(markerPlace) => {
+    {marker && <MarkerBlock marker={marker} setMarker={setMarker} placeTypes={placeTypes} setIsPlaceChanged={setIsPlaceChanged} whenReady={(markerPlace) => {
       if (!hasParams) {
         map.setView(markerPlace.latLon, PLACE_MENU_ZOOM);
       }
@@ -176,7 +176,8 @@ export default function Map() {
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
-    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup} setLoading={setReload} />}
+    {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup}
+                           setLoading={setReload} isPlaceChanged={isPlaceChanged} setIsPlaceChanged={setIsPlaceChanged}/>}
 
   </MapContainer>;
 }

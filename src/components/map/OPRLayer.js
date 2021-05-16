@@ -6,10 +6,12 @@ import { isEqual, has, get } from "lodash";
 import { fetchData } from "../../api/geo";
 import MarkerIcon from './MrkerIcon';
 import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
+import storage from "../../libs/storage";
 
 import L from 'leaflet';
 import 'leaflet.markercluster';
 import Tasks from './tasks/Tasks';
+import Utils from "../util/Utils";
 
 let refreshTimout = null;
 let lastRefreshTime = 0;
@@ -18,12 +20,11 @@ const REFRESH_TIMEOUT = 500;
 const MIN_MARKERS_ZOOM = 14;
 var selectedMarkerGroup = [];
 
-export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading }) {
+export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged, setIsPlaceChanged }) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
   //const [selectedMarkerGroup, setSelectedMarkerGroup] = useState([]);
-
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
   const prevTaskSelection = usePrevious(taskSelection);
@@ -31,10 +32,13 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   let task = null;
   let taskStartDate = null;
   let taskEndDate = null;
+  let reviewedPlacesVisible = false;
   if (taskSelection) {
     task = Tasks.getTaskById(taskSelection.taskId);
     taskStartDate = taskSelection.startDate;
     taskEndDate = taskSelection.endDate;
+    reviewedPlacesVisible = taskSelection.reviewedPlacesVisible;
+    storage.setItem('taskSelection', JSON.stringify(taskSelection))
   }
   let minMarkersZoom = task ? task.minZoom : MIN_MARKERS_ZOOM;
 
@@ -80,13 +84,15 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   useEffect(() => {
     let loadingTimout = null;
     const taskChanged = prevTaskSelection &&
-      (prevTaskSelection.taskId !== taskSelection.taskId
-        || prevTaskSelection.startDate !== taskSelection.startDate
-        || prevTaskSelection.endDate !== taskSelection.endDate);
+        (prevTaskSelection.taskId !== taskSelection.taskId
+            || prevTaskSelection.startDate !== taskSelection.startDate
+            || prevTaskSelection.endDate !== taskSelection.endDate
+            || prevTaskSelection.reviewedPlacesVisible !== taskSelection.reviewedPlacesVisible);
+    const forceReload = taskChanged || isPlaceChanged;
     const updateCache = async () => {
       let newCache = {};
       if (task) {
-        if (taskChanged) {
+        if (forceReload) {
           setLoading(true);
         } else if (task.tileBasedData) {
           for (let tileId in currentBounds) {
@@ -96,28 +102,28 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
             }
           }
         }
-        newCache = taskChanged ? {} : { ...placesCache };
+        newCache = forceReload ? {} : {...placesCache};
         if (task.tileBasedData) {
           for (let tileId in currentBounds) {
             if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
-              if (taskChanged || !placesCache[tileId]) {
-                const { geo } = await task.fetchData({ tileId, startDate: taskStartDate, endDate: taskEndDate })
-                newCache[tileId] = { "access": 1, data: geo, };
+              if (forceReload || !placesCache[tileId]) {
+                const {geo} = await task.fetchData({tileId, startDate: taskStartDate, endDate: taskEndDate})
+                newCache[tileId] = getTileBasedCacheByFilters(geo);
               } else {
                 newCache[tileId].access = placesCache[tileId].access + 1;
               }
             }
           }
-        } else if (taskChanged) {
+        } else if (forceReload) {
           //console.log('get all data');
-          const { geo } = await task.fetchData({ startDate: taskStartDate, endDate: taskEndDate });
+          const {geo} = await task.fetchData({startDate: taskStartDate, endDate: taskEndDate});
           //console.log('data=' + geo);
-          newCache["all"] = { data: geo, };
+          newCache["all"] = getCacheByFilters(geo);
         } else {
           return;
         }
       } else {
-        if (taskChanged) {
+        if (forceReload) {
           setLoading(true);
         } else {
           for (let tileId in currentBounds) {
@@ -127,12 +133,12 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
             }
           }
         }
-        newCache = taskChanged ? {} : { ...placesCache };
+        newCache = forceReload ? {} : {...placesCache};
         for (let tileId in currentBounds) {
           if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
-            if (taskChanged || !placesCache[tileId]) {
-              const { geo } = await fetchData({ tileId });
-              newCache[tileId] = { "access": 1, data: geo, };
+            if (forceReload || !placesCache[tileId]) {
+              const {geo} = await fetchData({tileId});
+              newCache[tileId] = getTileBasedCacheByFilters(geo);
             } else {
               newCache[tileId].access = placesCache[tileId].access + 1;
             }
@@ -147,9 +153,12 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         setLoading(false);
       }, 1000);
       setPlacesCache(newCache);
+      if (forceReload) {
+        setIsPlaceChanged(false);
+      }
     };
 
-    if (currentZoom >= minMarkersZoom || taskChanged) {
+    if (currentZoom >= minMarkersZoom || forceReload) {
       updateCache();
     }
   }, [currentBounds, currentZoom, taskSelection]);
@@ -183,6 +192,54 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       refreshMap();
     }, REFRESH_TIMEOUT);
   }
+
+  function getFilteredFeatures(geo, task) {
+    let features;
+    if (task === 'REVIEW_IMAGES') {
+      features = geo.features.filter(place => place.properties.img_review_size > 0);
+    }
+    if (task === 'POSSIBLE_MERGE') {
+      features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
+          && ((i < places.length - 1 && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
+    }
+    if (task === 'none') {
+      features = geo.features.filter(place => (place.properties.place_deleted === undefined)
+          && (place.properties.img_review_size === 0 || place.properties.img_review_size === undefined));
+    }
+    return features;
+  }
+
+  function areSimilar(place1, place2) {
+    if (place2 && place2.properties.place_deleted === undefined) {
+      const [lat, lon] = place1.geometry.coordinates;
+      let similarPlaceDistance = 150;
+      const [gLat, gLon] = place2.geometry.coordinates;
+      const distance = Utils.getDistance(lat, lon, gLat, gLon);
+      if (distance < similarPlaceDistance) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function getTileBasedCacheByFilters(geo) {
+    if (!reviewedPlacesVisible) {
+      let features = getFilteredFeatures(geo, taskSelection.taskId);
+      return {"access": 1, data: {type: "FeatureCollection", features}};
+    } else {
+      return {"access": 1, data: geo};
+    }
+  }
+
+  function getCacheByFilters(geo) {
+    if (!reviewedPlacesVisible) {
+      let features = getFilteredFeatures(geo, taskSelection.taskId);
+      return {data: {type: "FeatureCollection", features}};
+    } else {
+      return {data: geo};
+    }
+  }
+
 
   useEffect(() => {
     if (Object.keys(placesCache).length >= 150) {

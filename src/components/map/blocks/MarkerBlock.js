@@ -136,7 +136,7 @@ const findObject = (obj = {}, key) => {
     return result;
 };
 
-export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }) {
+export default function MarkerBlock({ marker, setMarker, placeTypes, setIsPlaceChanged, whenReady }) {
     const [op, setOp] = useState(null);
     const [places, setPlaces] = useState([]);
     const [similarPlace, setSimilarPlace] = useState(null);
@@ -193,6 +193,7 @@ export default function MarkerBlock({ marker, setMarker, placeTypes, whenReady }
         } else {
             setVersion((place.version ? place.version : 0) + 1);
         }
+        setIsPlaceChanged(true);
     }
 
     useExtractObject(marker, version, handleExtractPlace);
