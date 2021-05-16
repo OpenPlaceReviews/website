@@ -108,7 +108,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
             if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
               if (forceReload || !placesCache[tileId]) {
                 const {geo} = await task.fetchData({tileId, startDate: taskStartDate, endDate: taskEndDate})
-                newCache[tileId] = getBaseCacheByFilters(geo);
+                newCache[tileId] = getTileBasedCacheByFilters(geo);
               } else {
                 newCache[tileId].access = placesCache[tileId].access + 1;
               }
@@ -138,7 +138,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
             if (forceReload || !placesCache[tileId]) {
               const {geo} = await fetchData({tileId});
-              newCache[tileId] = getBaseCacheByFilters(geo);
+              newCache[tileId] = getTileBasedCacheByFilters(geo);
             } else {
               newCache[tileId].access = placesCache[tileId].access + 1;
             }
@@ -200,29 +200,29 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     }
     if (task === 'POSSIBLE_MERGE') {
       features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
-          && (areSimilar(place, places[i + 1]) || (areSimilar(place, places[i - 1]))));
+          && ((i < places.length && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
     }
     if (task === 'none') {
-      features = geo.features.filter(place => ((place.properties.place_deleted === undefined)
-          && (place.properties.img_review_size === 0 || place.properties.img_review_size === undefined)));
+      features = geo.features.filter(place => (place.properties.place_deleted === undefined)
+          && (place.properties.img_review_size === 0 || place.properties.img_review_size === undefined));
     }
     return features;
   }
 
   function areSimilar(place1, place2) {
-    const [lat, lon] = place1.geometry.coordinates;
-    let similarMarkerDistance = 150;
     if (place2 && place2.properties.place_deleted === undefined) {
+      const [lat, lon] = place1.geometry.coordinates;
+      let similarPlaceDistance = 150;
       const [gLat, gLon] = place2.geometry.coordinates;
       const distance = Utils.getDistance(lat, lon, gLat, gLon);
-      if (distance < similarMarkerDistance) {
+      if (distance < similarPlaceDistance) {
         return true;
       }
     }
     return false;
   }
 
-  function getBaseCacheByFilters(geo) {
+  function getTileBasedCacheByFilters(geo) {
     if (!reviewedPlacesVisible) {
       let features = getFilteredFeatures(geo, taskSelection.taskId);
       return {"access": 1, data: {type: "FeatureCollection", features}};
