@@ -200,7 +200,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     }
     if (task === 'POSSIBLE_MERGE') {
       features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
-          && ((i < places.length && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
+          && ((i < places.length - 1 && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
     }
     if (task === 'none') {
       features = geo.features.filter(place => (place.properties.place_deleted === undefined)
