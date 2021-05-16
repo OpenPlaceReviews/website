@@ -11,6 +11,7 @@ import storage from "../../libs/storage";
 import L from 'leaflet';
 import 'leaflet.markercluster';
 import Tasks from './tasks/Tasks';
+import Utils from "../util/Utils";
 
 let refreshTimout = null;
 let lastRefreshTime = 0;
@@ -198,12 +199,27 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       features = geo.features.filter(place => place.properties.img_review_size > 0);
     }
     if (task === 'POSSIBLE_MERGE') {
-      features = geo.features.filter(place => place.properties.place_deleted === undefined);
+      features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
+          && (areSimilar(place, places[i + 1]) || (areSimilar(place, places[i - 1]))));
     }
     if (task === 'none') {
-      features = geo.features.filter(place => (place.properties.place_deleted === undefined || place.properties.img_review_size > 0));
+      features = geo.features.filter(place => ((place.properties.place_deleted === undefined)
+          && (place.properties.img_review_size === 0 || place.properties.img_review_size === undefined)));
     }
     return features;
+  }
+
+  function areSimilar(place1, place2) {
+    const [lat, lon] = place1.geometry.coordinates;
+    let similarMarkerDistance = 150;
+    if (place2 && place2.properties.place_deleted === undefined) {
+      const [gLat, gLon] = place2.geometry.coordinates;
+      const distance = Utils.getDistance(lat, lon, gLat, gLon);
+      if (distance < similarMarkerDistance) {
+        return true;
+      }
+    }
+    return false;
   }
 
   function getBaseCacheByFilters(geo) {
