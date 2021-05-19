@@ -119,6 +119,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   const [selectedReviewedPlacesVisible, setSelectedReviewedPlacesVisible] = useState(reviewedPlacesVisible);
 
   const tasks = Tasks.getTasks();
+  const selectedTask = Tasks.getTaskById(taskSelection.taskId);
 
   const taskOptions = [<MenuItem value="none" key="none">None</MenuItem>];
   for (let i in tasks) {
@@ -210,7 +211,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
       >
         {categoryOptions}
       </Select>
-      {isLoggedIn && Tasks.getTaskById(taskSelection.taskId) && <>
+      {isLoggedIn && selectedTask && <>
         <p className={classes.header}>Date type</p>
         <Select
           classes={{
@@ -254,20 +255,20 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
             minDate={selectedDates.startDate}
           />
         </div>}
-        {isLoggedIn && Tasks.getTaskById(taskSelection.taskId) && <>
-          <div className={classes.switch}>
-            <span>Display reviewed places</span>
-            <Switch
-                className={classes.position}
-                checked={selectedReviewedPlacesVisible}
-                classes={{
-                  switchBase: classes.switchBase,
-                  track: classes.track,
-                  checked: classes.checked
-                }}
-                value={selectedReviewedPlacesVisible} onClick={toggleReviewedPlacesVisible}/>
-          </div>
-        </>}
+      </>}
+      {isLoggedIn && selectedTask && <>
+        <div className={classes.switch}>
+          <span>Display reviewed places</span>
+          <Switch
+              className={classes.position}
+              checked={selectedReviewedPlacesVisible}
+              classes={{
+                switchBase: classes.switchBase,
+                track: classes.track,
+                checked: classes.checked
+              }}
+              value={selectedReviewedPlacesVisible} onClick={toggleReviewedPlacesVisible}/>
+        </div>
       </>}
     </div>
   </div>
