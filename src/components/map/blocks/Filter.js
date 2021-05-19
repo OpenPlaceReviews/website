@@ -255,7 +255,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
             minDate={selectedDates.startDate}
           />
         </div>}
-        {<div className={classes.switch}>
+        <div className={classes.switch}>
           <span>Display reviewed places</span>
           <Switch
               className={classes.position}
@@ -266,7 +266,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
                 checked: classes.checked
               }}
               value={selectedReviewedPlacesVisible} onClick={toggleReviewedPlacesVisible}/>
-        </div>}
+        </div>
       </>}
     </div>
   </div>
