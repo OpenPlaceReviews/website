@@ -202,10 +202,6 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
           && ((i < places.length - 1 && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
     }
-    if (task === 'none') {
-      features = geo.features.filter(place => (place.properties.place_deleted === undefined)
-          && (place.properties.img_review_size === 0 || place.properties.img_review_size === undefined));
-    }
     return features;
   }
 
