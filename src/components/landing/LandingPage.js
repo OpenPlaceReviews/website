@@ -83,7 +83,7 @@ export default function LandingPage() {
         <div className="right_clmn">
           <h2>Sync with Public Sources</h2>
           <p>Connect places to public source of information including OpenStreetMap, Wikipedia, blogs, websites and
-            let crowlers keep information up to date</p>
+            let crawlers keep information up to date</p>
           <h2>Detect fraud, spam and vandalism</h2>
           <p>Develop and decide on tools to detect non-desirable reviews</p>
         </div>
