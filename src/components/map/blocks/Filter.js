@@ -58,6 +58,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    paddingBottom: "10px"
   },
   dateItem: {
     background: "#F1F4FC",
@@ -174,7 +175,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
 
   function showSwitchReviewedPlaces() {
     return <div>
-      {isLoggedIn && <>
+      {isLoggedIn && taskId !== "none" && <>
         <div className={classes.switch}>
           <span>Display reviewed places</span>
           <Switch
@@ -212,7 +213,6 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           {taskOptions}
         </Select>
       </>}
-      {showSwitchReviewedPlaces()}
       <p className={classes.header}>Filter places</p>
       <Select
         classes={{
@@ -229,7 +229,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
       >
         {categoryOptions}
       </Select>
-      {isLoggedIn && <>
+      {isLoggedIn && taskId !== "none" && <>
         <p className={classes.header}>Date type</p>
         <Select
           classes={{
@@ -273,6 +273,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
             minDate={selectedDates.startDate}
           />
         </div>}
+        {showSwitchReviewedPlaces()}
       </>}
     </div>
   </div>
