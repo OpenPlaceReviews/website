@@ -173,25 +173,6 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
     setSelectedReviewedPlacesVisible((prev) => !prev);
   };
 
-  function showSwitchReviewedPlaces() {
-    return <div>
-      {isLoggedIn && taskId !== "none" && <>
-        <div className={classes.switch}>
-          <span>Display reviewed places</span>
-          <Switch
-              className={classes.position}
-              checked={selectedReviewedPlacesVisible}
-              classes={{
-                switchBase: classes.switchBase,
-                track: classes.track,
-                checked: classes.checked
-              }}
-              value={selectedReviewedPlacesVisible} onClick={toggleReviewedPlacesVisible}/>
-        </div>
-      </>}
-    </div>
-  }
-
   return <div className={classes.filter}>
     <img src={filter} alt="icon" className={classes.icon} />
     <div className={classes.container}>
@@ -229,7 +210,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
       >
         {categoryOptions}
       </Select>
-      {isLoggedIn && taskId !== "none" && <>
+      {isLoggedIn && Tasks.getTaskById(taskSelection.taskId) && <>
         <p className={classes.header}>Date type</p>
         <Select
           classes={{
@@ -273,7 +254,20 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
             minDate={selectedDates.startDate}
           />
         </div>}
-        {showSwitchReviewedPlaces()}
+        {isLoggedIn && Tasks.getTaskById(taskSelection.taskId) && <>
+          <div className={classes.switch}>
+            <span>Display reviewed places</span>
+            <Switch
+                className={classes.position}
+                checked={selectedReviewedPlacesVisible}
+                classes={{
+                  switchBase: classes.switchBase,
+                  track: classes.track,
+                  checked: classes.checked
+                }}
+                value={selectedReviewedPlacesVisible} onClick={toggleReviewedPlacesVisible}/>
+          </div>
+        </>}
       </>}
     </div>
   </div>
