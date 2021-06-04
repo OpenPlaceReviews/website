@@ -219,7 +219,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }
 
   function getTileBasedCacheByFilters(geo) {
-    if (!reviewedPlacesVisible) {
+    if (!reviewedPlacesVisible && taskSelection.taskId !== "none") {
       let features = getFilteredFeatures(geo, taskSelection.taskId);
       return {"access": 1, data: {type: "FeatureCollection", features}};
     } else {
@@ -228,7 +228,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }
 
   function getCacheByFilters(geo) {
-    if (!reviewedPlacesVisible) {
+    if (!reviewedPlacesVisible && taskSelection.taskId !== "none") {
       let features = getFilteredFeatures(geo, taskSelection.taskId);
       return {data: {type: "FeatureCollection", features}};
     } else {
