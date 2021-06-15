@@ -17,14 +17,11 @@ export default function LoginPage() {
     logIn(data);
   };
 
-  if (authData.token) {
+  if (authData.token && (purpose === undefined || authData.provider === purpose)) {
     if (!!callback) {
-      if (purpose === undefined || authData.provider === purpose) {
-        useAuthCallback(callback, authData);
-        return null;
-      }
+      useAuthCallback(callback, authData);
+      return null;
     }
-
     return <Redirect to={"/profile"}/>;
   }
 
