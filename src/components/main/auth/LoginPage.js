@@ -11,11 +11,14 @@ import useAuthCallback from "./hooks/useAuthCallback";
 export default function LoginPage() {
   const {authData, logIn} = useContext(AuthContext);
   const reqParams = qs.parse(location.search.substring(1));
-  const {callback} = reqParams;
+  const {callback, purpose} = reqParams;
 
   const onLogIn = (data) => {
     logIn(data);
   };
+
+  console.log("reqParams=" + reqParams);
+  console.log("authData=" + authData);
 
   if(authData.token) {
     if (!!callback) {
