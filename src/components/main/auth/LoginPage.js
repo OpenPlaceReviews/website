@@ -17,8 +17,8 @@ export default function LoginPage() {
     logIn(data);
   };
 
-  console.log("reqParams=" + reqParams);
-  console.log("authData=" + authData);
+  console.log(reqParams);
+  console.log(authData);
 
   if(authData.token) {
     if (!!callback) {
