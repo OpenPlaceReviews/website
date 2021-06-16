@@ -11,18 +11,17 @@ import useAuthCallback from "./hooks/useAuthCallback";
 export default function LoginPage() {
   const {authData, logIn} = useContext(AuthContext);
   const reqParams = qs.parse(location.search.substring(1));
-  const {callback} = reqParams;
+  const {callback, purpose} = reqParams;
 
   const onLogIn = (data) => {
     logIn(data);
   };
 
-  if(authData.token) {
+  if (authData.token && (purpose === undefined || authData.provider === purpose)) {
     if (!!callback) {
       useAuthCallback(callback, authData);
       return null;
     }
-
     return <Redirect to={"/profile"}/>;
   }
 
