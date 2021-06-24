@@ -33,11 +33,13 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   let taskStartDate = null;
   let taskEndDate = null;
   let reviewedPlacesVisible = false;
+  let closedPlaces = false;
   if (taskSelection) {
     task = Tasks.getTaskById(taskSelection.taskId);
     taskStartDate = taskSelection.startDate;
     taskEndDate = taskSelection.endDate;
     reviewedPlacesVisible = taskSelection.reviewedPlacesVisible;
+    closedPlaces = taskSelection.closedPlaces;
     storage.setItem('taskSelection', JSON.stringify(taskSelection))
   }
   let minMarkersZoom = task ? task.minZoom : MIN_MARKERS_ZOOM;
@@ -87,7 +89,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         (prevTaskSelection.taskId !== taskSelection.taskId
             || prevTaskSelection.startDate !== taskSelection.startDate
             || prevTaskSelection.endDate !== taskSelection.endDate
-            || prevTaskSelection.reviewedPlacesVisible !== taskSelection.reviewedPlacesVisible);
+            || prevTaskSelection.reviewedPlacesVisible !== taskSelection.reviewedPlacesVisible
+            || prevTaskSelection.closedPlaces !== taskSelection.closedPlaces);
     const forceReload = taskChanged || isPlaceChanged;
     const updateCache = async () => {
       let newCache = {};
@@ -202,6 +205,9 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
           && ((i < places.length - 1 && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
     }
+    if (task === 'none') {
+      features = geo.features.filter(place => place.properties.place_closed === undefined);
+    }
     return features;
   }
 
@@ -219,7 +225,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }
 
   function getTileBasedCacheByFilters(geo) {
-    if (!reviewedPlacesVisible && taskSelection.taskId !== "none") {
+    if (!reviewedPlacesVisible && !closedPlaces) {
       let features = getFilteredFeatures(geo, taskSelection.taskId);
       return {"access": 1, data: {type: "FeatureCollection", features}};
     } else {
@@ -228,7 +234,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }
 
   function getCacheByFilters(geo) {
-    if (!reviewedPlacesVisible && taskSelection.taskId !== "none") {
+    if (!reviewedPlacesVisible && !closedPlaces) {
       let features = getFilteredFeatures(geo, taskSelection.taskId);
       return {data: {type: "FeatureCollection", features}};
     } else {

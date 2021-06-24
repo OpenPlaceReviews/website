@@ -81,7 +81,8 @@ export default function Map() {
     taskId: 'none',
     startDate: new Date(date.getFullYear(), date.getMonth(), 1),
     endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0),
-    reviewedPlacesVisible: false
+    reviewedPlacesVisible: false,
+    closedPlaces: false
   });
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});

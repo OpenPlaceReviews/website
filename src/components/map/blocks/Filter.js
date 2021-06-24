@@ -112,11 +112,12 @@ const useStyles = makeStyles({
 export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect }) => {
   const classes = useStyles();
 
-  const {taskId, startDate, endDate, reviewedPlacesVisible} = taskSelection;
+  const {taskId, startDate, endDate, reviewedPlacesVisible, closedPlaces} = taskSelection;
   const [selectedTaskId, setSelectedTaskId] = useState(taskId);
   const [dateType, setDateType] = useState('month');
   const [selectedDates, setSelectedDates] = useState({startDate, endDate});
   const [selectedReviewedPlacesVisible, setSelectedReviewedPlacesVisible] = useState(reviewedPlacesVisible);
+  const [selectedClosedPlaces, setSelectedClosedPlaces] = useState(closedPlaces);
 
   const tasks = Tasks.getTasks();
   const selectedTask = Tasks.getTaskById(taskSelection.taskId);
@@ -166,12 +167,17 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
       taskId: selectedTaskId,
       startDate: selectedDates.startDate,
       endDate: selectedDates.endDate,
-      reviewedPlacesVisible: selectedReviewedPlacesVisible
+      reviewedPlacesVisible: selectedReviewedPlacesVisible,
+      closedPlaces: selectedClosedPlaces
     });
-  }, [selectedTaskId, selectedDates, selectedReviewedPlacesVisible]);
+  }, [selectedTaskId, selectedDates, selectedReviewedPlacesVisible, selectedClosedPlaces]);
 
   const toggleReviewedPlacesVisible = () => {
     setSelectedReviewedPlacesVisible((prev) => !prev);
+  };
+
+  const toggleSelectedClosedPlaces = () => {
+    setSelectedClosedPlaces((prev) => !prev);
   };
 
   return <div className={classes.filter}>
@@ -211,6 +217,20 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
       >
         {categoryOptions}
       </Select>
+      {isLoggedIn && !selectedTask && <>
+        <div className={classes.switch}>
+          <span>Show closed places</span>
+          <Switch
+              className={classes.position}
+              checked={selectedClosedPlaces}
+              classes={{
+                switchBase: classes.switchBase,
+                track: classes.track,
+                checked: classes.checked
+              }}
+              value={setSelectedClosedPlaces} onClick={toggleSelectedClosedPlaces}/>
+        </div>
+      </>}
       {isLoggedIn && selectedTask && <>
         <p className={classes.header}>Date type</p>
         <Select
