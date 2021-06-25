@@ -13,7 +13,8 @@ export default function useTaskSelectionState(defaultValue) {
                     startDate: new Date(result.startDate),
                     endDate: new Date(result.endDate),
                     reviewedPlacesVisible: result.reviewedPlacesVisible,
-                    closedPlaces: false
+                    closedPlaces: false,
+                    dateType: result.dateType
                 }
             } catch (e) {
                 return defaultValue

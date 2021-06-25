@@ -24,7 +24,6 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
-  //const [selectedMarkerGroup, setSelectedMarkerGroup] = useState([]);
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
   const prevTaskSelection = usePrevious(taskSelection);
@@ -34,15 +33,17 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   let taskEndDate = null;
   let reviewedPlacesVisible = false;
   let closedPlaces = false;
+  let tilesPlacesVisible = false;
   if (taskSelection) {
     task = Tasks.getTaskById(taskSelection.taskId);
     taskStartDate = taskSelection.startDate;
     taskEndDate = taskSelection.endDate;
     reviewedPlacesVisible = taskSelection.reviewedPlacesVisible;
     closedPlaces = taskSelection.closedPlaces;
+    tilesPlacesVisible = taskSelection.dateType === 'tiles';
     storage.setItem('taskSelection', JSON.stringify(taskSelection))
   }
-  let minMarkersZoom = task ? task.minZoom : MIN_MARKERS_ZOOM;
+  let minMarkersZoom = (task && !tilesPlacesVisible) ? task.minZoom : MIN_MARKERS_ZOOM;
 
   const onMapChange = async () => {
     const zoom = map.getZoom();
@@ -50,7 +51,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       setCurrentZoom(zoom);
     }
 
-    if (zoom < minMarkersZoom || (task && !task.tileBasedData)) {
+    if (zoom < minMarkersZoom || (task && !task.tileBasedData && !tilesPlacesVisible)) {
       setCurrentBounds({});
       return;
     }
@@ -94,7 +95,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     const forceReload = taskChanged || isPlaceChanged;
     const updateCache = async () => {
       let newCache = {};
-      if (task) {
+      if (task && !tilesPlacesVisible) {
         if (forceReload) {
           setLoading(true);
         } else if (task.tileBasedData) {
@@ -140,8 +141,13 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         for (let tileId in currentBounds) {
           if (currentZoom === map.getZoom() && currentZoom >= minMarkersZoom) {
             if (forceReload || !placesCache[tileId]) {
-              const {geo} = await fetchData({tileId});
-              newCache[tileId] = getTileBasedCacheByFilters(geo);
+              if (task) {
+                const {geo} = await task.fetchDataTiled({tileId})
+                newCache[tileId] = getTileBasedCacheByFilters(geo);
+              } else {
+                const {geo} = await fetchData({tileId});
+                newCache[tileId] = getTileBasedCacheByFilters(geo);
+              }
             } else {
               newCache[tileId].access = placesCache[tileId].access + 1;
             }
@@ -167,13 +173,13 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }, [currentBounds, currentZoom, taskSelection]);
 
   useEffect(() => {
-    if (!task || task.tileBasedData) {
+    if (!task || task.tileBasedData || tilesPlacesVisible) {
       refreshMapDelay();
     }
   }, [placesCache, filterVal, currentZoom]);
 
   useEffect(() => {
-    if (task && !task.tileBasedData) {
+    if (task && !task.tileBasedData && !tilesPlacesVisible) {
       refreshMapDelay();
     }
   }, [placesCache, filterVal]);
@@ -225,7 +231,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }
 
   function getTileBasedCacheByFilters(geo) {
-    if (!reviewedPlacesVisible && !closedPlaces) {
+    if (!reviewedPlacesVisible && (!closedPlaces || tilesPlacesVisible)) {
       let features = getFilteredFeatures(geo, taskSelection.taskId);
       return {"access": 1, data: {type: "FeatureCollection", features}};
     } else {
@@ -273,7 +279,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       return;
     }
     let newFeatures = [];
-    if (task && !task.tileBasedData) {
+    if (task && !task.tileBasedData && !tilesPlacesVisible) {
       if (has(placesCache, 'all.data.features')) {
         const features = get(placesCache, 'all.data.features');
         if (filterVal === "all") {

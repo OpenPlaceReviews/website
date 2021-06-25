@@ -18,6 +18,10 @@ export const fetchData = async (reqParams = {}) => {
 export const fetchHistoryData = async (reqParams = {}) => {
   const params = {};
 
+  if (reqParams.tileId) {
+    params.tileid = reqParams.tileId;
+  }
+
   if (reqParams.startDate) {
     params.date = Utils.formatDate(reqParams.startDate);
   }

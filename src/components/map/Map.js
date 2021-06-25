@@ -82,7 +82,8 @@ export default function Map() {
     startDate: new Date(date.getFullYear(), date.getMonth(), 1),
     endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0),
     reviewedPlacesVisible: false,
-    closedPlaces: false
+    closedPlaces: false,
+    dateType: 'month'
   });
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});

@@ -112,9 +112,9 @@ const useStyles = makeStyles({
 export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect }) => {
   const classes = useStyles();
 
-  const {taskId, startDate, endDate, reviewedPlacesVisible, closedPlaces} = taskSelection;
+  const {taskId, startDate, endDate, reviewedPlacesVisible, closedPlaces, dateType} = taskSelection;
   const [selectedTaskId, setSelectedTaskId] = useState(taskId);
-  const [dateType, setDateType] = useState('month');
+  const [selectedDateType, setSelectedDateType] = useState(dateType);
   const [selectedDates, setSelectedDates] = useState({startDate, endDate});
   const [selectedReviewedPlacesVisible, setSelectedReviewedPlacesVisible] = useState(reviewedPlacesVisible);
   const [selectedClosedPlaces, setSelectedClosedPlaces] = useState(closedPlaces);
@@ -142,7 +142,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   }
 
   const dateTypeChangeHandler = (e) => {
-    setDateType(e.target.value);
+    setSelectedDateType(e.target.value);
   }
 
   const dateMonthChangeHandler = (date) => {
@@ -153,14 +153,24 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   }
 
   useEffect(() => {
-    if (dateType === 'month') {
-      const date = selectedDates.startDate;
+    if (selectedDateType === 'month') {
+      const date = new Date();
       setSelectedDates({
         startDate: new Date(date.getFullYear(), date.getMonth(), 1),
         endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
       });
     }
-  }, [dateType]);
+  }, [selectedDateType]);
+
+  useEffect(() => {
+    if (selectedDateType === 'tiles') {
+      const date = new Date();
+      setSelectedDates({
+        startDate: new Date(date.getFullYear(), date.getMonth() - 12, 1),
+        endDate: new Date(date.getFullYear(), date.getMonth() + 1, 1)
+      });
+    }
+  }, [selectedDateType]);
 
   useEffect(() => {
     onTaskSelect({
@@ -168,9 +178,10 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
       startDate: selectedDates.startDate,
       endDate: selectedDates.endDate,
       reviewedPlacesVisible: selectedReviewedPlacesVisible,
-      closedPlaces: selectedClosedPlaces
+      closedPlaces: selectedClosedPlaces,
+      dateType: selectedDateType
     });
-  }, [selectedTaskId, selectedDates, selectedReviewedPlacesVisible, selectedClosedPlaces]);
+  }, [selectedTaskId, selectedDates, selectedReviewedPlacesVisible, selectedClosedPlaces, selectedDateType]);
 
   const toggleReviewedPlacesVisible = () => {
     setSelectedReviewedPlacesVisible((prev) => !prev);
@@ -244,36 +255,15 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           fullWidth={true}
           disableUnderline={true}
           label="Date type"
-          defaultValue="month"
+          value={dateType}
         >
-          <MenuItem value="month" key="month">Month</MenuItem>
-          <MenuItem value="days" key="days">Range</MenuItem>
+          <MenuItem value="month" key="month">Changes By Month</MenuItem>
+          <MenuItem value="tiles" key="tiles">As on map</MenuItem>
         </Select>
-
         {(dateType === 'month') && <div className={classes.dates}>
           <DatePicker className={classes.dateItem} popperPlacement="bottom-end" dateFormat="MM/yyyy"
-            showMonthYearPicker showFullMonthYearPicker selected={selectedDates.startDate} onChange={date => dateMonthChangeHandler(date)} />
-        </div>}
-        {(dateType === 'days') && <div className={classes.dates}>
-          <DatePicker
-            className={classes.dateItem}
-            popperPlacement="bottom-end"
-            selected={selectedDates.startDate}
-            onChange={date => setSelectedDates({ startDate: date, endDate: selectedDates.endDate })}
-            selectsStart
-            startDate={selectedDates.startDate}
-            endDate={selectedDates.endDate}
-          />
-          <DatePicker
-            className={classes.dateItem2}
-            popperPlacement="bottom-end"
-            selected={selectedDates.endDate}
-            onChange={date => setSelectedDates({ startDate:selectedDates.startDate, endDate: date })}
-            selectsEnd
-            startDate={selectedDates.startDate}
-            endDate={selectedDates.endDate}
-            minDate={selectedDates.startDate}
-          />
+                      showMonthYearPicker showFullMonthYearPicker selected={selectedDates.startDate}
+                      onChange={date => dateMonthChangeHandler(date)}/>
         </div>}
         <div className={classes.switch}>
           <span>Display reviewed places</span>

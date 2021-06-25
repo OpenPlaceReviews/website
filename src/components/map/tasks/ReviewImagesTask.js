@@ -9,6 +9,10 @@ class ReviewImagesTask extends Task {
     fetchData({ startDate, endDate }) {
         return fetchHistoryData({ requestFilter: this.id, startDate, endDate });
     }
+
+    fetchDataTiled({tileId}) {
+        return fetchHistoryData({requestFilter: this.id, tileId});
+    }
 }
 
 export default ReviewImagesTask;
