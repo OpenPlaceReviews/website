@@ -24,7 +24,6 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
-  //const [selectedMarkerGroup, setSelectedMarkerGroup] = useState([]);
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
   const prevTaskSelection = usePrevious(taskSelection);
@@ -32,15 +31,21 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   let task = null;
   let taskStartDate = null;
   let taskEndDate = null;
+  let tilesPlacesVisible = false;
   let reviewedPlacesVisible = false;
+  let closedPlaces = false;
+  let potentiallyClosedPlaces = true;
   if (taskSelection) {
     task = Tasks.getTaskById(taskSelection.taskId);
     taskStartDate = taskSelection.startDate;
     taskEndDate = taskSelection.endDate;
     reviewedPlacesVisible = taskSelection.reviewedPlacesVisible;
+    closedPlaces = taskSelection.closedPlaces;
+    potentiallyClosedPlaces = taskSelection.potentiallyClosedPlaces;
+    tilesPlacesVisible = taskSelection.dateType === 'tiles';
     storage.setItem('taskSelection', JSON.stringify(taskSelection))
   }
-  let minMarkersZoom = task ? task.minZoom : MIN_MARKERS_ZOOM;
+  let minMarkersZoom = (task && !tilesPlacesVisible) ? task.minZoom : MIN_MARKERS_ZOOM;
 
   const onMapChange = async () => {
     const zoom = map.getZoom();
@@ -48,7 +53,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       setCurrentZoom(zoom);
     }
 
-    if (zoom < minMarkersZoom || (task && !task.tileBasedData)) {
+    if (zoom < minMarkersZoom || (task && !task.tileBasedData && !tilesPlacesVisible)) {
       setCurrentBounds({});
       return;
     }
@@ -87,11 +92,13 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         (prevTaskSelection.taskId !== taskSelection.taskId
             || prevTaskSelection.startDate !== taskSelection.startDate
             || prevTaskSelection.endDate !== taskSelection.endDate
-            || prevTaskSelection.reviewedPlacesVisible !== taskSelection.reviewedPlacesVisible);
+            || prevTaskSelection.reviewedPlacesVisible !== taskSelection.reviewedPlacesVisible
+            || prevTaskSelection.closedPlaces !== taskSelection.closedPlaces
+            || prevTaskSelection.potentiallyClosedPlaces !== taskSelection.potentiallyClosedPlaces);
     const forceReload = taskChanged || isPlaceChanged;
     const updateCache = async () => {
       let newCache = {};
-      if (task) {
+      if (task && !tilesPlacesVisible) {
         if (forceReload) {
           setLoading(true);
         } else if (task.tileBasedData) {
@@ -145,7 +152,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           }
         }
       }
-      if (currentZoom !== map.getZoom() && (!task || task.tileBasedData)) {
+      if (currentZoom !== map.getZoom() && (!task || task.tileBasedData || tilesPlacesVisible)) {
         return;
       }
       clearTimeout(loadingTimout);
@@ -164,13 +171,13 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }, [currentBounds, currentZoom, taskSelection]);
 
   useEffect(() => {
-    if (!task || task.tileBasedData) {
+    if (!task || task.tileBasedData || tilesPlacesVisible) {
       refreshMapDelay();
     }
   }, [placesCache, filterVal, currentZoom]);
 
   useEffect(() => {
-    if (task && !task.tileBasedData) {
+    if (task && !task.tileBasedData && !tilesPlacesVisible) {
       refreshMapDelay();
     }
   }, [placesCache, filterVal]);
@@ -196,11 +203,29 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   function getFilteredFeatures(geo, task) {
     let features;
     if (task === 'REVIEW_IMAGES') {
-      features = geo.features.filter(place => place.properties.img_review_size > 0);
+      if (reviewedPlacesVisible) {
+        features = geo.features.filter(place => place.properties.images > 0);
+      } else {
+        features = geo.features.filter(place => place.properties.img_review_size > 0);
+      }
     }
     if (task === 'POSSIBLE_MERGE') {
       features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
           && ((i < places.length - 1 && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
+    }
+    if (task === 'none') {
+      if (!potentiallyClosedPlaces) {
+        features = geo.features.filter(place => place.properties.place_deleted_osm === undefined);
+        if (closedPlaces) {
+          let closedFeatures = geo.features.filter(place => place.properties.place_deleted !== undefined);
+          return features.concat(closedFeatures);
+        } else {
+          return features.filter(place => place.properties.place_deleted === undefined);
+        }
+      }
+      if (!closedPlaces) {
+        features = geo.features.filter(place => place.properties.place_deleted === undefined);
+      }
     }
     return features;
   }
@@ -219,7 +244,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }
 
   function getTileBasedCacheByFilters(geo) {
-    if (!reviewedPlacesVisible && taskSelection.taskId !== "none") {
+    if (!potentiallyClosedPlaces || !closedPlaces) {
       let features = getFilteredFeatures(geo, taskSelection.taskId);
       return {"access": 1, data: {type: "FeatureCollection", features}};
     } else {
@@ -267,7 +292,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       return;
     }
     let newFeatures = [];
-    if (task && !task.tileBasedData) {
+    if (task && !task.tileBasedData && !tilesPlacesVisible) {
       if (has(placesCache, 'all.data.features')) {
         const features = get(placesCache, 'all.data.features');
         if (filterVal === "all") {

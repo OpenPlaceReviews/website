@@ -112,11 +112,13 @@ const useStyles = makeStyles({
 export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect }) => {
   const classes = useStyles();
 
-  const {taskId, startDate, endDate, reviewedPlacesVisible} = taskSelection;
+  const {taskId, startDate, endDate, reviewedPlacesVisible, closedPlaces, potentiallyClosedPlaces, dateType} = taskSelection;
   const [selectedTaskId, setSelectedTaskId] = useState(taskId);
-  const [dateType, setDateType] = useState('month');
+  const [selectedDateType, setSelectedDateType] = useState(dateType);
   const [selectedDates, setSelectedDates] = useState({startDate, endDate});
   const [selectedReviewedPlacesVisible, setSelectedReviewedPlacesVisible] = useState(reviewedPlacesVisible);
+  const [selectedClosedPlaces, setSelectedClosedPlaces] = useState(closedPlaces);
+  const [selectedPotentiallyClosedPlaces, setSelectedPotentiallyClosedPlaces] = useState(potentiallyClosedPlaces);
 
   const tasks = Tasks.getTasks();
   const selectedTask = Tasks.getTaskById(taskSelection.taskId);
@@ -141,7 +143,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   }
 
   const dateTypeChangeHandler = (e) => {
-    setDateType(e.target.value);
+    setSelectedDateType(e.target.value);
   }
 
   const dateMonthChangeHandler = (date) => {
@@ -152,26 +154,47 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   }
 
   useEffect(() => {
-    if (dateType === 'month') {
-      const date = selectedDates.startDate;
+    if (selectedDateType === 'month') {
+      const date = new Date();
       setSelectedDates({
         startDate: new Date(date.getFullYear(), date.getMonth(), 1),
         endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
       });
     }
-  }, [dateType]);
+  }, [selectedDateType]);
+
+  useEffect(() => {
+    if (selectedDateType === 'tiles') {
+      const date = new Date();
+      setSelectedDates({
+        startDate: new Date(date.getFullYear(), date.getMonth() - 12, 1),
+        endDate: new Date(date.getFullYear(), date.getMonth() + 1, 1)
+      });
+    }
+  }, [selectedDateType]);
 
   useEffect(() => {
     onTaskSelect({
       taskId: selectedTaskId,
       startDate: selectedDates.startDate,
       endDate: selectedDates.endDate,
-      reviewedPlacesVisible: selectedReviewedPlacesVisible
+      reviewedPlacesVisible: selectedReviewedPlacesVisible,
+      closedPlaces: selectedClosedPlaces,
+      potentiallyClosedPlaces: selectedPotentiallyClosedPlaces,
+      dateType: selectedDateType
     });
-  }, [selectedTaskId, selectedDates, selectedReviewedPlacesVisible]);
+  }, [selectedTaskId, selectedDates, selectedReviewedPlacesVisible, selectedClosedPlaces, selectedPotentiallyClosedPlaces, selectedDateType]);
 
   const toggleReviewedPlacesVisible = () => {
     setSelectedReviewedPlacesVisible((prev) => !prev);
+  };
+
+  const toggleSelectedClosedPlaces = () => {
+    setSelectedClosedPlaces((prev) => !prev);
+  };
+
+  const toggleSelectedPotentiallyClosedPlaces = () => {
+    setSelectedPotentiallyClosedPlaces((prev) => !prev);
   };
 
   return <div className={classes.filter}>
@@ -211,6 +234,32 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
       >
         {categoryOptions}
       </Select>
+      {isLoggedIn && !selectedTask && <>
+        <div style={{marginBottom: "10px"}} className={classes.switch}>
+          <span style={{marginLeft: "10px"}}>Show closed places</span>
+          <Switch
+              className={classes.position}
+              checked={selectedClosedPlaces}
+              classes={{
+                switchBase: classes.switchBase,
+                track: classes.track,
+                checked: classes.checked
+              }}
+              value={selectedClosedPlaces} onClick={toggleSelectedClosedPlaces}/>
+        </div>
+        <div className={classes.switch}>
+          <span style={{marginLeft: "10px"}}>Show potentially closed places</span>
+          <Switch
+              className={classes.position}
+              checked={selectedPotentiallyClosedPlaces}
+              classes={{
+                switchBase: classes.switchBase,
+                track: classes.track,
+                checked: classes.checked
+              }}
+              value={selectedPotentiallyClosedPlaces} onClick={toggleSelectedPotentiallyClosedPlaces}/>
+        </div>
+      </>}
       {isLoggedIn && selectedTask && <>
         <p className={classes.header}>Date type</p>
         <Select
@@ -224,39 +273,18 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           fullWidth={true}
           disableUnderline={true}
           label="Date type"
-          defaultValue="month"
+          value={dateType}
         >
-          <MenuItem value="month" key="month">Month</MenuItem>
-          <MenuItem value="days" key="days">Range</MenuItem>
+          <MenuItem value="month" key="month">Changes By Month</MenuItem>
+          <MenuItem value="tiles" key="tiles">As on map</MenuItem>
         </Select>
-
         {(dateType === 'month') && <div className={classes.dates}>
           <DatePicker className={classes.dateItem} popperPlacement="bottom-end" dateFormat="MM/yyyy"
-            showMonthYearPicker showFullMonthYearPicker selected={selectedDates.startDate} onChange={date => dateMonthChangeHandler(date)} />
-        </div>}
-        {(dateType === 'days') && <div className={classes.dates}>
-          <DatePicker
-            className={classes.dateItem}
-            popperPlacement="bottom-end"
-            selected={selectedDates.startDate}
-            onChange={date => setSelectedDates({ startDate: date, endDate: selectedDates.endDate })}
-            selectsStart
-            startDate={selectedDates.startDate}
-            endDate={selectedDates.endDate}
-          />
-          <DatePicker
-            className={classes.dateItem2}
-            popperPlacement="bottom-end"
-            selected={selectedDates.endDate}
-            onChange={date => setSelectedDates({ startDate:selectedDates.startDate, endDate: date })}
-            selectsEnd
-            startDate={selectedDates.startDate}
-            endDate={selectedDates.endDate}
-            minDate={selectedDates.startDate}
-          />
+                      showMonthYearPicker showFullMonthYearPicker selected={selectedDates.startDate}
+                      onChange={date => dateMonthChangeHandler(date)}/>
         </div>}
         <div className={classes.switch}>
-          <span>Display reviewed places</span>
+          <span style={{marginLeft: "10px"}}>Display reviewed places</span>
           <Switch
               className={classes.position}
               checked={selectedReviewedPlacesVisible}
@@ -271,4 +299,5 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
     </div>
   </div>
 };
+
 
