@@ -3,7 +3,7 @@ import { fetchHistoryData } from "../../../api/geo";
 
 class ReviewDuplicatePlacesTask extends Task {
     constructor() {
-        super('POSSIBLE_MERGE', 'Review duplicate places', false, 0);
+        super('POSSIBLE_MERGE', 'Review closed places', false, 0);
     }
 
     fetchData({ startDate, endDate }) {

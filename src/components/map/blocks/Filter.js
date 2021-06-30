@@ -274,6 +274,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           disableUnderline={true}
           label="Date type"
           value={dateType}
+          defaultValue="tiles"
         >
           <MenuItem value="month" key="month">Changes By Month</MenuItem>
           <MenuItem value="tiles" key="tiles">As on map</MenuItem>
