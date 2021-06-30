@@ -200,32 +200,81 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     }, REFRESH_TIMEOUT);
   }
 
-  function getFilteredFeatures(geo, task) {
-    let features;
+  function getTileBasedFilteredFeatures(geo, task) {
+    let features = [];
     if (task === 'REVIEW_IMAGES') {
-      if (reviewedPlacesVisible) {
-        features = geo.features.filter(place => place.properties.images > 0);
-      } else {
-        features = geo.features.filter(place => place.properties.img_review_size > 0);
-      }
+      features = filterReviewImages(geo);
     }
     if (task === 'POSSIBLE_MERGE') {
-      features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
-          && ((i < places.length - 1 && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
+      features = filterTileBasedPossibleMerge(geo);
     }
     if (task === 'none') {
-      if (!potentiallyClosedPlaces) {
-        features = geo.features.filter(place => place.properties.place_deleted_osm === undefined);
-        if (closedPlaces) {
-          let closedFeatures = geo.features.filter(place => place.properties.place_deleted !== undefined);
-          return features.concat(closedFeatures);
-        } else {
-          return features.filter(place => place.properties.place_deleted === undefined);
-        }
+      features = filterNone(geo, features);
+    }
+    return features;
+  }
+
+  function getFilteredFeatures(geo, task) {
+    let features = [];
+    if (task === 'REVIEW_IMAGES') {
+      features = filterReviewImages(geo);
+    }
+    if (task === 'POSSIBLE_MERGE') {
+      features = filterPossibleMerge(geo, features);
+    }
+    return features;
+  }
+
+  function filterReviewImages(geo) {
+    return reviewedPlacesVisible ? geo.features.filter(place => place.properties.images_size > 0)
+        : geo.features.filter(place => place.properties.img_review_size > 0);
+  }
+
+  function filterPossibleMerge(geo, features) {
+    features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
+        && ((i < places.length - 1 && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
+    if (reviewedPlacesVisible) {
+      let alreadyMergedFeatures = geo.features.filter(place => place.properties.sources && place.properties.sources.length > 1
+          && place.properties.sources[0].deleted);
+      return features.concat(alreadyMergedFeatures);
+    }
+    return features;
+  }
+
+  function filterTileBasedPossibleMerge(geo) {
+    let featuresDeleted = geo.features.filter(place => place.properties.place_deleted_osm !== undefined && place.properties.place_deleted === undefined);
+    let featuresCreated = [];
+    let sumFeaturesCreated = [];
+    for (let i = 0; i < featuresDeleted.length; i++) {
+      featuresCreated = geo.features.filter(place => areSimilar(featuresDeleted[i], place) && place.properties.place_deleted_osm === undefined)
+      if (featuresCreated.length > 0) {
+        sumFeaturesCreated = sumFeaturesCreated.concat(featuresCreated);
+      } else {
+        featuresDeleted.splice(i, 1);
       }
-      if (!closedPlaces) {
-        features = geo.features.filter(place => place.properties.place_deleted === undefined);
+    }
+    if (reviewedPlacesVisible) {
+      let alreadyMergedFeatures = geo.features.filter(place => place.properties.sources && place.properties.sources.length > 1
+          && place.properties.sources[0].deleted)
+      let mergedFeatures = featuresDeleted.concat(sumFeaturesCreated);
+      return mergedFeatures.concat(alreadyMergedFeatures);
+    } else {
+      return featuresDeleted.concat(sumFeaturesCreated);
+    }
+  }
+
+  function filterNone(geo, features) {
+    if (!potentiallyClosedPlaces) {
+      features = geo.features.filter(place => place.properties.place_deleted_osm === undefined);
+      if (closedPlaces) {
+        let closedFeatures = geo.features.filter(place => place.properties.place_deleted !== undefined);
+        return features.concat(closedFeatures);
+      } else {
+        return features.filter(place => place.properties.place_deleted === undefined);
       }
+    }
+    if (!closedPlaces) {
+      features = geo.features.filter(place => place.properties.place_deleted === undefined);
     }
     return features;
   }
@@ -245,7 +294,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
 
   function getTileBasedCacheByFilters(geo) {
     if (!potentiallyClosedPlaces || !closedPlaces) {
-      let features = getFilteredFeatures(geo, taskSelection.taskId);
+      let features = getTileBasedFilteredFeatures(geo, taskSelection.taskId);
       return {"access": 1, data: {type: "FeatureCollection", features}};
     } else {
       return {"access": 1, data: geo};
