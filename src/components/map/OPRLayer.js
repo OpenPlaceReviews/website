@@ -4,7 +4,7 @@ import { OpenLocationCode } from "open-location-code";
 import { isEqual, has, get } from "lodash";
 
 import { fetchData } from "../../api/geo";
-import MarkerIcon from './MrkerIcon';
+import MarkerIcon from './MarkerIcon';
 import OPRMessageOverlay from "./blocks/OPRMessageOverlay";
 import storage from "../../libs/storage";
 
@@ -385,7 +385,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       },
 
       pointToLayer: (feature, latlng) => {
-        const icon = MarkerIcon(feature.properties.place_type);
+        const icon = MarkerIcon(feature.properties.place_type, feature.properties.deleted, feature.properties.place_deleted_osm);
         const marker = L.marker(latlng, { icon: icon });
         return marker.on('click', () => onMarkerClick(feature));
       }
