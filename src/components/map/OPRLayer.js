@@ -208,6 +208,9 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     if (task === 'POSSIBLE_MERGE') {
       features = filterTileBasedPossibleMerge(geo);
     }
+    if (task === 'REVIEW_TRIPADVISOR') {
+      features = filterMissingTripAdvisor(geo);
+    }
     if (task === 'none') {
       features = filterNone(geo, features);
     }
@@ -261,6 +264,11 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     } else {
       return featuresDeleted.concat(sumFeaturesCreated);
     }
+  }
+
+  function filterMissingTripAdvisor(geo) {
+    return reviewedPlacesVisible ? geo.features.filter(place => place.properties.has_tripadvisor !== undefined)
+        : geo.features.filter(place => place.properties.has_tripadvisor === undefined);
   }
 
   function filterNone(geo, features) {
