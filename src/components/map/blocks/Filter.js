@@ -126,7 +126,22 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   const taskOptions = [<MenuItem value="none" key="none">None</MenuItem>];
   for (let i in tasks) {
     const task = tasks[i];
-    taskOptions.push(<MenuItem value={task.id} key={task.id}>{task.name}</MenuItem>);
+    if (task.id !== 'REVIEW_TRIPADVISOR' || dateType !== 'month')
+      taskOptions.push(<MenuItem value={task.id} key={task.id}>{task.name}</MenuItem>);
+  }
+
+  const dates = ['month', 'tiles'];
+  const dateTypes = [];
+  for (let i in dates) {
+    const date = dates[i];
+    if (taskId !== 'REVIEW_TRIPADVISOR' || date !== 'month') {
+      if (date === 'month') {
+        dateTypes.push(<MenuItem value="month" key="month">Changes By Month</MenuItem>);
+      }
+      if (date === 'tiles') {
+        dateTypes.push(<MenuItem value="tiles" key="tiles">As on map</MenuItem>);
+      }
+    }
   }
 
   const categoryOptions = [<MenuItem value="all" key="all">All</MenuItem>];
@@ -276,8 +291,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           value={dateType}
           defaultValue="tiles"
         >
-          <MenuItem value="month" key="month">Changes By Month</MenuItem>
-          <MenuItem value="tiles" key="tiles">As on map</MenuItem>
+          {dateTypes}
         </Select>
         {(dateType === 'month') && <div className={classes.dates}>
           <DatePicker className={classes.dateItem} popperPlacement="bottom-end" dateFormat="MM/yyyy"

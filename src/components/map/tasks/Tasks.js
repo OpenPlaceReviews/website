@@ -1,7 +1,8 @@
 import ReviewDuplicatePlacesTask from './ReviewDuplicatePlacesTask';
 import ReviewImagesTask from './ReviewImagesTask';
+import ReviewTripAdvisorTask from "./ReviewTripAdvisorTask";
 
-const tasks = [new ReviewDuplicatePlacesTask(), new ReviewImagesTask()];
+const tasks = [new ReviewDuplicatePlacesTask(), new ReviewImagesTask(), new ReviewTripAdvisorTask()];
 
 const getTasks = () => {
     return tasks;
