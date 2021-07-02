@@ -275,7 +275,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
         </div>
       </>}
       {isLoggedIn && selectedTask && <>
-        <p className={classes.header}>Date type</p>
+        <p className={classes.header}>Review</p>
         <Select
           classes={{
             root: classes.dropdown,
