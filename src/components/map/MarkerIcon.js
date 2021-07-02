@@ -1,6 +1,7 @@
 import L from "leaflet";
 
 import shadowIcon from '../../assets/images/map_icons/poi_shield_map.svg';
+import shadowDeletedOsmIcon from '../../assets/images/map_icons/poi_yellow_shield_map.svg';
 import shadowDeletedIcon from '../../assets/images/map_icons/poi_deleted_shield_map.svg';
 import defaultIcon from '../../assets/images/map_icons/default-marker.svg';
 import apartment from '../../assets/images/map_icons/apartment.svg';
@@ -33,9 +34,14 @@ const icons = {
   restaurant,
 }
 
-export default (place_type, deleted, place_deleted_osm) => {
+export default (place_type, place_deleted, place_deleted_osm) => {
   const iconUrl = icons[place_type] || defaultIcon;
-  const iconShadow = (deleted || place_deleted_osm) ? shadowDeletedIcon : shadowIcon;
+  let iconShadow;
+  if (place_deleted) {
+    iconShadow = shadowDeletedIcon;
+  } else if (place_deleted_osm) {
+    iconShadow = shadowDeletedOsmIcon;
+  } else iconShadow = shadowIcon;
 
   return new L.Icon({
     iconUrl,
