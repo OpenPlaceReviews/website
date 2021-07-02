@@ -249,11 +249,12 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     let featuresCreated = [];
     let sumFeaturesCreated = [];
     for (let i = 0; i < featuresDeleted.length; i++) {
-      featuresCreated = geo.features.filter(place => areSimilar(featuresDeleted[i], place) && place.properties.place_deleted_osm === undefined)
-      if (featuresCreated.length > 0) {
-        sumFeaturesCreated = sumFeaturesCreated.concat(featuresCreated);
+      let featuresCreatedSimilarName = geo.features.filter(place => areSimilarName(featuresDeleted[i], place) && place.properties.place_deleted_osm === undefined)
+      if (featuresCreatedSimilarName > 0) {
+        sumFeaturesCreated = sumFeaturesCreated.concat(featuresCreatedSimilarName);
       } else {
-        featuresDeleted.splice(i, 1);
+        featuresCreated = geo.features.filter(place => areSimilar(featuresDeleted[i], place) && place.properties.place_deleted_osm === undefined)
+        sumFeaturesCreated = sumFeaturesCreated.concat(featuresCreated);
       }
     }
     if (reviewedPlacesVisible) {
@@ -286,10 +287,23 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     return features;
   }
 
+  function areSimilarName(place1, place2) {
+    if (place2 && place2.properties.place_deleted === undefined && place1.properties.title === place2.properties.title) {
+      const [lat, lon] = place1.geometry.coordinates;
+      let similarPlaceDistance = 100;
+      const [gLat, gLon] = place2.geometry.coordinates;
+      const distance = Utils.getDistance(lat, lon, gLat, gLon);
+      if (distance < similarPlaceDistance) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function areSimilar(place1, place2) {
     if (place2 && place2.properties.place_deleted === undefined) {
       const [lat, lon] = place1.geometry.coordinates;
-      let similarPlaceDistance = 150;
+      let similarPlaceDistance = 50;
       const [gLat, gLon] = place2.geometry.coordinates;
       const distance = Utils.getDistance(lat, lon, gLat, gLon);
       if (distance < similarPlaceDistance) {
