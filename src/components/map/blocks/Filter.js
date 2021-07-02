@@ -126,22 +126,20 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   const taskOptions = [<MenuItem value="none" key="none">None</MenuItem>];
   for (let i in tasks) {
     const task = tasks[i];
-    if (task.id !== 'REVIEW_TRIPADVISOR' || dateType !== 'month')
-      taskOptions.push(<MenuItem value={task.id} key={task.id}>{task.name}</MenuItem>);
+    taskOptions.push(<MenuItem value={task.id} key={task.id}>{task.name}</MenuItem>);
   }
 
   const dates = ['month', 'tiles'];
   const dateTypes = [];
   for (let i in dates) {
     const date = dates[i];
-    if (taskId !== 'REVIEW_TRIPADVISOR' || date !== 'month') {
-      if (date === 'month') {
-        dateTypes.push(<MenuItem value="month" key="month">Changes By Month</MenuItem>);
-      }
-      if (date === 'tiles') {
-        dateTypes.push(<MenuItem value="tiles" key="tiles">As on map</MenuItem>);
-      }
+    if (taskId !== 'REVIEW_TRIPADVISOR' && date === 'month') {
+      dateTypes.push(<MenuItem value="month" key="month">Changes By Month</MenuItem>);
     }
+    if (date === 'tiles') {
+      dateTypes.push(<MenuItem value="tiles" key="tiles">As on map</MenuItem>);
+    }
+
   }
 
   const categoryOptions = [<MenuItem value="all" key="all">All</MenuItem>];
@@ -151,6 +149,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
 
   const taskChangeHandler = (e) => {
     setSelectedTaskId(e.target.value);
+    setSelectedDateType('tiles')
   }
 
   const categoryChangeHandler = (e) => {
@@ -287,7 +286,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           placeholder="Select date type"
           fullWidth={true}
           disableUnderline={true}
-          label="Date type"
+          label="Review"
           value={dateType}
           defaultValue="tiles"
         >

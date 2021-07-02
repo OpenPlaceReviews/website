@@ -257,8 +257,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       }
     }
     if (reviewedPlacesVisible) {
-      let alreadyMergedFeatures = geo.features.filter(place => place.properties.sources && place.properties.sources.length > 1
-          && place.properties.sources[0].deleted)
+      let alreadyMergedFeatures = geo.features.filter(place => place.properties.sources[0].deleted)
       let mergedFeatures = featuresDeleted.concat(sumFeaturesCreated);
       return mergedFeatures.concat(alreadyMergedFeatures);
     } else {
@@ -385,7 +384,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       },
 
       pointToLayer: (feature, latlng) => {
-        const icon = MarkerIcon(feature.properties.place_type, feature.properties.deleted, feature.properties.place_deleted_osm);
+        const icon = MarkerIcon(feature.properties.place_type, feature.properties.place_deleted, feature.properties.place_deleted_osm);
         const marker = L.marker(latlng, { icon: icon });
         return marker.on('click', () => onMarkerClick(feature));
       }
