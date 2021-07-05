@@ -439,6 +439,27 @@ a.active{
         margin-top: 10px;
         margin-bottom: 15px;
       }
+      .flex_conteiner{
+        display: flex;
+        @media (max-width: 900px) {
+          flex-wrap: wrap;
+        }
+        div:first-child{
+          max-width: 470px;
+          margin-right: 90px;
+          @media (max-width: 1100px) {
+            margin-right: 40px;
+          }
+          @media (max-width: 900px) {
+            margin-bottom: 20px;
+          }
+        }
+        div:last-child{
+          border-left: 4px solid #FFC93A;
+          padding-left: 25px;
+          white-space: nowrap;
+        }
+      }
       img{
         width: 300px;
         height: 217px;
