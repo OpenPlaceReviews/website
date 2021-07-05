@@ -428,23 +428,15 @@ a.active{
   .sixth-screen{
     border-bottom: 5px solid #ECF7F1;
     .asoftoday{
-      display: flex;
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 10vw;
       padding-top: 135px;
       padding-bottom: 175px;
       h1{
-        text-align: left;
+        text-align: center;
         margin-top: 10px;
         margin-bottom: 15px;
-      }
-      img{
-        width: 300px;
-        height: 217px;
-        margin-right: 90px;
-        left: -20px;
-        position: relative;
       }
       p{
         margin-top: 15px;
@@ -456,16 +448,6 @@ a.active{
         padding: 0 10vw;
         padding-top: 85px;
         padding-bottom: 75px;
-        img{
-          width: 191px;
-          height: 138px;
-          margin-right: 20px;
-          left: -10px;
-          float: left;
-        }
-        h1{
-          width: 0px;
-        }
         p{
           margin-top: 25px;
         }
