@@ -1,8 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-import victorShcherbPhoto from "../../assets/images/victor_shcherb.png";
-import evgeneLisovskyPhoto from "../../assets/images/evgene_lisovsky.png";
 import githubLogo from "../../assets/images/openness_github.png";
 import openDBLogo from "../../assets/images/openness_opendb.png";
 import monetizationImg from "../../assets/images/monetization.png";
@@ -72,7 +70,7 @@ export default function LandingPage() {
     <div className="third-screen">
       <h1>Community driven</h1>
       <p>Build a community to make key decisions about data<br/>structure and moderation together.</p>
-      <a href="https://forum.openplacereviews.org/" target="_blank">Join discussions</a>
+      <a href="https://t.me/openplacereviews" target="_blank">Discuss on Telegram</a>
       <div className="flex_conteiner">
         <div className="left_clmn">
           <h2>Register &amp; Update places</h2>
@@ -115,40 +113,6 @@ export default function LandingPage() {
           <div>
             <p>With appropriate data tagging let applications and users decide how to display the data to avoid
               monopoly on decisions</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div className="sixth-screen">
-      <div className="monetization">
-        <img src={monetizationImg} alt="Monetization"/>
-        <div>
-          <h1>Future Monetization</h1>
-          <p>Make business subscriptions once the project is matured and spread the income between applications,
-            authors, moderators and network operators.</p>
-        </div>
-      </div>
-    </div>
-    <div className="seventh-screen">
-      <div className="founders">
-        <h1>Founders</h1>
-        <div className="flex_conteiner">
-          <div className="founder_block">
-            <img src={victorShcherbPhoto} alt="Victor Shcherb" />
-            <div>
-              <div className="fuunder_name">Victor Shcherb</div>
-              <div>CEO & Founder OsmAnd</div>
-              <div><a href="https://osmand.net/">OsmAnd.net</a></div>
-            </div>
-          </div>
-
-          <div className="founder_block">
-            <img src={evgeneLisovskyPhoto} alt="Evgene Lisovsky" />
-            <div>
-              <div className="fuunder_name">Eugene Lisovsky</div>
-              <div>CEO Maps.me</div>
-              <div><a href="https://maps.me/">Maps.me</a></div>
-            </div>
           </div>
         </div>
       </div>
