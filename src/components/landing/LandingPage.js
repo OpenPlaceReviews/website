@@ -17,7 +17,7 @@ export default function LandingPage() {
           <div className="first-screen-container">
             <div className="container_flex">
               <h1>
-                Read, share and manage reviews about local places
+                Read, share and manage information about local places
                 <p>Open. Collaborative. Decentralized.</p>
               </h1>
 
@@ -113,6 +113,27 @@ export default function LandingPage() {
           <div>
             <p>With appropriate data tagging let applications and users decide how to display the data to avoid
               monopoly on decisions</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div className="sixth-screen">
+      <div className="asoftoday">
+        <h1>As of Today</h1>
+        <div className="flex_conteiner">
+          <div>
+            <p>As of today we are here:</p>
+            <p>- Synchronize places such as hotels and restaurants with OpenStreetMap and maintain permanent id (OpenPlaceReviews id).</p>
+            <p>- Allow to upload pictures for places (outdoor, indoor, menu). Available via <a href="https://osmand.net">OsmAnd</a>.</p>
+            <p>- Invite to moderate uploaded pictures. Available on the website  for <a href="https://openplacereviews.org/login">logged in users</a>.</p>
+            <p>- Invite to help to review whether place was closed, renamed or refreshed, so reviews and pictures could be preserved. Available on the website .</p>
+            <p>- Invite to attach Trip Advisor id to the places. Available on the website.</p>
+          </div>
+          <div>
+            <p>Nearest plans:</p>
+            <p>- Sync rating with Trip Advisor.</p>
+            <p>- Extend places database to touristic amenities such as viewpoints, castles, monuments, etc.</p>
+            <p>- Allow to add review places and build favorites lists for registered users.</p>
           </div>
         </div>
       </div>
