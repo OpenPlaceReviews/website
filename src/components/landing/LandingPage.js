@@ -120,26 +120,25 @@ export default function LandingPage() {
     <div className="sixth-screen">
       <div className="asoftoday">
         <h1>As of Today</h1>
-        <div className="flex_conteiner">
-          <div>
-            <h2>As of today in 2021 we</h2>
-            <ul>
-              <li>  Synchronize places such as hotels and restaurants with OpenStreetMap and maintain permanent id (OpenPlaceReviews id).</li>
-              <li>  Allow to upload pictures for places (outdoor, indoor, menu). Available via <a href="https://osmand.net">OsmAnd</a>.</li>
-              <li>  Invite to moderate uploaded pictures. Available on the website  for <a href="https://openplacereviews.org/login">logged in users</a>.</li>
-              <li>  Invite to help to review whether place was closed, renamed or refreshed, so reviews and pictures could be preserved. Available on the website .</li>
-              <li>  Invite to attach Trip Advisor id to the places. Available on the website.</li>
-            </ul>
-          </div>
-          <div>
-            <h2>Nearest plans to do</h2>
-            <ul>
-              <li> Sync rating with Trip Advisor.</li>
-              <li> Extend places database to touristic amenities such as viewpoints, castles, monuments, etc.</li>
-              <li> Allow to add review places and build favorites lists for registered users.</li>
-            </ul>
-          </div>
+        <div>
+          <h2>As of today in 2021 we</h2>
+          <ul>
+            <li>  Synchronize places such as hotels and restaurants with OpenStreetMap and maintain permanent id (OpenPlaceReviews id).</li>
+            <li>  Allow to upload pictures for places (outdoor, indoor, menu). Available via <a href="https://osmand.net">OsmAnd</a>.</li>
+            <li>  Invite to moderate uploaded pictures. Available on the website  for <a href="https://openplacereviews.org/login">logged in users</a>.</li>
+            <li>  Invite to help to review whether place was closed, renamed or refreshed, so reviews and pictures could be preserved. Available on the website .</li>
+            <li>  Invite to attach Trip Advisor id to the places. Available on the website.</li>
+          </ul>
         </div>
+        <div>
+          <h2>Nearest plans to do</h2>
+          <ul>
+            <li> Sync rating with Trip Advisor.</li>
+            <li> Extend places database to touristic amenities such as viewpoints, castles, monuments, etc.</li>
+            <li> Allow to add review places and build favorites lists for registered users.</li>
+          </ul>
+        </div>
+        
       </div>
     </div>
 
