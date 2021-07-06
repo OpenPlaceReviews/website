@@ -235,7 +235,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
 
   function filterPossibleMerge(geo, features) {
     features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
-        && ((i < places.length - 1 && areSimilar(place, places[i + 1])) || (i > 0 && areSimilar(place, places[i - 1]))));
+        && ((i < places.length - 1 && areSimilar(place, places[i + 1], 150)) || (i > 0 && areSimilar(place, places[i - 1], 150))));
     if (reviewedPlacesVisible) {
       let alreadyMergedFeatures = geo.features.filter(place => place.properties.sources && place.properties.sources.length > 1
           && place.properties.sources[0].deleted);
@@ -253,7 +253,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       if (featuresCreatedSimilarName > 0) {
         sumFeaturesCreated = sumFeaturesCreated.concat(featuresCreatedSimilarName);
       } else {
-        featuresCreated = geo.features.filter(place => areSimilar(featuresDeleted[i], place) && place.properties.place_deleted_osm === undefined)
+        featuresCreated = geo.features.filter(place => areSimilar(featuresDeleted[i], place, 50) && place.properties.place_deleted_osm === undefined)
         sumFeaturesCreated = sumFeaturesCreated.concat(featuresCreated);
       }
     }
@@ -300,10 +300,10 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     return false;
   }
 
-  function areSimilar(place1, place2) {
+  function areSimilar(place1, place2, distance) {
     if (place2 && place2.properties.place_deleted === undefined) {
       const [lat, lon] = place1.geometry.coordinates;
-      let similarPlaceDistance = 50;
+      let similarPlaceDistance = distance;
       const [gLat, gLon] = place2.geometry.coordinates;
       const distance = Utils.getDistance(lat, lon, gLat, gLon);
       if (distance < similarPlaceDistance) {
@@ -398,7 +398,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       },
 
       pointToLayer: (feature, latlng) => {
-        const icon = MarkerIcon(feature.properties.place_type, feature.properties.place_deleted, feature.properties.place_deleted_osm);
+        const icon = MarkerIcon(feature.properties.place_type, feature.properties.place_deleted, feature.properties.place_deleted_osm || feature.properties.deleted);
         const marker = L.marker(latlng, { icon: icon });
         return marker.on('click', () => onMarkerClick(feature));
       }
