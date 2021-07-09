@@ -173,7 +173,7 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
     }, [index, version]);
 
     function onMerge() {
-        setPlaces([mainPlace, similarPlace]);
+        setPlaces([similarPlace, mainPlace]);
         carousel.next();
     }
 
