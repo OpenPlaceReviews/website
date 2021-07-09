@@ -34,7 +34,8 @@ export default function PermanentlyClosedDialog({
                                                     open,
                                                     onClose,
                                                     place,
-                                                    setPlaces
+                                                    setPlaces,
+                                                    carousel
                                                 }) {
     const [deletedComment, setDeletedComment] = useState(null);
 
@@ -62,6 +63,9 @@ export default function PermanentlyClosedDialog({
 
             setPlaces([place, newPlace])
             onClose()
+            if (carousel) {
+                carousel.next();
+            }
         }
     }
 

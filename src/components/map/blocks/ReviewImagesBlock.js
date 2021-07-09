@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import ImagesCarousel from "./ImagesCarousel";
+import ImagesCarousel from "./carousels/ImagesCarousel";
 import {makeStyles} from "@material-ui/styles";
 
 import CategorySelector from "./CategorySelector";

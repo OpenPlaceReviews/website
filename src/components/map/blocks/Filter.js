@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
-import {Select, MenuItem, Switch} from '@material-ui/core';
+import {Select, MenuItem, Switch, Button} from '@material-ui/core';
 import filter from '../../../assets/images/icons/filter.svg';
 import { makeStyles } from "@material-ui/styles";
 import Tasks from "../tasks/Tasks";
@@ -107,9 +107,14 @@ const useStyles = makeStyles({
   },
   track: {},
   checked: {},
+  button: {
+    height: "28px",
+    marginLeft: "10px",
+    fontSize: 12
+  },
 });
 
-export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect }) => {
+export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect, setMergeListDialogOpen }) => {
   const classes = useStyles();
 
   const {taskId, startDate, endDate, reviewedPlacesVisible, closedPlaces, potentiallyClosedPlaces, dateType} = taskSelection;
@@ -122,6 +127,10 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
 
   const tasks = Tasks.getTasks();
   const selectedTask = Tasks.getTaskById(taskSelection.taskId);
+
+  const openMergeListDialog = () => {
+    setMergeListDialogOpen(true);
+  };
 
   const taskOptions = [<MenuItem value="none" key="none">None</MenuItem>];
   for (let i in tasks) {
@@ -296,6 +305,13 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           <DatePicker className={classes.dateItem} popperPlacement="bottom-end" dateFormat="MM/yyyy"
                       showMonthYearPicker showFullMonthYearPicker selected={selectedDates.startDate}
                       onChange={date => dateMonthChangeHandler(date)}/>
+          <Button type="submit"
+                  className={classes.button}
+                  variant="outlined"
+                  color={"primary"}
+                  onClick={openMergeListDialog}>
+            Open merge list
+          </Button>
         </div>}
         <div className={classes.switch}>
           <span style={{marginLeft: "10px"}}>Display reviewed places</span>
