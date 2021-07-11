@@ -4,7 +4,7 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle,
+    DialogTitle, Grid,
 } from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
 import MergeCarousel from "../carousels/MergeCarousel";
@@ -13,6 +13,8 @@ import useCommitOp from "../../hooks/useCommitOp";
 import {getObjectsById} from "../../../../api/data";
 import AuthContext from "../../../main/auth/providers/AuthContext";
 import PermanentlyClosedDialog from "./PermanentlyClosedDialog";
+import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+import useBatchOp from "../../hooks/useBatchOp";
 
 const useStyles = makeStyles({
     header: {
@@ -61,6 +63,25 @@ const useStyles = makeStyles({
         boxShadow: "0 2px 4px rgba(0, 0, 0, .2)",
         borderColor: "#2D69E0",
         backgroundColor: "#FFFFFF"
+    },
+    disabled: {
+        backgroundColor: "#ff595d"
+    },
+    toggleMerge: {
+        width: "184px",
+        "&:hover": {
+            color: "#FFFFFF",
+            background: "#5584e6",
+            borderColor: "#c5c5c5",
+        }
+    },
+    togglePerClosed: {
+        width: "184px",
+        "&:hover": {
+            color: "#FFFFFF",
+            background: "#ffc939",
+            borderColor: "#c5c5c5",
+        }
     }
 })
 
@@ -82,6 +103,15 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
     const [permanentlyClosedDialogOpen, setPermanentlyClosedDialogOpen] = useState(false);
     const [deletedPlace, setDeletedPlace] = useState(null);
     const [carousel, setCarousel] = useState(null);
+    const [toggle, setToggle] = useState('noAction');
+    const [commit, setCommit] = useState(false);
+    const [edited, setEdited] = useState([]);
+    const [deleted, setDeleted] = useState([]);
+    const [countOp, setCountOp] = useState(0);
+
+    let handleToggle = (event, newResult) => {
+        setToggle(newResult);
+    };
 
     const closeMergeListDialog = () => {
         setMergeListDialogOpen(false);
@@ -89,6 +119,7 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
 
     const closePermanentlyClosedDialog = () => {
         setPermanentlyClosedDialogOpen(false);
+        carousel.next();
     };
 
     let mergeGroupList = [];
@@ -174,10 +205,17 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
 
     function onMerge() {
         setPlaces([similarPlace, mainPlace]);
-        carousel.next();
     }
 
-    useDiff(places[0], places[1], categories, setOp);
+    useEffect(() => {
+        if (countOp === 250) {
+            setCommit(true);
+            setCountOp(0);
+        }
+    }, [countOp]);
+
+    useDiff(places[0], places[1], categories, setOp, edited, deleted, mergeListDialogOpen, countOp, setCountOp);
+    useBatchOp(commit, setCommit, deleted, edited, setOp);
     useCommitOp(op, authData, handleUpdatePlace);
 
     const fetchPlaceParams = (place) => {
@@ -261,6 +299,28 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
         return result;
     };
 
+    useEffect(() => {
+        if (toggle === "onMerge") {
+            onMerge()
+            carousel.next();
+        }
+        if (toggle === "permanentlyClosed") {
+            openPermanentlyClosedDialog()
+        }
+        if (carousel && toggle === "noAction") {
+            carousel.next();
+        }
+    }, [toggle]);
+
+    useEffect(() => {
+        setToggle("noAction")
+    }, [toggle, carousel]);
+
+    function onCommit() {
+        setCommit(true);
+        setCountOp(0);
+    }
+
     return <div><Dialog className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
@@ -271,30 +331,51 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
                            setCarousel={setCarousel}/>
         </DialogContent>
         <DialogActions>
-            <Button type="submit"
-                    className={classes.button}
-                    variant="contained"
-                    color={"primary"}
-                    onClick={onMerge}>
-                Merge
-            </Button>
-            <Button type="submit"
-                    className={classes.buttonDeleted}
-                    variant="contained"
-                    onClick={openPermanentlyClosedDialog}>
-                Close deleted
-            </Button>
-            <Button type="submit"
-                    className={classes.buttonClose}
-                    variant="contained"
-                    onClick={closeMergeListDialog}>
-                Cancel
-            </Button>
+            <Grid style={{marginLeft: "20px", marginTop: "-10px"}} container justify="center">
+                <ToggleButtonGroup
+                    value={toggle}
+                    exclusive
+                    onChange={handleToggle}>
+                    <ToggleButton value="onMerge" type="submit"
+                                  variant="contained"
+                                  color={"primary"}
+                                  className={classes.toggleMerge}
+                                  aria-label="left aligned">
+                        Merge duplicate</ToggleButton>
+                    <ToggleButton style={{width: "184px"}} value="noAction" type="submit"
+                                  variant="contained"
+                                  color={"primary"}
+                                  aria-label="center">
+                        No action</ToggleButton>
+                    <ToggleButton value="permanentlyClosed" type="submit"
+                                  variant="contained"
+                                  color={"primary"}
+                                  className={classes.togglePerClosed}
+                                  aria-label="right aligned">
+                        Permanently closed</ToggleButton>
+                </ToggleButtonGroup>
+            </Grid>
+        </DialogActions>
+        <DialogActions>
+            <Grid style={{marginLeft: "20px", marginTop: "20px"}} container justify="center">
+                <Button disabled={countOp === 0} style={{marginRight: "20px"}}
+                        type="submit"
+                        className={classes.buttonDeleted}
+                        variant="contained"
+                        onClick={onCommit}>
+                    {"Commit (" + countOp + ")"}
+                </Button>
+                <Button type="submit"
+                        className={classes.buttonClose}
+                        variant="contained"
+                        onClick={closeMergeListDialog}>
+                    Cancel
+                </Button>
+            </Grid>
         </DialogActions>
     </Dialog>
         <PermanentlyClosedDialog open={permanentlyClosedDialogOpen}
                                  onClose={closePermanentlyClosedDialog}
                                  place={deletedPlace}
-                                 setPlaces={setPlaces}
-                                 carousel={carousel}/></div>
+                                 setPlaces={setPlaces}/></div>
 }

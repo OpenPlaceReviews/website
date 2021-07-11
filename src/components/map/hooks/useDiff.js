@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import {useEffect} from "react";
 const VALUE_DELETED = 'delete';
 
 function compareImages(path, oldImages, newImages) {
@@ -172,28 +172,42 @@ function compareObjects(oldObject, newObject, categories, isMerge) {
 }
 
 
-export default function useDiff(current, newObject, categories, onDiff) {
+export default function useDiff(current, newObject, categories, onDiff, edited, deleted, mergeList,
+                                countOp, setCountOp) {
     useEffect(() => {
         const isEqual = JSON.stringify(current) === JSON.stringify(newObject);
         const isMerge = current && newObject && JSON.stringify(current.id) !== JSON.stringify(newObject.id);
         if (!isEqual && categories) {
             const diff = compareObjects(current, newObject, categories, isMerge);
-            const op = {
-                edit: [
-                    {
-                        id: current.id,
-                        ...diff,
-                    }
-                ],
-                type: 'opr.place',
-            };
-            if (isMerge) {
-                op.delete = [
-                    newObject.id,
-                ];
-            }
+            if (!mergeList) {
+                const op = {
+                    edit: [
+                        {
+                            id: current.id,
+                            ...diff,
+                        }
+                    ],
+                    type: 'opr.place',
+                };
+                if (isMerge) {
+                    op.delete = [
+                        newObject.id,
+                    ];
+                }
 
-            onDiff(op);
+                onDiff(op);
+            } else {
+                edited.push({
+                    id: current.id,
+                    ...diff,
+                });
+                if (isMerge) {
+                    deleted.push(
+                        newObject.id,
+                    );
+                }
+                setCountOp(countOp + 1);
+            }
         }
     }, [current, newObject, categories]);
 }

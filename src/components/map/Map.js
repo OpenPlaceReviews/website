@@ -175,7 +175,7 @@ export default function Map() {
     <MapSidebar position="topright">
       <MapSidebarBlock>
         <Filter isLoggedIn={isLoggedIn} taskSelection={taskSelection} onTaskSelect={setTaskSelection} placeTypes={placeTypes}
-                onCategorySelect={setFilter} setMergeListDialogOpen={setMergeListDialogOpen}/>
+                onCategorySelect={setFilter} mergePlaces={mergePlaces} setMergePlaces={setMergePlaces} setMergeListDialogOpen={setMergeListDialogOpen}/>
       </MapSidebarBlock>
     </MapSidebar>
 

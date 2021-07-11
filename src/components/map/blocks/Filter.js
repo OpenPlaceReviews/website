@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
-import {Select, MenuItem, Switch, Button} from '@material-ui/core';
+import {Select, MenuItem, Switch, Button, Tooltip} from '@material-ui/core';
 import filter from '../../../assets/images/icons/filter.svg';
 import { makeStyles } from "@material-ui/styles";
 import Tasks from "../tasks/Tasks";
@@ -114,7 +114,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect, setMergeListDialogOpen }) => {
+export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTaskSelect,
+                  mergePlaces, setMergePlaces, setMergeListDialogOpen }) => {
   const classes = useStyles();
 
   const {taskId, startDate, endDate, reviewedPlacesVisible, closedPlaces, potentiallyClosedPlaces, dateType} = taskSelection;
@@ -124,6 +125,8 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   const [selectedReviewedPlacesVisible, setSelectedReviewedPlacesVisible] = useState(reviewedPlacesVisible);
   const [selectedClosedPlaces, setSelectedClosedPlaces] = useState(closedPlaces);
   const [selectedPotentiallyClosedPlaces, setSelectedPotentiallyClosedPlaces] = useState(potentiallyClosedPlaces);
+  const [tooltipMergeMessage, setTooltipMergeMessage] = useState("");
+
 
   const tasks = Tasks.getTasks();
   const selectedTask = Tasks.getTaskById(taskSelection.taskId);
@@ -131,6 +134,16 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   const openMergeListDialog = () => {
     setMergeListDialogOpen(true);
   };
+
+  useEffect(() => {
+    if (!mergePlaces) {
+      setTooltipMergeMessage("Wait places are loaded!")
+    } else if (mergePlaces === []) {
+      setTooltipMergeMessage("All places have been merged!")
+    } else {
+      setTooltipMergeMessage("")
+    }
+  });
 
   const taskOptions = [<MenuItem value="none" key="none">None</MenuItem>];
   for (let i in tasks) {
@@ -167,6 +180,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
 
   const dateTypeChangeHandler = (e) => {
     setSelectedDateType(e.target.value);
+    setMergePlaces(null);
   }
 
   const dateMonthChangeHandler = (date) => {
@@ -174,6 +188,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
       startDate: new Date(date.getFullYear(), date.getMonth(), 1),
       endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
     });
+    setMergePlaces(null);
   }
 
   useEffect(() => {
@@ -305,13 +320,18 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           <DatePicker className={classes.dateItem} popperPlacement="bottom-end" dateFormat="MM/yyyy"
                       showMonthYearPicker showFullMonthYearPicker selected={selectedDates.startDate}
                       onChange={date => dateMonthChangeHandler(date)}/>
-          <Button type="submit"
-                  className={classes.button}
-                  variant="outlined"
-                  color={"primary"}
-                  onClick={openMergeListDialog}>
+          <Tooltip title={tooltipMergeMessage}>
+                <span>
+                    <Button disabled={!mergePlaces || mergePlaces === []} type="submit"
+                            className={classes.button}
+                            variant="outlined"
+                            color={"primary"}
+                            onClick={openMergeListDialog}>
             Open merge list
-          </Button>
+                     </Button>
+               </span>
+          </Tooltip>
+
         </div>}
         <div className={classes.switch}>
           <span style={{marginLeft: "10px"}}>Display reviewed places</span>
