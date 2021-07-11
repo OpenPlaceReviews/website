@@ -321,7 +321,7 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
         setCountOp(0);
     }
 
-    return <div><Dialog className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
+    return <div><Dialog fullWidth className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
         <DialogContent>
