@@ -106,7 +106,6 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
     const [toggle, setToggle] = useState('noAction');
     const [edited, setEdited] = useState([]);
     const [deleted, setDeleted] = useState([]);
-    const [countOp, setCountOp] = useState(0);
     const [forceCommit, setForceCommit] = useState(false);
 
     let handleToggle = (event, newResult) => {
@@ -119,7 +118,6 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
 
     const closePermanentlyClosedDialog = () => {
         setPermanentlyClosedDialogOpen(false);
-        carousel.next();
     };
 
     let mergeGroupList = [];
@@ -207,8 +205,8 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
         setPlaces([similarPlace, mainPlace]);
     }
 
-    useBatchDiff(places[0], places[1], categories, edited, deleted, setCountOp);
-    useBatchOp(forceCommit, setForceCommit, deleted, edited, setOp, countOp, setCountOp, 250);
+    useBatchDiff(places[0], places[1], categories, edited, deleted, setEdited, setDeleted);
+    useBatchOp(forceCommit, deleted, edited, setOp, 250);
     useCommitOp(op, authData, handleUpdatePlace);
 
     const fetchPlaceParams = (place) => {
@@ -311,8 +309,13 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
 
     function onCommit() {
         setForceCommit(true);
-        setCountOp(0);
     }
+
+    useEffect(() => {
+        if (edited.length === 0) {
+            setForceCommit(false);
+        }
+    }, [forceCommit, edited]);
 
     return <div><Dialog fullWidth className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">
@@ -351,12 +354,12 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
         </DialogActions>
         <DialogActions>
             <Grid style={{marginLeft: "20px", marginTop: "20px"}} container justify="center">
-                <Button disabled={countOp === 0} style={{marginRight: "20px"}}
+                <Button disabled={edited.length === 0} style={{marginRight: "20px"}}
                         type="submit"
                         className={classes.buttonDeleted}
                         variant="contained"
                         onClick={onCommit}>
-                    {"Commit (" + countOp + ")"}
+                    {"Commit (" + edited.length + ")"}
                 </Button>
                 <Button type="submit"
                         className={classes.buttonClose}
