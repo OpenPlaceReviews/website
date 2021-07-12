@@ -208,7 +208,7 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
     }
 
     useBatchDiff(places[0], places[1], categories, edited, deleted, setCountOp);
-    useBatchOp(forceCommit, setForceCommit, deleted, edited, setOp, countOp, setCountOp);
+    useBatchOp(forceCommit, setForceCommit, deleted, edited, setOp, countOp, setCountOp, 250);
     useCommitOp(op, authData, handleUpdatePlace);
 
     const fetchPlaceParams = (place) => {

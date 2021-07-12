@@ -1,10 +1,9 @@
 import {useEffect} from "react";
 
-const BATCH_SIZE_OP = 250;
-
-export default function useBatchOp(forceCommit, setForceCommit, deleted, edited, onDiff, countOp, setCountOp) {
+export default function useBatchOp(forceCommit, setForceCommit, deleted, edited, onDiff, countOp, setCountOp,
+                                   maxBatchSizeOp) {
     useEffect(() => {
-        if (forceCommit || countOp === BATCH_SIZE_OP) {
+        if (forceCommit || countOp === maxBatchSizeOp) {
             const op = {
                 delete: [],
                 edit: [],
