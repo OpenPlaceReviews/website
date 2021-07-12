@@ -15,7 +15,6 @@ import PermanentlyClosedDialog from "./PermanentlyClosedDialog";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import useBatchOp from "../../hooks/useBatchOp";
 import useBatchDiff from "../../hooks/useBatchDiff";
-import useCommitBatchOp from "../../hooks/useCommitBatchOp";
 
 const useStyles = makeStyles({
     header: {
@@ -105,10 +104,10 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
     const [deletedPlace, setDeletedPlace] = useState(null);
     const [carousel, setCarousel] = useState(null);
     const [toggle, setToggle] = useState('noAction');
-    const [commit, setCommit] = useState(false);
     const [edited, setEdited] = useState([]);
     const [deleted, setDeleted] = useState([]);
     const [countOp, setCountOp] = useState(0);
+    const [forceCommit, setForceCommit] = useState(false);
 
     let handleToggle = (event, newResult) => {
         setToggle(newResult);
@@ -208,9 +207,8 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
         setPlaces([similarPlace, mainPlace]);
     }
 
-    useBatchDiff(places[0], places[1], categories, setOp, edited, deleted, countOp, setCountOp);
-    useCommitBatchOp(countOp, setCommit, setCountOp);
-    useBatchOp(commit, setCommit, deleted, edited, setOp);
+    useBatchDiff(places[0], places[1], categories, edited, deleted, setCountOp);
+    useBatchOp(forceCommit, setForceCommit, deleted, edited, setOp, countOp, setCountOp);
     useCommitOp(op, authData, handleUpdatePlace);
 
     const fetchPlaceParams = (place) => {
@@ -312,7 +310,7 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
     }, [toggle, carousel]);
 
     function onCommit() {
-        setCommit(true);
+        setForceCommit(true);
         setCountOp(0);
     }
 

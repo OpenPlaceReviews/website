@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import UtilsDiff from "../../util/UtilsDiff";
 
-export default function useBatchDiff(current, newObject, categories, onDiff, edited, deleted, countOp, setCountOp) {
+export default function useBatchDiff(current, newObject, categories, edited, deleted, setCountOp) {
     useEffect(() => {
         const isEqual = JSON.stringify(current) === JSON.stringify(newObject);
         const isMerge = current && newObject && JSON.stringify(current.id) !== JSON.stringify(newObject.id);
@@ -16,7 +16,7 @@ export default function useBatchDiff(current, newObject, categories, onDiff, edi
                     newObject.id,
                 );
             }
-            setCountOp(countOp + 1);
+            setCountOp(edited.length);
         }
 
     }, [current, newObject, categories]);

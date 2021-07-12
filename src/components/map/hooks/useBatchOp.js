@@ -1,13 +1,15 @@
 import {useEffect} from "react";
 
-export default function useBatchOp(commit, setCommit, deleted, edited, onDiff) {
+const BATCH_SIZE_OP = 250;
+
+export default function useBatchOp(forceCommit, setForceCommit, deleted, edited, onDiff, countOp, setCountOp) {
     useEffect(() => {
-        if (commit) {
+        if (forceCommit || countOp === BATCH_SIZE_OP) {
             const op = {
                 delete: [],
                 edit: [],
                 type: 'opr.place',
-            };
+            }
 
             deleted.forEach(del => {
                 op.delete.push(del)
@@ -15,11 +17,12 @@ export default function useBatchOp(commit, setCommit, deleted, edited, onDiff) {
             edited.forEach(edit => {
                 op.edit.push(edit)
             });
-
             onDiff(op);
+
             edited.splice(0, edited.length);
             deleted.splice(0, deleted.length);
-            setCommit(false);
+            setCountOp(0);
+            setForceCommit(false);
         }
-    }, [commit, deleted, edited]);
+    }, [forceCommit, countOp]);
 }
