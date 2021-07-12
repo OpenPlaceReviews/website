@@ -8,13 +8,14 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
 import MergeCarousel from "../carousels/MergeCarousel";
-import useDiff from "../../hooks/useDiff";
 import useCommitOp from "../../hooks/useCommitOp";
 import {getObjectsById} from "../../../../api/data";
 import AuthContext from "../../../main/auth/providers/AuthContext";
 import PermanentlyClosedDialog from "./PermanentlyClosedDialog";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import useBatchOp from "../../hooks/useBatchOp";
+import useBatchDiff from "../../hooks/useBatchDiff";
+import useCommitBatchOp from "../../hooks/useCommitBatchOp";
 
 const useStyles = makeStyles({
     header: {
@@ -207,14 +208,8 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
         setPlaces([similarPlace, mainPlace]);
     }
 
-    useEffect(() => {
-        if (countOp === 250) {
-            setCommit(true);
-            setCountOp(0);
-        }
-    }, [countOp]);
-
-    useDiff(places[0], places[1], categories, setOp, edited, deleted, mergeListDialogOpen, countOp, setCountOp);
+    useBatchDiff(places[0], places[1], categories, setOp, edited, deleted, countOp, setCountOp);
+    useCommitBatchOp(countOp, setCommit, setCountOp);
     useBatchOp(commit, setCommit, deleted, edited, setOp);
     useCommitOp(op, authData, handleUpdatePlace);
 
