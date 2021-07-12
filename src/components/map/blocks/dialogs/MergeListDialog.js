@@ -118,7 +118,23 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
 
     const closePermanentlyClosedDialog = () => {
         setPermanentlyClosedDialogOpen(false);
+        checkForceCommit();
     };
+
+    const handleForceCommit = () => {
+        setForceCommit(true);
+    };
+
+    const onMerge = () => {
+        setPlaces([similarPlace, mainPlace]);
+        checkForceCommit();
+    }
+
+    function checkForceCommit() {
+        if (edited.length === 0) {
+            setForceCommit(false);
+        }
+    }
 
     let mergeGroupList = [];
 
@@ -200,10 +216,6 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
         }
         fetchData();
     }, [index, version]);
-
-    function onMerge() {
-        setPlaces([similarPlace, mainPlace]);
-    }
 
     useBatchDiff(places[0], places[1], categories, edited, deleted, setEdited, setDeleted);
     useBatchOp(forceCommit, deleted, edited, setOp, 250);
@@ -307,15 +319,6 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
         setToggle("noAction")
     }, [toggle, carousel]);
 
-    function onCommit() {
-        setForceCommit(true);
-    }
-
-    useEffect(() => {
-        if (edited.length === 0) {
-            setForceCommit(false);
-        }
-    }, [forceCommit, edited]);
 
     return <div><Dialog fullWidth className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">
@@ -358,7 +361,7 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
                         type="submit"
                         className={classes.buttonDeleted}
                         variant="contained"
-                        onClick={onCommit}>
+                        onClick={handleForceCommit}>
                     {"Commit (" + edited.length + ")"}
                 </Button>
                 <Button type="submit"
