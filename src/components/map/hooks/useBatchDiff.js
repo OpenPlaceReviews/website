@@ -1,27 +1,25 @@
 import {useEffect} from "react";
 import UtilsDiff from "../../util/UtilsDiff";
 
-export default function useDiff(current, newObject, categories, onDiff) {
+export default function useBatchDiff(current, newObject, categories, edited, deleted, setEdited, setDeleted) {
     useEffect(() => {
         const isEqual = JSON.stringify(current) === JSON.stringify(newObject);
         const isMerge = current && newObject && JSON.stringify(current.id) !== JSON.stringify(newObject.id);
         if (!isEqual && categories) {
             const diff = UtilsDiff.compareObjects(current, newObject, categories, isMerge);
-            const op = {
-                edit: [
-                    {
-                        id: current.id,
-                        ...diff,
-                    }
-                ],
-                type: 'opr.place',
-            };
+            setEdited([...edited,
+                {
+                    id: current.id,
+                    ...diff
+                }
+            ])
+
             if (isMerge) {
-                op.delete = [
-                    newObject.id,
-                ];
+                setDeleted([...deleted,
+                    newObject.id
+                ])
             }
-            onDiff(op);
         }
+
     }, [current, newObject, categories]);
 }

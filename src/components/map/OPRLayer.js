@@ -18,9 +18,11 @@ let lastRefreshTime = 0;
 let currentLayer = null;
 const REFRESH_TIMEOUT = 500;
 const MIN_MARKERS_ZOOM = 14;
+const MIN_MARKERS_TILES_TASK_ZOOM = 10;
 var selectedMarkerGroup = [];
 
-export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged, setIsPlaceChanged }) {
+export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged,
+                                   setIsPlaceChanged, setMergePlaces}) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
@@ -45,7 +47,14 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     tilesPlacesVisible = taskSelection.dateType === 'tiles';
     storage.setItem('taskSelection', JSON.stringify(taskSelection))
   }
-  let minMarkersZoom = (task && !tilesPlacesVisible) ? task.minZoom : MIN_MARKERS_ZOOM;
+  let minMarkersZoom;
+  if (task && !tilesPlacesVisible) {
+    minMarkersZoom = task.minZoom;
+  } else if (task && tilesPlacesVisible) {
+    minMarkersZoom = MIN_MARKERS_TILES_TASK_ZOOM;
+  } else {
+    minMarkersZoom = MIN_MARKERS_ZOOM;
+  }
 
   const onMapChange = async () => {
     const zoom = map.getZoom();
@@ -225,6 +234,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     if (task === 'POSSIBLE_MERGE') {
       features = filterPossibleMerge(geo, features);
     }
+    setMergePlaces(features);
     return features;
   }
 
@@ -300,10 +310,9 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     return false;
   }
 
-  function areSimilar(place1, place2, distance) {
+  function areSimilar(place1, place2, similarPlaceDistance) {
     if (place2 && place2.properties.place_deleted === undefined) {
       const [lat, lon] = place1.geometry.coordinates;
-      let similarPlaceDistance = distance;
       const [gLat, gLon] = place2.geometry.coordinates;
       const distance = Utils.getDistance(lat, lon, gLat, gLon);
       if (distance < similarPlaceDistance) {
@@ -398,7 +407,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       },
 
       pointToLayer: (feature, latlng) => {
-        const icon = MarkerIcon(feature.properties.place_type, feature.properties.place_deleted, feature.properties.place_deleted_osm || feature.properties.deleted);
+        const icon = MarkerIcon(feature.properties.place_type, feature.properties.place_deleted, feature.properties.place_deleted_osm, feature.properties.deleted);
         const marker = L.marker(latlng, { icon: icon });
         return marker.on('click', () => onMarkerClick(feature));
       }

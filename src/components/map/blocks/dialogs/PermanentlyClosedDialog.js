@@ -60,8 +60,8 @@ export default function PermanentlyClosedDialog({
                 newPlace["deletedComment"] = deletedComment;
             }
 
-            setPlaces([place, newPlace])
-            onClose()
+            setPlaces([place, newPlace]);
+            onClose();
         }
     }
 

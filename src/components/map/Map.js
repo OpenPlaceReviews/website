@@ -19,6 +19,7 @@ import Loader from "../main/blocks/Loader";
 import AuthContext from "../main/auth/providers/AuthContext";
 import Utils from "../util/Utils";
 import useTaskSelectionState from "./hooks/useTaskSelectionState";
+import MergeListDialog from "./blocks/dialogs/MergeListDialog";
 
 const OPR_PLACE_URL_PREFIX = '/map/opr.place/';
 const INIT_LAT = 40.0;
@@ -92,6 +93,8 @@ export default function Map() {
   const [reload, setReload] = useState(false);
   const { promiseInProgress } = usePromiseTracker();
   const [isPlaceChanged, setIsPlaceChanged] = useState(false);
+  const [mergePlaces, setMergePlaces] = useState(null);
+  const [mergeListDialogOpen, setMergeListDialogOpen] = useState(false);
 
   useEffect(() => {
     const request = async () => {
@@ -171,14 +174,17 @@ export default function Map() {
 
     <MapSidebar position="topright">
       <MapSidebarBlock>
-        <Filter isLoggedIn={isLoggedIn} taskSelection={taskSelection} onTaskSelect={setTaskSelection} placeTypes={placeTypes} onCategorySelect={setFilter} />
+        <Filter isLoggedIn={isLoggedIn} taskSelection={taskSelection} onTaskSelect={setTaskSelection} placeTypes={placeTypes}
+                onCategorySelect={setFilter} mergePlaces={mergePlaces} setMergePlaces={setMergePlaces} setMergeListDialogOpen={setMergeListDialogOpen}/>
       </MapSidebarBlock>
-      {/*<ReviewPlaces setMarker={setMarker} reload={reload}/>*/}
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
     {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup}
-                           setLoading={setReload} isPlaceChanged={isPlaceChanged} setIsPlaceChanged={setIsPlaceChanged}/>}
+                           setLoading={setReload} isPlaceChanged={isPlaceChanged} setIsPlaceChanged={setIsPlaceChanged}
+                           setMergePlaces={setMergePlaces}/>}
+    {mergeListDialogOpen && <MergeListDialog mergePlaces={mergePlaces} placeTypes={placeTypes} mergeListDialogOpen={mergeListDialogOpen}
+                                       setMergeListDialogOpen={setMergeListDialogOpen}/>}
 
   </MapContainer>;
 }
