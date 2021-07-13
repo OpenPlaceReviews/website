@@ -118,7 +118,6 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
 
     const closePermanentlyClosedDialog = () => {
         setPermanentlyClosedDialogOpen(false);
-        checkForceCommit();
     };
 
     const handleForceCommit = () => {
@@ -127,13 +126,6 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
 
     const onMerge = () => {
         setPlaces([similarPlace, mainPlace]);
-        checkForceCommit();
-    }
-
-    function checkForceCommit() {
-        if (edited.length === 0) {
-            setForceCommit(false);
-        }
     }
 
     let mergeGroupList = [];
@@ -218,7 +210,7 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
     }, [index, version]);
 
     useBatchDiff(places[0], places[1], categories, edited, deleted, setEdited, setDeleted);
-    useBatchOp(forceCommit, deleted, edited, setOp, 250);
+    useBatchOp(forceCommit, setForceCommit, deleted, edited, setOp, 250);
     useCommitOp(op, authData, handleUpdatePlace);
 
     const fetchPlaceParams = (place) => {

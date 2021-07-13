@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 
-export default function useBatchOp(forceCommit, deleted, edited, onDiff, maxBatchSizeOp) {
+export default function useBatchOp(forceCommit, setForceCommit, deleted, edited, onDiff, maxBatchSizeOp) {
     useEffect(() => {
         if (forceCommit || edited.length === maxBatchSizeOp) {
             const op = {
@@ -19,6 +19,8 @@ export default function useBatchOp(forceCommit, deleted, edited, onDiff, maxBatc
 
             edited.splice(0, edited.length);
             deleted.splice(0, deleted.length);
+
+            setForceCommit(false);
         }
     }, [deleted, edited, forceCommit]);
 }
