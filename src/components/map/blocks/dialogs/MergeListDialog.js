@@ -16,6 +16,7 @@ import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import useBatchOp from "../../hooks/useBatchOp";
 import useBatchDiff from "../../hooks/useBatchDiff";
 import useMergeGroupList from "../../hooks/useMergeGroupList";
+import Utils from "../../../util/Utils";
 
 const useStyles = makeStyles({
     header: {
@@ -165,10 +166,6 @@ export default function MergeListDialog({
         }
     }
 
-    Array.prototype.contains = function (element) {
-        return this.indexOf(element) > -1;
-    };
-
     useEffect(() => {
         const fetchData = async () => {
             const data = await getObjectsById('opr.place', mergeGroupList[index][0].properties.opr_id);
@@ -176,7 +173,7 @@ export default function MergeListDialog({
             if (object && object.clientData) {
                 delete object.clientData;
             }
-            if (object && !idsPlacesCache.contains(object.id)) {
+            if (object && !Utils.contains(idsPlacesCache,object.id)) {
                 const params = fetchPlaceParams(object);
                 setMarkerPlace({
                     oprId: mergeGroupList[index][0].properties.opr_id,
@@ -193,7 +190,7 @@ export default function MergeListDialog({
                 const data2 = await getObjectsById('opr.place', mergeGroupList[index][1].properties.opr_id);
                 const object2 = data2.objects.shift();
 
-                if (object2 && !idsPlacesCache.contains(object2.id)) {
+                if (object2 && !Utils.contains(idsPlacesCache,object2.id)) {
                     const params2 = fetchPlaceParams(object2);
                     setSimilarMarkerPlace({
                         oprId: mergeGroupList[index][1].properties.similar_opr_id,

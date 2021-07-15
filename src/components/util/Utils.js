@@ -46,9 +46,14 @@ function usePrevious(value) {
     return ref.current;
 }
 
+function contains(array, element) {
+    return array.indexOf(element) > -1;
+}
+
 export default {
     capitalize,
     formatDate,
     getDistance,
-    usePrevious
+    usePrevious,
+    contains
 }
