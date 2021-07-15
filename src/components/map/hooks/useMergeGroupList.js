@@ -1,8 +1,6 @@
 import {useEffect} from "react";
 
-export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList,
-                                          lastMergePlaces, setLastMergePlaces, idsPlacesCache, setIdsPlacesCache,
-                                          currentMergePlaces, setCurrentMergePlaces) {
+export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache) {
 
     function getPlacesGroups(places) {
         let currentGroupBeginIndex = 0;
@@ -18,17 +16,11 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
     }
 
     useEffect(() => {
-        if (JSON.stringify(mergePlaces) === JSON.stringify(lastMergePlaces)) {
+        if (idsPlacesCache.length !== 0) {
             for (let i = 0; i < idsPlacesCache.length; i++) {
-                currentMergePlaces = currentMergePlaces.filter(place => place.properties.opr_id !== idsPlacesCache[i].toString())
+                mergePlaces = mergePlaces.filter(place => place.properties.opr_id !== idsPlacesCache[i].toString())
             }
-            getPlacesGroups(currentMergePlaces);
-        } else {
-            idsPlacesCache.splice(0, idsPlacesCache.length)
-            setIdsPlacesCache(idsPlacesCache);
-            getPlacesGroups(mergePlaces);
-            setLastMergePlaces(mergePlaces);
-            setCurrentMergePlaces(mergePlaces)
         }
+        getPlacesGroups(mergePlaces);
     }, [mergePlaces]);
 }

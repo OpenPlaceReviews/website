@@ -88,8 +88,7 @@ const useStyles = makeStyles({
 
 export default function MergeListDialog({
                                             mergePlaces, placeTypes, mergeListDialogOpen, setMergeListDialogOpen,
-                                            lastMergePlaces, setLastMergePlaces,
-                                            idsPlacesCache, setIdsPlacesCache, currentMergePlaces, setCurrentMergePlaces
+                                            idsPlacesCache, setIdsPlacesCache
                                         }) {
 
     const classes = useStyles();
@@ -142,8 +141,7 @@ export default function MergeListDialog({
         updateIdsCache();
     }
 
-    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, lastMergePlaces,
-        setLastMergePlaces, idsPlacesCache, setIdsPlacesCache, currentMergePlaces, setCurrentMergePlaces);
+    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache);
 
     const openPermanentlyClosedDialog = () => {
         setPermanentlyClosedDialogOpen(true);

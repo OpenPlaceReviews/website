@@ -28,7 +28,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
   const map = useMap();
   const openLocationCode = new OpenLocationCode()
-  const prevTaskSelection = usePrevious(taskSelection);
+  const prevTaskSelection = Utils.usePrevious(taskSelection);
 
   let task = null;
   let taskStartDate = null;
@@ -190,14 +190,6 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       refreshMapDelay();
     }
   }, [placesCache, filterVal]);
-
-  function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    }, [value]);
-    return ref.current;
-  }
 
   function refreshMapDelay() {
     if (Date.now() - lastRefreshTime < REFRESH_TIMEOUT) {

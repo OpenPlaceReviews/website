@@ -1,3 +1,4 @@
+import {useEffect, useRef} from "react";
 
 const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -37,8 +38,17 @@ const toRadians = (angdeg) => {
     return angdeg / 180.0 * Math.PI;
 }
 
+function usePrevious(value) {
+    const ref = useRef();
+    useEffect(() => {
+        ref.current = value;
+    }, [value]);
+    return ref.current;
+}
+
 export default {
     capitalize,
     formatDate,
     getDistance,
+    usePrevious
 }

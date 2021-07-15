@@ -1,17 +1,21 @@
 import MergeListDialog from "./blocks/dialogs/MergeListDialog";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import Utils from "../util/Utils";
 
 export default function MergeList({mergeListDialogOpen, mergePlaces, placeTypes, setMergeListDialogOpen}) {
 
-    const [lastMergePlaces, setLastMergePlaces] = useState(null);
-    const [currentMergePlaces, setCurrentMergePlaces] = useState([]);
     const [idsPlacesCache, setIdsPlacesCache] = useState([]);
+    const prevMergePlaces = Utils.usePrevious(mergePlaces);
+    const placesChanged = prevMergePlaces && (JSON.stringify(mergePlaces) !== JSON.stringify(prevMergePlaces));
+
+    useEffect(() => {
+        idsPlacesCache.splice(0, idsPlacesCache.length)
+        setIdsPlacesCache(idsPlacesCache);
+    }, [placesChanged]);
 
     return mergeListDialogOpen &&
         <MergeListDialog mergePlaces={mergePlaces} placeTypes={placeTypes} mergeListDialogOpen={mergeListDialogOpen}
                          setMergeListDialogOpen={setMergeListDialogOpen}
-                         lastMergePlaces={lastMergePlaces} setLastMergePlaces={setLastMergePlaces}
-                         idsPlacesCache={idsPlacesCache} setIdsPlacesCache={setIdsPlacesCache}
-                         currentMergePlaces={currentMergePlaces} setCurrentMergePlaces={setCurrentMergePlaces}/>
+                         idsPlacesCache={idsPlacesCache} setIdsPlacesCache={setIdsPlacesCache}/>
 
 }
