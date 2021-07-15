@@ -15,6 +15,8 @@ import PermanentlyClosedDialog from "./PermanentlyClosedDialog";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import useBatchOp from "../../hooks/useBatchOp";
 import useBatchDiff from "../../hooks/useBatchDiff";
+import useMergeGroupList from "../../hooks/useMergeGroupList";
+import Utils from "../../../util/Utils";
 
 const useStyles = makeStyles({
     header: {
@@ -85,7 +87,10 @@ const useStyles = makeStyles({
     }
 })
 
-export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialogOpen, setMergeListDialogOpen}) {
+export default function MergeListDialog({
+                                            mergePlaces, placeTypes, mergeListDialogOpen, setMergeListDialogOpen,
+                                            idsPlacesCache, setIdsPlacesCache
+                                        }) {
 
     const classes = useStyles();
 
@@ -107,6 +112,7 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
     const [edited, setEdited] = useState([]);
     const [deleted, setDeleted] = useState([]);
     const [forceCommit, setForceCommit] = useState(false);
+    const [mergeGroupList, setMergeGroupList] = useState([]);
 
     let handleToggle = (event, newResult) => {
         setToggle(newResult);
@@ -124,31 +130,24 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
         setForceCommit(true);
     };
 
+    const updateIdsCache = () => {
+        setIdsPlacesCache([...idsPlacesCache,
+            similarPlace.id,
+            mainPlace.id
+        ]);
+    };
+
     const onMerge = () => {
         setPlaces([similarPlace, mainPlace]);
+        updateIdsCache();
     }
 
-    let mergeGroupList = [];
-
-    function getMergeGroup(mergePlaces) {
-        let currentGroupBeginIndex = 0;
-
-        for (let i = 1; i < mergePlaces.length - 1; i++) {
-            if (!mergePlaces[i].properties.deleted && mergePlaces[i - 1].properties.deleted) {
-                mergeGroupList.push(mergePlaces.slice(currentGroupBeginIndex, i));
-                currentGroupBeginIndex = i;
-            }
-        }
-        mergeGroupList.push(mergePlaces.slice(currentGroupBeginIndex, mergePlaces.length));
-        mergeGroupList = mergeGroupList.filter(group => group.length === 2);
-        return mergeGroupList;
-    }
-
-    getMergeGroup(mergePlaces);
+    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache);
 
     const openPermanentlyClosedDialog = () => {
         setPermanentlyClosedDialogOpen(true);
         setDeletedPlace(similarPlace);
+        updateIdsCache();
     };
 
     useEffect(() => {
@@ -168,43 +167,43 @@ export default function MergeListDialog({mergePlaces, placeTypes, mergeListDialo
     }
 
     useEffect(() => {
-        let mainFeature = mergeGroupList[index][0];
-        let similarFeature = mergeGroupList[index][1];
         const fetchData = async () => {
-            const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
+            const data = await getObjectsById('opr.place', mergeGroupList[index][0].properties.opr_id);
             const object = data.objects.shift();
             if (object && object.clientData) {
                 delete object.clientData;
             }
-            const params = fetchPlaceParams(object);
-            setMarkerPlace({
-                oprId: mainFeature.properties.opr_id,
-                title: params.title,
-                subtitle: params.subtitle,
-                latLon: params.latLon,
-                images: params.images,
-                sources: params.sources,
-                deleted: params.deleted,
-                closedDescription: params.closedDescription
-            });
-            setMainPlace(object);
+            if (object && !Utils.contains(idsPlacesCache,object.id)) {
+                const params = fetchPlaceParams(object);
+                setMarkerPlace({
+                    oprId: mergeGroupList[index][0].properties.opr_id,
+                    title: params.title,
+                    subtitle: params.subtitle,
+                    latLon: params.latLon,
+                    images: params.images,
+                    sources: params.sources,
+                    deleted: params.deleted,
+                    closedDescription: params.closedDescription
+                });
+                setMainPlace(object);
 
-            const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
-            const object2 = data2.objects.shift();
-            if (object2 && object2.clientData) {
-                delete object2.clientData;
+                const data2 = await getObjectsById('opr.place', mergeGroupList[index][1].properties.opr_id);
+                const object2 = data2.objects.shift();
+
+                if (object2 && !Utils.contains(idsPlacesCache,object2.id)) {
+                    const params2 = fetchPlaceParams(object2);
+                    setSimilarMarkerPlace({
+                        oprId: mergeGroupList[index][1].properties.similar_opr_id,
+                        title: params2.title,
+                        subtitle: params2.subtitle,
+                        latLon: params2.latLon,
+                        images: params2.images,
+                        sources: params2.sources,
+                        deleted: params2.deleted,
+                    });
+                    setSimilarPlace(object2);
+                }
             }
-            const params2 = fetchPlaceParams(object2);
-            setSimilarMarkerPlace({
-                oprId: similarFeature.properties.similar_opr_id,
-                title: params2.title,
-                subtitle: params.subtitle,
-                latLon: params2.latLon,
-                images: params2.images,
-                sources: params2.sources,
-                deleted: params2.deleted,
-            });
-            setSimilarPlace(object2);
         }
         fetchData();
     }, [index, version]);

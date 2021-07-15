@@ -19,7 +19,7 @@ import Loader from "../main/blocks/Loader";
 import AuthContext from "../main/auth/providers/AuthContext";
 import Utils from "../util/Utils";
 import useTaskSelectionState from "./hooks/useTaskSelectionState";
-import MergeListDialog from "./blocks/dialogs/MergeListDialog";
+import MergeList from "./MergeList";
 
 const OPR_PLACE_URL_PREFIX = '/map/opr.place/';
 const INIT_LAT = 40.0;
@@ -183,8 +183,6 @@ export default function Map() {
     {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup}
                            setLoading={setReload} isPlaceChanged={isPlaceChanged} setIsPlaceChanged={setIsPlaceChanged}
                            setMergePlaces={setMergePlaces}/>}
-    {mergeListDialogOpen && <MergeListDialog mergePlaces={mergePlaces} placeTypes={placeTypes} mergeListDialogOpen={mergeListDialogOpen}
-                                       setMergeListDialogOpen={setMergeListDialogOpen}/>}
-
+    <MergeList mergeListDialogOpen={mergeListDialogOpen} mergePlaces={mergePlaces} placeTypes={placeTypes} setMergeListDialogOpen={setMergeListDialogOpen}/>
   </MapContainer>;
 }

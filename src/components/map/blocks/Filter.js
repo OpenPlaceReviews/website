@@ -148,7 +148,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   const taskOptions = [<MenuItem value="none" key="none">None</MenuItem>];
   for (let i in tasks) {
     const task = tasks[i];
-    taskOptions.push(<MenuItem value={task.id} key={task.id}>{task.name}</MenuItem>);
+    taskOptions.push(<MenuItem value={task.id} key={i}>{task.name}</MenuItem>);
   }
 
   const dates = ['month', 'tiles'];
