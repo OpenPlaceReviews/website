@@ -185,7 +185,7 @@ export default function MergeListDialog({
         setDeletedComment('');
     };
 
-    const isPermanentlyClosed = () => {
+    const createClosedPlace = () => {
         let newPlace = JSON.parse(JSON.stringify(similarPlace));
         let newPlaceDeletedMarker = newPlace.deleted;
         let newPlaceDeletedComment = newPlace.deletedComment;
@@ -349,7 +349,7 @@ export default function MergeListDialog({
     useEffect(() => {
         resetDeletedComment();
         if (toggle === "permanentlyClosed") {
-            isPermanentlyClosed();
+            createClosedPlace();
             carousel.next()
         } else if (toggle === "onMerge") {
             onMerge();
