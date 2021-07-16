@@ -75,7 +75,7 @@ export default function MergeCarousel({
 
     return <Carousel ref={function (carousel) {
         setCarousel(carousel);
-    }} onChange={handleChange} autoPlay={false} indicators={false} navButtonsAlwaysVisible={true} animation="slide">
+    }} onChange={handleChange} autoPlay={false} indicators={false} navButtonsAlwaysVisible={false} animation="slide">
         {
             items.map((item, i) => <div key={i} className={classes.item}>
                 <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
