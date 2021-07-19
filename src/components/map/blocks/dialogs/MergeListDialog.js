@@ -363,7 +363,7 @@ export default function MergeListDialog({
         setCarouselNav(null);
         setToggle(null);
     }, [carouselNav, toggle]);
-    console.log(places)
+    
     return <div><Dialog fullWidth className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
