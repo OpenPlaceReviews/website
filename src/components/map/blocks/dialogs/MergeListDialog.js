@@ -363,7 +363,7 @@ export default function MergeListDialog({
         setCarouselNav(null);
         setToggle(null);
     }, [carouselNav, toggle]);
-
+    
     return <div><Dialog fullWidth className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
@@ -395,7 +395,7 @@ export default function MergeListDialog({
                                               setCarousel={setCarousel}/>}
         </DialogContent>
         <DialogActions>
-            <Button style={{align: "left"}} type="submit"
+            <Button disabled={places.length !== 0} style={{align: "left"}} type="submit"
                     className={classes.prevButton}
                     variant="contained"
                     onClick={handlePrevCarousel}>

@@ -46,8 +46,14 @@ function usePrevious(value) {
     return ref.current;
 }
 
-function contains(array, element) {
-    return array.indexOf(element) > -1;
+function contains(array, value) {
+    let res = false;
+    array.forEach(function (element) {
+        if (JSON.stringify(element) === JSON.stringify(value)) {
+            res = true;
+        }
+    });
+    return res;
 }
 
 export default {
