@@ -46,10 +46,10 @@ function usePrevious(value) {
     return ref.current;
 }
 
-function contains(array, id) {
+function contains(array, value) {
     let res = false;
     array.forEach(function (element) {
-        if (JSON.stringify(element) === JSON.stringify(id)) {
+        if (JSON.stringify(element) === JSON.stringify(value)) {
             res = true;
         }
     });
