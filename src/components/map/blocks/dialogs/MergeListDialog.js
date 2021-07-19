@@ -221,40 +221,46 @@ export default function MergeListDialog({
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getObjectsById('opr.place', mergeGroupList[index][0].properties.opr_id);
-            const object = data.objects.shift();
-            if (object && object.clientData) {
-                delete object.clientData;
-            }
-            if (object && !Utils.contains(idsPlacesCache, object.id)) {
-                const params = fetchPlaceParams(object);
-                setMarkerPlace({
-                    oprId: mergeGroupList[index][0].properties.opr_id,
-                    title: params.title,
-                    subtitle: params.subtitle,
-                    latLon: params.latLon,
-                    images: params.images,
-                    sources: params.sources,
-                    deleted: params.deleted,
-                    closedDescription: params.closedDescription
-                });
-                setMainPlace(object);
+            if (mergeGroupList && mergeGroupList[index]) {
+                let mainFeature = mergeGroupList[index][0];
+                let similarFeature = mergeGroupList[index][1];
+                if (mainFeature && similarFeature) {
+                    const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
+                    const object = data.objects.shift();
+                    if (object && object.clientData) {
+                        delete object.clientData;
+                    }
+                    if (object && !Utils.contains(idsPlacesCache, object.id)) {
+                        const params = fetchPlaceParams(object);
+                        setMarkerPlace({
+                            oprId: mainFeature.properties.opr_id,
+                            title: params.title,
+                            subtitle: params.subtitle,
+                            latLon: params.latLon,
+                            images: params.images,
+                            sources: params.sources,
+                            deleted: params.deleted,
+                            closedDescription: params.closedDescription
+                        });
+                        setMainPlace(object);
 
-                const data2 = await getObjectsById('opr.place', mergeGroupList[index][1].properties.opr_id);
-                const object2 = data2.objects.shift();
+                        const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
+                        const object2 = data2.objects.shift();
 
-                if (object2 && !Utils.contains(idsPlacesCache, object2.id)) {
-                    const params2 = fetchPlaceParams(object2);
-                    setSimilarMarkerPlace({
-                        oprId: mergeGroupList[index][1].properties.similar_opr_id,
-                        title: params2.title,
-                        subtitle: params2.subtitle,
-                        latLon: params2.latLon,
-                        images: params2.images,
-                        sources: params2.sources,
-                        deleted: params2.deleted,
-                    });
-                    setSimilarPlace(object2);
+                        if (object2 && !Utils.contains(idsPlacesCache, object2.id)) {
+                            const params2 = fetchPlaceParams(object2);
+                            setSimilarMarkerPlace({
+                                oprId: similarFeature.properties.similar_opr_id,
+                                title: params2.title,
+                                subtitle: params2.subtitle,
+                                latLon: params2.latLon,
+                                images: params2.images,
+                                sources: params2.sources,
+                                deleted: params2.deleted,
+                            });
+                            setSimilarPlace(object2);
+                        }
+                    }
                 }
             }
         }
@@ -363,7 +369,7 @@ export default function MergeListDialog({
         setCarouselNav(null);
         setToggle(null);
     }, [carouselNav, toggle]);
-    
+
     return <div><Dialog fullWidth className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
