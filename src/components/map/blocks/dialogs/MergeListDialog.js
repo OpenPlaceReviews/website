@@ -224,7 +224,7 @@ export default function MergeListDialog({
             if (mergeGroupList && mergeGroupList[index]) {
                 let mainFeature = mergeGroupList[index][0];
                 let similarFeature = mergeGroupList[index][1];
-                if (mainFeature && similarFeature) {
+                if (mainFeature && similarFeature && mainFeature.properties.opr_id && similarFeature.properties.opr_id) {
                     const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
                     const object = data.objects.shift();
                     if (object && object.clientData) {
