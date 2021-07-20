@@ -127,6 +127,11 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   const [selectedPotentiallyClosedPlaces, setSelectedPotentiallyClosedPlaces] = useState(potentiallyClosedPlaces);
   const [tooltipMergeMessage, setTooltipMergeMessage] = useState("");
 
+  const date = new Date();
+  const defaultTilesDate = {
+    startDate: new Date(date.getFullYear(), date.getMonth() - 12, 1),
+    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 1)
+  }
 
   const tasks = Tasks.getTasks();
   const selectedTask = Tasks.getTaskById(taskSelection.taskId);
@@ -193,11 +198,19 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
 
   useEffect(() => {
     if (selectedDateType === 'month') {
-      const date = new Date();
-      setSelectedDates({
-        startDate: new Date(date.getFullYear(), date.getMonth(), 1),
-        endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-      });
+      if (selectedDates && (JSON.stringify(selectedDates) !== JSON.stringify(defaultTilesDate))) {
+        const date = selectedDates.startDate;
+        setSelectedDates({
+          startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+          endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+        });
+      } else {
+        const date = new Date();
+        setSelectedDates({
+          startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+          endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+        });
+      }
     }
   }, [selectedDateType]);
 
@@ -234,6 +247,14 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
   const toggleSelectedPotentiallyClosedPlaces = () => {
     setSelectedPotentiallyClosedPlaces((prev) => !prev);
   };
+
+  function showReviewListButton() {
+    if (mergePlaces) {
+      return "REVIEW LIST " + "(" + mergePlaces.length + ")";
+    } else {
+      return "REVIEW LIST";
+    }
+  }
 
   return <div className={classes.filter}>
     <img src={filter} alt="icon" className={classes.icon} />
@@ -327,7 +348,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
                             variant="outlined"
                             color={"primary"}
                             onClick={openMergeListDialog}>
-            Open merge list
+            {showReviewListButton()}
                      </Button>
                </span>
           </Tooltip>

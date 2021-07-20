@@ -77,13 +77,15 @@ export default function Map() {
       properties: { opr_id: `${oprPlaceId}` },
     };
   }
-
+  const date = new Date();
   const [taskSelection, setTaskSelection] = useTaskSelectionState({
     taskId: 'none',
     reviewedPlacesVisible: false,
     closedPlaces: false,
     potentiallyClosedPlaces: true,
-    dateType: 'tiles'
+    dateType: 'tiles',
+    startDate: new Date(date.getFullYear(), date.getMonth(), 1),
+    endDate: new Date(date.getFullYear(), date.getMonth() + 1, 0)
   });
   const [map, setMap] = useState(null);
   const [placeTypes, setPlaceTypes] = useState({});
