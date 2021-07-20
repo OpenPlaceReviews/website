@@ -5,6 +5,7 @@ import Value from "../../../main/blockchain/blocks/Value";
 import {makeStyles} from '@material-ui/core/styles';
 import AttributesBarList from "../AttributesBarList";
 import ImagesBlock from "../ImagesBlock";
+import Utils from "../../../util/Utils";
 
 const useStyles = makeStyles({
     header: {
@@ -13,6 +14,12 @@ const useStyles = makeStyles({
         lineHeight: "22px"
     },
     mergeLatLon: {
+        textAlign: "center",
+        fontSize: "14px",
+        color: "#6A7181",
+        marginTop: "-2%"
+    },
+    mergeSubtitle: {
         textAlign: "center",
         fontSize: "14px",
         color: "#6A7181",
@@ -73,9 +80,17 @@ export default function MergeCarousel({
         setIndex(ind);
     }
 
+    function getDistance(place1, place2) {
+        return Utils.getDistance(
+            place1 && place1.geometry.coordinates && place1.geometry.coordinates[0].toFixed(5),
+            place1 && place1.geometry.coordinates && place1.geometry.coordinates[1].toFixed(5),
+            place2 && place2.geometry.coordinates && place2.geometry.coordinates[0].toFixed(5),
+            place2 && place2.geometry.coordinates && place2.geometry.coordinates[1].toFixed(5))
+    }
+
     return <Carousel ref={function (carousel) {
         setCarousel(carousel);
-    }} onChange={handleChange} autoPlay={false} indicators={false} navButtonsAlwaysVisible={false} animation="slide">
+    }} onChange={handleChange} autoPlay={false} indicators={false} navButtonsAlwaysInvisible={true} animation="slide">
         {
             items.map((item, i) => <div key={i} className={classes.item}>
                 <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
@@ -84,17 +99,19 @@ export default function MergeCarousel({
                             <p style={{textAlign: "center", fontSize: "16px"}}
                                className={classes.header}>{markerPlace && markerPlace.title}</p>
                             <p style={{textAlign: "center", fontSize: "16px"}}
-                               className={classes.mergeLatLon}>{markerPlace && markerPlace.subtitle}</p>
+                               className={classes.mergeSubtitle}>{markerPlace && markerPlace.subtitle}</p>
                             <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                 <Link
                                     href={`/map/opr.place/${item[0].properties.opr_id}?q=15/${item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)}/${item[0].geometry.coordinates[1].toFixed(5)}`}>View</Link>
                             </p>
                             <p className={classes.mergeLatLon}>
-                                <Value>{item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)}, {item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5)}</Value>
+                                <Value>{item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)},
+                                    {item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5) +
+                                    " (" + getDistance(item[0], item[1]) + "m)"}</Value>
                             </p>
                             {<AttributesBarList place={markerPlace}
                                                 inactiveLinksVisible={true}
-                                                isOpen={false}/>}
+                                                isOpen={true}/>}
                             <ImagesBlock place={mainPlace}
                                          isOriginalPlace={false}
                                          categories={categories}/>
@@ -105,17 +122,19 @@ export default function MergeCarousel({
                             <p style={{textAlign: "center", fontSize: "16px"}}
                                className={classes.header}>{similarMarkerPlace && similarMarkerPlace.title}</p>
                             <p style={{textAlign: "center", fontSize: "16px"}}
-                               className={classes.mergeLatLon}>{similarMarkerPlace && similarMarkerPlace.subtitle}</p>
+                               className={classes.mergeSubtitle}>{similarMarkerPlace && similarMarkerPlace.subtitle}</p>
                             <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                 <Link
                                     href={`/map/opr.place/${item[1].properties.opr_id}?q=15/${item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)}/${item[1].geometry.coordinates[1].toFixed(5)}`}>View</Link>
                             </p>
                             <p className={classes.mergeLatLon}>
-                                <Value>{item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)}, {item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5)}</Value>
+                                <Value>{item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)},
+                                    {item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5) +
+                                    " (" + getDistance(item[0], item[1]) + "m)"}</Value>
                             </p>
                             {<AttributesBarList place={similarMarkerPlace}
                                                 inactiveLinksVisible={true}
-                                                isOpen={false}/>}
+                                                isOpen={true}/>}
                             <ImagesBlock place={similarPlace}
                                          isOriginalPlace={false}
                                          categories={categories}/>

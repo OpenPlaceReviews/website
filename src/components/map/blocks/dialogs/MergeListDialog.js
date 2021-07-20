@@ -143,6 +143,8 @@ export default function MergeListDialog({
     const [mergeGroupList, setMergeGroupList] = useState([]);
     const [carouselNav, setCarouselNav] = useState(null);
     const [deletedComment, setDeletedComment] = useState('');
+    const [distance, setDistance] = useState(null);
+    const [latlonPlaces, setLatlonPlaces] = useState([]);
 
     let handleToggle = (event, newResult) => {
         setToggle(newResult);
@@ -372,34 +374,7 @@ export default function MergeListDialog({
 
     return <div><Dialog fullWidth className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Merge possible duplicates</DialogTitle>
-        <DialogActions>
-            <Grid style={{marginBottom: "-10px"}}
-                  container
-                  direction="row-reverse"
-                  alignItems="center">
-                <Button type="submit"
-                        className={classes.buttonClose}
-                        variant="contained"
-                        onClick={closeMergeListDialog}>
-                    Cancel
-                </Button>
-                <Button disabled={edited.length === 0} style={{marginRight: "20px"}}
-                        type="submit"
-                        className={classes.button}
-                        variant="contained"
-                        onClick={handleForceCommit}>
-                    {"Commit - " + edited.length}
-                </Button>
-            </Grid>
-        </DialogActions>
-        <DialogContent>
-            {mergeGroupList && <MergeCarousel items={mergeGroupList} setIndex={setIndex}
-                                              markerPlace={markerPlace} similarMarkerPlace={similarMarkerPlace}
-                                              mainPlace={mainPlace}
-                                              similarPlace={similarPlace} categories={categories}
-                                              setCarousel={setCarousel}/>}
-        </DialogContent>
+        <DialogTitle id="form-dialog-title">Review closed places</DialogTitle>
         <DialogActions>
             <Button disabled={places.length !== 0} style={{align: "left"}} type="submit"
                     className={classes.prevButton}
@@ -436,10 +411,37 @@ export default function MergeListDialog({
                 required
                 value={deletedComment}
                 id="filled-required"
-                placeholder="Optional comment"
+                placeholder="Comment for permanently closed place"
                 variant="filled"
                 className={classes.comment}
                 onChange={handleOptionalComment}/>
+        </DialogActions>
+        <DialogContent>
+            {mergeGroupList && <MergeCarousel items={mergeGroupList} setIndex={setIndex}
+                                              markerPlace={markerPlace} similarMarkerPlace={similarMarkerPlace}
+                                              mainPlace={mainPlace}
+                                              similarPlace={similarPlace} categories={categories}
+                                              setCarousel={setCarousel}/>}
+        </DialogContent>
+        <DialogActions>
+            <Grid style={{marginBottom: "-10px"}}
+                  container
+                  direction="row-reverse"
+                  alignItems="center">
+                <Button type="submit"
+                        className={classes.buttonClose}
+                        variant="contained"
+                        onClick={closeMergeListDialog}>
+                    Cancel
+                </Button>
+                <Button disabled={edited.length === 0} style={{marginRight: "20px"}}
+                        type="submit"
+                        className={classes.button}
+                        variant="contained"
+                        onClick={handleForceCommit}>
+                    {"Commit - " + edited.length}
+                </Button>
+            </Grid>
         </DialogActions>
     </Dialog>
     </div>
