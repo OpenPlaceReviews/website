@@ -132,9 +132,10 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           }
         } else if (forceReload) {
           //console.log('get all data');
-          const {geo} = await task.fetchData({startDate: taskStartDate, endDate: taskEndDate});
+          const {geo, alreadyReviewedPlaceIds} = await task.fetchData({startDate: taskStartDate, endDate: taskEndDate});
           //console.log('data=' + geo);
-          newCache["all"] = getCacheByFilters(geo);
+          let features = filterGeo(geo, alreadyReviewedPlaceIds);
+          newCache["all"] = getCacheByFilters({type: "FeatureCollection", features: features});
         } else {
           return;
         }
@@ -191,6 +192,9 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     }
   }, [placesCache, filterVal]);
 
+  function filterGeo(geo, alreadyReviewedPlaceIds) {
+    return geo.features.filter(place => !alreadyReviewedPlaceIds.includes(place.properties.opr_id));
+  }
   function refreshMapDelay() {
     if (Date.now() - lastRefreshTime < REFRESH_TIMEOUT) {
       clearTimeout(refreshTimout);
@@ -206,7 +210,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     if (task === 'REVIEW_IMAGES') {
       features = filterReviewImages(geo);
     }
-    if (task === 'POSSIBLE_MERGE') {
+    if (task === 'REVIEW_CLOSED_PLACES') {
       features = filterTileBasedPossibleMerge(geo);
     }
     if (task === 'REVIEW_TRIPADVISOR') {
@@ -223,7 +227,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     if (task === 'REVIEW_IMAGES') {
       features = filterReviewImages(geo);
     }
-    if (task === 'POSSIBLE_MERGE') {
+    if (task === 'REVIEW_CLOSED_PLACES') {
       features = filterPossibleMerge(geo, features);
     }
     setMergePlaces(features);
