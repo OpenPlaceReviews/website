@@ -143,8 +143,6 @@ export default function MergeListDialog({
     const [mergeGroupList, setMergeGroupList] = useState([]);
     const [carouselNav, setCarouselNav] = useState(null);
     const [deletedComment, setDeletedComment] = useState('');
-    const [distance, setDistance] = useState(null);
-    const [latlonPlaces, setLatlonPlaces] = useState([]);
 
     let handleToggle = (event, newResult) => {
         setToggle(newResult);
@@ -179,8 +177,10 @@ export default function MergeListDialog({
     };
 
     const onMerge = () => {
-        setPlaces([similarPlace, mainPlace]);
-        updateIdsCache();
+        if (similarPlace && mainPlace) {
+            setPlaces([similarPlace, mainPlace]);
+            updateIdsCache();
+        }
     }
 
     const resetDeletedComment = () => {
@@ -188,18 +188,20 @@ export default function MergeListDialog({
     };
 
     const createClosedPlace = () => {
-        let newPlace = JSON.parse(JSON.stringify(similarPlace));
-        let newPlaceDeletedMarker = newPlace.deleted;
-        let newPlaceDeletedComment = newPlace.deletedComment;
+        if (similarPlace && mainPlace) {
+            let newPlace = JSON.parse(JSON.stringify(similarPlace));
+            let newPlaceDeletedMarker = newPlace.deleted;
+            let newPlaceDeletedComment = newPlace.deletedComment;
 
-        if (newPlaceDeletedMarker === undefined) {
-            newPlace["deleted"] = new Date().toISOString();
-            if (newPlaceDeletedComment === undefined && deletedComment !== '') {
-                newPlace["deletedComment"] = deletedComment;
+            if (newPlaceDeletedMarker === undefined) {
+                newPlace["deleted"] = new Date().toISOString();
+                if (newPlaceDeletedComment === undefined && deletedComment !== '') {
+                    newPlace["deletedComment"] = deletedComment;
+                }
+
+                setPlaces([similarPlace, newPlace]);
+                updateIdsCache();
             }
-
-            setPlaces([similarPlace, newPlace]);
-            updateIdsCache();
         }
     }
 
@@ -224,8 +226,8 @@ export default function MergeListDialog({
     useEffect(() => {
         const fetchData = async () => {
             if (mergeGroupList && mergeGroupList[index]) {
-                let mainFeature = mergeGroupList[index][0];
-                let similarFeature = mergeGroupList[index][1];
+                let mainFeature = mergeGroupList[index][1];
+                let similarFeature = mergeGroupList[index][0];
                 if (mainFeature && similarFeature && mainFeature.properties.opr_id && similarFeature.properties.opr_id) {
                     const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
                     const object = data.objects.shift();
@@ -244,12 +246,9 @@ export default function MergeListDialog({
                             deleted: params.deleted,
                             closedDescription: params.closedDescription
                         });
-                        setMainPlace(object);
-
                         const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
                         const object2 = data2.objects.shift();
-
-                        if (object2 && !Utils.contains(idsPlacesCache, object2.id)) {
+                        if (object2 && !Utils.contains(idsPlacesCache, object2.id) && JSON.stringify(object.id) !== JSON.stringify(object2.id)) {
                             const params2 = fetchPlaceParams(object2);
                             setSimilarMarkerPlace({
                                 oprId: similarFeature.properties.similar_opr_id,
@@ -260,14 +259,18 @@ export default function MergeListDialog({
                                 sources: params2.sources,
                                 deleted: params2.deleted,
                             });
+                            setMainPlace(object);
                             setSimilarPlace(object2);
+                        } else {
+                            setMainPlace(null);
+                            setSimilarPlace(null);
                         }
                     }
                 }
             }
         }
         fetchData();
-    }, [mergeGroupList, index, version]);
+    }, [mergeGroupList, index]);
 
     useBatchDiff(places[0], places[1], categories, edited, deleted, setEdited, setDeleted);
     useBatchOp(forceCommit, setForceCommit, deleted, edited, setOp, 250);
@@ -387,12 +390,12 @@ export default function MergeListDialog({
                 value={toggle}
                 exclusive
                 onChange={handleToggle}>
-                <ToggleButton value="onMerge" type="submit"
+                <ToggleButton disabled={!mainPlace || !similarPlace} value="onMerge" type="submit"
                               variant="contained"
                               className={classes.toggleMerge}
                               aria-label="left aligned">
                     Merge duplicate</ToggleButton>
-                <ToggleButton value="permanentlyClosed" type="submit"
+                <ToggleButton disabled={!mainPlace || !similarPlace} value="permanentlyClosed" type="submit"
                               variant="contained"
                               className={classes.togglePerClosed}
                               aria-label="right aligned">
@@ -406,7 +409,7 @@ export default function MergeListDialog({
             </Button>
         </DialogActions>
         <DialogActions>
-            <TextField
+            {mainPlace && similarPlace && <TextField
                 autoFocus
                 required
                 value={deletedComment}
@@ -414,7 +417,7 @@ export default function MergeListDialog({
                 placeholder="Comment for permanently closed place"
                 variant="filled"
                 className={classes.comment}
-                onChange={handleOptionalComment}/>
+                onChange={handleOptionalComment}/>}
         </DialogActions>
         <DialogContent>
             {mergeGroupList && <MergeCarousel items={mergeGroupList} setIndex={setIndex}

@@ -81,67 +81,74 @@ export default function MergeCarousel({
     }
 
     function getDistance(place1, place2) {
-        return Utils.getDistance(
+        return Math.round(Utils.getDistance(
             place1 && place1.geometry.coordinates && place1.geometry.coordinates[0].toFixed(5),
             place1 && place1.geometry.coordinates && place1.geometry.coordinates[1].toFixed(5),
             place2 && place2.geometry.coordinates && place2.geometry.coordinates[0].toFixed(5),
-            place2 && place2.geometry.coordinates && place2.geometry.coordinates[1].toFixed(5))
+            place2 && place2.geometry.coordinates && place2.geometry.coordinates[1].toFixed(5)))
     }
 
     return <Carousel ref={function (carousel) {
         setCarousel(carousel);
-    }} onChange={handleChange} autoPlay={false} indicators={false} navButtonsAlwaysInvisible={true} animation="slide">
+    }} onChange={handleChange} autoPlay={!mainPlace || !similarPlace} interval={500} indicators={false}
+                     navButtonsAlwaysInvisible={true} animation="slide">
         {
-            items.map((item, i) => <div key={i} className={classes.item}>
-                <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
-                    <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
-                        <CardContent>
-                            <p style={{textAlign: "center", fontSize: "16px"}}
-                               className={classes.header}>{markerPlace && markerPlace.title}</p>
-                            <p style={{textAlign: "center", fontSize: "16px"}}
-                               className={classes.mergeSubtitle}>{markerPlace && markerPlace.subtitle}</p>
-                            <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
-                                <Link
-                                    href={`/map/opr.place/${item[0].properties.opr_id}?q=15/${item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)}/${item[0].geometry.coordinates[1].toFixed(5)}`}>View</Link>
-                            </p>
-                            <p className={classes.mergeLatLon}>
-                                <Value>{item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)},
-                                    {item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5) +
-                                    " (" + getDistance(item[0], item[1]) + "m)"}</Value>
-                            </p>
-                            {<AttributesBarList place={markerPlace}
-                                                inactiveLinksVisible={true}
-                                                isOpen={true}/>}
-                            <ImagesBlock place={mainPlace}
-                                         isOriginalPlace={false}
-                                         categories={categories}/>
-                        </CardContent>
-                    </GridListTile>
-                    <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
-                        <CardContent>
-                            <p style={{textAlign: "center", fontSize: "16px"}}
-                               className={classes.header}>{similarMarkerPlace && similarMarkerPlace.title}</p>
-                            <p style={{textAlign: "center", fontSize: "16px"}}
-                               className={classes.mergeSubtitle}>{similarMarkerPlace && similarMarkerPlace.subtitle}</p>
-                            <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
-                                <Link
-                                    href={`/map/opr.place/${item[1].properties.opr_id}?q=15/${item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)}/${item[1].geometry.coordinates[1].toFixed(5)}`}>View</Link>
-                            </p>
-                            <p className={classes.mergeLatLon}>
-                                <Value>{item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)},
-                                    {item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5) +
-                                    " (" + getDistance(item[0], item[1]) + "m)"}</Value>
-                            </p>
-                            {<AttributesBarList place={similarMarkerPlace}
-                                                inactiveLinksVisible={true}
-                                                isOpen={true}/>}
-                            <ImagesBlock place={similarPlace}
-                                         isOriginalPlace={false}
-                                         categories={categories}/>
-                        </CardContent>
-                    </GridListTile>
-                </GridList>
-            </div>)
+            items.map((item, i) => <div>
+                    {mainPlace && similarPlace && <div key={i + "carousel"} className={classes.item}>
+                        <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
+                            <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
+                                <CardContent>
+                                    <p style={{textAlign: "center", fontSize: "16px"}}
+                                       className={classes.header}>{markerPlace && markerPlace.title}</p>
+                                    <p style={{textAlign: "center", fontSize: "16px"}}
+                                       className={classes.mergeSubtitle}>{markerPlace && markerPlace.subtitle}</p>
+                                    <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
+                                        <Link
+                                            href={`/map/opr.place/${item[0].properties.opr_id}?q=15/${item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)}/${item[0].geometry.coordinates[1].toFixed(5)}`}>View</Link>
+                                    </p>
+                                    <p className={classes.mergeLatLon}>
+                                        <Value>{item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)},
+                                            {item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5) +
+                                            " (" + getDistance(item[0], item[1]) + "m)"}</Value>
+                                    </p>
+                                    {<AttributesBarList place={markerPlace}
+                                                        inactiveLinksVisible={true}
+                                                        isOpen={true}/>}
+                                    <ImagesBlock place={mainPlace}
+                                                 isOriginalPlace={false}
+                                                 categories={categories}/>
+                                </CardContent>
+                            </GridListTile>
+                            <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
+                                <CardContent>
+                                    <p style={{textAlign: "center", fontSize: "16px"}}
+                                       className={classes.header}>{similarMarkerPlace && similarMarkerPlace.title}</p>
+                                    <p style={{textAlign: "center", fontSize: "16px"}}
+                                       className={classes.mergeSubtitle}>{similarMarkerPlace && similarMarkerPlace.subtitle}</p>
+                                    <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
+                                        <Link
+                                            href={`/map/opr.place/${item[1].properties.opr_id}?q=15/${item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)}/${item[1].geometry.coordinates[1].toFixed(5)}`}>View</Link>
+                                    </p>
+                                    <p className={classes.mergeLatLon}>
+                                        <Value>{item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)},
+                                            {item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5) +
+                                            " (" + getDistance(item[0], item[1]) + "m)"}</Value>
+                                    </p>
+                                    {<AttributesBarList place={similarMarkerPlace}
+                                                        inactiveLinksVisible={true}
+                                                        isOpen={true}/>}
+                                    <ImagesBlock place={similarPlace}
+                                                 isOriginalPlace={false}
+                                                 categories={categories}/>
+                                </CardContent>
+                            </GridListTile>
+                        </GridList>
+                    </div>}
+                    <div key={i + "closedPlaces"}>
+                        {(!mainPlace || !similarPlace) && <p> This places have been closed!</p>}
+                    </div>
+                </div>
+            )
         }
     </Carousel>;
 }

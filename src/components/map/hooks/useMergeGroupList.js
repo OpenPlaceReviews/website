@@ -5,7 +5,7 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
     function getPlacesGroups(places) {
         let currentGroupBeginIndex = 0;
         for (let i = 1; i < places.length - 1; i++) {
-            if (!places[i].properties.deleted && places[i - 1].properties.deleted) {
+            if (places[i].properties.deleted && !places[i - 1].properties.deleted) {
                 mergeGroupList.push(places.slice(currentGroupBeginIndex, i));
                 currentGroupBeginIndex = i;
             }
