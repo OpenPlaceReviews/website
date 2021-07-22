@@ -93,8 +93,8 @@ export default function MergeCarousel({
     }} onChange={handleChange} autoPlay={!mainPlace || !similarPlace} interval={500} indicators={false}
                      navButtonsAlwaysInvisible={true} animation="slide">
         {
-            items.map((item, i) => <div>
-                    {mainPlace && similarPlace && <div key={i + "carousel"} className={classes.item}>
+            items.map((item, i) => <div key={i}>
+                    {mainPlace && similarPlace && <div className={classes.item}>
                         <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
                             <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
                                 <CardContent>
@@ -144,7 +144,7 @@ export default function MergeCarousel({
                             </GridListTile>
                         </GridList>
                     </div>}
-                    <div key={i + "closedPlaces"}>
+                    <div key={i}>
                         {(!mainPlace || !similarPlace) && <p> This places have been closed!</p>}
                     </div>
                 </div>
