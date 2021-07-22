@@ -224,13 +224,17 @@ export default function MergeListDialog({
     }
 
     useEffect(() => {
+        setMainPlace(undefined);
+        setSimilarPlace(undefined);
         const fetchData = async () => {
             if (mergeGroupList && mergeGroupList[index]) {
                 let mainFeature = mergeGroupList[index][1];
                 let similarFeature = mergeGroupList[index][0];
+                let object;
+                let object2;
                 if (mainFeature && similarFeature && mainFeature.properties.opr_id && similarFeature.properties.opr_id) {
                     const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
-                    const object = data.objects.shift();
+                    object = data.objects.shift();
                     if (object && object.clientData) {
                         delete object.clientData;
                     }
@@ -247,7 +251,10 @@ export default function MergeListDialog({
                             closedDescription: params.closedDescription
                         });
                         const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
-                        const object2 = data2.objects.shift();
+                        object2 = data2.objects.shift();
+                        if (object2 && object2.clientData) {
+                            delete object2.clientData;
+                        }
                         if (object2 && !Utils.contains(idsPlacesCache, object2.id) && JSON.stringify(object.id) !== JSON.stringify(object2.id)) {
                             const params2 = fetchPlaceParams(object2);
                             setSimilarMarkerPlace({
@@ -261,9 +268,6 @@ export default function MergeListDialog({
                             });
                             setMainPlace(object);
                             setSimilarPlace(object2);
-                        } else {
-                            setMainPlace(null);
-                            setSimilarPlace(null);
                         }
                     }
                 }
