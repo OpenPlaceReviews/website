@@ -49,7 +49,7 @@ function usePrevious(value) {
 function contains(array, value) {
     let res = false;
     array.forEach(function (element) {
-        if (JSON.stringify(element) === JSON.stringify(value)) {
+        if (element.toString() === value) {
             res = true;
         }
     });

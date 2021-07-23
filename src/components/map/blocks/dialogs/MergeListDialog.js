@@ -119,7 +119,8 @@ const useStyles = makeStyles({
 
 export default function MergeListDialog({
                                             mergePlaces, placeTypes, mergeListDialogOpen, setMergeListDialogOpen,
-                                            idsPlacesCache, setIdsPlacesCache
+                                            idsPlacesCache, setIdsPlacesCache, setAlreadyReviewed, taskSelection,
+                                            alreadyReviewed
                                         }) {
 
     const classes = useStyles();
@@ -206,7 +207,7 @@ export default function MergeListDialog({
         }
     }
 
-    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache);
+    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache, alreadyReviewed, setAlreadyReviewed, taskSelection);
 
     useEffect(() => {
         const requestCategories = async () => {
@@ -228,7 +229,6 @@ export default function MergeListDialog({
         if(index !== 0) {
             setMainPlace(null);
             setSimilarPlace(null);
-            setAllowToMerge(false);
         }
         const fetchData = async () => {
             setAllowToMerge(false);
@@ -253,7 +253,7 @@ export default function MergeListDialog({
                             if (object2.clientData) {
                                 delete object2.clientData;
                             }
-                            setAllowToMerge(mainFeature.properties.opr_id != similarFeature.properties.opr_id);
+                            setAllowToMerge(mainFeature.properties.opr_id !== similarFeature.properties.opr_id);
                         } else {
                             // object2 = null;
                             // object = null;
@@ -413,7 +413,7 @@ export default function MergeListDialog({
                               className={classes.toggleMerge}
                               aria-label="left aligned">
                     Merge duplicate</ToggleButton>
-                <ToggleButton disabled={!mainPlace || !similarPlace || !allowToMerge} value="permanentlyClosed" type="submit"
+                <ToggleButton disabled={!mainPlace || !similarPlace} value="permanentlyClosed" type="submit"
                               variant="contained"
                               className={classes.togglePerClosed}
                               aria-label="right aligned">
@@ -441,8 +441,7 @@ export default function MergeListDialog({
             {mergeGroupList && <MergeCarousel items={mergeGroupList} setIndex={setIndex}
                                               markerPlace={markerPlace} similarMarkerPlace={similarMarkerPlace}
                                               mainPlace={mainPlace}
-                                              similarPlace={similarPlace} categories={categories}
-                                              setCarousel={setCarousel} allowToMerge={allowToMerge}/>}
+                                              similarPlace={similarPlace} categories={categories} setCarousel={setCarousel}/>}
         </DialogContent>
         <DialogActions>
             <Grid style={{marginBottom: "-10px"}}
