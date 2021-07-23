@@ -238,14 +238,14 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     for (let i = 0; i < geo.features.length - 1; ) {
       group = [];
       let place = geo.features[i];
-      if (!alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
+      if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
         group.push(place);
       }
       // collect group of deleted objects
       let j = 1;
       for (; j + i < geo.features.length - 1; j++) {
         if (places[i + j].properties.deleted) { // && areSimilar(place, places[i + j], 150)
-          if (!alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
+          if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
             group.push(places[i + j]);
           }
         }
