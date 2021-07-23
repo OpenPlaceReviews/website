@@ -238,9 +238,10 @@ export default function MergeListDialog({
                 let it = 0;
                 let mainFeature = mergeGroupList[index + it][1];
                 let similarFeature = mergeGroupList[index + it][0];
-                if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
+                // if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
                     // ignore merged objects
-                } else if (mainFeature && similarFeature && mainFeature.properties.opr_id && similarFeature.properties.opr_id) {
+               // } else 
+               if (mainFeature && similarFeature && mainFeature.properties.opr_id && similarFeature.properties.opr_id) {
                     const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
                     object = data.objects.shift();
                     if (object && object.clientData) {

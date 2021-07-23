@@ -244,7 +244,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       // collect group of deleted objects
       let j = 1;
       for (; j + i < geo.features.length - 1; j++) {
-        if (geo.features[i + j].properties.deleted) { // && areSimilar(place,  geo.features[i + j], 150)
+        if (geo.features[i + j].properties.deleted && areSimilar(place,  geo.features[i + j], 250)) {
           if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
             group.push(geo.features[i + j]);
           }
@@ -254,8 +254,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       }
       // collect group of new objects & add to group
       for (; j + i < geo.features.length - 1; j++) {
-        if (!geo.features[i + j].properties.deleted) {
-          if (group.length > 0) {
+        if (!geo.features[i + j].properties.deleted && areSimilar(place, geo.features[i + j], 250)) {
+          if (group.length > 0 && !geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
             group.push(geo.features[i + j]);
           }
         } else {
