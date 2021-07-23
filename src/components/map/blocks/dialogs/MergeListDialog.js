@@ -143,7 +143,7 @@ export default function MergeListDialog({
     const [mergeGroupList, setMergeGroupList] = useState([]);
     const [carouselNav, setCarouselNav] = useState(null);
     const [deletedComment, setDeletedComment] = useState('');
-    const [skipSlideIndex, setSkipSlideIndex] = useState(0);
+    const [allowToMerge, setAllowToMerge] = useState(false);
 
     let handleToggle = (event, newResult) => {
         setToggle(newResult);
@@ -228,9 +228,10 @@ export default function MergeListDialog({
         if(index !== 0) {
             setMainPlace(null);
             setSimilarPlace(null);
-            setSkipSlideIndex(0);
+            setAllowToMerge(false);
         }
         const fetchData = async () => {
+            setAllowToMerge(false);
             if (mergeGroupList && mergeGroupList[index]) {
                 let object2 = null;
                 let object = null;
@@ -243,20 +244,22 @@ export default function MergeListDialog({
                     const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
                     object = data.objects.shift();
                     if (object && object.clientData) {
-                       delete object.clientData;
+                        delete object.clientData;
                     }
                     if (object) {
                         const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
                         object2 = data2.objects.shift();
-                        if (object2 && object2.clientData && !object2.properties.deleted) {
-                           delete object2.clientData;
+                        if (object2 && !object2.properties.deleted) {
+                            if (object2.clientData) {
+                                delete object2.clientData;
+                            }
+                            setAllowToMerge(true);
                         } else {
-                            object2 = null;
-                            object = null;
+                            // object2 = null;
+                            // object = null;
                         }
                     }
                 }
-                setSkipSlideIndex(index + it)
                 if (object && object2) {
                     const params = fetchPlaceParams(object);
                     setMarkerPlace({
@@ -405,12 +408,12 @@ export default function MergeListDialog({
                 value={toggle}
                 exclusive
                 onChange={handleToggle}>
-                <ToggleButton disabled={!mainPlace || !similarPlace} value="onMerge" type="submit"
+                <ToggleButton disabled={!mainPlace || !similarPlace || !allowToMerge} value="onMerge" type="submit"
                               variant="contained"
                               className={classes.toggleMerge}
                               aria-label="left aligned">
                     Merge duplicate</ToggleButton>
-                <ToggleButton disabled={!mainPlace || !similarPlace} value="permanentlyClosed" type="submit"
+                <ToggleButton disabled={!mainPlace || !similarPlace || !allowToMerge} value="permanentlyClosed" type="submit"
                               variant="contained"
                               className={classes.togglePerClosed}
                               aria-label="right aligned">
@@ -439,7 +442,7 @@ export default function MergeListDialog({
                                               markerPlace={markerPlace} similarMarkerPlace={similarMarkerPlace}
                                               mainPlace={mainPlace}
                                               similarPlace={similarPlace} categories={categories}
-                                              setCarousel={setCarousel} skipSlideIndex={skipSlideIndex}/>}
+                                              setCarousel={setCarousel} allowToMerge={allowToMerge}/>}
         </DialogContent>
         <DialogActions>
             <Grid style={{marginBottom: "-10px"}}

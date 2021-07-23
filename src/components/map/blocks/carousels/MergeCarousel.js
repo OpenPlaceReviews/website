@@ -72,7 +72,7 @@ export default function MergeCarousel({
                                           similarPlace,
                                           categories,
                                           setCarousel,
-                                          skipSlideIndex
+                                          allowToMerge
                                       }) {
 
     const classes = useStyles();
@@ -145,7 +145,7 @@ export default function MergeCarousel({
                         </GridList>
                     </div>}
                     <div key={i}>
-                        {(!mainPlace || !similarPlace) && <p> Loading!</p>}
+                        {(!mainPlace || !similarPlace) && <p> Couldn't load the objects data</p>}
                     </div>
                 </div>
             )
