@@ -186,6 +186,6 @@ export default function Map() {
                            setLoading={setReload} isPlaceChanged={isPlaceChanged} setIsPlaceChanged={setIsPlaceChanged}
                            setMergePlaces={setMergePlaces}/>}
     <MergeList mergeListDialogOpen={mergeListDialogOpen} mergePlaces={mergePlaces} placeTypes={placeTypes} setMergeListDialogOpen={setMergeListDialogOpen}
-               taskSelection={taskSelection} setMergePlaces={setMergePlaces}/>
+               taskSelection={taskSelection}/>
   </MapContainer>;
 }

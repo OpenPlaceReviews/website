@@ -71,8 +71,7 @@ export default function MergeCarousel({
                                           mainPlace,
                                           similarPlace,
                                           categories,
-                                          setCarousel,
-                                          allowToMerge
+                                          setCarousel
                                       }) {
 
     const classes = useStyles();
@@ -104,11 +103,14 @@ export default function MergeCarousel({
                                        className={classes.mergeSubtitle}>{markerPlace && markerPlace.subtitle}</p>
                                     <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                         <Link
-                                            href={`/map/opr.place/${item[1].properties.opr_id}?q=15/${item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)}/${item[1].geometry.coordinates[1].toFixed(5)}`}>View</Link>
+                                            href={`/map/opr.place/${item[1].properties.opr_id}?q=15/
+                                            ${item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5)}
+                                            /${item[1].geometry.coordinates[0].toFixed(5)}`}>
+                                            View</Link>
                                     </p>
                                     <p className={classes.mergeLatLon}>
-                                        <Value>{item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)},
-                                            {item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5) +
+                                        <Value>{item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5)},
+                                            {item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5) +
                                             " (" + getDistance(item[1], item[0]) + "m)"}</Value>
                                     </p>
                                     {<AttributesBarList place={markerPlace}
@@ -127,11 +129,14 @@ export default function MergeCarousel({
                                        className={classes.mergeSubtitle}>{similarMarkerPlace && similarMarkerPlace.subtitle}</p>
                                     <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                         <Link
-                                            href={`/map/opr.place/${item[0].properties.opr_id}?q=15/${item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)}/${item[0].geometry.coordinates[1].toFixed(5)}`}>View</Link>
+                                            href={`/map/opr.place/${item[0].properties.opr_id}?q=15/
+                                            ${item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5)}/
+                                            ${item[0].geometry.coordinates[0].toFixed(5)}`}>
+                                            View</Link>
                                     </p>
                                     <p className={classes.mergeLatLon}>
-                                        <Value>{item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)},
-                                            {item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5) +
+                                        <Value>{item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5)},
+                                            {item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5) +
                                             " (" + getDistance(item[0], item[1]) + "m)"}</Value>
                                     </p>
                                     {<AttributesBarList place={similarMarkerPlace}
