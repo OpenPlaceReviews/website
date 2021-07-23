@@ -249,7 +249,7 @@ export default function MergeListDialog({
                     if (object) {
                         const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
                         object2 = data2.objects.shift();
-                        if (object2 && !object2.properties.deleted) {
+                        if (object2 && !object2.deleted) {
                             if (object2.clientData) {
                                 delete object2.clientData;
                             }
