@@ -234,6 +234,7 @@ export default function MergeListDialog({
             if (mergeGroupList && mergeGroupList[index]) {
                 let object2 = null;
                 let object = null;
+                let it = 0;
                 let mainFeature = mergeGroupList[index + it][1];
                 let similarFeature = mergeGroupList[index + it][0];
                 if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
@@ -255,7 +256,7 @@ export default function MergeListDialog({
                         }
                     }
                 }
-                // setSkipSlideIndex(index + it)
+                setSkipSlideIndex(index + it)
                 if (object && object2) {
                     const params = fetchPlaceParams(object);
                     setMarkerPlace({
