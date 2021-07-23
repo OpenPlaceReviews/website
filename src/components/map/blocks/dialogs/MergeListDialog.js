@@ -234,35 +234,29 @@ export default function MergeListDialog({
             if (mergeGroupList && mergeGroupList[index]) {
                 let object2 = null;
                 let object = null;
-                let mainFeature;
-                let similarFeature;
-                let it = 0;
-                while (!object && !object2) {
-                    mainFeature = mergeGroupList[index + it][1];
-                    similarFeature = mergeGroupList[index + it][0];
-                    if (mainFeature && similarFeature && mainFeature.properties.opr_id && similarFeature.properties.opr_id) {
-                        const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
-                        object = data.objects.shift();
-                        if (object && object.clientData) {
-                            delete object.clientData;
-                        }
-                        if (object) {
-                            const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
-                            object2 = data2.objects.shift();
-                            if (object2 && object2.clientData) {
-                                delete object2.clientData;
-                            }
+                let mainFeature = mergeGroupList[index + it][1];
+                let similarFeature = mergeGroupList[index + it][0];
+                if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
+                    // ignore merged objects
+                } else if (mainFeature && similarFeature && mainFeature.properties.opr_id && similarFeature.properties.opr_id) {
+                    const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
+                    object = data.objects.shift();
+                    if (object && object.clientData) {
+                       delete object.clientData;
+                    }
+                    if (object) {
+                        const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
+                        object2 = data2.objects.shift();
+                        if (object2 && object2.clientData && !object2.properties.deleted) {
+                           delete object2.clientData;
+                        } else {
+                            object2 = null;
+                            object = null;
                         }
                     }
-                    if (object && object2 && JSON.stringify(object.id) === JSON.stringify(object2.id)) {
-                        object = null;
-                        object2 = null;
-                    }
-                    it++;
                 }
-                setSkipSlideIndex(index + it)
-
-                if (object && !Utils.contains(idsPlacesCache, object.id)) {
+                // setSkipSlideIndex(index + it)
+                if (object && object2) {
                     const params = fetchPlaceParams(object);
                     setMarkerPlace({
                         oprId: mainFeature.properties.opr_id,
@@ -274,25 +268,18 @@ export default function MergeListDialog({
                         deleted: params.deleted,
                         closedDescription: params.closedDescription
                     });
-                    const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
-                    object2 = data2.objects.shift();
-                    if (object2 && object2.clientData) {
-                        delete object2.clientData;
-                    }
-                    if (object2 && !Utils.contains(idsPlacesCache, object2.id) && JSON.stringify(object.id) !== JSON.stringify(object2.id)) {
-                        const params2 = fetchPlaceParams(object2);
-                        setSimilarMarkerPlace({
-                            oprId: similarFeature.properties.similar_opr_id,
-                            title: params2.title,
-                            subtitle: params2.subtitle,
-                            latLon: params2.latLon,
-                            images: params2.images,
-                            sources: params2.sources,
-                            deleted: params2.deleted,
-                        });
-                        setMainPlace(object);
-                        setSimilarPlace(object2);
-                    }
+                    const params2 = fetchPlaceParams(object2);
+                    setSimilarMarkerPlace({
+                        oprId: similarFeature.properties.similar_opr_id,
+                        title: params2.title,
+                        subtitle: params2.subtitle,
+                        latLon: params2.latLon,
+                        images: params2.images,
+                        sources: params2.sources,
+                        deleted: params2.deleted,
+                    });
+                    setMainPlace(object);
+                    setSimilarPlace(object2);
                 }
             }
         }
