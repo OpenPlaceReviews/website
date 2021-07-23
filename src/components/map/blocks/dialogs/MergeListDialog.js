@@ -253,7 +253,7 @@ export default function MergeListDialog({
                             if (object2.clientData) {
                                 delete object2.clientData;
                             }
-                            setAllowToMerge(true);
+                            setAllowToMerge(mainFeature.properties.opr_id != similarFeature.properties.opr_id);
                         } else {
                             // object2 = null;
                             // object = null;

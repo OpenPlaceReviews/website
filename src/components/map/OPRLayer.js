@@ -248,6 +248,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
             group.push(geo.features[i + j]);
           }
+        } else {
+          break;
         }
       }
       // collect group of new objects & add to group
@@ -256,10 +258,12 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           if (group.length > 0) {
             group.push(geo.features[i + j]);
           }
+        } else {
+          break;
         }
       }
       i += j;
-      features = features.concat(features, group);
+      features = features.concat(group);
     }
     return features;
   }

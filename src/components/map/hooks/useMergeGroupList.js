@@ -3,15 +3,36 @@ import {useEffect} from "react";
 export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache) {
 
     function getPlacesGroups(places) {
-        let currentGroupBeginIndex = 0;
-        for (let i = 1; i < places.length - 1; i++) {
-            if (places[i].properties.deleted && !places[i - 1].properties.deleted) {
-                mergeGroupList.push(places.slice(currentGroupBeginIndex, i));
-                currentGroupBeginIndex = i;
+        for (let i = 0; i < places.length - 1;) {
+            let delGroup = [];
+            let similarGroup = [];
+            // collect group of deleted objects
+            let j = 0;
+            for (; j + i < places.length - 1; j++) {
+                if (places[i + j].properties.deleted) { 
+                    delGroup.push(places[i + j]);
+                } else {
+                    break;
+                }
             }
+            for (; j + i < places.length - 1; j++) {
+                if (!places[i + j].properties.deleted) {
+                    similarGroup.push(places[i + j]);
+                } else {
+                    break;
+                }
+            }
+            if (similarGroup.length == 1) {
+                // keep only groups of 1
+                delGroup.forEach(element =>
+                    // if (!idsPlacesCache.includes[element.properties.opr_id]))
+                        mergeGroupList.push([element, similarGroup[0]]));
+            }
+            if (j == 0) {
+                j = 1;
+            }
+            i += j;
         }
-        mergeGroupList.push(places.slice(currentGroupBeginIndex, places.length));
-        mergeGroupList = mergeGroupList.filter(group => group.length === 2);
         setMergeGroupList(mergeGroupList);
     }
 
