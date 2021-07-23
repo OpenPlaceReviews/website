@@ -71,13 +71,13 @@ export default function MergeCarousel({
                                           mainPlace,
                                           similarPlace,
                                           categories,
-                                          setCarousel
+                                          setCarousel,
+                                          skipSlideIndex
                                       }) {
 
     const classes = useStyles();
-
-    function handleChange(ind) {
-        setIndex(ind);
+    function handleChange() {
+        setIndex(skipSlideIndex);
     }
 
     function getDistance(place1, place2) {
@@ -90,7 +90,7 @@ export default function MergeCarousel({
 
     return <Carousel ref={function (carousel) {
         setCarousel(carousel);
-    }} onChange={handleChange} autoPlay={!mainPlace || !similarPlace} interval={500} indicators={false}
+    }} onChange={handleChange} activeIndex={skipSlideIndex} autoPlay={false} indicators={false}
                      navButtonsAlwaysInvisible={true} animation="slide">
         {
             items.map((item, i) => <div key={i}>
@@ -104,12 +104,12 @@ export default function MergeCarousel({
                                        className={classes.mergeSubtitle}>{markerPlace && markerPlace.subtitle}</p>
                                     <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                         <Link
-                                            href={`/map/opr.place/${item[0].properties.opr_id}?q=15/${item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)}/${item[0].geometry.coordinates[1].toFixed(5)}`}>View</Link>
+                                            href={`/map/opr.place/${item[1].properties.opr_id}?q=15/${item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)}/${item[1].geometry.coordinates[1].toFixed(5)}`}>View</Link>
                                     </p>
                                     <p className={classes.mergeLatLon}>
-                                        <Value>{item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)},
-                                            {item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5) +
-                                            " (" + getDistance(item[0], item[1]) + "m)"}</Value>
+                                        <Value>{item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)},
+                                            {item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5) +
+                                            " (" + getDistance(item[1], item[0]) + "m)"}</Value>
                                     </p>
                                     {<AttributesBarList place={markerPlace}
                                                         inactiveLinksVisible={true}
@@ -127,11 +127,11 @@ export default function MergeCarousel({
                                        className={classes.mergeSubtitle}>{similarMarkerPlace && similarMarkerPlace.subtitle}</p>
                                     <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                         <Link
-                                            href={`/map/opr.place/${item[1].properties.opr_id}?q=15/${item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)}/${item[1].geometry.coordinates[1].toFixed(5)}`}>View</Link>
+                                            href={`/map/opr.place/${item[0].properties.opr_id}?q=15/${item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)}/${item[0].geometry.coordinates[1].toFixed(5)}`}>View</Link>
                                     </p>
                                     <p className={classes.mergeLatLon}>
-                                        <Value>{item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)},
-                                            {item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5) +
+                                        <Value>{item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)},
+                                            {item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5) +
                                             " (" + getDistance(item[0], item[1]) + "m)"}</Value>
                                     </p>
                                     {<AttributesBarList place={similarMarkerPlace}
@@ -145,7 +145,7 @@ export default function MergeCarousel({
                         </GridList>
                     </div>}
                     <div key={i}>
-                        {(!mainPlace || !similarPlace) && <p> This places have been closed!</p>}
+                        {(!mainPlace || !similarPlace) && <p> Loading!</p>}
                     </div>
                 </div>
             )
