@@ -222,7 +222,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       features = filterReviewImages(geo);
     }
     if (task === 'REVIEW_CLOSED_PLACES') {
-      features = filterPossibleMerge(geo, features);
+      features = filterPossibleMerge(geo);
     }
     setMergePlaces(features);
     return features;
@@ -233,10 +233,10 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         : geo.features.filter(place => place.properties.img_review_size > 0);
   }
 
-  function filterPossibleMerge(geo, features) { 
-    features = [];
+  function filterPossibleMerge(geo) { 
+    let features = [];
     for (let i = 0; i < geo.features.length - 1; ) {
-      group = [];
+      let group = [];
       let place = geo.features[i];
       if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
         group.push(place);
