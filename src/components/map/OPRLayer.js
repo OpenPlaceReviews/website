@@ -244,17 +244,17 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       // collect group of deleted objects
       let j = 1;
       for (; j + i < geo.features.length - 1; j++) {
-        if (places[i + j].properties.deleted) { // && areSimilar(place, places[i + j], 150)
+        if (geo.features[i + j].properties.deleted) { // && areSimilar(place,  geo.features[i + j], 150)
           if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
-            group.push(places[i + j]);
+            group.push(geo.features[i + j]);
           }
         }
       }
       // collect group of new objects & add to group
       for (; j + i < geo.features.length - 1; j++) {
-        if (!places[i + j].properties.deleted) {
+        if (!geo.features[i + j].properties.deleted) {
           if (group.length > 0) {
-            group.push(places[i + j]);
+            group.push(geo.features[i + j]);
           }
         }
       }
