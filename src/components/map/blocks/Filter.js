@@ -250,7 +250,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
 
   function showReviewListButton() {
     if (mergePlaces) {
-      return "REVIEW LIST " + "(" + mergePlaces.length + ")";
+      return "REVIEW LIST " + "(" + mergePlaces.filter(place => place.properties.deleted).length + ")";
     } else {
       return "REVIEW LIST";
     }

@@ -131,11 +131,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
             }
           }
         } else if (forceReload) {
-          //console.log('get all data');
           const {geo, alreadyReviewedPlaceIds} = await task.fetchData({startDate: taskStartDate, endDate: taskEndDate});
-          //console.log('data=' + geo);
-          let features = filterGeo(geo, alreadyReviewedPlaceIds);
-          newCache["all"] = getCacheByFilters({type: "FeatureCollection", features: features});
+          newCache["all"] = getCacheByFilters({ type: "FeatureCollection", features: geo.features, "alreadyReviewedPlaceIds": alreadyReviewedPlaceIds});
         } else {
           return;
         }
@@ -192,9 +189,6 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     }
   }, [placesCache, filterVal]);
 
-  function filterGeo(geo, alreadyReviewedPlaceIds) {
-    return geo.features.filter(place => !alreadyReviewedPlaceIds.includes(place.properties.opr_id));
-  }
   function refreshMapDelay() {
     if (Date.now() - lastRefreshTime < REFRESH_TIMEOUT) {
       clearTimeout(refreshTimout);
@@ -239,13 +233,33 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         : geo.features.filter(place => place.properties.img_review_size > 0);
   }
 
-  function filterPossibleMerge(geo, features) {
-    features = geo.features.filter((place, i, places) => place.properties.place_deleted === undefined
-        && ((i < places.length - 1 && areSimilar(place, places[i + 1], 150)) || (i > 0 && areSimilar(place, places[i - 1], 150))));
-    if (reviewedPlacesVisible) {
-      let alreadyMergedFeatures = geo.features.filter(place => place.properties.sources && place.properties.sources.length > 1
-          && place.properties.sources[0].deleted);
-      return features.concat(alreadyMergedFeatures);
+  function filterPossibleMerge(geo, features) { 
+    features = [];
+    for (let i = 0; i < geo.features.length - 1; ) {
+      group = [];
+      let place = geo.features[i];
+      if (!alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
+        group.push(place);
+      }
+      // collect group of deleted objects
+      let j = 1;
+      for (; j + i < geo.features.length - 1; j++) {
+        if (places[i + j].properties.deleted) { // && areSimilar(place, places[i + j], 150)
+          if (!alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
+            group.push(places[i + j]);
+          }
+        }
+      }
+      // collect group of new objects & add to group
+      for (; j + i < geo.features.length - 1; j++) {
+        if (!places[i + j].properties.deleted) {
+          if (group.length > 0) {
+            group.push(places[i + j]);
+          }
+        }
+      }
+      i += j;
+      features = features.concat(features, group);
     }
     return features;
   }
