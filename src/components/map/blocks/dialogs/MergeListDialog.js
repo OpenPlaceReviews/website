@@ -157,6 +157,7 @@ export default function MergeListDialog({
     const handleForceCommit = () => {
         setForceCommit(true);
         resetDeletedComment();
+        carousel.next();
     };
 
     const handlePrevCarousel = () => {
