@@ -76,8 +76,8 @@ export default function MergeCarousel({
                                       }) {
 
     const classes = useStyles();
-    function handleChange() {
-        setIndex(skipSlideIndex);
+    function handleChange(ind) {
+        setIndex(ind);
     }
 
     function getDistance(place1, place2) {
@@ -90,7 +90,7 @@ export default function MergeCarousel({
 
     return <Carousel ref={function (carousel) {
         setCarousel(carousel);
-    }} onChange={handleChange} activeIndex={skipSlideIndex} autoPlay={false} indicators={false}
+    }} onChange={handleChange} autoPlay={false} indicators={false}
                      navButtonsAlwaysInvisible={true} animation="slide">
         {
             items.map((item, i) => <div key={i}>
