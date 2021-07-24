@@ -235,38 +235,37 @@ export default function MergeListDialog({
         const fetchData = async () => {
             setAllowToMerge(false);
             if (mergeGroupList && mergeGroupList[index]) {
-                let object2 = null;
-                let object = null;
+                let objectMergeFrom = null;
+                let objectDeleted = null;
                 let it = 0;
-                let mainFeature = mergeGroupList[index + it][0];
-                let similarFeature = mergeGroupList[index + it][1];
+                let deletedFeature = mergeGroupList[index + it][0];
+                let existingFeature = mergeGroupList[index + it][1];
                 // if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
                     // ignore merged objects
                // } else 
-               if (mainFeature && similarFeature && mainFeature.properties.opr_id && similarFeature.properties.opr_id) {
-                    const data = await getObjectsById('opr.place', mainFeature.properties.opr_id);
-                    object = data.objects.shift();
-                    if (object && object.clientData) {
-                        delete object.clientData;
+               if (deletedFeature && existingFeature && deletedFeature.properties.opr_id && existingFeature.properties.opr_id) {
+                    const data = await getObjectsById('opr.place', deletedFeature.properties.opr_id);
+                    objectDeleted = data.objects.shift();
+                    if (objectDeleted && objectDeleted.clientData) {
+                        delete objectDeleted.clientData;
                     }
-                    if (object) {
-                        const data2 = await getObjectsById('opr.place', similarFeature.properties.opr_id);
-                        object2 = data2.objects.shift();
-                        if (object2 && !object2.deleted) {
-                            if (object2.clientData) {
-                                delete object2.clientData;
+                    if (objectDeleted) {
+                        const data2 = await getObjectsById('opr.place', existingFeature.properties.opr_id);
+                        objectMergeFrom = data2.objects.shift();
+                        if (objectMergeFrom && !objectMergeFrom.deleted) {
+                            if (objectMergeFrom.clientData) {
+                                delete objectMergeFrom.clientData;
                             }
-                            setAllowToMerge(mainFeature.properties.opr_id !== similarFeature.properties.opr_id);
+                            setAllowToMerge(deletedFeature.properties.opr_id !== existingFeature.properties.opr_id);
                         } else {
-                            // object2 = null;
-                            // object = null;
+
                         }
                     }
                 }
-                if (object && object2) {
-                    const params = fetchPlaceParams(object);
+                if (objectDeleted && objectMergeFrom) {
+                    const params = fetchPlaceParams(objectDeleted);
                     setMarkerPlace({
-                        oprId: mainFeature.properties.opr_id,
+                        oprId: deletedFeature.properties.opr_id,
                         title: params.title,
                         subtitle: params.subtitle,
                         latLon: params.latLon,
@@ -275,9 +274,9 @@ export default function MergeListDialog({
                         deleted: params.deleted,
                         closedDescription: params.closedDescription
                     });
-                    const params2 = fetchPlaceParams(object2);
+                    const params2 = fetchPlaceParams(objectMergeFrom);
                     setSimilarMarkerPlace({
-                        oprId: similarFeature.properties.similar_opr_id,
+                        oprId: existingFeature.properties.similar_opr_id,
                         title: params2.title,
                         subtitle: params2.subtitle,
                         latLon: params2.latLon,
@@ -285,8 +284,8 @@ export default function MergeListDialog({
                         sources: params2.sources,
                         deleted: params2.deleted,
                     });
-                    setMainPlace(object2);
-                    setSimilarPlace(object);
+                    setMainPlace(objectDeleted);
+                    setSimilarPlace(objectMergeFrom);
                 }
             }
         }
