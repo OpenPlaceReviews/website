@@ -119,7 +119,8 @@ const useStyles = makeStyles({
 
 export default function MergeListDialog({
                                             mergePlaces, placeTypes, mergeListDialogOpen, setMergeListDialogOpen,
-                                            idsPlacesCache, setIdsPlacesCache
+                                            idsPlacesCache, setIdsPlacesCache, setAlreadyReviewed, taskSelection,
+                                            alreadyReviewed
                                         }) {
 
     const classes = useStyles();
@@ -207,7 +208,8 @@ export default function MergeListDialog({
         }
     }
 
-    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache);
+    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache, setAlreadyReviewed, taskSelection,
+        alreadyReviewed);
 
     useEffect(() => {
         const requestCategories = async () => {
