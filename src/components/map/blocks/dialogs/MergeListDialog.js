@@ -119,8 +119,7 @@ const useStyles = makeStyles({
 
 export default function MergeListDialog({
                                             mergePlaces, placeTypes, mergeListDialogOpen, setMergeListDialogOpen,
-                                            idsPlacesCache, setIdsPlacesCache, setAlreadyReviewed, taskSelection,
-                                            alreadyReviewed
+                                            idsPlacesCache, setIdsPlacesCache
                                         }) {
 
     const classes = useStyles();
@@ -157,6 +156,7 @@ export default function MergeListDialog({
     const handleForceCommit = () => {
         setForceCommit(true);
         resetDeletedComment();
+        carousel.next();
     };
 
     const handlePrevCarousel = () => {
@@ -207,7 +207,7 @@ export default function MergeListDialog({
         }
     }
 
-    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache, alreadyReviewed, setAlreadyReviewed, taskSelection);
+    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache);
 
     useEffect(() => {
         const requestCategories = async () => {

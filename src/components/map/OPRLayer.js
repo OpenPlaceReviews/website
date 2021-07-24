@@ -22,7 +22,7 @@ const MIN_MARKERS_TILES_TASK_ZOOM = 10;
 var selectedMarkerGroup = [];
 
 export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged,
-                                   setIsPlaceChanged, setMergePlaces}) {
+                                   setIsPlaceChanged, setMergePlaces, mergeListDialogOpen}) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
@@ -104,7 +104,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
             || prevTaskSelection.reviewedPlacesVisible !== taskSelection.reviewedPlacesVisible
             || prevTaskSelection.closedPlaces !== taskSelection.closedPlaces
             || prevTaskSelection.potentiallyClosedPlaces !== taskSelection.potentiallyClosedPlaces);
-    const forceReload = taskChanged || isPlaceChanged;
+    const forceReload = taskChanged || isPlaceChanged || !mergeListDialogOpen;
     const updateCache = async () => {
       let newCache = {};
       if (task && !tilesPlacesVisible) {
@@ -175,19 +175,19 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     if (currentZoom >= minMarkersZoom || forceReload) {
       updateCache();
     }
-  }, [currentBounds, currentZoom, taskSelection]);
+  }, [currentBounds, currentZoom, taskSelection, !mergeListDialogOpen]);
 
   useEffect(() => {
-    if (!task || task.tileBasedData || tilesPlacesVisible) {
+    if (!task || task.tileBasedData || tilesPlacesVisible || !mergeListDialogOpen) {
       refreshMapDelay();
     }
-  }, [placesCache, filterVal, currentZoom]);
+  }, [placesCache, filterVal, currentZoom, !mergeListDialogOpen]);
 
   useEffect(() => {
-    if (task && !task.tileBasedData && !tilesPlacesVisible) {
+    if (task && !task.tileBasedData && !tilesPlacesVisible && !mergeListDialogOpen) {
       refreshMapDelay();
     }
-  }, [placesCache, filterVal]);
+  }, [placesCache, filterVal, !mergeListDialogOpen]);
 
   function refreshMapDelay() {
     if (Date.now() - lastRefreshTime < REFRESH_TIMEOUT) {

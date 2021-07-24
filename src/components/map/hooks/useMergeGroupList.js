@@ -2,17 +2,7 @@ import {useEffect} from "react";
 import Tasks from "../tasks/Tasks";
 import Utils from "../../util/Utils";
 
-export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache,
-                                          alreadyReviewed, setAlreadyReviewed, taskSelection) {
-
-    let task = null;
-    let taskStartDate = null;
-    let taskEndDate = null;
-    if (taskSelection) {
-        task = Tasks.getTaskById(taskSelection.taskId);
-        taskStartDate = taskSelection.startDate;
-        taskEndDate = taskSelection.endDate;
-    }
+export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache) {
 
     function areSimilarPlaceByDistance(place1, place2, similarPlaceDistance) {
         if (place2 && place2.properties.place_deleted === undefined) {
@@ -61,9 +51,12 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
             }
             if (similarGroup.length === 1) {
                 // keep only groups of 1
-                delGroup.forEach(element =>
-                    // if (!idsPlacesCache.includes[element.properties.opr_id]))
-                        mergeGroupList.push([element, similarGroup[0]]));
+                delGroup.forEach(function (element) {
+                    if (!idsPlacesCache.includes[element.properties.opr_id]) {
+                        mergeGroupList.push([element, similarGroup[0]]);
+                    }
+                });
+
             }
             i += j;
         }
@@ -71,11 +64,6 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
     }
 
     useEffect(() => {
-        const updatePlaces = async () => {
-            const {alreadyReviewedPlaceIds} = await task.fetchData({startDate: taskStartDate, endDate: taskEndDate});
-            setAlreadyReviewed(alreadyReviewedPlaceIds)
-        }
-        updatePlaces();
         getPlacesGroups(mergePlaces);
     }, [mergePlaces]);
 }
