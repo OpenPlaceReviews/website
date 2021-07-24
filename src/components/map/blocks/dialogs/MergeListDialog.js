@@ -181,7 +181,7 @@ export default function MergeListDialog({
 
     const onMerge = () => {
         if (similarPlace && mainPlace) {
-            setPlaces([similarPlace, mainPlace]);
+            setPlaces([mainPlace, similarPlace]);
             updateIdsCache();
         }
     }
@@ -192,7 +192,7 @@ export default function MergeListDialog({
 
     const createClosedPlace = () => {
         if (similarPlace && mainPlace) {
-            let newPlace = JSON.parse(JSON.stringify(similarPlace));
+            let newPlace = JSON.parse(JSON.stringify(mainPlace));
             let newPlaceDeletedMarker = newPlace.deleted;
             let newPlaceDeletedComment = newPlace.deletedComment;
 
@@ -202,7 +202,7 @@ export default function MergeListDialog({
                     newPlace["deletedComment"] = deletedComment;
                 }
 
-                setPlaces([similarPlace, newPlace]);
+                setPlaces([mainPlace, newPlace]);
                 updateIdsCache();
             }
         }
