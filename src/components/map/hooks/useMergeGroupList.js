@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import Tasks from "../tasks/Tasks";
 import Utils from "../../util/Utils";
 
-export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache,
+export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesLocallyMerged,
                                           setAlreadyReviewed, taskSelection, alreadyReviewed) {
 
     let task = null;
@@ -62,7 +62,7 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
             if (similarGroup.length === 1) {
                 // keep only groups of 1
                 delGroup.forEach(function (element) {
-                    if (!idsPlacesCache.includes[element.properties.opr_id]) {
+                    if (!idsPlacesLocallyMerged.includes[element.properties.opr_id]) {
                         mergeGroupList.push([element, similarGroup[0]]);
                     }
                 });

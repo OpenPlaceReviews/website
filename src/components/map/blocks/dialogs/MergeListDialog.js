@@ -119,7 +119,7 @@ const useStyles = makeStyles({
 
 export default function MergeListDialog({
                                             mergePlaces, placeTypes, mergeListDialogOpen, setMergeListDialogOpen,
-                                            idsPlacesCache, setIdsPlacesCache, setAlreadyReviewed, taskSelection,
+                                            idsPlacesLocallyMerged, setIdsPlacesLocallyMerged, setAlreadyReviewed, taskSelection,
                                             alreadyReviewed
                                         }) {
 
@@ -132,10 +132,10 @@ export default function MergeListDialog({
     const [places, setPlaces] = useState([]);
     const [place] = places;
     const [index, setIndex] = useState(0);
-    const [mainPlace, setMainPlace] = useState(null);
-    const [similarPlace, setSimilarPlace] = useState(null);
-    const [markerPlace, setMarkerPlace] = useState(null);
-    const [similarMarkerPlace, setSimilarMarkerPlace] = useState(null);
+    const [mergeTo, setMergeTo] = useState(null);
+    const [mergeFrom, setMergeFrom] = useState(null);
+    const [mergeToInfo, setMergeToInfo] = useState(null);
+    const [mergeFromInfo, setMergeFromInfo] = useState(null);
     const [carousel, setCarousel] = useState(null);
     const [toggle, setToggle] = useState(null);
     const [edited, setEdited] = useState([]);
@@ -173,15 +173,15 @@ export default function MergeListDialog({
     };
 
     const updateIdsCache = () => {
-        setIdsPlacesCache([...idsPlacesCache,
-            similarPlace.id,
-            mainPlace.id
+        setIdsPlacesLocallyMerged([...idsPlacesLocallyMerged,
+            mergeFrom.id,
+            mergeTo.id
         ]);
     };
 
     const onMerge = () => {
-        if (similarPlace && mainPlace) {
-            setPlaces([mainPlace, similarPlace]);
+        if (mergeFrom && mergeTo) {
+            setPlaces([mergeTo, mergeFrom]);
             updateIdsCache();
         }
     }
@@ -191,8 +191,8 @@ export default function MergeListDialog({
     };
 
     const createClosedPlace = () => {
-        if (similarPlace && mainPlace) {
-            let newPlace = JSON.parse(JSON.stringify(mainPlace));
+        if (mergeFrom && mergeTo) {
+            let newPlace = JSON.parse(JSON.stringify(mergeTo));
             let newPlaceDeletedMarker = newPlace.deleted;
             let newPlaceDeletedComment = newPlace.deletedComment;
 
@@ -202,13 +202,13 @@ export default function MergeListDialog({
                     newPlace["deletedComment"] = deletedComment;
                 }
 
-                setPlaces([mainPlace, newPlace]);
+                setPlaces([mergeTo, newPlace]);
                 updateIdsCache();
             }
         }
     }
 
-    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache, setAlreadyReviewed, taskSelection,
+    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesLocallyMerged, setAlreadyReviewed, taskSelection,
         alreadyReviewed);
 
     useEffect(() => {
@@ -229,8 +229,8 @@ export default function MergeListDialog({
 
     useEffect(() => {
         if(index !== 0) {
-            setMainPlace(null);
-            setSimilarPlace(null);
+            setMergeTo(null);
+            setMergeFrom(null);
         }
         const fetchData = async () => {
             setAllowToMerge(false);
@@ -264,7 +264,7 @@ export default function MergeListDialog({
                 }
                 if (objectDeleted && objectMergeFrom) {
                     const params = fetchPlaceParams(objectDeleted);
-                    setMarkerPlace({
+                    setMergeToInfo({
                         oprId: deletedFeature.properties.opr_id,
                         title: params.title,
                         subtitle: params.subtitle,
@@ -275,7 +275,7 @@ export default function MergeListDialog({
                         closedDescription: params.closedDescription
                     });
                     const params2 = fetchPlaceParams(objectMergeFrom);
-                    setSimilarMarkerPlace({
+                    setMergeFromInfo({
                         oprId: existingFeature.properties.similar_opr_id,
                         title: params2.title,
                         subtitle: params2.subtitle,
@@ -284,8 +284,8 @@ export default function MergeListDialog({
                         sources: params2.sources,
                         deleted: params2.deleted,
                     });
-                    setMainPlace(objectDeleted);
-                    setSimilarPlace(objectMergeFrom);
+                    setMergeTo(objectDeleted);
+                    setMergeFrom(objectMergeFrom);
                 }
             }
         }
@@ -410,12 +410,12 @@ export default function MergeListDialog({
                 value={toggle}
                 exclusive
                 onChange={handleToggle}>
-                <ToggleButton disabled={!mainPlace || !similarPlace || !allowToMerge} value="onMerge" type="submit"
+                <ToggleButton disabled={!mergeTo || !mergeFrom || !allowToMerge} value="onMerge" type="submit"
                               variant="contained"
                               className={classes.toggleMerge}
                               aria-label="left aligned">
                     Merge duplicate</ToggleButton>
-                <ToggleButton disabled={!mainPlace || !similarPlace} value="permanentlyClosed" type="submit"
+                <ToggleButton disabled={!mergeTo || !mergeFrom} value="permanentlyClosed" type="submit"
                               variant="contained"
                               className={classes.togglePerClosed}
                               aria-label="right aligned">
@@ -429,7 +429,7 @@ export default function MergeListDialog({
             </Button>
         </DialogActions>
         <DialogActions>
-            {mainPlace && similarPlace && <TextField
+            {mergeTo && mergeFrom && <TextField
                 autoFocus
                 required
                 value={deletedComment}
@@ -441,9 +441,9 @@ export default function MergeListDialog({
         </DialogActions>
         <DialogContent>
             {mergeGroupList && <MergeCarousel items={mergeGroupList} setIndex={setIndex}
-                                              markerPlace={markerPlace} similarMarkerPlace={similarMarkerPlace}
-                                              mainPlace={mainPlace}
-                                              similarPlace={similarPlace} categories={categories} setCarousel={setCarousel}/>}
+                                              mergeToInfo={mergeToInfo} mergeFromInfo={mergeFromInfo}
+                                              mergeTo={mergeTo}
+                                              mergeFrom={mergeFrom} categories={categories} setCarousel={setCarousel}/>}
         </DialogContent>
         <DialogActions>
             <Grid style={{marginBottom: "-10px"}}
