@@ -22,7 +22,7 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
             let similarGroup = [];
             // collect group of deleted objects
             let place = places[i];
-            if (!place.properties.deleted || alreadyReviewed.includes(place.properties.opr_id)) {
+            if (!place.properties.deleted ) { //|| alreadyReviewed.includes(place.properties.opr_id)) {
                 i++;
                 continue;
             } else {
@@ -32,9 +32,9 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
             for (; j + i < places.length - 1; j++) {
                 if (places[i + j].properties.deleted && areSimilarPlaceByDistance(place, places[i + j], 250)) {
                     // not clear why we double check alreadyReviewed?
-                    if(!alreadyReviewed.includes(places[i + j].properties.opr_id)) {
+                    // if(!alreadyReviewed.includes(places[i + j].properties.opr_id)) {
                         delGroup.push(places[i + j]);
-                    }
+                    // }
                 } else {
                     break;
                 }
@@ -42,9 +42,9 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
             for (; j + i < places.length - 1; j++) {
                 if (!places[i + j].properties.deleted && areSimilarPlaceByDistance(place, places[i + j], 250)) {
                     // not clear why we double check alreadyReviewed?
-                    if (!alreadyReviewed.includes(places[i + j].properties.opr_id)) {
+                    // if (!alreadyReviewed.includes(places[i + j].properties.opr_id)) {
                         similarGroup.push(places[i + j]);
-                    }
+                    // }
                 } else {
                     break;
                 }
