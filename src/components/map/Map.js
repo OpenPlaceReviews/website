@@ -177,15 +177,15 @@ export default function Map() {
     <MapSidebar position="topright">
       <MapSidebarBlock>
         <Filter isLoggedIn={isLoggedIn} taskSelection={taskSelection} onTaskSelect={setTaskSelection} placeTypes={placeTypes}
-                onCategorySelect={setFilter} mergePlaces={mergePlaces} setMergePlaces={setMergePlaces} setMergeListDialogOpen={setMergeListDialogOpen}/>
+                onCategorySelect={setFilter} mergePlaces={mergePlaces} setMergePlaces={setMergePlaces} setMergeListDialogOpen={setMergeListDialogOpen}
+                />
       </MapSidebarBlock>
     </MapSidebar>
 
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
     {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup}
                            setLoading={setReload} isPlaceChanged={isPlaceChanged} setIsPlaceChanged={setIsPlaceChanged}
-                           setMergePlaces={setMergePlaces}/>}
-    <MergeList mergeListDialogOpen={mergeListDialogOpen} mergePlaces={mergePlaces} placeTypes={placeTypes} setMergeListDialogOpen={setMergeListDialogOpen}
-               taskSelection={taskSelection}/>
+                           setMergePlaces={setMergePlaces} mergeListDialogOpen={mergeListDialogOpen}/>}
+    <MergeList mergeListDialogOpen={mergeListDialogOpen} mergePlaces={mergePlaces} placeTypes={placeTypes} setMergeListDialogOpen={setMergeListDialogOpen}/>
   </MapContainer>;
 }
