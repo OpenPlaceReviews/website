@@ -238,8 +238,8 @@ export default function MergeListDialog({
                 let object2 = null;
                 let object = null;
                 let it = 0;
-                let mainFeature = mergeGroupList[index + it][1];
-                let similarFeature = mergeGroupList[index + it][0];
+                let mainFeature = mergeGroupList[index + it][0];
+                let similarFeature = mergeGroupList[index + it][1];
                 // if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
                     // ignore merged objects
                // } else 
@@ -285,8 +285,8 @@ export default function MergeListDialog({
                         sources: params2.sources,
                         deleted: params2.deleted,
                     });
-                    setMainPlace(object);
-                    setSimilarPlace(object2);
+                    setMainPlace(object2);
+                    setSimilarPlace(object);
                 }
             }
         }
