@@ -66,10 +66,10 @@ const useStyles = makeStyles({
 export default function MergeCarousel({
                                           items,
                                           setIndex,
-                                          markerPlace,
-                                          similarMarkerPlace,
-                                          mainPlace,
-                                          similarPlace,
+                                          mergeToInfo,
+                                          mergeFromInfo,
+                                          mergeTo,
+                                          mergeFrom,
                                           categories,
                                           setCarousel
                                       }) {
@@ -93,14 +93,14 @@ export default function MergeCarousel({
                      navButtonsAlwaysInvisible={true} animation="slide">
         {
             items.map((item, i) => <div key={i}>
-                    {mainPlace && similarPlace && <div className={classes.item}>
+                    {mergeTo && mergeFrom && <div className={classes.item}>
                         <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
                             <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
                                 <CardContent>
                                     <p style={{textAlign: "center", fontSize: "16px"}}
-                                       className={classes.header}>{markerPlace && markerPlace.title}</p>
+                                       className={classes.header}>{mergeToInfo && mergeToInfo.title}</p>
                                     <p style={{textAlign: "center", fontSize: "16px"}}
-                                       className={classes.mergeSubtitle}>{markerPlace && markerPlace.subtitle}</p>
+                                       className={classes.mergeSubtitle}>{mergeToInfo && mergeToInfo.subtitle}</p>
                                     <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                         <Link
                                             href={`/map/opr.place/${item[1].properties.opr_id}?q=15/
@@ -113,10 +113,10 @@ export default function MergeCarousel({
                                             {item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5) +
                                             " (" + getDistance(item[1], item[0]) + "m)"}</Value>
                                     </p>
-                                    {<AttributesBarList place={markerPlace}
+                                    {<AttributesBarList place={mergeToInfo}
                                                         inactiveLinksVisible={true}
                                                         isOpen={true}/>}
-                                    <ImagesBlock place={mainPlace}
+                                    <ImagesBlock place={mergeTo}
                                                  isOriginalPlace={false}
                                                  categories={categories}/>
                                 </CardContent>
@@ -124,9 +124,9 @@ export default function MergeCarousel({
                             <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
                                 <CardContent>
                                     <p style={{textAlign: "center", fontSize: "16px"}}
-                                       className={classes.header}>{similarMarkerPlace && similarMarkerPlace.title}</p>
+                                       className={classes.header}>{mergeFromInfo && mergeFromInfo.title}</p>
                                     <p style={{textAlign: "center", fontSize: "16px"}}
-                                       className={classes.mergeSubtitle}>{similarMarkerPlace && similarMarkerPlace.subtitle}</p>
+                                       className={classes.mergeSubtitle}>{mergeFromInfo && mergeFromInfo.subtitle}</p>
                                     <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                         <Link
                                             href={`/map/opr.place/${item[0].properties.opr_id}?q=15/
@@ -139,10 +139,10 @@ export default function MergeCarousel({
                                             {item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5) +
                                             " (" + getDistance(item[0], item[1]) + "m)"}</Value>
                                     </p>
-                                    {<AttributesBarList place={similarMarkerPlace}
+                                    {<AttributesBarList place={mergeFromInfo}
                                                         inactiveLinksVisible={true}
                                                         isOpen={true}/>}
-                                    <ImagesBlock place={similarPlace}
+                                    <ImagesBlock place={mergeFrom}
                                                  isOriginalPlace={false}
                                                  categories={categories}/>
                                 </CardContent>
@@ -150,7 +150,7 @@ export default function MergeCarousel({
                         </GridList>
                     </div>}
                     <div key={i}>
-                        {(!mainPlace || !similarPlace) && <p> Couldn't load the objects data</p>}
+                        {(!mergeTo || !mergeFrom) && <p> Couldn't load the objects data</p>}
                     </div>
                 </div>
             )
