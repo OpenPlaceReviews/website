@@ -2,7 +2,17 @@ import {useEffect} from "react";
 import Tasks from "../tasks/Tasks";
 import Utils from "../../util/Utils";
 
-export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache) {
+export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesCache,
+                                          setAlreadyReviewed, taskSelection, alreadyReviewed) {
+
+    let task = null;
+    let taskStartDate = null;
+    let taskEndDate = null;
+    if (taskSelection) {
+        task = Tasks.getTaskById(taskSelection.taskId);
+        taskStartDate = taskSelection.startDate;
+        taskEndDate = taskSelection.endDate;
+    }
 
     function areSimilarPlaceByDistance(place1, place2, similarPlaceDistance) {
         if (place2 && place2.properties.place_deleted === undefined) {
@@ -64,6 +74,11 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
     }
 
     useEffect(() => {
+        const updatePlaces = async () => {
+            const {alreadyReviewedPlaceIds} = await task.fetchData({startDate: taskStartDate, endDate: taskEndDate});
+            setAlreadyReviewed(alreadyReviewedPlaceIds)
+        }
+        updatePlaces();
         getPlacesGroups(mergePlaces);
     }, [mergePlaces]);
 }
