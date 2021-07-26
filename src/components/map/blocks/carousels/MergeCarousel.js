@@ -80,11 +80,11 @@ export default function MergeCarousel({
     }
 
     function getDistance(place1, place2) {
-        return Math.round(Utils.getDistance(
+        return " (" + Math.round(Utils.getDistance(
             place1 && place1.geometry.coordinates && place1.geometry.coordinates[0].toFixed(5),
             place1 && place1.geometry.coordinates && place1.geometry.coordinates[1].toFixed(5),
             place2 && place2.geometry.coordinates && place2.geometry.coordinates[0].toFixed(5),
-            place2 && place2.geometry.coordinates && place2.geometry.coordinates[1].toFixed(5)))
+            place2 && place2.geometry.coordinates && place2.geometry.coordinates[1].toFixed(5))) + "m)";
     }
 
     return <Carousel ref={function (carousel) {
@@ -93,7 +93,7 @@ export default function MergeCarousel({
                      navButtonsAlwaysInvisible={true} animation="slide">
         {
             items.map((item, i) => <div key={i}>
-                    {mergeTo && mergeFrom && <div className={classes.item}>
+                    {item[0] && <div className={classes.item}>
                         <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
                             <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
                                 <CardContent>
@@ -103,15 +103,15 @@ export default function MergeCarousel({
                                        className={classes.mergeSubtitle}>{mergeToInfo && mergeToInfo.subtitle}</p>
                                     <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                         <Link
-                                            href={`/map/opr.place/${item[1].properties.opr_id}?q=15/
-                                            ${item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5)}
-                                            /${item[1].geometry.coordinates[0].toFixed(5)}`}>
+                                            href={`/map/opr.place/${item[0].properties.opr_id}?q=15/
+                                            ${item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5)}
+                                            /${item[0].geometry.coordinates[0].toFixed(5)}`}>
                                             View</Link>
                                     </p>
                                     <p className={classes.mergeLatLon}>
-                                        <Value>{item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5)},
-                                            {item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5) +
-                                            " (" + getDistance(item[1], item[0]) + "m)"}</Value>
+                                        <Value>{item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5)},
+                                            {item[0] && item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5)}
+                                            {item[1] && getDistance(item[0], item[1])}</Value>
                                     </p>
                                     {<AttributesBarList place={mergeToInfo}
                                                         inactiveLinksVisible={true}
@@ -121,7 +121,7 @@ export default function MergeCarousel({
                                                  categories={categories}/>
                                 </CardContent>
                             </GridListTile>
-                            <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
+                            {item[1] && <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
                                 <CardContent>
                                     <p style={{textAlign: "center", fontSize: "16px"}}
                                        className={classes.header}>{mergeFromInfo && mergeFromInfo.title}</p>
@@ -129,15 +129,15 @@ export default function MergeCarousel({
                                        className={classes.mergeSubtitle}>{mergeFromInfo && mergeFromInfo.subtitle}</p>
                                     <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                                         <Link
-                                            href={`/map/opr.place/${item[0].properties.opr_id}?q=15/
-                                            ${item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5)}/
-                                            ${item[0].geometry.coordinates[0].toFixed(5)}`}>
+                                            href={`/map/opr.place/${item[1].properties.opr_id}?q=15/
+                                            ${item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5)}/
+                                            ${item[1].geometry.coordinates[0].toFixed(5)}`}>
                                             View</Link>
                                     </p>
                                     <p className={classes.mergeLatLon}>
-                                        <Value>{item[0].geometry.coordinates && item[0].geometry.coordinates[1].toFixed(5)},
-                                            {item[0].geometry.coordinates && item[0].geometry.coordinates[0].toFixed(5) +
-                                            " (" + getDistance(item[0], item[1]) + "m)"}</Value>
+                                        <Value>{item[1] && item[1].geometry.coordinates && item[1].geometry.coordinates[1].toFixed(5)},
+                                            {item[1] && item[0].geometry.coordinates && item[1].geometry.coordinates[0].toFixed(5)}
+                                            {item[0] && getDistance(item[1], item[0])}</Value>
                                     </p>
                                     {<AttributesBarList place={mergeFromInfo}
                                                         inactiveLinksVisible={true}
@@ -146,11 +146,11 @@ export default function MergeCarousel({
                                                  isOriginalPlace={false}
                                                  categories={categories}/>
                                 </CardContent>
-                            </GridListTile>
+                            </GridListTile>}
                         </GridList>
                     </div>}
                     <div key={i}>
-                        {(!mergeTo || !mergeFrom) && <p> Couldn't load the objects data</p>}
+                        {(!mergeTo) && <p> Couldn't load the objects data</p>}
                     </div>
                 </div>
             )
