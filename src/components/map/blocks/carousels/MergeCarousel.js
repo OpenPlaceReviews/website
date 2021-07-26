@@ -93,7 +93,7 @@ export default function MergeCarousel({
                      navButtonsAlwaysInvisible={true} animation="slide">
         {
             items.map((item, i) => <div key={i}>
-                    {item[0] && <div className={classes.item}>
+                    {mergeTo && item[0] && <div className={classes.item}>
                         <GridList cols={2} spacing={10} style={{backgroundColor: "white"}}>
                             <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
                                 <CardContent>
@@ -121,7 +121,7 @@ export default function MergeCarousel({
                                                  categories={categories}/>
                                 </CardContent>
                             </GridListTile>
-                            {item[1] && <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
+                            {mergeFrom && item[1] && <GridListTile style={{height: "auto"}} classes={{tile: classes.tile}}>
                                 <CardContent>
                                     <p style={{textAlign: "center", fontSize: "16px"}}
                                        className={classes.header}>{mergeFromInfo && mergeFromInfo.title}</p>
