@@ -171,7 +171,7 @@ export default function MergeListDialog({
 
     const updateIdsCache = () => {
         setIdsPlacesLocallyMerged([...idsPlacesLocallyMerged,
-            mergeFrom.id,
+            mergeFrom ? mergeFrom.id : null,
             mergeTo.id
         ]);
     };
@@ -188,7 +188,7 @@ export default function MergeListDialog({
     };
 
     const createClosedPlace = () => {
-        if (mergeFrom && mergeTo) {
+        if (mergeTo) {
             let newPlace = JSON.parse(JSON.stringify(mergeTo));
             let newPlaceDeletedMarker = newPlace.deleted;
             let newPlaceDeletedComment = newPlace.deletedComment;
@@ -233,55 +233,82 @@ export default function MergeListDialog({
             if (mergeGroupList && mergeGroupList[index]) {
                 let objectMergeFrom = null;
                 let objectDeleted = null;
-                let it = 0;
-                let deletedFeature = mergeGroupList[index + it][0];
-                let existingFeature = mergeGroupList[index + it][1];
-                // if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
+                let deletedFeature;
+                let existingFeature;
+                if (mergeGroupList[index].length === 2) {
+                    deletedFeature = mergeGroupList[index][0];
+                    existingFeature = mergeGroupList[index][1];
+                    // if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
                     // ignore merged objects
-               // } else 
-               if (deletedFeature && existingFeature && deletedFeature.properties.opr_id && existingFeature.properties.opr_id) {
+                    // } else
+                    if (deletedFeature && existingFeature && deletedFeature.properties.opr_id && existingFeature.properties.opr_id) {
+                        const data = await getObjectsById('opr.place', deletedFeature.properties.opr_id);
+                        objectDeleted = data.objects.shift();
+                        if (objectDeleted && objectDeleted.clientData) {
+                            delete objectDeleted.clientData;
+                        }
+                        if (objectDeleted) {
+                            const data2 = await getObjectsById('opr.place', existingFeature.properties.opr_id);
+                            objectMergeFrom = data2.objects.shift();
+                            if (objectMergeFrom && !objectMergeFrom.deleted) {
+                                if (objectMergeFrom.clientData) {
+                                    delete objectMergeFrom.clientData;
+                                }
+                                setAllowToMerge(deletedFeature.properties.opr_id !== existingFeature.properties.opr_id);
+                            } else {
+                                setAllowToMerge(false);
+                            }
+                        }
+                    }
+
+                    if (objectDeleted && objectMergeFrom) {
+                        const params = fetchPlaceParams(objectDeleted);
+                        setMergeToInfo({
+                            oprId: deletedFeature.properties.opr_id,
+                            title: params.title,
+                            subtitle: params.subtitle,
+                            latLon: params.latLon,
+                            images: params.images,
+                            sources: params.sources,
+                            deleted: params.deleted,
+                            closedDescription: params.closedDescription
+                        });
+                        const params2 = fetchPlaceParams(objectMergeFrom);
+                        setMergeFromInfo({
+                            oprId: existingFeature.properties.similar_opr_id,
+                            title: params2.title,
+                            subtitle: params2.subtitle,
+                            latLon: params2.latLon,
+                            images: params2.images,
+                            sources: params2.sources,
+                            deleted: params2.deleted,
+                        });
+                        setMergeTo(objectDeleted);
+                        setMergeFrom(objectMergeFrom);
+                    }
+
+                } else if (mergeGroupList[index].length === 1) {
+                    deletedFeature = mergeGroupList[index][0];
                     const data = await getObjectsById('opr.place', deletedFeature.properties.opr_id);
                     objectDeleted = data.objects.shift();
                     if (objectDeleted && objectDeleted.clientData) {
                         delete objectDeleted.clientData;
                     }
+
                     if (objectDeleted) {
-                        const data2 = await getObjectsById('opr.place', existingFeature.properties.opr_id);
-                        objectMergeFrom = data2.objects.shift();
-                        if (objectMergeFrom && !objectMergeFrom.deleted) {
-                            if (objectMergeFrom.clientData) {
-                                delete objectMergeFrom.clientData;
-                            }
-                            setAllowToMerge(deletedFeature.properties.opr_id !== existingFeature.properties.opr_id);
-                        } else {
-                            setAllowToMerge(false);
-                        }
+                        const params = fetchPlaceParams(objectDeleted);
+                        setMergeToInfo({
+                            oprId: deletedFeature.properties.opr_id,
+                            title: params.title,
+                            subtitle: params.subtitle,
+                            latLon: params.latLon,
+                            images: params.images,
+                            sources: params.sources,
+                            deleted: params.deleted,
+                            closedDescription: params.closedDescription
+                        });
+                        setMergeTo(objectDeleted);
                     }
-                }
-                if (objectDeleted && objectMergeFrom) {
-                    const params = fetchPlaceParams(objectDeleted);
-                    setMergeToInfo({
-                        oprId: deletedFeature.properties.opr_id,
-                        title: params.title,
-                        subtitle: params.subtitle,
-                        latLon: params.latLon,
-                        images: params.images,
-                        sources: params.sources,
-                        deleted: params.deleted,
-                        closedDescription: params.closedDescription
-                    });
-                    const params2 = fetchPlaceParams(objectMergeFrom);
-                    setMergeFromInfo({
-                        oprId: existingFeature.properties.similar_opr_id,
-                        title: params2.title,
-                        subtitle: params2.subtitle,
-                        latLon: params2.latLon,
-                        images: params2.images,
-                        sources: params2.sources,
-                        deleted: params2.deleted,
-                    });
-                    setMergeTo(objectDeleted);
-                    setMergeFrom(objectMergeFrom);
                 }
             }
         }
@@ -411,7 +438,7 @@ export default function MergeListDialog({
                               className={classes.toggleMerge}
                               aria-label="left aligned">
                     Merge duplicate</ToggleButton>
-                <ToggleButton disabled={!mergeTo || !mergeFrom} value="permanentlyClosed" type="submit"
+                <ToggleButton disabled={!mergeTo} value="permanentlyClosed" type="submit"
                               variant="contained"
                               className={classes.togglePerClosed}
                               aria-label="right aligned">
