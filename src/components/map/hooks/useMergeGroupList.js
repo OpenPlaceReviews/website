@@ -1,5 +1,4 @@
 import {useEffect} from "react";
-import Tasks from "../tasks/Tasks";
 import Utils from "../../util/Utils";
 
 export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesLocallyMerged, alreadyReviewed) {
@@ -46,7 +45,8 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
             for (; j + i < places.length - 1; j++) {
                 if (!places[i + j].properties.deleted && areSimilarPlaceByDistance(place, places[i + j], 250)) {
                     // not clear why we double check alreadyReviewed?
-                    if (!alreadyReviewedPlaceIds.includes(places[i + j].properties.opr_id)) {
+                    if (!alreadyReviewedPlaceIds.includes(places[i + j].properties.opr_id)
+                        && !idsPlacesLocallyMerged.includes[places[i + j].properties.opr_id]) {
                         similarGroup.push(places[i + j]);
                     }
                 } else {

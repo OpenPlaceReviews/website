@@ -155,7 +155,6 @@ export default function MergeListDialog({
     const handleForceCommit = () => {
         setForceCommit(true);
         resetDeletedComment();
-        carousel.next();
     };
 
     const handlePrevCarousel = () => {
@@ -255,7 +254,7 @@ export default function MergeListDialog({
                             }
                             setAllowToMerge(deletedFeature.properties.opr_id !== existingFeature.properties.opr_id);
                         } else {
-
+                            setAllowToMerge(false);
                         }
                     }
                 }
