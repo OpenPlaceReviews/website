@@ -6,24 +6,20 @@ export default function MergeList({
                                       mergePlaces,
                                       placeTypes,
                                       setMergeListDialogOpen,
-                                      taskSelection
+                                      alreadyReviewed
                                   }) {
 
-    const [idsPlacesCache, setIdsPlacesCache] = useState([]);
-    const [alreadyReviewed, setAlreadyReviewed] = useState([]);
+    const [idsPlacesLocallyMerged, setIdsPlacesLocallyMerged] = useState([]);
 
     useEffect(() => {
-        idsPlacesCache.splice(0, idsPlacesCache.length)
-        setIdsPlacesCache(idsPlacesCache);
-        alreadyReviewed.splice(0, alreadyReviewed.length)
-        setAlreadyReviewed(alreadyReviewed);
+        idsPlacesLocallyMerged.splice(0, idsPlacesLocallyMerged.length)
+        setIdsPlacesLocallyMerged(idsPlacesLocallyMerged);
     }, [mergePlaces]);
 
     return mergeListDialogOpen &&
         <MergeListDialog mergePlaces={mergePlaces} placeTypes={placeTypes} mergeListDialogOpen={mergeListDialogOpen}
                          setMergeListDialogOpen={setMergeListDialogOpen}
-                         idsPlacesCache={idsPlacesCache} setIdsPlacesCache={setIdsPlacesCache}
-                         setAlreadyReviewed={setAlreadyReviewed}
-                         taskSelection={taskSelection} alreadyReviewed={alreadyReviewed}/>
+                         idsPlacesLocallyMerged={idsPlacesLocallyMerged} setIdsPlacesLocallyMerged={setIdsPlacesLocallyMerged}
+                         alreadyReviewed={alreadyReviewed}/>
 
 }

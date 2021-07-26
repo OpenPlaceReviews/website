@@ -22,7 +22,7 @@ const MIN_MARKERS_TILES_TASK_ZOOM = 10;
 var selectedMarkerGroup = [];
 
 export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged,
-                                   setIsPlaceChanged, setMergePlaces, mergeListDialogOpen}) {
+                                   setIsPlaceChanged, setMergePlaces, mergeListDialogOpen, setAlreadyReviewed}) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
@@ -132,6 +132,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
           }
         } else if (forceReload) {
           const {geo, alreadyReviewedPlaceIds} = await task.fetchData({startDate: taskStartDate, endDate: taskEndDate});
+          setAlreadyReviewed(alreadyReviewedPlaceIds);
           newCache["all"] = getCacheByFilters({ type: "FeatureCollection", features: geo.features, "alreadyReviewedPlaceIds": alreadyReviewedPlaceIds});
         } else {
           return;
