@@ -15,7 +15,6 @@ import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import useBatchOp from "../../hooks/useBatchOp";
 import useBatchDiff from "../../hooks/useBatchDiff";
 import useMergeGroupList from "../../hooks/useMergeGroupList";
-import Utils from "../../../util/Utils";
 
 const useStyles = makeStyles({
     header: {
@@ -119,8 +118,7 @@ const useStyles = makeStyles({
 
 export default function MergeListDialog({
                                             mergePlaces, placeTypes, mergeListDialogOpen, setMergeListDialogOpen,
-                                            idsPlacesLocallyMerged, setIdsPlacesLocallyMerged, setAlreadyReviewed, taskSelection,
-                                            alreadyReviewed
+                                            idsPlacesLocallyMerged, setIdsPlacesLocallyMerged, alreadyReviewed
                                         }) {
 
     const classes = useStyles();
@@ -208,8 +206,7 @@ export default function MergeListDialog({
         }
     }
 
-    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesLocallyMerged, setAlreadyReviewed, taskSelection,
-        alreadyReviewed);
+    useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesLocallyMerged, alreadyReviewed);
 
     useEffect(() => {
         const requestCategories = async () => {
