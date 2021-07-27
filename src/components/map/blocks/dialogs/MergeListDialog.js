@@ -224,7 +224,7 @@ export default function MergeListDialog({
     }
 
     useEffect(() => {
-        if(index !== 0) {
+        if (index !== 0) {
             setMergeTo(null);
             setMergeFrom(null);
         }
@@ -233,82 +233,55 @@ export default function MergeListDialog({
             if (mergeGroupList && mergeGroupList[index]) {
                 let objectMergeFrom = null;
                 let objectDeleted = null;
-                let deletedFeature;
-                let existingFeature;
-                if (mergeGroupList[index].length === 2) {
-                    deletedFeature = mergeGroupList[index][0];
-                    existingFeature = mergeGroupList[index][1];
-                    // if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
-                    // ignore merged objects
-                    // } else
-                    if (deletedFeature && existingFeature && deletedFeature.properties.opr_id && existingFeature.properties.opr_id) {
-                        const data = await getObjectsById('opr.place', deletedFeature.properties.opr_id);
-                        objectDeleted = data.objects.shift();
-                        if (objectDeleted && objectDeleted.clientData) {
-                            delete objectDeleted.clientData;
-                        }
-                        if (objectDeleted) {
-                            const data2 = await getObjectsById('opr.place', existingFeature.properties.opr_id);
-                            objectMergeFrom = data2.objects.shift();
-                            if (objectMergeFrom && !objectMergeFrom.deleted) {
-                                if (objectMergeFrom.clientData) {
-                                    delete objectMergeFrom.clientData;
-                                }
-                                setAllowToMerge(deletedFeature.properties.opr_id !== existingFeature.properties.opr_id);
-                            } else {
-                                setAllowToMerge(false);
-                            }
-                        }
-                    }
-
-                    if (objectDeleted && objectMergeFrom) {
-                        const params = fetchPlaceParams(objectDeleted);
-                        setMergeToInfo({
-                            oprId: deletedFeature.properties.opr_id,
-                            title: params.title,
-                            subtitle: params.subtitle,
-                            latLon: params.latLon,
-                            images: params.images,
-                            sources: params.sources,
-                            deleted: params.deleted,
-                            closedDescription: params.closedDescription
-                        });
-                        const params2 = fetchPlaceParams(objectMergeFrom);
-                        setMergeFromInfo({
-                            oprId: existingFeature.properties.similar_opr_id,
-                            title: params2.title,
-                            subtitle: params2.subtitle,
-                            latLon: params2.latLon,
-                            images: params2.images,
-                            sources: params2.sources,
-                            deleted: params2.deleted,
-                        });
-                        setMergeTo(objectDeleted);
-                        setMergeFrom(objectMergeFrom);
-                    }
-
-                } else if (mergeGroupList[index].length === 1) {
-                    deletedFeature = mergeGroupList[index][0];
+                let deletedFeature = mergeGroupList[index][0];
+                let existingFeature = mergeGroupList[index][1];
+                // if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
+                // ignore merged objects
+                // } else
+                if (deletedFeature && existingFeature && deletedFeature.properties.opr_id && existingFeature.properties.opr_id) {
                     const data = await getObjectsById('opr.place', deletedFeature.properties.opr_id);
                     objectDeleted = data.objects.shift();
                     if (objectDeleted && objectDeleted.clientData) {
                         delete objectDeleted.clientData;
                     }
-
                     if (objectDeleted) {
-                        const params = fetchPlaceParams(objectDeleted);
-                        setMergeToInfo({
-                            oprId: deletedFeature.properties.opr_id,
-                            title: params.title,
-                            subtitle: params.subtitle,
-                            latLon: params.latLon,
-                            images: params.images,
-                            sources: params.sources,
-                            deleted: params.deleted,
-                            closedDescription: params.closedDescription
-                        });
-                        setMergeTo(objectDeleted);
+                        const data2 = await getObjectsById('opr.place', existingFeature.properties.opr_id);
+                        objectMergeFrom = data2.objects.shift();
+                        if (objectMergeFrom && !objectMergeFrom.deleted) {
+                            if (objectMergeFrom.clientData) {
+                                delete objectMergeFrom.clientData;
+                            }
+                            setAllowToMerge(deletedFeature.properties.opr_id !== existingFeature.properties.opr_id);
+                        } else {
+                            setAllowToMerge(false);
+                        }
                     }
+                }
+
+                if (objectDeleted && objectMergeFrom) {
+                    const params = fetchPlaceParams(objectDeleted);
+                    setMergeToInfo({
+                        oprId: deletedFeature.properties.opr_id,
+                        title: params.title,
+                        subtitle: params.subtitle,
+                        latLon: params.latLon,
+                        images: params.images,
+                        sources: params.sources,
+                        deleted: params.deleted,
+                        closedDescription: params.closedDescription
+                    });
+                    const params2 = fetchPlaceParams(objectMergeFrom);
+                    setMergeFromInfo({
+                        oprId: existingFeature.properties.similar_opr_id,
+                        title: params2.title,
+                        subtitle: params2.subtitle,
+                        latLon: params2.latLon,
+                        images: params2.images,
+                        sources: params2.sources,
+                        deleted: params2.deleted,
+                    });
+                    setMergeTo(objectDeleted);
+                    setMergeFrom(objectMergeFrom);
                 }
             }
         }
@@ -467,6 +440,9 @@ export default function MergeListDialog({
                                               mergeToInfo={mergeToInfo} mergeFromInfo={mergeFromInfo}
                                               mergeTo={mergeTo}
                                               mergeFrom={mergeFrom} categories={categories} setCarousel={setCarousel}/>}
+        </DialogContent>
+        <DialogContent>
+            {(mergeGroupList.length === 0) && <p> All groups of places have already been reviewed!</p>}
         </DialogContent>
         <DialogActions>
             <Grid style={{marginBottom: "-10px"}}
