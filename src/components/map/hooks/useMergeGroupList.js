@@ -63,14 +63,6 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
                 });
 
             }
-
-            if (similarGroup.length === 0) {
-                delGroup.forEach(function (element) {
-                    if (!idsPlacesLocallyMerged.includes[element.properties.opr_id]) {
-                        mergeGroupList.push([element]);
-                    }
-                });
-            }
             i += j;
         }
         setMergeGroupList(mergeGroupList);

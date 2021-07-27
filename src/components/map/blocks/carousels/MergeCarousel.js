@@ -150,7 +150,7 @@ export default function MergeCarousel({
                         </GridList>
                     </div>}
                     <div key={i}>
-                        {(!mergeTo) && <p> Couldn't load the objects data</p>}
+                        {(!mergeTo && !mergeFrom) && <p> Couldn't load the objects data</p>}
                     </div>
                 </div>
             )
