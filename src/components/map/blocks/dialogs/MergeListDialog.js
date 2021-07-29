@@ -4,14 +4,13 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle, Grid, TextField,
+    DialogTitle, Grid,
 } from "@material-ui/core";
 import {makeStyles} from '@material-ui/core/styles';
 import MergeCarousel from "../carousels/MergeCarousel";
 import useCommitOp from "../../hooks/useCommitOp";
 import {getObjectsById} from "../../../../api/data";
 import AuthContext from "../../../main/auth/providers/AuthContext";
-import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import useBatchOp from "../../hooks/useBatchOp";
 import useBatchDiff from "../../hooks/useBatchDiff";
 import useMergeGroupList from "../../hooks/useMergeGroupList";
@@ -56,7 +55,8 @@ const useStyles = makeStyles({
             padding: "5px 24px 5px 0",
         },
         "& .MuiDialog-paperWidthSm": {
-            maxWidth: "840px !important",
+            maxWidth: "1800px !important",
+            overflowY: "hidden"
         }
     },
     tile: {
@@ -67,32 +67,9 @@ const useStyles = makeStyles({
     disabled: {
         backgroundColor: "#ff595d"
     },
-    toggleMerge: {
-        width: "184px",
-        height: "40px",
-        color: "#2d69df",
-        borderColor: "#e0e0e0",
-        "&:hover": {
-            color: "#212121",
-            background: "#f1f4fc",
-            borderColor: "#2d69df",
-        }
-    },
-    togglePerClosed: {
-        width: "184px",
-        height: "40px",
-        color: "#2d69df",
-        borderColor: "#e0e0e0",
-        "&:hover": {
-            color: "#212121",
-            background: "#f1f4fc",
-            borderColor: "#2d69df",
-        }
-    },
     prevButton: {
         height: "35px",
         marginBottom: "10px",
-        marginRight: "102px",
         color: "#2D69E0",
         backgroundColor: "#F1F4FC"
     },
@@ -102,17 +79,6 @@ const useStyles = makeStyles({
         marginLeft: "50px",
         color: "#2D69E0",
         backgroundColor: "#F1F4FC"
-    },
-    toggleButton: {
-        marginBottom: "10px",
-        marginRight: "135px",
-    },
-    comment: {
-        width: "790px",
-        "& .MuiFilledInput-input": {
-            padding: "15px 25px 5px 15px",
-        },
-        paddingBottom: "5px"
     }
 })
 
@@ -131,22 +97,18 @@ export default function MergeListDialog({
     const [place] = places;
     const [index, setIndex] = useState(0);
     const [mergeTo, setMergeTo] = useState(null);
+    const [mergeFromList, setMergeFromList] = useState([]);
     const [mergeFrom, setMergeFrom] = useState(null);
     const [mergeToInfo, setMergeToInfo] = useState(null);
-    const [mergeFromInfo, setMergeFromInfo] = useState(null);
+    const [mergeFromInfo, setMergeFromInfo] = useState([]);
     const [carousel, setCarousel] = useState(null);
-    const [toggle, setToggle] = useState(null);
     const [edited, setEdited] = useState([]);
     const [deleted, setDeleted] = useState([]);
     const [forceCommit, setForceCommit] = useState(false);
     const [mergeGroupList, setMergeGroupList] = useState([]);
-    const [carouselNav, setCarouselNav] = useState(null);
     const [deletedComment, setDeletedComment] = useState('');
-    const [allowToMerge, setAllowToMerge] = useState(false);
+    const [allowToMerge, setAllowToMerge] = useState([]);
 
-    let handleToggle = (event, newResult) => {
-        setToggle(newResult);
-    };
 
     const closeMergeListDialog = () => {
         setMergeListDialogOpen(false);
@@ -158,11 +120,11 @@ export default function MergeListDialog({
     };
 
     const handlePrevCarousel = () => {
-        setCarouselNav("prev");
+        carousel.prev();
     };
 
     const handleNextCarousel = () => {
-        setCarouselNav("next");
+        carousel.next();
     };
 
     const handleOptionalComment = (event) => {
@@ -175,13 +137,6 @@ export default function MergeListDialog({
             mergeTo.id
         ]);
     };
-
-    const onMerge = () => {
-        if (mergeFrom && mergeTo) {
-            setPlaces([mergeTo, mergeFrom]);
-            updateIdsCache();
-        }
-    }
 
     const resetDeletedComment = () => {
         setDeletedComment('');
@@ -201,11 +156,20 @@ export default function MergeListDialog({
 
                 setPlaces([mergeTo, newPlace]);
                 updateIdsCache();
+                carousel.next()
             }
         }
     }
 
     useMergeGroupList(mergePlaces, mergeGroupList, setMergeGroupList, idsPlacesLocallyMerged, alreadyReviewed);
+
+    useEffect(() => {
+        if (mergeFrom && mergeTo) {
+            setPlaces([mergeTo, mergeFrom]);
+            updateIdsCache();
+            carousel.next()
+        }
+    }, [mergeFrom]);
 
     useEffect(() => {
         const requestCategories = async () => {
@@ -227,38 +191,44 @@ export default function MergeListDialog({
         if (index !== 0) {
             setMergeTo(null);
             setMergeFrom(null);
+            allowToMerge.splice(0, allowToMerge.length)
+            setAllowToMerge(allowToMerge);
         }
         const fetchData = async () => {
-            setAllowToMerge(false);
             if (mergeGroupList && mergeGroupList[index]) {
-                let objectMergeFrom = null;
+                let objectMergeFrom = [];
                 let objectDeleted = null;
                 let deletedFeature = mergeGroupList[index][0];
-                let existingFeature = mergeGroupList[index][1];
-                // if (Utils.contains(idsPlacesCache, mainFeature.properties.opr_id)) {
-                // ignore merged objects
-                // } else
-                if (deletedFeature && existingFeature && deletedFeature.properties.opr_id && existingFeature.properties.opr_id) {
-                    const data = await getObjectsById('opr.place', deletedFeature.properties.opr_id);
-                    objectDeleted = data.objects.shift();
+                let existingFeatures = mergeGroupList[index].slice(1, mergeGroupList.length - 1);
+                let objectMergeFromList = [];
+                let allowToMergeList = [];
+
+                if (deletedFeature && existingFeatures) {
+                    const dataDeletedPlace = await getObjectsById('opr.place', deletedFeature.properties.opr_id);
+                    objectDeleted = dataDeletedPlace.objects.shift();
                     if (objectDeleted && objectDeleted.clientData) {
                         delete objectDeleted.clientData;
                     }
                     if (objectDeleted) {
-                        const data2 = await getObjectsById('opr.place', existingFeature.properties.opr_id);
-                        objectMergeFrom = data2.objects.shift();
-                        if (objectMergeFrom && !objectMergeFrom.deleted) {
-                            if (objectMergeFrom.clientData) {
-                                delete objectMergeFrom.clientData;
+                        for (let i = 0; i < existingFeatures.length; i++) {
+                            const data2 = await getObjectsById('opr.place', existingFeatures[i].properties.opr_id);
+                            objectMergeFrom = data2.objects.shift();
+                            if (objectMergeFrom && !objectMergeFrom.deleted) {
+                                if (objectMergeFrom.clientData) {
+                                    delete objectMergeFrom.clientData;
+                                }
+                                objectMergeFromList.push(objectMergeFrom);
+                                allowToMergeList.push(deletedFeature.properties.opr_id !== existingFeatures[i].properties.opr_id
+                                    && !findObject(objectMergeFrom.source, 'deleted'));
+                            } else {
+                                allowToMergeList.push(false);
                             }
-                            setAllowToMerge(deletedFeature.properties.opr_id !== existingFeature.properties.opr_id);
-                        } else {
-                            setAllowToMerge(false);
                         }
+                        setAllowToMerge(allowToMergeList);
                     }
                 }
 
-                if (objectDeleted && objectMergeFrom) {
+                if (objectDeleted && objectMergeFromList.length > 0) {
                     const params = fetchPlaceParams(objectDeleted);
                     setMergeToInfo({
                         oprId: deletedFeature.properties.opr_id,
@@ -270,18 +240,23 @@ export default function MergeListDialog({
                         deleted: params.deleted,
                         closedDescription: params.closedDescription
                     });
-                    const params2 = fetchPlaceParams(objectMergeFrom);
-                    setMergeFromInfo({
-                        oprId: existingFeature.properties.similar_opr_id,
-                        title: params2.title,
-                        subtitle: params2.subtitle,
-                        latLon: params2.latLon,
-                        images: params2.images,
-                        sources: params2.sources,
-                        deleted: params2.deleted,
-                    });
                     setMergeTo(objectDeleted);
-                    setMergeFrom(objectMergeFrom);
+                    let allInfo = [];
+                    for(let obj of objectMergeFromList) {
+                        const params2 = fetchPlaceParams(obj);
+                        let info = {
+                            oprId: obj.id,
+                            title: params2.title,
+                            subtitle: params2.subtitle,
+                            latLon: params2.latLon,
+                            images: params2.images,
+                            sources: params2.sources,
+                            deleted: params2.deleted
+                        };
+                        allInfo.push(info)
+                    }
+                    setMergeFromInfo(allInfo);
+                    setMergeFromList(objectMergeFromList);
                 }
             }
         }
@@ -296,7 +271,16 @@ export default function MergeListDialog({
         let title = fetchPlaceName(place);
         let subtitle = fetchPlaceType(place);
         const {lat, lon, source, deleted} = place;
-        let latLon = [lat, lon];
+        let latLon = null;
+        if (lat && lon) {
+            latLon = [lat, lon];
+        } else {
+            let lat = findObject(source, 'lat');
+            let lon = findObject(source, 'lon');
+            if (lat && lon) {
+                latLon = [lat, lon];
+            }
+        }
         return {
             title: title,
             subtitle: subtitle,
@@ -373,25 +357,7 @@ export default function MergeListDialog({
         return result;
     };
 
-    useEffect(() => {
-        resetDeletedComment();
-        if (toggle === "permanentlyClosed") {
-            createClosedPlace();
-            carousel.next()
-        } else if (toggle === "onMerge") {
-            onMerge();
-            carousel.next()
-        } else if (carouselNav === "next") {
-            carousel.next();
-        } else if (carouselNav === "prev") {
-            carousel.prev();
-        }
-
-        setCarouselNav(null);
-        setToggle(null);
-    }, [carouselNav, toggle]);
-
-    return <div><Dialog fullWidth className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
+    return <div><Dialog className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Review closed places</DialogTitle>
         <DialogActions>
@@ -401,22 +367,6 @@ export default function MergeListDialog({
                     onClick={handlePrevCarousel}>
                 Previous
             </Button>
-            <ToggleButtonGroup
-                className={classes.toggleButton}
-                value={toggle}
-                exclusive
-                onChange={handleToggle}>
-                <ToggleButton disabled={!mergeTo || !mergeFrom || !allowToMerge} value="onMerge" type="submit"
-                              variant="contained"
-                              className={classes.toggleMerge}
-                              aria-label="left aligned">
-                    Merge duplicate</ToggleButton>
-                <ToggleButton disabled={!mergeTo} value="permanentlyClosed" type="submit"
-                              variant="contained"
-                              className={classes.togglePerClosed}
-                              aria-label="right aligned">
-                    Permanently closed</ToggleButton>
-            </ToggleButtonGroup>
             <Button type="submit"
                     variant="contained"
                     className={classes.nextButton}
@@ -424,22 +374,15 @@ export default function MergeListDialog({
                 Next
             </Button>
         </DialogActions>
-        <DialogActions>
-            {mergeTo && mergeFrom && <TextField
-                autoFocus
-                required
-                value={deletedComment}
-                id="filled-required"
-                placeholder="Comment for permanently closed place"
-                variant="filled"
-                className={classes.comment}
-                onChange={handleOptionalComment}/>}
-        </DialogActions>
         <DialogContent>
             {mergeGroupList && <MergeCarousel items={mergeGroupList} setIndex={setIndex}
                                               mergeToInfo={mergeToInfo} mergeFromInfo={mergeFromInfo}
                                               mergeTo={mergeTo}
-                                              mergeFrom={mergeFrom} categories={categories} setCarousel={setCarousel}/>}
+                                              mergeFromList={mergeFromList} categories={categories} setCarousel={setCarousel}
+                                              handleOptionalComment={handleOptionalComment}
+                                              createClosedPlace={createClosedPlace}
+                                              setMergeFrom={setMergeFrom}
+                                              allowToMerge={allowToMerge}/>}
         </DialogContent>
         <DialogContent>
             {(mergeGroupList.length === 0) && <p> All groups of places have already been reviewed!</p>}

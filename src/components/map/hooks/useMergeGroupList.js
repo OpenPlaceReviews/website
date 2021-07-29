@@ -18,50 +18,52 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
     function getPlacesGroups(places, alreadyReviewedPlaceIds) {
         let delGroupIds = [];
         for (let i = 0; i < places.length - 1;) {
-            let delGroup = [];
-            let similarGroup = [];
+            let mergeToPlacesGroup = [];
+            let mergeFromPlacesGroup = [];
             // collect group of deleted objects
             let place = places[i];
             if (!place.properties.deleted || alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
                 i++;
                 continue;
             } else {
-                delGroup.push(place);
+                mergeToPlacesGroup.push(place);
             }
             let j = 1;
             for (; j + i < places.length - 1; j++) {
                 if (places[i + j].properties.deleted && areSimilarPlaceByDistance(place, places[i + j], 250)) {
                     // not clear why we double check alreadyReviewed?
-                    if(!alreadyReviewedPlaceIds.includes(places[i + j].properties.opr_id)) {
-                        delGroup.push(places[i + j]);
+                    if (!alreadyReviewedPlaceIds.includes(places[i + j].properties.opr_id)) {
+                        mergeToPlacesGroup.push(places[i + j]);
                     }
                 } else {
                     break;
                 }
             }
 
-            delGroup.forEach(place => delGroupIds.push(place.properties.osm_id));
+            mergeToPlacesGroup.forEach(place => delGroupIds.push(place.properties.osm_id));
 
             for (; j + i < places.length - 1; j++) {
                 if (!places[i + j].properties.deleted && areSimilarPlaceByDistance(place, places[i + j], 250)) {
                     // not clear why we double check alreadyReviewed?
                     if (!alreadyReviewedPlaceIds.includes(places[i + j].properties.opr_id)
                         && !idsPlacesLocallyMerged.includes[places[i + j].properties.opr_id]) {
-                        similarGroup.push(places[i + j]);
+                        mergeFromPlacesGroup.push(places[i + j]);
                     }
                 } else {
                     break;
                 }
             }
-            if (similarGroup.length === 1) {
-                // keep only groups of 1
-                delGroup.forEach(function (element) {
-                    if (!idsPlacesLocallyMerged.includes[element.properties.opr_id]
-                        && !isClosedPlace(element, similarGroup[0], delGroupIds)) {
-                        mergeGroupList.push([element, similarGroup[0]]);
+
+            if (mergeFromPlacesGroup.length > 1) {
+                mergeToPlacesGroup.forEach(function (element) {
+                    mergeFromPlacesGroup = mergeFromPlacesGroup.filter(similarPlace =>
+                        !isClosedPlace(element, similarPlace, delGroupIds));
+                    if (mergeFromPlacesGroup.length > 0) {
+                        if (!idsPlacesLocallyMerged.includes[element.properties.opr_id]) {
+                            mergeGroupList.push([element, ...mergeFromPlacesGroup]);
+                        }
                     }
                 });
-
             }
             i += j;
         }
@@ -74,6 +76,6 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
     }
 
     useEffect(() => {
-            getPlacesGroups(mergePlaces, alreadyReviewed);
+        getPlacesGroups(mergePlaces, alreadyReviewed);
     }, [mergePlaces]);
 }
