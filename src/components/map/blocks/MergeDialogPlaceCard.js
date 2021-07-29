@@ -47,6 +47,7 @@ const useStyles = makeStyles({
         borderColor: "#2D69E0",
         backgroundColor: "#FFFFFF",
         transform: "rotateX(180deg)",
+        maxWidth: "400px !important",
     },
     item: {
         minHeight: "280px",
