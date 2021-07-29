@@ -14,6 +14,7 @@ import AuthContext from "../../../main/auth/providers/AuthContext";
 import useBatchOp from "../../hooks/useBatchOp";
 import useBatchDiff from "../../hooks/useBatchDiff";
 import useMergeGroupList from "../../hooks/useMergeGroupList";
+import Utils from "../../../util/Utils";
 
 const useStyles = makeStyles({
     header: {
@@ -133,7 +134,7 @@ export default function MergeListDialog({
 
     const updateIdsCache = () => {
         setIdsPlacesLocallyMerged([...idsPlacesLocallyMerged,
-            mergeFrom ? mergeFrom.id : null,
+            mergeFrom ? mergeFrom.id : "",
             mergeTo.id
         ]);
     };
@@ -203,7 +204,7 @@ export default function MergeListDialog({
                 let objectMergeFromList = [];
                 let allowToMergeList = [];
 
-                if (deletedFeature && existingFeatures) {
+                if (deletedFeature && existingFeatures && !Utils.contains(idsPlacesLocallyMerged, deletedFeature.properties.opr_id)) {
                     const dataDeletedPlace = await getObjectsById('opr.place', deletedFeature.properties.opr_id);
                     objectDeleted = dataDeletedPlace.objects.shift();
                     if (objectDeleted && objectDeleted.clientData) {
@@ -213,7 +214,7 @@ export default function MergeListDialog({
                         for (let i = 0; i < existingFeatures.length; i++) {
                             const data2 = await getObjectsById('opr.place', existingFeatures[i].properties.opr_id);
                             objectMergeFrom = data2.objects.shift();
-                            if (objectMergeFrom && !objectMergeFrom.deleted) {
+                            if (objectMergeFrom && !objectMergeFrom.deleted && !Utils.contains(idsPlacesLocallyMerged, existingFeatures[i].properties.opr_id)) {
                                 if (objectMergeFrom.clientData) {
                                     delete objectMergeFrom.clientData;
                                 }

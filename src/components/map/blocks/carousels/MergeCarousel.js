@@ -110,7 +110,7 @@ export default function MergeCarousel({
                                                  allowToMerge={allowToMerge}/>
                         </GridList>
                     </div>}
-                    <div key={i}>
+                    <div style={{transform: "rotateX(180deg)"}} key={i}>
                         {(!mergeTo) && <p> Couldn't load the objects data</p>}
                     </div>
                 </div>
