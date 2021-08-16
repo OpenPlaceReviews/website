@@ -22,7 +22,8 @@ const MIN_MARKERS_TILES_TASK_ZOOM = 10;
 var selectedMarkerGroup = [];
 
 export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged,
-                                   setIsPlaceChanged, setMergePlaces, mergeListDialogOpen, setAlreadyReviewed}) {
+                                   setIsPlaceChanged, setMergePlaces, mergeListDialogWasClosed, setMergeListDialogWasClosed,
+                                   setAlreadyReviewed}) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
@@ -104,7 +105,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
             || prevTaskSelection.reviewedPlacesVisible !== taskSelection.reviewedPlacesVisible
             || prevTaskSelection.closedPlaces !== taskSelection.closedPlaces
             || prevTaskSelection.potentiallyClosedPlaces !== taskSelection.potentiallyClosedPlaces);
-    const forceReload = taskChanged || isPlaceChanged || !mergeListDialogOpen;
+    const forceReload = taskChanged || isPlaceChanged || mergeListDialogWasClosed;
     const updateCache = async () => {
       let newCache = {};
       if (task && !tilesPlacesVisible) {
@@ -176,19 +177,19 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     if (currentZoom >= minMarkersZoom || forceReload) {
       updateCache();
     }
-  }, [currentBounds, currentZoom, taskSelection, !mergeListDialogOpen]);
+  }, [currentBounds, currentZoom, taskSelection, mergeListDialogWasClosed]);
 
   useEffect(() => {
-    if (!task || task.tileBasedData || tilesPlacesVisible || !mergeListDialogOpen) {
+    if (!task || task.tileBasedData || tilesPlacesVisible || mergeListDialogWasClosed) {
       refreshMapDelay();
     }
-  }, [placesCache, filterVal, currentZoom, !mergeListDialogOpen]);
+  }, [placesCache, filterVal, currentZoom, mergeListDialogWasClosed]);
 
   useEffect(() => {
-    if (task && !task.tileBasedData && !tilesPlacesVisible && !mergeListDialogOpen) {
+    if (task && !task.tileBasedData && !tilesPlacesVisible || mergeListDialogWasClosed) {
       refreshMapDelay();
     }
-  }, [placesCache, filterVal, !mergeListDialogOpen]);
+  }, [placesCache, filterVal, mergeListDialogWasClosed]);
 
   function refreshMapDelay() {
     if (Date.now() - lastRefreshTime < REFRESH_TIMEOUT) {
@@ -197,6 +198,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     refreshTimout = setTimeout(() => {
       lastRefreshTime = Date.now();
       refreshMap();
+      setMergeListDialogWasClosed(false);
     }, REFRESH_TIMEOUT);
   }
 
@@ -239,14 +241,15 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     for (let i = 0; i < geo.features.length - 1; ) {
       let group = [];
       let place = geo.features[i];
-      if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
+      if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id) && place.properties.deleted) {
         group.push(place);
       }
       // collect group of deleted objects
       let j = 1;
       for (; j + i < geo.features.length - 1; j++) {
         if (geo.features[i + j].properties.deleted && areSimilar(place,  geo.features[i + j], 250)) {
-          if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
+          if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id) &&
+              !geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)) {
             group.push(geo.features[i + j]);
           }
         } else {
@@ -256,7 +259,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       // collect group of new objects & add to group
       for (; j + i < geo.features.length - 1; j++) {
         if (!geo.features[i + j].properties.deleted && areSimilar(place, geo.features[i + j], 250)) {
-          if (group.length > 0 && !geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)) {
+          if (group.length > 0 && !geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)
+            && !geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)) {
             group.push(geo.features[i + j]);
           }
         } else {

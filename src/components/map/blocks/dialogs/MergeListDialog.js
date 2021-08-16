@@ -84,7 +84,8 @@ const useStyles = makeStyles({
 })
 
 export default function MergeListDialog({
-                                            mergePlaces, placeTypes, mergeListDialogOpen, setMergeListDialogOpen,
+                                            mergePlaces, mergeListDialogOpen, setMergeListDialogOpen,
+                                            placeTypes, setMergeListDialogWasClosed,
                                             idsPlacesLocallyMerged, setIdsPlacesLocallyMerged, alreadyReviewed
                                         }) {
 
@@ -112,6 +113,7 @@ export default function MergeListDialog({
 
 
     const closeMergeListDialog = () => {
+        setMergeListDialogWasClosed(true);
         setMergeListDialogOpen(false);
     };
 
@@ -214,7 +216,7 @@ export default function MergeListDialog({
                         for (let i = 0; i < existingFeatures.length; i++) {
                             const data2 = await getObjectsById('opr.place', existingFeatures[i].properties.opr_id);
                             objectMergeFrom = data2.objects.shift();
-                            if (objectMergeFrom && !objectMergeFrom.deleted && !Utils.contains(idsPlacesLocallyMerged, existingFeatures[i].properties.opr_id)) {
+                            if (objectMergeFrom && !Utils.contains(idsPlacesLocallyMerged, existingFeatures[i].properties.opr_id)) {
                                 if (objectMergeFrom.clientData) {
                                     delete objectMergeFrom.clientData;
                                 }
@@ -386,7 +388,7 @@ export default function MergeListDialog({
                                               allowToMerge={allowToMerge}/>}
         </DialogContent>
         <DialogContent>
-            {(mergeGroupList.length === 0) && <p> All groups of places have already been reviewed!</p>}
+            {(mergeGroupList.length === 0) && <p style={{marginTop: "-5px"}}> All groups of places have already been reviewed!</p>}
         </DialogContent>
         <DialogActions>
             <Grid style={{marginBottom: "-10px"}}

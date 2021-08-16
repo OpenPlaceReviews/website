@@ -97,6 +97,7 @@ export default function Map() {
   const [isPlaceChanged, setIsPlaceChanged] = useState(false);
   const [mergePlaces, setMergePlaces] = useState(null);
   const [mergeListDialogOpen, setMergeListDialogOpen] = useState(false);
+  const [mergeListDialogWasClosed, setMergeListDialogWasClosed] = useState(false);
   const [alreadyReviewed, setAlreadyReviewed] = useState([]);
 
   useEffect(() => {
@@ -186,9 +187,12 @@ export default function Map() {
     {(loading || reload || promiseInProgress) && <OPRMessageOverlay><Loader position="relative" /></OPRMessageOverlay>}
     {!loading && <OPRLayer mapZoom={mapZoom} filterVal={filterVal} taskSelection={taskSelection} onSelect={setMarkerWithGroup}
                            setLoading={setReload} isPlaceChanged={isPlaceChanged} setIsPlaceChanged={setIsPlaceChanged}
-                           setMergePlaces={setMergePlaces} mergeListDialogOpen={mergeListDialogOpen}
+                           setMergePlaces={setMergePlaces}
+                           mergeListDialogWasClosed={mergeListDialogWasClosed} setMergeListDialogWasClosed={setMergeListDialogWasClosed}
                            setAlreadyReviewed={setAlreadyReviewed}/>}
-    <MergeList mergeListDialogOpen={mergeListDialogOpen} mergePlaces={mergePlaces} placeTypes={placeTypes} setMergeListDialogOpen={setMergeListDialogOpen}
+    <MergeList mergeListDialogOpen={mergeListDialogOpen} setMergeListDialogOpen={setMergeListDialogOpen}
+               mergePlaces={mergePlaces} placeTypes={placeTypes}
+               setMergeListDialogWasClosed={setMergeListDialogWasClosed}
                alreadyReviewed={alreadyReviewed}/>
   </MapContainer>;
 }

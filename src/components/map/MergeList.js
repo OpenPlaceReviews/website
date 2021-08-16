@@ -3,9 +3,10 @@ import React, {useEffect, useState} from "react";
 
 export default function MergeList({
                                       mergeListDialogOpen,
+                                      setMergeListDialogOpen,
                                       mergePlaces,
                                       placeTypes,
-                                      setMergeListDialogOpen,
+                                      setMergeListDialogWasClosed,
                                       alreadyReviewed
                                   }) {
 
@@ -17,8 +18,10 @@ export default function MergeList({
     }, [mergePlaces]);
 
     return mergeListDialogOpen &&
-        <MergeListDialog mergePlaces={mergePlaces} placeTypes={placeTypes} mergeListDialogOpen={mergeListDialogOpen}
-                         setMergeListDialogOpen={setMergeListDialogOpen}
+        <MergeListDialog mergePlaces={mergePlaces}
+                         mergeListDialogOpen={mergeListDialogOpen} setMergeListDialogOpen={setMergeListDialogOpen}
+                         placeTypes={placeTypes}
+                         setMergeListDialogWasClosed={setMergeListDialogWasClosed}
                          idsPlacesLocallyMerged={idsPlacesLocallyMerged} setIdsPlacesLocallyMerged={setIdsPlacesLocallyMerged}
                          alreadyReviewed={alreadyReviewed}/>
 

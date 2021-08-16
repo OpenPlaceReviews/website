@@ -54,7 +54,7 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
                 }
             }
 
-            if (mergeFromPlacesGroup.length > 1) {
+            if (mergeFromPlacesGroup.length > 0) {
                 mergeToPlacesGroup.forEach(function (element) {
                     mergeFromPlacesGroup = mergeFromPlacesGroup.filter(similarPlace =>
                         !isClosedPlace(element, similarPlace, delGroupIds));
