@@ -71,7 +71,7 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
     }
 
     function isClosedPlace(deletedPlace, similarPlace, delGroupIds) {
-        return (deletedPlace.properties.osm_id !== similarPlace.properties.osm_id)
+        return (deletedPlace.properties.osm_id === similarPlace.properties.osm_id)
             && delGroupIds.includes(similarPlace.properties.osm_id);
     }
 

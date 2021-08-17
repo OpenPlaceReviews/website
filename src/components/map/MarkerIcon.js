@@ -34,10 +34,10 @@ const icons = {
   restaurant,
 }
 
-export default (place_type, place_deleted, place_deleted_osm, deleted) => {
+export default (place_type, place_deleted, place_deleted_osm, deleted, alreadyReviewed) => {
   const iconUrl = icons[place_type] || defaultIcon;
   let iconShadow;
-  if (place_deleted) {
+  if (place_deleted || alreadyReviewed) {
     iconShadow = shadowDeletedIcon;
   } else if (place_deleted_osm || deleted) {
     iconShadow = shadowDeletedOsmIcon;
