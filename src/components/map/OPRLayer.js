@@ -282,7 +282,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
 
   function isClosedPlace(newPlace, group) {
     group.forEach(place => function () {
-      if (place.properties.osm_id === newPlace.properties.osm_id) {
+      if (place.properties.opr_id === newPlace.properties.opr_id) {
         return true;
       }
     })
