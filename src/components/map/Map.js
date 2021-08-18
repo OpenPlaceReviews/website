@@ -189,7 +189,7 @@ export default function Map() {
                            setLoading={setReload} isPlaceChanged={isPlaceChanged} setIsPlaceChanged={setIsPlaceChanged}
                            setMergePlaces={setMergePlaces}
                            mergeListDialogWasClosed={mergeListDialogWasClosed} setMergeListDialogWasClosed={setMergeListDialogWasClosed}
-                           setAlreadyReviewed={setAlreadyReviewed}/>}
+                           setAlreadyReviewed={setAlreadyReviewed} alreadyReviewed={alreadyReviewed}/>}
     <MergeList mergeListDialogOpen={mergeListDialogOpen} setMergeListDialogOpen={setMergeListDialogOpen}
                mergePlaces={mergePlaces} placeTypes={placeTypes}
                setMergeListDialogWasClosed={setMergeListDialogWasClosed}

@@ -110,7 +110,7 @@ export default function MergeListDialog({
     const [mergeGroupList, setMergeGroupList] = useState([]);
     const [deletedComment, setDeletedComment] = useState('');
     const [allowToMerge, setAllowToMerge] = useState([]);
-
+    const [lastIndex,  setLastIndex] = useState(false);
 
     const closeMergeListDialog = () => {
         setMergeListDialogWasClosed(true);
@@ -145,6 +145,12 @@ export default function MergeListDialog({
         setDeletedComment('');
     };
 
+    function handleLastIndex() {
+        if (!lastIndex) {
+            carousel.next();
+        }
+    }
+
     const createClosedPlace = () => {
         if (mergeTo) {
             let newPlace = JSON.parse(JSON.stringify(mergeTo));
@@ -159,7 +165,7 @@ export default function MergeListDialog({
 
                 setPlaces([mergeTo, newPlace]);
                 updateIdsCache();
-                carousel.next()
+                handleLastIndex();
             }
         }
     }
@@ -170,7 +176,7 @@ export default function MergeListDialog({
         if (mergeFrom && mergeTo) {
             setPlaces([mergeTo, mergeFrom]);
             updateIdsCache();
-            carousel.next()
+            handleLastIndex();
         }
     }, [mergeFrom]);
 
@@ -197,6 +203,11 @@ export default function MergeListDialog({
             allowToMerge.splice(0, allowToMerge.length)
             setAllowToMerge(allowToMerge);
         }
+
+        if (index === mergeGroupList.length - 1) {
+            setLastIndex(true);
+        }
+
         const fetchData = async () => {
             if (mergeGroupList && mergeGroupList[index]) {
                 let objectMergeFrom = [];
@@ -370,7 +381,7 @@ export default function MergeListDialog({
                     onClick={handlePrevCarousel}>
                 Previous
             </Button>
-            <Button type="submit"
+            <Button disabled={lastIndex} type="submit"
                     variant="contained"
                     className={classes.nextButton}
                     onClick={handleNextCarousel}>

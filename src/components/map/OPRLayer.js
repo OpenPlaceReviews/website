@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMap, useMapEvent } from "react-leaflet";
 import { OpenLocationCode } from "open-location-code";
 import { isEqual, has, get } from "lodash";
@@ -23,7 +23,7 @@ var selectedMarkerGroup = [];
 
 export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, setLoading, isPlaceChanged,
                                    setIsPlaceChanged, setMergePlaces, mergeListDialogWasClosed, setMergeListDialogWasClosed,
-                                   setAlreadyReviewed}) {
+                                   setAlreadyReviewed, alreadyReviewed}) {
   const [placesCache, setPlacesCache] = useState({});
   const [currentBounds, setCurrentBounds] = useState({});
   const [currentZoom, setCurrentZoom] = useState(mapZoom);
@@ -227,7 +227,9 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     if (task === 'REVIEW_CLOSED_PLACES') {
       features = filterPossibleMerge(geo);
     }
-    setMergePlaces(features);
+    if (!reviewedPlacesVisible) {
+      setMergePlaces(features);
+    }
     return features;
   }
 
@@ -236,7 +238,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
         : geo.features.filter(place => place.properties.img_review_size > 0);
   }
 
-  function filterPossibleMerge(geo) { 
+  function filterPossibleMerge(geo) {
     let features = [];
     for (let i = 0; i < geo.features.length - 1; ) {
       let group = [];
@@ -248,8 +250,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       let j = 1;
       for (; j + i < geo.features.length - 1; j++) {
         if (geo.features[i + j].properties.deleted && areSimilar(place,  geo.features[i + j], 250)) {
-          if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id) &&
-              !geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)) {
+          if (!geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)) {
             group.push(geo.features[i + j]);
           }
         } else {
@@ -260,7 +261,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       for (; j + i < geo.features.length - 1; j++) {
         if (!geo.features[i + j].properties.deleted && areSimilar(place, geo.features[i + j], 250)) {
           if (group.length > 0 && !geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)
-            && !geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)) {
+              && !geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)
+              && !isClosedPlace(geo.features[i + j], group)) {
             group.push(geo.features[i + j]);
           }
         } else {
@@ -270,7 +272,20 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       i += j;
       features = features.concat(group);
     }
-    return features;
+    if (reviewedPlacesVisible) {
+      let alreadyReviewedFeatures = geo.features.filter(feature => geo.alreadyReviewedPlaceIds.includes(feature.properties.opr_id));
+      return features.concat(alreadyReviewedFeatures);
+    } else {
+      return features;
+    }
+  }
+
+  function isClosedPlace(newPlace, group) {
+    group.forEach(place => function () {
+      if (place.properties.osm_id === newPlace.properties.osm_id) {
+        return true;
+      }
+    })
   }
 
   function filterTileBasedPossibleMerge(geo) {
@@ -351,7 +366,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }
 
   function getCacheByFilters(geo) {
-    if (!reviewedPlacesVisible && taskSelection.taskId !== "none") {
+    if (taskSelection.taskId !== "none") {
       let features = getFilteredFeatures(geo, taskSelection.taskId);
       return {data: {type: "FeatureCollection", features}};
     } else {
@@ -426,7 +441,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       },
 
       pointToLayer: (feature, latlng) => {
-        const icon = MarkerIcon(feature.properties.place_type, feature.properties.place_deleted, feature.properties.place_deleted_osm, feature.properties.deleted);
+        const icon = MarkerIcon(feature.properties.place_type, feature.properties.place_deleted,
+            feature.properties.place_deleted_osm, feature.properties.deleted, alreadyReviewed.includes(feature.properties.opr_id));
         const marker = L.marker(latlng, { icon: icon });
         return marker.on('click', () => onMarkerClick(feature));
       }
