@@ -40,7 +40,7 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
                 }
             }
 
-            mergeToPlacesGroup.forEach(place => delGroupIds.push(place.properties.osm_id));
+            mergeToPlacesGroup.forEach(place => delGroupIds.push(place.properties.opr_id));
 
             for (; j + i < places.length - 1; j++) {
                 if (!places[i + j].properties.deleted && areSimilarPlaceByDistance(place, places[i + j], 250)) {
@@ -71,8 +71,8 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
     }
 
     function isClosedPlace(deletedPlace, similarPlace, delGroupIds) {
-        return (deletedPlace.properties.osm_id === similarPlace.properties.osm_id)
-            && delGroupIds.includes(similarPlace.properties.osm_id);
+        return (deletedPlace.properties.opr_id === similarPlace.properties.opr_id)
+            && delGroupIds.includes(similarPlace.properties.opr_id);
     }
 
     useEffect(() => {
