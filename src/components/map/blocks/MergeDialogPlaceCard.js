@@ -86,10 +86,7 @@ export default function MergeDialogPlaceCard({
 
     function getDistance() {
         return " (" + Math.round(Utils.getDistance(
-            info.latLon[0].toFixed(5),
-            info.latLon[1].toFixed(5),
-            mergeToInfo.latLon[0].toFixed(5),
-            mergeToInfo.latLon[1].toFixed(5))) + "m)";
+            info.latLon[0], info.latLon[1], mergeToInfo.latLon[0], mergeToInfo.latLon[1])) + "m)";
     }
 
     return <GridListTile classes={{tile: classes.tile}}>
