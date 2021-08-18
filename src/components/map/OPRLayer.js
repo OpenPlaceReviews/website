@@ -240,29 +240,34 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
 
   function filterPossibleMerge(geo) {
     let features = [];
+    let delGroupIds = [];
     for (let i = 0; i < geo.features.length - 1; ) {
+      let mergeToPlacesGroup = [];
       let group = [];
       let place = geo.features[i];
       if (!geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id) && place.properties.deleted) {
-        group.push(place);
+        mergeToPlacesGroup.push(place);
       }
       // collect group of deleted objects
       let j = 1;
       for (; j + i < geo.features.length - 1; j++) {
         if (geo.features[i + j].properties.deleted && areSimilar(place,  geo.features[i + j], 250)) {
           if (!geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)) {
-            group.push(geo.features[i + j]);
+            mergeToPlacesGroup.push(geo.features[i + j]);
           }
         } else {
           break;
         }
       }
+      mergeToPlacesGroup.forEach(place => delGroupIds.push(place.properties.opr_id));
+      group = group.concat(mergeToPlacesGroup);
       // collect group of new objects & add to group
       for (; j + i < geo.features.length - 1; j++) {
         if (!geo.features[i + j].properties.deleted && areSimilar(place, geo.features[i + j], 250)) {
-          if (group.length > 0 && !geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)
+          if (group.length > 0
+              && !geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)
               && !geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)
-              && !isClosedPlace(geo.features[i + j], group)) {
+              && !isClosedPlace(place, geo.features[i + j], delGroupIds)) {
             group.push(geo.features[i + j]);
           }
         } else {
@@ -280,12 +285,9 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
     }
   }
 
-  function isClosedPlace(newPlace, group) {
-    group.forEach(place => function () {
-      if (place.properties.opr_id === newPlace.properties.opr_id) {
-        return true;
-      }
-    })
+  function isClosedPlace(deletedPlace, similarPlace, delGroupIds) {
+    return (deletedPlace.properties.opr_id === similarPlace.properties.opr_id)
+        && delGroupIds.includes(similarPlace.properties.opr_id);
   }
 
   function filterTileBasedPossibleMerge(geo) {
