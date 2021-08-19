@@ -37,9 +37,9 @@ const icons = {
 export default (place_type, place_deleted, place_deleted_osm, deleted, alreadyReviewed) => {
   const iconUrl = icons[place_type] || defaultIcon;
   let iconShadow;
-  if (place_deleted || alreadyReviewed) {
+  if (place_deleted) {
     iconShadow = shadowDeletedIcon;
-  } else if (place_deleted_osm || deleted) {
+  } else if (place_deleted_osm || (!alreadyReviewed && deleted)) {
     iconShadow = shadowDeletedOsmIcon;
   } else iconShadow = shadowIcon;
 
