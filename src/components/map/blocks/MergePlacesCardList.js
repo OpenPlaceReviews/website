@@ -24,11 +24,13 @@ export default function MergePlacesCardList({
 
     if (mergeFromList) {
         for (let i = 0; i < mergeFromList.length; i++) {
-            mergeFromPlaceList.push(<MergeDialogPlaceCard key={mergeFromPlaceList.length} place={mergeFromList[i]}
-                                                          info={mergeFromInfo[i]}
-                                                          mergeToInfo={mergeToInfo} categories={categories}
-                                                          handleOptionalComment={handleOptionalComment}
-                                                          setMergeFrom={setMergeFrom} allowToMerge={allowToMerge[i]}/>)
+            if (mergeFromInfo[i] && mergeFromInfo[i].latLon !== null) {
+                mergeFromPlaceList.push(<MergeDialogPlaceCard key={mergeFromPlaceList.length} place={mergeFromList[i]}
+                                                              info={mergeFromInfo[i]}
+                                                              mergeToInfo={mergeToInfo} categories={categories}
+                                                              handleOptionalComment={handleOptionalComment}
+                                                              setMergeFrom={setMergeFrom} allowToMerge={allowToMerge[i]}/>)
+            }
         }
     }
     return mergeFromPlaceList;
