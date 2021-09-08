@@ -16,10 +16,10 @@ export default function MergePlacesCardList({
 
     function sortByDistanceFromMergeToPlace(mergeFromInfo) {
         mergeFromInfo.sort(function (a, b) {
-            if (a.distance > b.distance) {
+            if (a.distanceToDeletedPlace > b.distanceToDeletedPlace) {
                 return 1;
             }
-            if (a.distance < b.distance) {
+            if (a.distanceToDeletedPlace < b.distanceToDeletedPlace) {
                 return -1;
             }
             return 0;

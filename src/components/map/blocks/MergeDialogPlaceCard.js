@@ -111,7 +111,7 @@ export default function MergeDialogPlaceCard({
             </p>
             <p className={classes.mergeLatLon}>
                 <Value>{info.latLon[0].toFixed(5)},{info.latLon[1].toFixed(5)}
-                    {mergeToInfo && " (" + info.distance + "m)"}</Value>
+                    {mergeToInfo && " (" + info.distanceToDeletedPlace + "m)"}</Value>
             </p>
             {<AttributesBarList place={info}
                                 inactiveLinksVisible={true}
