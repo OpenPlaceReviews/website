@@ -254,8 +254,10 @@ export default function MergeListDialog({
                     let allInfo = [];
                     for(let obj of objectMergeFromList) {
                         const params2 = fetchPlaceParams(obj);
+                        const distance = Math.round(Utils.getDistance(params2.latLon[0], params2.latLon[1],params.latLon[0], params.latLon[1]));
                         let info = {
                             oprId: obj.id,
+                            distance: distance,
                             title: params2.title,
                             subtitle: params2.subtitle,
                             latLon: params2.latLon,

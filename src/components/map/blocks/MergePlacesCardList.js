@@ -1,6 +1,5 @@
 import React from "react";
 import MergeDialogPlaceCard from "./MergeDialogPlaceCard";
-import Utils from "../../util/Utils";
 
 export default function MergePlacesCardList({
                                                 mergeTo,
@@ -17,19 +16,14 @@ export default function MergePlacesCardList({
 
     function sortByDistanceFromMergeToPlace(mergeFromInfo) {
         mergeFromInfo.sort(function (a, b) {
-            if (getDistance(a) > getDistance(b)) {
+            if (a.distance > b.distance) {
                 return 1;
             }
-            if (getDistance(a) < getDistance(b)) {
+            if (a.distance < b.distance) {
                 return -1;
             }
             return 0;
         });
-    }
-
-    function getDistance(info) {
-        return Math.round(Utils.getDistance(
-            info.latLon[0], info.latLon[1], mergeToInfo.latLon[0], mergeToInfo.latLon[1]));
     }
 
     function getPlaceByInfo(i) {
