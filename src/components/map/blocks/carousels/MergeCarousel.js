@@ -80,7 +80,6 @@ export default function MergeCarousel({
                                           mergeFromList,
                                           categories,
                                           setCarousel,
-                                          handleOptionalComment,
                                           createClosedPlace,
                                           setMergeFrom,
                                           allowToMerge
@@ -104,7 +103,6 @@ export default function MergeCarousel({
                                                  mergeToInfo={mergeToInfo}
                                                  mergeFromInfo={mergeFromInfo}
                                                  categories={categories}
-                                                 handleOptionalComment={handleOptionalComment}
                                                  createClosedPlace={createClosedPlace}
                                                  setMergeFrom={setMergeFrom}
                                                  allowToMerge={allowToMerge}/>

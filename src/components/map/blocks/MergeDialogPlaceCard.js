@@ -68,7 +68,6 @@ export default function MergeDialogPlaceCard({
                                                  info,
                                                  mergeToInfo,
                                                  categories,
-                                                 handleOptionalComment,
                                                  createClosedPlace,
                                                  setMergeFrom,
                                                  allowToMerge
@@ -90,7 +89,7 @@ export default function MergeDialogPlaceCard({
     }
 
     return <GridListTile classes={{tile: classes.tile}}>
-        {info && <CardContent>
+        {info && place && <CardContent>
             <div>{mergeToInfo && <Button type="submit"
                                          disabled={!place || !allowToMerge}
                                          className={classes.button}
@@ -107,16 +106,6 @@ export default function MergeDialogPlaceCard({
                     Permanently closed
                 </Button>}
             </div>
-            {!mergeToInfo && <TextField
-                autoFocus
-                required
-                value={mergeToInfo}
-                id="filled-required"
-                placeholder="Comment for permanently closed place"
-                variant="filled"
-                className={classes.comment}
-                onChange={handleOptionalComment}/>
-            }
             <p style={{textAlign: "center", fontSize: "16px"}}
                className={classes.header}>{info.title}</p>
             <p style={{textAlign: "center", fontSize: "16px"}}

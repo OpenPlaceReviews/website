@@ -130,10 +130,6 @@ export default function MergeListDialog({
         carousel.next();
     };
 
-    const handleOptionalComment = (event) => {
-        setDeletedComment(event.target.value);
-    };
-
     const updateIdsCache = () => {
         setIdsPlacesLocallyMerged([...idsPlacesLocallyMerged,
             mergeFrom ? mergeFrom.id : "",
@@ -389,11 +385,14 @@ export default function MergeListDialog({
             </Button>
         </DialogActions>
         <DialogContent>
-            {mergeGroupList && <MergeCarousel items={mergeGroupList} setIndex={setIndex}
-                                              mergeToInfo={mergeToInfo} mergeFromInfo={mergeFromInfo}
+            {mergeGroupList && <MergeCarousel items={mergeGroupList}
+                                              setIndex={setIndex}
+                                              mergeToInfo={mergeToInfo}
+                                              mergeFromInfo={mergeFromInfo}
                                               mergeTo={mergeTo}
-                                              mergeFromList={mergeFromList} categories={categories} setCarousel={setCarousel}
-                                              handleOptionalComment={handleOptionalComment}
+                                              mergeFromList={mergeFromList}
+                                              categories={categories}
+                                              setCarousel={setCarousel}
                                               createClosedPlace={createClosedPlace}
                                               setMergeFrom={setMergeFrom}
                                               allowToMerge={allowToMerge}/>}
