@@ -234,8 +234,8 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   }
 
   function filterReviewImages(geo) {
-    return reviewedPlacesVisible ? geo.features.filter(place => place.properties.images_size > 0)
-        : geo.features.filter(place => place.properties.img_review_size > 0);
+    return reviewedPlacesVisible ? geo.features
+        : geo.features.filter(place => (place.properties.img_review_size > 0 && !geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)));
   }
 
   function filterPossibleMerge(geo) {
