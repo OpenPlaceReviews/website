@@ -141,12 +141,6 @@ export default function MergeListDialog({
         setDeletedComment('');
     };
 
-    function handleLastIndex() {
-        if (!lastIndex) {
-            carousel.next();
-        }
-    }
-
     const createClosedPlace = () => {
         if (mergeTo) {
             let newPlace = JSON.parse(JSON.stringify(mergeTo));
@@ -161,7 +155,7 @@ export default function MergeListDialog({
 
                 setPlaces([mergeTo, newPlace]);
                 updateIdsCache();
-                handleLastIndex();
+                carousel.next();
             }
         }
     }
@@ -172,7 +166,7 @@ export default function MergeListDialog({
         if (mergeFrom && mergeTo) {
             setPlaces([mergeTo, mergeFrom]);
             updateIdsCache();
-            handleLastIndex();
+            carousel.next();
         }
     }, [mergeFrom]);
 
@@ -387,7 +381,7 @@ export default function MergeListDialog({
             </Button>
         </DialogActions>
         <DialogContent>
-            {mergeGroupList && <MergeCarousel items={mergeGroupList}
+            {mergeGroupList && (!lastIndex || (lastIndex && index !== 0)) && <MergeCarousel items={mergeGroupList}
                                               setIndex={setIndex}
                                               mergeToInfo={mergeToInfo}
                                               mergeFromInfo={mergeFromInfo}
@@ -400,7 +394,8 @@ export default function MergeListDialog({
                                               allowToMerge={allowToMerge}/>}
         </DialogContent>
         <DialogContent>
-            {(mergeGroupList.length === 0) && <p style={{marginTop: "-5px"}}> All groups of places have already been reviewed!</p>}
+            {(mergeGroupList.length === 0 || (lastIndex && index === 0)) &&
+            <p style={{marginTop: "-5px"}}> All groups of places have already been reviewed!</p>}
         </DialogContent>
         <DialogActions>
             <Grid style={{marginBottom: "-10px"}}
