@@ -341,8 +341,8 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
           <DatePicker className={classes.dateItem} popperPlacement="bottom-end" dateFormat="MM/yyyy"
                       showMonthYearPicker showFullMonthYearPicker selected={selectedDates.startDate}
                       onChange={date => dateMonthChangeHandler(date)}/>
-          <Tooltip title={tooltipMergeMessage}>
-                <span>
+          {taskId === 'REVIEW_CLOSED_PLACES' && <Tooltip title={tooltipMergeMessage}>
+             <span>
                     <Button disabled={!mergePlaces || mergePlaces === []} type="submit"
                             className={classes.button}
                             variant="outlined"
@@ -351,7 +351,7 @@ export default ({ isLoggedIn, placeTypes, onCategorySelect, taskSelection, onTas
             {showReviewListButton()}
                      </Button>
                </span>
-          </Tooltip>
+          </Tooltip>}
 
         </div>}
         <div className={classes.switch}>

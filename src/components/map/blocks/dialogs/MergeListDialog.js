@@ -130,10 +130,6 @@ export default function MergeListDialog({
         carousel.next();
     };
 
-    const handleOptionalComment = (event) => {
-        setDeletedComment(event.target.value);
-    };
-
     const updateIdsCache = () => {
         setIdsPlacesLocallyMerged([...idsPlacesLocallyMerged,
             mergeFrom ? mergeFrom.id : "",
@@ -258,8 +254,10 @@ export default function MergeListDialog({
                     let allInfo = [];
                     for(let obj of objectMergeFromList) {
                         const params2 = fetchPlaceParams(obj);
+                        const distanceToDeletedPlace = Math.round(Utils.getDistance(params2.latLon[0], params2.latLon[1],params.latLon[0], params.latLon[1]));
                         let info = {
                             oprId: obj.id,
+                            distanceToDeletedPlace: distanceToDeletedPlace,
                             title: params2.title,
                             subtitle: params2.subtitle,
                             latLon: params2.latLon,
@@ -389,11 +387,14 @@ export default function MergeListDialog({
             </Button>
         </DialogActions>
         <DialogContent>
-            {mergeGroupList && <MergeCarousel items={mergeGroupList} setIndex={setIndex}
-                                              mergeToInfo={mergeToInfo} mergeFromInfo={mergeFromInfo}
+            {mergeGroupList && <MergeCarousel items={mergeGroupList}
+                                              setIndex={setIndex}
+                                              mergeToInfo={mergeToInfo}
+                                              mergeFromInfo={mergeFromInfo}
                                               mergeTo={mergeTo}
-                                              mergeFromList={mergeFromList} categories={categories} setCarousel={setCarousel}
-                                              handleOptionalComment={handleOptionalComment}
+                                              mergeFromList={mergeFromList}
+                                              categories={categories}
+                                              setCarousel={setCarousel}
                                               createClosedPlace={createClosedPlace}
                                               setMergeFrom={setMergeFrom}
                                               allowToMerge={allowToMerge}/>}

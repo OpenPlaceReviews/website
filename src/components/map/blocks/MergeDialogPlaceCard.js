@@ -1,11 +1,10 @@
 import React from 'react';
 
 import {makeStyles} from "@material-ui/styles";
-import {Button, CardContent, GridListTile, Link, TextField} from "@material-ui/core";
+import {Button, CardContent, GridListTile, Link} from "@material-ui/core";
 import Value from "../../main/blockchain/blocks/Value";
 import AttributesBarList from "./AttributesBarList";
 import ImagesBlock from "./ImagesBlock";
-import Utils from "../../util/Utils";
 
 const useStyles = makeStyles({
     header: {
@@ -68,7 +67,6 @@ export default function MergeDialogPlaceCard({
                                                  info,
                                                  mergeToInfo,
                                                  categories,
-                                                 handleOptionalComment,
                                                  createClosedPlace,
                                                  setMergeFrom,
                                                  allowToMerge
@@ -84,13 +82,8 @@ export default function MergeDialogPlaceCard({
         createClosedPlace();
     };
 
-    function getDistance() {
-        return " (" + Math.round(Utils.getDistance(
-            info.latLon[0], info.latLon[1], mergeToInfo.latLon[0], mergeToInfo.latLon[1])) + "m)";
-    }
-
     return <GridListTile classes={{tile: classes.tile}}>
-        {info && <CardContent>
+        {info && place && <CardContent>
             <div>{mergeToInfo && <Button type="submit"
                                          disabled={!place || !allowToMerge}
                                          className={classes.button}
@@ -107,16 +100,6 @@ export default function MergeDialogPlaceCard({
                     Permanently closed
                 </Button>}
             </div>
-            {!mergeToInfo && <TextField
-                autoFocus
-                required
-                value={mergeToInfo}
-                id="filled-required"
-                placeholder="Comment for permanently closed place"
-                variant="filled"
-                className={classes.comment}
-                onChange={handleOptionalComment}/>
-            }
             <p style={{textAlign: "center", fontSize: "16px"}}
                className={classes.header}>{info.title}</p>
             <p style={{textAlign: "center", fontSize: "16px"}}
@@ -128,7 +111,7 @@ export default function MergeDialogPlaceCard({
             </p>
             <p className={classes.mergeLatLon}>
                 <Value>{info.latLon[0].toFixed(5)},{info.latLon[1].toFixed(5)}
-                    {mergeToInfo && getDistance()}</Value>
+                    {mergeToInfo && " (" + info.distanceToDeletedPlace + "m)"}</Value>
             </p>
             {<AttributesBarList place={info}
                                 inactiveLinksVisible={true}
