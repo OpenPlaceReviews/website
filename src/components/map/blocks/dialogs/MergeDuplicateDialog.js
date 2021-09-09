@@ -94,7 +94,9 @@ export default function MergeDuplicateDialog({
                             <ImagesBlock place={place}
                                          isOriginalPlace={true}
                                          categories={categories}
-                                         setPlaces={setPlaces}/>
+                                         showReviewBlock={true}
+                                         setPlaces={setPlaces}
+                                         mergeBlock={true}/>
 
                         </CardContent>
                     </GridListTile>
@@ -114,7 +116,9 @@ export default function MergeDuplicateDialog({
                                                 isOpen={false}/>}
                             <ImagesBlock place={similarPlace}
                                          isOriginalPlace={false}
-                                         categories={categories}/>
+                                         showReviewBlock={true}
+                                         categories={categories}
+                                         mergeBlock={true}/>
                         </CardContent>
                     </GridListTile>
                 </GridList>

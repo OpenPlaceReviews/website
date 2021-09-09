@@ -1,13 +1,13 @@
 const VALUE_DELETED = 'delete'
 
-function compareImages(path, oldImages, newImages) {
+function compareImages(path, oldImages, newImages, isMerge) {
     const change = {};
     const current = {};
 
     oldImages.forEach((image, index) => {
         const {cid} = image;
         const isDeleted = !newImages.some(image => image.cid === cid);
-        if (isDeleted) {
+        if (isDeleted && !isMerge) {
             change[`${path}[${index}]`] = VALUE_DELETED;
             current[`${path}[${index}]`] = image;
         }
@@ -98,7 +98,7 @@ function compareObjects(oldObject, newObject, categories, isMerge) {
         const path = `images.${category}`;
         const oldImages = oldObject.images ? oldObject.images[category] : null;
         const newImages = newObject.images ? newObject.images[category] : null;
-        categoryDiff = compareImages(path, oldImages ? oldImages : [], newImages ? newImages : []);
+        categoryDiff = compareImages(path, oldImages ? oldImages : [], newImages ? newImages : [], isMerge);
         diff.change = {
             ...diff.change,
             ...categoryDiff.change,
