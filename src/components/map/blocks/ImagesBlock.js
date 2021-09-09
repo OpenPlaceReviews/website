@@ -9,12 +9,13 @@ export default function ImagesBlock({
                                         isOriginalPlace,
                                         categories,
                                         showReviewBlock,
-                                        setPlaces
+                                        setPlaces,
+                                        mergeBlock
                                     }) {
 
     const {authData} = useContext(AuthContext);
     const isLoggedIn = () => !!authData.token;
-    const isEditable = isLoggedIn() && isOriginalPlace;
+    const isEditable = isLoggedIn() && isOriginalPlace && !mergeBlock;
 
     if (place && place.images && categories) {
         const {images} = place;
