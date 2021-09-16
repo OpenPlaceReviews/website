@@ -264,10 +264,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       // collect group of new objects & add to group
       for (; j + i < geo.features.length - 1; j++) {
         if (!geo.features[i + j].properties.deleted && areSimilar(place, geo.features[i + j], 250)) {
-          if (group.length > 0
-              && !geo.alreadyReviewedPlaceIds.includes(place.properties.opr_id)
-              && !geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)
-              && !isClosedPlace(place, geo.features[i + j], delGroupIds)) {
+          if (group.length > 0 && !isClosedPlace(place, geo.features[i + j], delGroupIds)) {
             group.push(geo.features[i + j]);
           }
         } else {
@@ -451,6 +448,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
 
       pointToLayer: (feature, latlng) => {
         const icon = MarkerIcon(feature.properties.place_type,
+            feature.properties.color,
             feature.properties.place_deleted,
             feature.properties.place_deleted_osm,
             feature.properties.deleted,
