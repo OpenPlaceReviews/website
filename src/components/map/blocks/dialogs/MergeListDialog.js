@@ -222,10 +222,7 @@ export default function MergeListDialog({
                                     delete objectMergeFrom.clientData;
                                 }
                                 objectMergeFromList.push(objectMergeFrom);
-                                allowToMergeList.push(deletedFeature.properties.opr_id !== existingFeatures[i].properties.opr_id
-                                    && !findObject(objectMergeFrom.source, 'deleted'));
-                            } else {
-                                allowToMergeList.push(false);
+                                allowToMergeList.push(!findObject(objectMergeFrom.source.osm[objectMergeFrom.source.osm.length - 1], 'deleted'));
                             }
                         }
                         setAllowToMerge(allowToMergeList);

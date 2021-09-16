@@ -106,7 +106,7 @@ export default function MergeDialogPlaceCard({
                className={classes.mergeSubtitle}>{info.subtitle}</p>
             <p style={{textAlign: "center", fontSize: "14px", color: "#2d69e0"}}>
                 <Link
-                    href={`/map/opr.place/${place.opr_id}?q=15/${info.latLon[0].toFixed(5)}/${info.latLon[1].toFixed(5)}`}>
+                    href={`/map/opr.place/${place.id}?q=15/${info.latLon[0].toFixed(5)}/${info.latLon[1].toFixed(5)}`}>
                     View</Link>
             </p>
             <p className={classes.mergeLatLon}>
