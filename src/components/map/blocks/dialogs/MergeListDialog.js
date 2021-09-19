@@ -203,7 +203,7 @@ export default function MergeListDialog({
                 let objectMergeFrom = [];
                 let objectDeleted = null;
                 let deletedFeature = mergeGroupList[index][0];
-                let existingFeatures = mergeGroupList[index].slice(1, mergeGroupList.length - 1);
+                let existingFeatures = mergeGroupList[index].slice(1);
                 let objectMergeFromList = [];
                 let allowToMergeList = [];
 

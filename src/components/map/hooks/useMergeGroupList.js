@@ -17,7 +17,7 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
 
     function getPlacesGroups(places, alreadyReviewedPlaceIds) {
         let delGroupIds = [];
-        for (let i = 0; i < places.length - 1;) {
+        for (let i = 0; i < places.length;) {
             let mergeToPlacesGroup = [];
             let mergeFromPlacesGroup = [];
             // collect group of deleted objects
@@ -29,9 +29,8 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
                 mergeToPlacesGroup.push(place);
             }
             let j = 1;
-            for (; j + i < places.length - 1; j++) {
+            for (; j + i < places.length; j++) {
                 if (places[i + j].properties.deleted && areSimilarPlaceByDistance(place, places[i + j], 250)) {
-                    // not clear why we double check alreadyReviewed?
                     if (!alreadyReviewedPlaceIds.includes(places[i + j].properties.opr_id)) {
                         mergeToPlacesGroup.push(places[i + j]);
                     }
@@ -41,8 +40,7 @@ export default function useMergeGroupList(mergePlaces, mergeGroupList, setMergeG
             }
 
             mergeToPlacesGroup.forEach(place => delGroupIds.push(place.properties.opr_id));
-
-            for (; j + i < places.length - 1; j++) {
+            for (; j + i < places.length; j++) {
                 if (!places[i + j].properties.deleted && areSimilarPlaceByDistance(place, places[i + j], 250)) {
                     // not clear why we double check alreadyReviewed?
                     if (!idsPlacesLocallyMerged.includes[places[i + j].properties.opr_id]) {
