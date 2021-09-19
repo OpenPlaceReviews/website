@@ -241,7 +241,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
   function filterPossibleMerge(geo) {
     let features = [];
     let delGroupIds = [];
-    for (let i = 0; i < geo.features.length - 1; ) {
+    for (let i = 0; i < geo.features.length;) {
       let mergeToPlacesGroup = [];
       let group = [];
       let place = geo.features[i];
@@ -250,7 +250,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       }
       // collect group of deleted objects
       let j = 1;
-      for (; j + i < geo.features.length - 1; j++) {
+      for (; j + i < geo.features.length; j++) {
         if (geo.features[i + j].properties.deleted && areSimilar(place,  geo.features[i + j], 250)) {
           if (!geo.alreadyReviewedPlaceIds.includes(geo.features[i + j].properties.opr_id)) {
             mergeToPlacesGroup.push(geo.features[i + j]);
@@ -262,7 +262,7 @@ export default function OPRLayer({ mapZoom, filterVal, taskSelection, onSelect, 
       mergeToPlacesGroup.forEach(place => delGroupIds.push(place.properties.opr_id));
       group = group.concat(mergeToPlacesGroup);
       // collect group of new objects & add to group
-      for (; j + i < geo.features.length - 1; j++) {
+      for (; j + i < geo.features.length; j++) {
         if (!geo.features[i + j].properties.deleted && areSimilar(place, geo.features[i + j], 250)) {
           if (group.length > 0 && !isClosedPlace(place, geo.features[i + j], delGroupIds)) {
             group.push(geo.features[i + j]);
