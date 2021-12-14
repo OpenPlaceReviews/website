@@ -112,6 +112,9 @@ export default function MergeListDialog({
     const [allowToMerge, setAllowToMerge] = useState([]);
     const [lastIndex,  setLastIndex] = useState(false);
 
+    const MAX_SIZE_MERGE_FROM_LIST = 7;
+    const SIZE_COMMON_SUBSTRING = 4;
+
     const closeMergeListDialog = () => {
         setMergeListDialogWasClosed(true);
         setMergeListDialogOpen(false);
@@ -214,6 +217,10 @@ export default function MergeListDialog({
                         delete objectDeleted.clientData;
                     }
                     if (objectDeleted) {
+                        sortListByDistance(deletedFeature, existingFeatures);
+                        if (existingFeatures.length > MAX_SIZE_MERGE_FROM_LIST) {
+                            existingFeatures = trimFeaturesList(deletedFeature, existingFeatures);
+                        }
                         for (let i = 0; i < existingFeatures.length; i++) {
                             const data2 = await getObjectsById('opr.place', existingFeatures[i].properties.opr_id);
                             objectMergeFrom = data2.objects.shift();
@@ -359,6 +366,92 @@ export default function MergeListDialog({
         recursiveSearch(obj);
         return result;
     };
+
+    function trimFeaturesList(deletedFeature, existingFeatureList) {
+        let deletedFeatureNames = getNames(deletedFeature);
+        if (deletedFeatureNames != null) {
+            let existingFeaturesWithSimilarNames = getFeaturesWithSimilarNames(deletedFeatureNames, existingFeatureList);
+            if (existingFeaturesWithSimilarNames.length > 0) {
+                existingFeatureList = existingFeatureList.filter((f) => !existingFeaturesWithSimilarNames.includes(f));
+                sortListByDistance(deletedFeature, existingFeaturesWithSimilarNames);
+                existingFeatureList = existingFeaturesWithSimilarNames.concat(existingFeatureList);
+            }
+        }
+        existingFeatureList = existingFeatureList.slice(0, MAX_SIZE_MERGE_FROM_LIST);
+        return existingFeatureList;
+    }
+
+    function getFeaturesWithSimilarNames(deletedFeatureNames, existingFeatureList) {
+        let result = [];
+        existingFeatureList.forEach(f => {
+            let existingFeatureNames = getNames(f);
+            if (deletedFeatureNames != null && existingFeatureNames != null) {
+                deletedFeatureNames.forEach(nameDel => {
+                    existingFeatureNames.forEach(nameEx => {
+                        if (isSimilarNames(nameDel, nameEx)) {
+                            result.push(f);
+                        }
+                    })
+                })
+            }
+        });
+        return result;
+    }
+
+    function isSimilarNames(nameDel, nameEx) {
+        return finderCommonSubstring(nameDel, nameEx) >= SIZE_COMMON_SUBSTRING;
+    }
+
+    function finderCommonSubstring(name1, name2) {
+        let arr = [];
+        name1.split('').reduce((last, item) => {
+            if (name2.indexOf(`${last}${item}`) !== -1) {
+                arr.push(`${last}${item}`);
+                return `${last}${item}`;
+            } else return item;
+        }, '');
+        return arr.sort((a, b) => b.length - a.length)[0]
+    }
+
+    function sortListByDistance(deletedFeature, existingFeatureList) {
+        if (existingFeatureList !== undefined) {
+            existingFeatureList.sort(function (a, b) {
+                const dist1 =
+                    Math.round(Utils.getDistance(a.geometry.coordinates[1], a.geometry.coordinates[0],
+                        deletedFeature.geometry.coordinates[1], deletedFeature.geometry.coordinates[0]));
+                const dist2 =
+                    Math.round(Utils.getDistance(b.geometry.coordinates[1], b.geometry.coordinates[0],
+                        deletedFeature.geometry.coordinates[1], deletedFeature.geometry.coordinates[0]));
+                if (dist1 > dist2) {
+                    return 1;
+                }
+                if (dist1 < dist2) {
+                    return -1;
+                }
+                return 0;
+            });
+        }
+    }
+
+    function getNames(feature) {
+        let names = [];
+        let name = feature.properties.tags.name;
+        if (name !== undefined) {
+            names.push(name);
+            return names;
+        } else {
+            Object.entries(feature.properties.tags).forEach(tag => {
+                if (tag[0].includes('name')) {
+                    names.push(tag[1]);
+                }
+            });
+            if (names.length > 0) {
+                return names;
+            } else {
+                return null;
+            }
+        }
+    }
 
     return <div><Dialog className={classes.dialog} open={mergeListDialogOpen} onClose={closeMergeListDialog}
                         aria-labelledby="form-dialog-title">

@@ -56,7 +56,6 @@ const useStyles = makeStyles({
         minHeight: "280px",
         maxWidth: "2000px !important",
         minWidth: "640px !important",
-        marginTop: "5px",
         "& .MuiGridList-root": {
             flexWrap: "nowrap !important",
         },
@@ -97,7 +96,7 @@ export default function MergeCarousel({
         {
             items.map((item, i) => <div className={classes.scroll} key={i}>
                     {mergeTo && item && <div className={classes.item}>
-                        <GridList spacing={10} style={{backgroundColor: "white"}}>
+                        <GridList spacing={10} style={{backgroundColor: "white", margin: "5px !important"}}>
                             <MergePlacesCardList mergeTo={mergeTo}
                                                  mergeFromList={mergeFromList}
                                                  mergeToInfo={mergeToInfo}
