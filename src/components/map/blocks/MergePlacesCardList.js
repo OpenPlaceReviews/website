@@ -14,18 +14,6 @@ export default function MergePlacesCardList({
 
     const mergeFromPlaceList = [];
 
-    function sortByDistanceFromMergeToPlace(mergeFromInfo) {
-        mergeFromInfo.sort(function (a, b) {
-            if (a.distanceToDeletedPlace > b.distanceToDeletedPlace) {
-                return 1;
-            }
-            if (a.distanceToDeletedPlace < b.distanceToDeletedPlace) {
-                return -1;
-            }
-            return 0;
-        });
-    }
-
     function getPlaceByInfo(i) {
         if (mergeFromList.filter(place => place.id === mergeFromInfo[i].oprId).length === 1) {
             return mergeFromList[0];
@@ -43,7 +31,6 @@ export default function MergePlacesCardList({
     }
 
     if (mergeFromList) {
-        sortByDistanceFromMergeToPlace(mergeFromInfo)
         for (let i = 0; i < mergeFromInfo.length; i++) {
             if (mergeFromInfo[i] && mergeFromInfo[i].latLon !== null) {
                 mergeFromPlaceList.push(<MergeDialogPlaceCard key={mergeFromPlaceList.length}
