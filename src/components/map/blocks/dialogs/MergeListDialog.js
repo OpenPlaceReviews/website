@@ -112,7 +112,7 @@ export default function MergeListDialog({
     const [allowToMerge, setAllowToMerge] = useState([]);
     const [lastIndex,  setLastIndex] = useState(false);
 
-    const MAX_SIZE_MERGE_FROM_LIST = 7;
+    const MAX_SIZE_MERGE_FROM_LIST = 10;
     const SIZE_COMMON_SUBSTRING = 4;
 
     const closeMergeListDialog = () => {
