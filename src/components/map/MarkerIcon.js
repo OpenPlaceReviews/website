@@ -18,6 +18,27 @@ import ice_cream from '../../assets/images/map_icons/ice_cream.svg';
 import motel from '../../assets/images/map_icons/motel.svg';
 import pub from '../../assets/images/map_icons/pub.svg';
 import restaurant from '../../assets/images/map_icons/restaurant.svg';
+import viewpoint from '../../assets/images/map_icons/view_point.svg';
+import wreck from '../../assets/images/map_icons/wreck.svg';
+import technical_monument from '../../assets/images/map_icons/technical_monument.svg';
+import monument from '../../assets/images/map_icons/monument.svg';
+import memorial from '../../assets/images/map_icons/memorial.svg';
+import locomotive from '../../assets/images/map_icons/locomotive.svg';
+import zoo from '../../assets/images/map_icons/zoo.svg';
+import ship from '../../assets/images/map_icons/ship.svg';
+import gallery from '../../assets/images/map_icons/gallery.svg';
+import theme_park from '../../assets/images/map_icons/theme_park.svg';
+import aquarium from '../../assets/images/map_icons/aquarium.svg';
+import museum from '../../assets/images/map_icons/museum.svg';
+import artwork from '../../assets/images/map_icons/artwork.svg';
+import rune_stone from '../../assets/images/map_icons/rune_stone.svg';
+import stone from '../../assets/images/map_icons/stone.svg';
+import mine from '../../assets/images/map_icons/mine.svg';
+import ruins from '../../assets/images/map_icons/ruins.svg';
+import camp_pitch from '../../assets/images/map_icons/camp_pitch.svg';
+import caravan_site from '../../assets/images/map_icons/caravan_site.svg';
+import picnic_site from '../../assets/images/map_icons/picnic_site.svg';
+import camp_site from '../../assets/images/map_icons/camp_site.svg';
 
 const icons = {
   apartment,
@@ -33,6 +54,27 @@ const icons = {
   motel,
   pub,
   restaurant,
+  memorial,
+  monument,
+  technical_monument,
+  locomotive,
+  ruins,
+  rune_stone,
+  stone,
+  wreck,
+  ship,
+  mine,
+  zoo,
+  aquarium,
+  theme_park,
+  gallery,
+  museum,
+  artwork,
+  camp_site,
+  camp_pitch,
+  caravan_site,
+  picnic_site,
+  viewpoint
 }
 
 export default (place_type, color, place_deleted, place_deleted_osm, deleted, alreadyReviewed) => {
