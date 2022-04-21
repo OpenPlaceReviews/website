@@ -48,7 +48,7 @@ export default function LandingPage() {
           for any possible usage.
         </p>
         <p>
-          We are inspired by truly open crowdsource projects like
+          We are inspired by truly open crowdsource projects like 
           <a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a> and <a
           href="https://www.wikipedia.org/" target="_blank">Wikipedia</a> and we want to make a similar platform for
           User Generated Content.</p>
