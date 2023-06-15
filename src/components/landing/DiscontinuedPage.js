@@ -49,6 +49,7 @@ export default function DiscontinuedPage() {
           provides SQL database access with indexes - <b><a href="https://github.com/OpenPlaceReviews/opendb" target="_blank">OpenDB GitHub</a></b>. 
           Blockchain serves the purpose of Public API, including replication and guarantees openness for everybody, SQL database provides full access to process 10 M objects in a reasonable time.
         </p>
+        <p><a href="/backup">The contributed data</a> (~4000 uploaded images on IPFS) to the project and the <a href="/data">blockchain metadata</a> will be avilable under <b>Public Domain license</b> for next 3 months. </p>
       </div>
       <div className="openness_imgs">
         <div className="openness_github">
