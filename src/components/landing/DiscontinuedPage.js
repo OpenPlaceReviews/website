@@ -44,12 +44,16 @@ export default function DiscontinuedPage() {
           Even though we've created infrastructure, review process, bots, API, replication, it's only OsmAnd Android that used integration point.
           Though due to very sophisticated setup as a Public Blockchain, it took too much resources to maintain and project has been discontinued.
         </p>
-        <p>As alternative project we recommend to look at  <a href="https://mangrove.reviews/" target="_blank">Mangrove reviews</a> which has a sustinable growth through years.</p>
-        <p>The main result of the project is a OpenDB blockchain that stores and processes lots of information and 
-          provides SQL database access with indexes - <b><a href="https://github.com/OpenPlaceReviews/opendb" target="_blank">OpenDB GitHub</a></b>. 
+        
+        <p><a href="/backup">The contributed data</a> (~4000 uploaded images on IPFS) to the project and the <a href="/data">blockchain metadata</a> will be avilable under <b>Public Domain license</b> for next 3 months. </p>
+
+
+        <p>The main result of the project is a OpenDB blockchain that stores and processes lots of information and
+          provides SQL database access with indexes - <b><a href="https://github.com/OpenPlaceReviews/opendb" target="_blank">OpenDB GitHub</a></b>.
           Blockchain serves the purpose of Public API, including replication and guarantees openness for everybody, SQL database provides full access to process 10 M objects in a reasonable time.
         </p>
-        <p><a href="/backup">The contributed data</a> (~4000 uploaded images on IPFS) to the project and the <a href="/data">blockchain metadata</a> will be avilable under <b>Public Domain license</b> for next 3 months. </p>
+        
+        <p>As alternative project we recommend to look at  <a href="https://mangrove.reviews/" target="_blank">Mangrove reviews</a> which has a sustinable growth through years.</p>
       </div>
       <div className="openness_imgs">
         <div className="openness_github">
