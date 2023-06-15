@@ -14,7 +14,7 @@ export default function DiscontinuedPage() {
           <div className="first-screen-container">
             <div className="container_flex">
               <h1>
-                The project has been discontinued at June 2023.
+                ❌❌❌ The project has been discontinued at June 2023 ❌❌❌
                 <p>Read more about origin goal and <a href="/intro">mission</a>.</p>
               </h1>
 
@@ -40,16 +40,15 @@ export default function DiscontinuedPage() {
       <div>
         <h1>Thank you for supporting us.</h1>
         <p>
-          We believe that information provided by users should not be collected in
-          any hidden way with a privacy respect and should be available for everyone
-          for any possible usage.
+          Our original mission was to create open API project that every map application could contribute to it, similar to OpenStreetMap. 
+          Even though we've created infrastructure, review process, bots, API, replication, it's only OsmAnd Android that used integration point.
+          Though due to very sophisticated setup as a Public Blockchain, it took too much resources to maintain and project has been discontinued.
         </p>
-        <p>
-          We are inspired by truly open crowdsource projects like <a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a> and <a
-            href="https://www.wikipedia.org/" target="_blank">Wikipedia</a> and we want to make a similar platform for
-          User Generated Content.</p>
-        <p>As a first step we want to build a platform to store user reviews for restaurants, hotels, attractions,
-          museums and other local places.</p>
+        <p>As alternative project we recommend to look at  <a href="https://mangrove.reviews/" target="_blank">Mangrove reviews</a> which has a sustinable growth through years.</p>
+        <p>The main result of the project is a OpenDB blockchain that stores and processes lots of information and 
+          provides SQL database access with indexes - <b><a href="https://github.com/OpenPlaceReviews/opendb" target="_blank">OpenDB GitHub</a></b>. 
+          Blockchain serves the purpose of Public API, including replication and guarantees openness for everybody, SQL database provides full access to process 10 M objects in a reasonable time.
+        </p>
       </div>
       <div className="openness_imgs">
         <div className="openness_github">
