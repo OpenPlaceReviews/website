@@ -8,7 +8,7 @@ export default function Footer() {
     <div className="container_flex footer-container">
       <div className="copyright">
         <img src={openPlaceReviewLogo} alt="OpenPlaceReviews.org logo" />
-        <div>© 2020 OpenPlaceReviews.org</div>
+        <div>© 2023 OpenPlaceReviews.org</div>
       </div>
       <div className="contact">
         <h2>Contact Us</h2>
@@ -19,6 +19,7 @@ export default function Footer() {
       <div className="about">
         <h2>About</h2>
         <ul>
+          <li><Link className="gray" to={"/intro"}>Intro</Link></li>
           <li><Link className="gray" to={"/data"}>Blockchain explorer</Link></li>
           <li><a href="https://github.com/OpenPlaceReviews/">GitHub</a></li>
         </ul>

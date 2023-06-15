@@ -56,15 +56,9 @@ export default function Header() {
         </label>
         <nav className="nav">
           <ul>
+            <li><NavLink to={"/intro"}>Intro</NavLink></li>
             <li><NavLink to={"/map"}>Map</NavLink></li>
             <li><NavLink to={"/data/blocks"} exact>Blockchain</NavLink></li>
-            {/*
-          <li><a href="#">Leaderboard</a></li>
-          <li><a href="#">News</a></li>
-          <li><a href="#">Docs</a></li>
-          <li><a href="#">Tasks</a></li>
-          <li><NavLink to="/investing">For Investors</NavLink></li>
-          */}
             <UserMenuFragment isLoggedIn={authData.name && authData.name.length} logOut={onLogOut}/>
           </ul>
         </nav>
